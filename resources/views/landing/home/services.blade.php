@@ -1,9 +1,9 @@
 @php($services = ['electroplating', 'chemical_supply', 'consultation'])
 
-<section class="bg-lavender">
+<section class="cut-top bg-lavender">
     <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div class="max-w-2xl">
-            <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-4xl">{{ __('home.services.title') }}</h2>
+            <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-5xl lg:text-6xl">{{ __('home.services.title') }}</h2>
             <p class="mt-4 text-lg text-muted">{{ __('home.services.intro') }}</p>
             <a href="{{ route('landing.services') }}" class="mt-3 inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">{{ __('home.services.all') }}</a>
         </div>

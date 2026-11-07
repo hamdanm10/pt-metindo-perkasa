@@ -4,7 +4,7 @@
     $phone = config('landing.contact.phone');
 @endphp
 
-<footer class="bg-ink text-white" style="--focus-ring: #ffffff">
+<footer class="cut-top bg-ink text-white" style="--focus-ring: #ffffff">
     <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div class="lg:col-span-5">
             <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-8 w-auto">

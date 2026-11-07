@@ -7,12 +7,17 @@
 
     <section class="bg-white">
         <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-28">
-            <h2 data-anim="heading" class="text-balance text-3xl font-bold leading-tight text-ink sm:text-4xl lg:col-span-5">
-                {{ __('pages.about.approach.title') }}
-            </h2>
-            <div class="space-y-5 text-lg text-muted lg:col-span-7">
-                <p>{{ __('pages.about.approach.first') }}</p>
-                <p>{{ __('pages.about.approach.second') }}</p>
+            <div class="lg:col-span-5">
+                <h2 data-anim="heading" class="text-balance text-3xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
+                    {{ __('pages.about.approach.title') }}
+                </h2>
+            </div>
+            <div class="lg:col-span-7">
+                <div class="space-y-5 text-lg text-muted">
+                    <p>{{ __('pages.about.approach.first') }}</p>
+                    <p>{{ __('pages.about.approach.second') }}</p>
+                </div>
+                <x-landing.photo name="about-company" ratio="aspect-[16/10]" class="mt-10" />
             </div>
         </div>
     </section>
@@ -33,7 +38,10 @@
     <section class="bg-lavender">
         <div class="mx-auto grid max-w-6xl gap-6 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
             <h2 data-anim="heading" class="text-3xl font-bold text-ink lg:col-span-5">{{ __('pages.about.facilities.title') }}</h2>
-            <p class="text-lg text-muted lg:col-span-7">{{ __('pages.about.facilities.text') }}</p>
+            <div class="lg:col-span-7">
+                <p class="text-lg text-muted">{{ __('pages.about.facilities.text') }}</p>
+                <x-landing.photo name="about-facilities" ratio="aspect-video" class="mt-8" />
+            </div>
         </div>
     </section>
 
@@ -41,7 +49,7 @@
         <section class="bg-white">
             <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
                 <div class="max-w-2xl">
-                    <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-4xl">{{ __('pages.about.subsidiaries.title') }}</h2>
+                    <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-5xl lg:text-6xl">{{ __('pages.about.subsidiaries.title') }}</h2>
                     <p class="mt-4 text-lg text-muted">{{ __('pages.about.subsidiaries.intro') }}</p>
                     <p class="mt-4 inline-block rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold text-ink">{{ __('landing.sample_note') }}</p>
                 </div>

@@ -25,15 +25,19 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 
 ## Penggunaan aset vektor
 
-| Tempat | Aset | Catatan |
-| --- | --- | --- |
-| Latar hero | Bentuk gelombang organik | Teks hero tetap di atas area dengan kontras cukup |
-| Antarbagian | Pembatas gelombang atas dan bawah | Dibalik di RTL bila punya arah |
-| Di balik foto atau kartu | Blob lembut | Dekoratif, `aria-hidden` |
-| Katalog 13 kategori | Satu ikon per kategori, gaya sama | Subjek per kategori ada di dokumen prompt |
-| Hiasan sudut | Pola titik dan garis | Opsional, jangan ramai |
+Komponen `x-landing.art` memuat `public/images/landing/<nama>.svg` bila berkasnya ada, dan menampilkan isi cadangan (slot) bila belum. Gambar dimuat malas (`loading="lazy"`), kecuali yang diberi `eager` (hero dan kepala halaman). Gambar yang diposisikan sebagian di luar layar harus `eager`, karena peramban tidak memuat gambar malas yang berada di luar layar sehingga ukurannya nol.
 
-Berkas vektor disimpan di `public/images/landing/` (SVG), dioptimalkan dengan SVGO, dan dimuat sebagai `<img>` atau di-inline hanya bila perlu diwarnai lewat CSS. Ukuran tiap berkas dijaga kecil karena memengaruhi kecepatan.
+| Tempat | Aset | Cadangan bila belum ada |
+| --- | --- | --- |
+| Hero | `hero-waves.svg` (pelat bertumpuk dengan garis miring) | Tiga pelat dari CSS |
+| Poster video | `video-poster.svg` | Blok warna dan lingkaran dari CSS |
+| Kepala halaman dan katalog | `slash-pattern.svg` (garis miring merah) | Tidak ada |
+| Katalog dan daftar produk | `icon-<slug>.svg` dalam ubin putih | Tanda garis miring merah |
+| Halaman Services | `service-electroplating.svg`, `service-chemical-supply.svg`, `service-consultation.svg` | Tidak ada |
+
+Aset yang sudah dibuat tetapi belum dipakai: `hero-waves-2.svg`, `corner-curve.svg`, `about-layers.svg`, dan `article-cover-1.svg` (warnanya merah murni di luar palet dan kadrnya terpotong, jadi perlu dibuat ulang). Belum dibuat: ikon `metal-polishing`, `sustainable-steel`, `wastewater-treatment`, `chemical-laboratory`, ilustrasi `service-consultation`, dan sampul artikel 2 dan 3. Warna hasil Recraft sedikit meleset dari palet (misalnya merah poster lebih terang), dan itu diterima selama tidak mengganggu.
+
+Foto memakai `x-landing.photo` ([`direction.md`](direction.md)). Berkas vektor dioptimalkan dengan SVGO (`npx svgo --multipass`), yang menurunkan ukuran total dari sekitar 495 KB menjadi 186 KB dengan perbedaan piksel di bawah 0,1 persen.
 
 ## Aturan
 

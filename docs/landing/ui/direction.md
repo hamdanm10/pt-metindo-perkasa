@@ -15,10 +15,10 @@ Arah visual untuk putaran desain landing page berikutnya. Dokumen ini adalah sum
 | 1 | Arah: **lapisan logam (garis miring dan pelat berlapis dari logo) digabung tipografi dan bentuk besar** | Tidak butuh foto, cocok dengan aset Recraft, dan berakar pada logo |
 | 2 | Dial: ENERGY 3 / RHYTHM 3 / MOTION 2 | Energik berarti kontras ukuran, warna berani, dan komposisi tidak simetris. Gerak tetap tanpa pengulangan abadi |
 | 3 | Merah krimson makin dominan sebagai blok warna besar, dengan `ink` sebagai penyeimbang. Biru dan indigo sebagai aksen kedua | Mengikuti logo. Kontras tiap pasangan baru tetap dicek |
-| 4 | Tipografi: judul lebih berat dan lebih rapat dengan lompatan ukuran besar. Boleh ada font judul khusus Latin dengan cadangan Noto untuk Mandarin, Arab, dan Jepang | Karakter lebih kuat tanpa merusak lima bahasa |
-| 5 | Bentuk: pemotongan miring antarbagian (selaras garis logo) dan lengkung besar, menggantikan banyak pembatas datar | Tidak kaku dan khas perusahaan ini |
-| 6 | Gambar memakai komponen placeholder berlabel jelas, hanya tampil saat `LANDING_SAMPLE_CONTENT` aktif. Tidak ada foto stok atau gambar buatan sendiri yang menyerupai foto asli | Aturan: jangan karang aset |
-| 7 | Tempat gambar: hero, About (perusahaan dan fasilitas), tiga layanan, sampul artikel, kategori produk | Bagian yang seharusnya bergambar |
+| 4 | Tipografi: judul memakai **Bricolage Grotesque** (Latin) dengan bobot tebal dan jarak huruf rapat, serta lompatan ukuran besar. Mandarin, Arab, dan Jepang memakai Noto Sans seperti teks isi | Karakter lebih kuat tanpa merusak lima bahasa |
+| 5 | Bentuk: **potongan miring** antarbagian dan pada kepala halaman (`.cut-top` dan `.cut-bottom`, dibalik di RTL), pola garis miring dari logo di bagian gelap, dan sedikit lengkung | Tidak kaku, khas perusahaan ini, dan tidak ramai |
+| 6 | Foto memakai komponen `x-landing.photo`: gambar dimuat dari `public/images/landing/photos/<nama>.webp` (atau `.jpg`, `.jpeg`, `.png`) bila ada. Bila belum ada, tampil placeholder berlabel, hanya saat `LANDING_SAMPLE_CONTENT` aktif. Tidak ada foto stok atau gambar buatan sendiri | Aturan: jangan karang aset |
+| 7 | Tempat foto: `about-company`, `about-facilities`, dan `article-<slug>` (beranda, daftar, dan detail artikel). Ilustrasi vektor: hero (`hero-waves`), poster video, ikon kategori, ilustrasi layanan | Bagian yang seharusnya bergambar |
 
 ## Batasan yang tetap berlaku
 
@@ -33,8 +33,11 @@ Arah visual untuk putaran desain landing page berikutnya. Dokumen ini adalah sum
 ## Belum diputuskan
 
 - Apakah coral `#FF5A5F` dari palet "energetic" boleh dipakai untuk grafis besar (kontras putih di atasnya hanya 3,05, jadi tidak untuk teks).
-- Pilihan font judul. Harus diuji di kelima bahasa dan ditimbang dari sisi kecepatan.
 - Apakah slider atau gerak berulang pelan (misalnya untuk mitra) boleh. Saat ini dilarang oleh dial gerak.
+
+## Status putaran pertama
+
+Sudah ada: font judul, potongan miring, pola garis miring (kepala halaman dan katalog), hero memakai `hero-waves`, poster video, 9 dari 13 ikon (sisanya memakai tanda garis miring merah sebagai pengganti), dua ilustrasi layanan di halaman Services, dan placeholder foto. Pola garis di hero dihapus karena menimpa teks dan membuat hero ramai.
 
 ## Cara menilai hasil
 

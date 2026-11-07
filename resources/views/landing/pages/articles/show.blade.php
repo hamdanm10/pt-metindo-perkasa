@@ -16,6 +16,7 @@
 
     <article class="bg-white">
         <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-24">
+            <x-landing.photo :name="'article-'.$article['slug']" ratio="aspect-video" class="mb-8 rounded-2xl" />
             <p class="mb-4 inline-block rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold text-ink">{{ __('landing.sample_note') }}</p>
             <p class="text-2xl font-semibold leading-snug text-ink">{{ __("articles.items.{$article['slug']}.text") }}</p>
             <p class="mt-6 text-lg text-muted">{{ __("articles.items.{$article['slug']}.body") }}</p>

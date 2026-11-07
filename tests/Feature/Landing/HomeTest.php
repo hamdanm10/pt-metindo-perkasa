@@ -104,6 +104,52 @@ class HomeTest extends TestCase
             ->assertSee('__introReady', false);
     }
 
+    public function test_art_component_shows_its_fallback_when_the_file_is_missing(): void
+    {
+        $html = (string) $this->blade('<x-landing.art name="does-not-exist"><span>fallback</span></x-landing.art>');
+
+        $this->assertStringContainsString('fallback', $html);
+        $this->assertStringNotContainsString('<img', $html);
+    }
+
+    public function test_category_icon_falls_back_to_a_mark_when_the_icon_is_missing(): void
+    {
+        $html = (string) $this->blade('<x-landing.category-icon slug="no-such-icon" />');
+
+        $this->assertStringContainsString('bg-brand-600', $html);
+        $this->assertStringNotContainsString('<img', $html);
+    }
+
+    public function test_photo_component_follows_files_and_the_sample_content_flag(): void
+    {
+        config(['landing.sample_content' => true]);
+        $this->assertStringContainsString('[PHOTO] images/landing/photos/missing.webp', (string) $this->blade('<x-landing.photo name="missing" />'));
+
+        config(['landing.sample_content' => false]);
+        $this->assertSame('', trim((string) $this->blade('<x-landing.photo name="missing" />')));
+
+        $name = 'test-photo-'.uniqid();
+        $path = public_path("images/landing/photos/{$name}.webp");
+
+        @mkdir(dirname($path), 0777, true);
+        file_put_contents($path, 'x');
+
+        try {
+            $html = (string) $this->blade('<x-landing.photo name="'.$name.'" alt="Factory" />');
+
+            $this->assertStringContainsString("photos/{$name}.webp", $html);
+            $this->assertStringContainsString('alt="Factory"', $html);
+            $this->assertStringNotContainsString('[PHOTO]', $html);
+        } finally {
+            unlink($path);
+        }
+    }
+
+    public function test_hero_uses_the_vector_art_when_it_exists(): void
+    {
+        $this->get('/en')->assertSee('images/landing/hero-waves.svg', false);
+    }
+
     public function test_art_component_renders_only_when_the_file_exists(): void
     {
         $this->assertSame('', trim((string) $this->blade('<x-landing.art name="does-not-exist" />')));
