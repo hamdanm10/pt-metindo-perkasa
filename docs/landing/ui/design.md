@@ -6,7 +6,7 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | Susunan beranda mengikuti prototipe: hero, pengantar video, pendekatan, katalog 13 kategori, layanan, artikel, kontak | Prototipe adalah versi awal project ini |
+| 1 | Susunan beranda mengikuti prototipe `homepage-2`: hero, pengantar video, pendekatan, katalog 13 kategori, layanan, klien dan mitra, artikel, ajakan menghubungi. Tampilannya dirancang ulang | Prototipe adalah versi awal project ini, tetapi desainnya dinilai kurang baik. Fase dan status ada di [`../implementation-plan.md`](../implementation-plan.md) |
 | 2 | Tampilan tidak kaku: aset vektor organik dari Recraft sebagai pembatas, latar, dan hiasan | Permintaan client |
 | 3 | Layar intro "Click to begin" dipertahankan dengan batasan di bawah | Permintaan client, risiko SEO dikurangi lewat batasan |
 | 4 | Konten dirender di server dengan Blade | SEO |
