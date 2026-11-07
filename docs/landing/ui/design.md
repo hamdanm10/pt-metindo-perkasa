@@ -23,6 +23,15 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Animasi masuk dan keluar memakai GSAP ([`motion.md`](motion.md)). Dengan `prefers-reduced-motion`, overlay tidak beranimasi.
 - Setelah jadi, ukur LCP dan INP dengan Lighthouse, dengan dan tanpa overlay. Hasilnya dicatat di dokumen ini. Jika skornya turun jauh, bahas penggantinya dengan client (misalnya animasi singkat yang menutup sendiri).
 
+## Navbar
+
+- **Menempel di atas** saat gulir (`position: sticky`). Saat halaman mulai bergulir (diamati lewat `IntersectionObserver` pada penanda di puncak halaman, tanpa pendengar gulir), tinggi header mengecil dari sekitar 69 ke 57 piksel dan muncul bayangan tipis. Transisinya CSS dan dimatikan oleh `prefers-reduced-motion`.
+- Latar putih solid. Efek kaca (blur) sengaja tidak dipakai.
+- Tautan aktif ditandai garis miring merah di bawahnya (selaras garis logo), yang juga muncul saat hover. Di RTL, garis tumbuh dari sisi kanan.
+- Pemilih bahasa di desktop berupa tombol lavender berisi bahasa aktif dengan daftar turun berbayang. Di bawah lebar `lg`, tombol "Menu" berwarna merah membuka panel berisi menu dan bahasa.
+- Tujuan jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`.
+- Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
+
 ## Penggunaan aset vektor
 
 Komponen `x-landing.art` memuat `public/images/landing/<nama>.svg` bila berkasnya ada, dan menampilkan isi cadangan (slot) bila belum. Gambar dimuat malas (`loading="lazy"`), kecuali yang diberi `eager` (hero dan kepala halaman). Gambar yang diposisikan sebagian di luar layar harus `eager`, karena peramban tidak memuat gambar malas yang berada di luar layar sehingga ukurannya nol.

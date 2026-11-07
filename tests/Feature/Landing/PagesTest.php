@@ -47,6 +47,14 @@ class PagesTest extends TestCase
             ->assertSee('data-step-number', false);
     }
 
+    public function test_header_is_sticky_and_has_a_sentinel_to_detect_scrolling(): void
+    {
+        $this->get('/en/about')
+            ->assertSee('<header data-header class="sticky top-0 z-50', false)
+            ->assertSee('data-header-sentinel', false)
+            ->assertSee('aria-current="page"', false);
+    }
+
     public function test_page_titles_use_the_active_language(): void
     {
         $this->get('/id/about')->assertSee('<title>'.__('landing.nav.about', [], 'id').' | PT Metindo Perkasa</title>', false);

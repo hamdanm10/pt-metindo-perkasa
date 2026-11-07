@@ -25,6 +25,10 @@
         line-height: 1.75;
     }
 
+    html {
+        scroll-padding-top: 5rem;
+    }
+
     h1,
     h2,
     h3 {
@@ -87,4 +91,27 @@
 
 [dir='rtl'] .cut-bottom {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - var(--cut)));
+}
+
+[data-header] {
+    transition: box-shadow 0.25s ease;
+}
+
+[data-header-inner] {
+    transition: padding 0.25s ease;
+}
+
+[data-header][data-stuck] {
+    box-shadow: 0 12px 28px -20px rgba(27, 31, 59, 0.6);
+}
+
+[data-header][data-stuck] [data-header-inner] {
+    padding-block: 0.375rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-header],
+    [data-header-inner] {
+        transition: none;
+    }
 }

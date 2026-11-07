@@ -14,7 +14,7 @@
                    lang="{{ $locale['html_lang'] }}"
                    hreflang="{{ $locale['html_lang'] }}"
                    @if ($code === $current) aria-current="true" @endif
-                   class="inline-flex min-h-11 items-center rounded px-3 text-sm {{ $code === $current ? 'font-bold text-brand-700 underline decoration-2 underline-offset-8' : 'text-ink hover:text-brand-700' }}">
+                   class="flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-ink hover:bg-lavender aria-[current=true]:bg-lavender aria-[current=true]:font-bold aria-[current=true]:text-brand-700">
                     {{ $locale['name'] }}
                 </a>
             </li>
