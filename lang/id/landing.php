@@ -9,10 +9,10 @@ return [
     'nav' => [
         'home' => 'Beranda',
     ],
-    'home' => [
-        'heading' => 'Elektroplating & Finishing Logam',
-    ],
     'footer' => [
-        'rights' => 'Hak cipta dilindungi.',
+        'description' => 'Proses electroplating dan bahan kimia pendukung untuk hasil pelapisan logam yang presisi dan konsisten.',
+        'tagline' => 'Electroplating · Metal Finishing',
+        'contact' => 'Kontak',
+        'rights' => 'Seluruh hak cipta dilindungi.',
     ],
 ];

@@ -82,14 +82,16 @@ class LocaleTest extends TestCase
 
     public function test_landing_translation_keys_match_in_every_locale(): void
     {
-        $keys = fn (string $code): array => array_keys(
-            Arr::dot(require lang_path("{$code}/landing.php"))
+        $keys = fn (string $code, string $file): array => array_keys(
+            Arr::dot(require lang_path("{$code}/{$file}.php"))
         );
 
-        $expected = $keys('en');
+        foreach (['landing', 'home'] as $file) {
+            $expected = $keys('en', $file);
 
-        foreach (config('locales.landing') as $code) {
-            $this->assertEqualsCanonicalizing($expected, $keys($code), "Keys differ in {$code}");
+            foreach (config('locales.landing') as $code) {
+                $this->assertEqualsCanonicalizing($expected, $keys($code, $file), "Keys differ in {$code}/{$file}");
+            }
         }
     }
 }

@@ -1,0 +1,31 @@
+@php($videoId = config('landing.intro_video_id'))
+
+@if ($videoId)
+    <section class="relative -mt-12 rounded-t-[3rem] bg-white">
+        <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8 lg:py-28">
+            <div class="lg:col-span-4">
+                <h2 class="text-balance text-3xl font-bold leading-tight text-ink sm:text-4xl">
+                    {{ __('home.video.title') }}
+                </h2>
+                <p class="mt-5 text-lg text-muted">
+                    {{ __('home.video.text') }}
+                </p>
+            </div>
+
+            <div class="lg:col-span-8">
+                <div data-video="{{ $videoId }}" data-video-title="{{ __('home.video.title') }}"
+                     class="relative aspect-video overflow-hidden rounded-3xl bg-ink lg:rounded-se-[6rem]">
+                    <x-landing.art name="video-poster" class="absolute inset-0 h-full w-full object-cover" />
+                    <div class="absolute -bottom-1/3 -start-1/6 size-3/4 rounded-full bg-brand-600" aria-hidden="true"></div>
+                    <button type="button" data-video-play
+                            class="group absolute inset-0 flex items-center justify-center gap-4 text-white focus-visible:outline-white">
+                        <span class="flex size-20 items-center justify-center rounded-full bg-white text-brand-700 sm:size-24">
+                            <svg viewBox="0 0 24 24" class="size-9 translate-x-0.5" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z"/></svg>
+                        </span>
+                        <span class="sr-only">{{ __('home.video.play') }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+@endif

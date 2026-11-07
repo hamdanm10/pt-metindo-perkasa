@@ -1,12 +1,22 @@
 @extends('landing.layouts.app')
 
+@push('head')
+    <script>
+        try {
+            if (!sessionStorage.getItem('intro-seen')) {
+                document.documentElement.classList.add('intro-pending');
+            }
+        } catch (e) {}
+    </script>
+@endpush
+
 @section('content')
-    {{-- Full home page lands in phase L2. --}}
-    <section class="bg-lavender">
-        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-            <h1 class="max-w-3xl text-balance text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                {{ __('landing.home.heading') }}
-            </h1>
-        </div>
-    </section>
+    @include('landing.home.intro')
+    @include('landing.home.hero')
+    @include('landing.home.video')
+    @include('landing.home.catalog')
+    @include('landing.home.services')
+    @include('landing.home.clients')
+    @include('landing.home.articles')
+    @include('landing.home.cta')
 @endsection

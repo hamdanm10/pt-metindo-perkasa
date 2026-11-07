@@ -9,10 +9,10 @@ return [
     'nav' => [
         'home' => '首页',
     ],
-    'home' => [
-        'heading' => '电镀与金属表面处理',
-    ],
     'footer' => [
+        'description' => '电镀工艺及配套化学品，实现精确、可重复的金属表面处理。',
+        'tagline' => 'Electroplating · Metal Finishing',
+        'contact' => '联系我们',
         'rights' => '版权所有。',
     ],
 ];
