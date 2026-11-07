@@ -11,7 +11,7 @@ docs/
 ├── references/                   aset acuan: logo, favicon, palet warna
 ├── landing/                      landing page publik (5 bahasa)
 │   ├── ui/                       desain landing dan prompt aset vektor
-│   └── implementation-plan.md    indeks (dibuat saat fitur pertama)
+│   └── implementation-plan.md    indeks
 ├── shared/                       dipakai lebih dari satu peran
 │   ├── design-system/            fondasi desain: warna, tipografi, RTL
 │   └── implementation-plan.md    indeks (dibuat saat fitur pertama)
@@ -27,7 +27,7 @@ Folder fitur dibuat saat fitur pertamanya ditulis, bukan lebih awal. Setiap area
 
 | Area | Indeks | Isi |
 | --- | --- | --- |
-| Landing | `landing/implementation-plan.md` | Belum ada |
+| Landing | [`landing/implementation-plan.md`](landing/implementation-plan.md) | Fase L1 sampai L7 landing page |
 | Bersama | `shared/implementation-plan.md` | Belum ada |
 | Admin | `roles/admin/implementation-plan.md` | Belum ada |
 | Staf | `roles/staff/implementation-plan.md` | Belum ada |
