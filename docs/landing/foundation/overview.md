@@ -14,6 +14,9 @@ Fondasi landing page publik: layout, navigasi, footer, penanganan locale lewat a
 | 6 | Menu hanya menampilkan halaman yang sudah ada (L1: Home). Menu lain muncul saat fasenya selesai | Tidak ada tautan mati |
 | 7 | Teks navigasi dan footer di `lang/<locale>/landing.php` untuk kelima bahasa | Aturan teks pengguna di `CLAUDE.md`. Dipindah ke database hanya untuk konten dinamis (L4) |
 | 8 | Token tema di satu berkas CSS yang dipakai bersama, landing punya entri CSS sendiri | Dashboard nanti memakai token yang sama tanpa menyalin |
+| 9 | Font dipasang sendiri lewat paket npm `@fontsource-variable/*` (Figtree, Noto Sans SC, JP, Arabic), satu berkas CSS per bahasa di `resources/css/fonts/` yang hanya dimuat di locale terkait | Tanpa CDN pihak ketiga. Versi variabel dipilih karena versi bobot tetap (400 dan 700) membuat CSS Mandarin dan Jepang sekitar 70 KB gzip per bahasa, sedangkan versi variabel sekitar 34 KB |
+| 10 | Navigasi desktop menampilkan menu dan lima bahasa sebaris. Di ponsel, keduanya masuk ke panel `<details>` berlabel "Menu" yang bisa ditutup dengan Escape atau klik di luar (`resources/js/landing.js`) | Tanpa JavaScript berat, dan label teks membuat menu mudah ditemukan |
+| 11 | Logo, logo putih, dan favicon dari `docs/references/` disalin ke `public/images/brand/` dan `public/favicon.ico` | Aset resmi dari client, dipakai apa adanya |
 
 ## Alur
 
@@ -39,8 +42,11 @@ Fondasi landing page publik: layout, navigasi, footer, penanganan locale lewat a
 - `app/Http/Controllers/Landing/HomeController.php`: satu aksi yang mengembalikan view. Tanpa Action karena belum ada logika bisnis.
 - `resources/views/landing/layouts/app.blade.php`, komponen Blade untuk header, footer, dan pemilih bahasa di `resources/views/components/landing/`, dan `resources/views/landing/home.blade.php` (halaman rangka).
 - `lang/{en,id,zh,ar,ja}/landing.php`.
-- `resources/css/theme.css` (token warna, font, jarak) dan `resources/css/landing.css` (entri landing yang mengimpor tema).
-- Berkas bawaan `welcome.blade.php` dan route `/` lama dihapus.
+- `resources/css/theme.css` (token warna dan font) dan `resources/css/landing.css` (entri landing yang mengimpor tema, memilih keluarga font per atribut `lang`, dan menyetel jarak baris untuk Mandarin, Jepang, dan Arab).
+- `resources/css/fonts/{latin,zh,ja,ar}.css` dan `resources/js/landing.js`, didaftarkan di `vite.config.js`.
+- `public/images/brand/` (logo) dan `public/favicon.ico`.
+- `tests/Feature/Landing/LocaleTest.php`.
+- Berkas bawaan `welcome.blade.php`, `tests/Feature/ExampleTest.php`, dan route `/` lama dihapus.
 
 ## Langkah dan test
 
@@ -64,4 +70,7 @@ Pemeriksaan manual: tampilan di lebar ponsel dan desktop, Arab dalam RTL, font C
 - Halaman dalam dan menu lengkap (L3).
 - Judul dan deskripsi meta per halaman, sitemap, dan pengukuran performa (L6).
 - Terjemahan kelima bahasa untuk teks navigasi dan footer perlu ditinjau penutur asli sebelum rilis.
+- Pemilih bahasa menampilkan nama bahasa dalam aksara aslinya. Di halaman yang tidak memuat font bahasa itu (misalnya `中文` di halaman Inggris), tampilannya mengandalkan font sistem pengunjung.
+- Tampilan font web di browser nyata belum diperiksa: pemeriksaan visual memakai Firefox tanpa kepala dengan berkas lokal, dan font tidak termuat di sana. Struktur CSS (nama keluarga font, berkas woff2, jalur) sudah dicek, jadi perlu dicek ulang di server atau browser biasa.
+- Menu ponsel (`<details>`), penutupan dengan Escape, dan tautan lewati-ke-konten diuji lewat kode dan test, belum lewat klik di browser.
 - Mode gelap.

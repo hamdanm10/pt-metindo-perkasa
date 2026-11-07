@@ -1,0 +1,19 @@
+@theme {
+    --color-brand-50: #fef2f3;
+    --color-brand-100: #fde3e5;
+    --color-brand-200: #fbccd0;
+    --color-brand-300: #f7a3ab;
+    --color-brand-400: #f16f7d;
+    --color-brand-500: #e63f53;
+    --color-brand-600: #d6283a;
+    --color-brand-700: #b01022;
+    --color-brand-800: #920f20;
+
+    --color-ink: #1b1f3b;
+    --color-lavender: #f3f2ff;
+    --color-muted: #545d61;
+    --color-accent-blue: #1f4fb5;
+    --color-accent-indigo: #6d5bd0;
+
+    --font-sans: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+}
