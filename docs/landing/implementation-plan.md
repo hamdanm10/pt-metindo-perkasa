@@ -17,7 +17,7 @@ Halaman lain: About Us, Products, Services, Articles (dan detail artikel), Conta
 
 | Fase | Fitur | Dokumen | Branch | Status |
 | --- | --- | --- | --- | --- |
-| L1 | Kerangka landing: layout, navigasi, footer, locale (awalan URL, 5 bahasa, RTL), token tema dan font | belum ditulis | `feat/landing-foundation` | Rencana |
+| L1 | Kerangka landing: layout, navigasi, footer, locale (awalan URL, 5 bahasa, RTL), token tema dan font | [`foundation/overview.md`](foundation/overview.md) | `feat/landing-foundation` | Rancangan ditulis, belum ada kode |
 | L2 | Beranda statis lengkap: semua bagian, aset vektor Recraft, layar intro | belum ditulis | `feat/landing-home` | Rencana |
 | L3 | Halaman dalam statis: About Us, Products, Services, Articles, Contact, templat detail proses | belum ditulis | `feat/landing-pages` | Rencana |
 | L4 | Konten dinamis di database dan pengelolaannya oleh admin di dashboard (kategori, produk, proses, layanan, klien, mitra, artikel, video) | belum ditulis | `feat/landing-content` | Rencana. Butuh login dan dashboard admin lebih dulu |
