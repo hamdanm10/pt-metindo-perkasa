@@ -18,9 +18,9 @@ Halaman lain: About Us, Products, Services, Articles (dan detail artikel), Conta
 | Fase | Fitur | Dokumen | Branch | Status |
 | --- | --- | --- | --- | --- |
 | L1 | Kerangka landing: layout, navigasi, footer, locale (awalan URL, 5 bahasa, RTL), token tema dan font | [`foundation/overview.md`](foundation/overview.md) | `feat/landing-foundation` | Selesai, ter-merge ke `development` |
-| L2 | Beranda statis lengkap: semua bagian, aset vektor Recraft, layar intro | [`home/overview.md`](home/overview.md) | `feat/landing-home` | Selesai di kode, belum di-merge |
-| L3 | Halaman dalam statis: About Us, Products, Services, Articles, Contact, templat detail proses | belum ditulis | `feat/landing-pages` | Rencana |
-| L4 | Konten dinamis di database dan pengelolaannya oleh admin di dashboard (kategori, produk, proses, layanan, klien, mitra, artikel, video) | belum ditulis | `feat/landing-content` | Rencana. Butuh login dan dashboard admin lebih dulu |
+| L2 | Beranda statis lengkap: semua bagian, aset vektor Recraft, layar intro | [`home/overview.md`](home/overview.md) | `feat/landing-home` | Selesai, ter-merge ke `development` |
+| L3 | Halaman dalam statis: About Us, Products (indeks dan kategori), Services, Articles (daftar dan detail), Contact | [`pages/overview.md`](pages/overview.md) | `feat/landing-pages` | Rancangan ditulis, belum ada kode |
+| L4 | Konten dinamis di database dan pengelolaannya oleh admin di dashboard (kategori, produk, proses, layanan, klien, mitra, artikel, video), termasuk halaman detail proses | belum ditulis | `feat/landing-content` | Rencana. Butuh login dan dashboard admin lebih dulu |
 | L5 | Permintaan harga, unduhan TDS, dan formulir kontak | belum ditulis | belum ditentukan | Belum diputuskan |
 | L6 | SEO dan performa: `hreflang`, sitemap, meta per bahasa, ukur Lighthouse (termasuk dampak layar intro) | belum ditulis | `feat/landing-seo` | Rencana |
 | L7 | Widget chat | belum ditulis | belum ditentukan | Belum diputuskan |
