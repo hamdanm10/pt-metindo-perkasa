@@ -1,88 +1,109 @@
 # Prompt Recraft untuk Aset Vektor Landing
 
-Prompt untuk membuat aset vektor di Recraft supaya landing tidak kaku. Prompt ditulis dalam bahasa Inggris karena dipakai langsung di alat. Pemakaian aset ada di [`design.md`](design.md), palet ada di [`../../shared/design-system/overview.md`](../../shared/design-system/overview.md).
+Prompt untuk membuat aset vektor di Recraft sesuai arah energetik di [`direction.md`](direction.md). Prompt ditulis dalam bahasa Inggris karena dipakai langsung di alat. Pemakaian aset ada di [`design.md`](design.md), palet di [`../../shared/design-system/overview.md`](../../shared/design-system/overview.md).
 
 ## Pengaturan umum
 
-- Keluaran **vektor (SVG)**, latar **transparan**.
+- Gaya **vector illustration**, keluaran **SVG**, latar **transparan**.
 - Jika Recraft menyediakan kontrol warna, masukkan palet ini dan jangan tambah warna lain:
 
 | Nama | Hex |
 | --- | --- |
 | Crimson (utama) | `#D6283A` |
+| Ink | `#1B1F3B` |
 | Indigo | `#6D5BD0` |
 | Blue | `#1F4FB5` |
 | Lavender | `#F3F2FF` |
-| Ink | `#1B1F3B` |
 | White | `#FFFFFF` |
 
-- Tanpa teks, huruf, atau logo di dalam gambar.
-- Tanpa foto, tekstur realistis, bayangan, atau gradien rumit. Warna datar dan bentuk bersih lebih mudah dioptimalkan.
-- Jangan memakai coral atau warna lain di luar palet.
-- Hasilkan beberapa variasi per prompt, pilih yang paling sederhana, lalu cek berat berkas SVG (target di bawah 50 KB per berkas, ikon di bawah 5 KB).
+- Tanpa teks, huruf, logo, orang, atau wajah di dalam gambar.
+- Warna datar. Tanpa foto, tekstur realistis, bayangan, atau gradien rumit.
+- Hasilkan 4 variasi per prompt, pilih yang paling sederhana, lalu cek berat berkas (target di bawah 60 KB per ilustrasi, 5 KB per ikon).
+- Jangan memakai coral atau warna di luar palet.
+- Hindari bentuk yang bergantung arah kiri-kanan. Situs dipakai dalam Arab (RTL) dan komposisi akan dibalik, jadi aset sebaiknya tetap enak dilihat bila dicerminkan.
 
-## Kalimat gaya (ditempel di semua prompt)
+## Kalimat gaya (ditempel di awal semua prompt)
 
-> Flat vector illustration, smooth organic curves, soft rounded shapes, clean geometric lines with round caps, limited palette of crimson #D6283A, indigo #6D5BD0, blue #1F4FB5, lavender #F3F2FF, ink #1B1F3B and white, no text, no gradients, no shadows, transparent background.
+```
+Bold flat vector illustration, energetic and dynamic, strong diagonal composition, layered metal plates with sharp diagonal cuts combined with large smooth curves, geometric and confident, high contrast, flat colors only, limited palette of crimson #D6283A, ink navy #1B1F3B, indigo #6D5BD0, blue #1F4FB5, lavender #F3F2FF and white, no text, no people, no gradients, no shadows, transparent background.
+```
 
-## 1. Latar hero
+## Aset
 
-> Wide abstract background for a website hero section, flowing wave shapes layered across the lower and right side, overlapping translucent-looking flat layers in lavender, indigo and crimson, a calm empty area on the left for headline text, feels like liquid metal flowing, 16:9. [kalimat gaya]
+Nama berkas mengikuti tempat pemakaiannya. Simpan di `public/images/landing/`. Aset yang belum terhubung ke kode saya pasang saat putaran desain.
 
-Pakai: latar hero. Pastikan area kosong cukup untuk teks.
+### 1. Hero: `hero-waves.svg` (1:1)
 
-## 2. Pembatas bagian (atas dan bawah)
+```
+[kalimat gaya] A square composition of five stacked metal plates with rounded corners, fanned out and tilted at different angles like a deck of cards, the front plate crimson with one clean diagonal highlight stripe, the others ink navy, indigo and lavender, a few large curved arcs sweeping behind them, lots of empty space around the edges, centered.
+```
 
-> Seamless horizontal section divider, a single smooth wave edge, two layered curves, wide and short, fills the lower edge in lavender with a thin crimson accent layer, repeatable left to right, 1440x200. [kalimat gaya]
+Pakai: sisi kanan hero, menggantikan pelat CSS.
 
-Buat dua versi: gelombang menghadap ke atas dan ke bawah. Pakai di antara bagian halaman.
+### 2. Poster video: `video-poster.svg` (16:9)
 
-## 3. Blob lembut
+```
+[kalimat gaya] Wide 16:9 background for a video thumbnail, ink navy base filled with bold diagonal crimson and indigo slashes and one large sweeping curve in the lower left, a calm empty area in the center for a play button, strong sense of motion.
+```
 
-> Set of five soft organic blob shapes of different sizes, smooth asymmetric silhouettes, each in a flat single color from the palette (lavender, indigo, crimson, blue, light crimson tint), separated, no outlines. [kalimat gaya]
+### 3. Ikon 13 kategori: `icon-<slug>.svg` (1:1)
 
-Pakai: di balik foto, kartu, atau judul bagian.
+Satu gaya untuk semuanya: garis tebal berujung bulat seperti guratan monogram logo, dua warna saja (ink dan crimson).
 
-## 4. Ilustrasi tema electroplating
+```
+Single bold geometric icon, thick uniform line style with round caps and round joins, two colors only: ink navy #1B1F3B lines with one crimson #D6283A accent shape, centered on a square canvas, generous padding, flat, no background, no text. Subject: [subjek]
+```
 
-> Abstract illustration of metal plating: stacked metal sheets with rounded corners, rising bubbles, and a droplet of solution falling into a bath, simplified to flat geometric shapes, indigo and blue for the liquid, crimson accents, white highlights, no machinery detail. [kalimat gaya]
+| Berkas | Subjek |
+| --- | --- |
+| `icon-zinc-plating.svg` | a metal bolt in a plating bath |
+| `icon-nickel-plating.svg` | a shiny faucet-like fitting with sparkle lines |
+| `icon-copper-plating.svg` | a coil of copper wire |
+| `icon-hard-chrome.svg` | a hydraulic piston rod |
+| `icon-tin-plating.svg` | a small electronic connector pin |
+| `icon-electroless-nickel.svg` | a precision gear with a thin coating layer |
+| `icon-anodizing.svg` | an aluminum plate with layered color bands |
+| `icon-phosphating.svg` | a steel screw with a textured surface |
+| `icon-plating-on-plastic.svg` | a plastic knob with a metallic coating |
+| `icon-metal-polishing.svg` | a polishing wheel with shine marks |
+| `icon-sustainable-steel.svg` | a steel beam with a leaf |
+| `icon-wastewater-treatment.svg` | a water droplet passing through a filter |
+| `icon-chemical-laboratory.svg` | a laboratory flask and test tube |
 
-Pakai: bagian pendekatan atau tentang kami.
+Jika paket Recraft menyediakan pembuatan gaya dari gambar acuan, buat satu ikon yang paling bagus, jadikan gaya, lalu pakai gaya itu untuk 12 ikon sisanya supaya konsisten.
 
-## 5. Ikon 13 kategori
+### 4. Ilustrasi tiga layanan (4:3)
 
-Satu gaya untuk semuanya: garis tebal sama seperti guratan monogram logo (ujung membulat), dua warna (ink dan crimson), kanvas persegi, objek di tengah, tanpa latar.
+Dasarnya sama: `[kalimat gaya] A simple spot illustration of [subjek], built from flat geometric shapes, centered with space around it.`
 
-Kalimat dasar per ikon:
+| Berkas | Subjek |
+| --- | --- |
+| `service-electroplating.svg` | metal parts hanging on a rack above a plating tank with rising bubbles |
+| `service-chemical-supply.svg` | chemical drums and bottles stacked in a neat group |
+| `service-consultation.svg` | a measuring gauge and a clipboard with a checklist, no readable text |
 
-> Single icon, thick uniform line style with round caps and round joins, two colors only: ink #1B1F3B lines with one crimson #D6283A accent shape, centered on a square canvas, plenty of padding, no fill background, no text. Subject: [subjek]
+### 5. About: `about-layers.svg` (4:3)
 
-Subjek (ganti `[subjek]`):
+```
+[kalimat gaya] A cross-section of a plated metal sheet seen from the side: a thick ink navy base layer with thinner crimson, lavender and indigo coating layers stacked on top, drawn as clean horizontal bands with one diagonal cut revealing the layers, no labels.
+```
 
-| # | Kategori | Subjek |
-| --- | --- | --- |
-| 01 | Zinc Plating | a metal bolt in a plating bath |
-| 02 | Nickel Plating | a shiny faucet-like fitting with sparkle |
-| 03 | Copper Plating | a coil of copper wire |
-| 04 | Hard Chrome | a hydraulic piston rod |
-| 05 | Tin Plating | a small electronic connector pin |
-| 06 | Electroless Nickel | a precision gear with a thin coating layer |
-| 07 | Anodizing | an aluminum plate with color layers |
-| 08 | Phosphating | a steel screw with a textured surface |
-| 09 | Plating on Plastic | a plastic knob with a metallic coating |
-| 10 | Metal Polishing | a polishing wheel and shine marks |
-| 11 | Sustainable Steel | a steel beam with a leaf |
-| 12 | Wastewater Treatment | a water droplet passing through a filter |
-| 13 | Chemical Laboratory | a laboratory flask and test tube |
+### 6. Sampul artikel: `article-cover-1.svg` sampai `article-cover-3.svg` (16:9)
 
-Hasilkan satu per satu dengan seed atau gaya yang sama supaya konsisten. Jika gaya antar ikon mulai berbeda, buat ulang yang menyimpang.
+```
+[kalimat gaya] Abstract 16:9 cover background, a few overlapping plates and one large circle cut by a diagonal line, balanced composition with empty space on the left for a headline. Variation [1/2/3]: change which color dominates (crimson, ink navy, indigo).
+```
 
-## 6. Pola hiasan sudut (opsional)
+### 7. Ornamen
 
-> Subtle decorative corner pattern, a loose arrangement of small dots and short rounded lines fading toward one corner, only lavender, indigo and crimson tints, sparse, transparent background, square canvas. [kalimat gaya]
+| Berkas | Prompt |
+| --- | --- |
+| `slash-pattern.svg` | `[kalimat gaya] A seamless-looking pattern of parallel diagonal lines in varying thickness, like the strokes of a logo monogram, only crimson and lavender, sparse, square canvas.` |
+| `corner-curve.svg` | `[kalimat gaya] A large quarter-circle corner shape in crimson with a thinner concentric arc in lavender, designed to sit in the corner of a section, square canvas.` |
 
 ## Setelah aset jadi
 
-- Simpan di `public/images/landing/` dengan nama deskriptif (contoh `hero-waves.svg`, `divider-wave-top.svg`, `icon-zinc-plating.svg`).
-- Jalankan SVGO, buka di browser dengan latar terang dan latar `ink`, dan uji di RTL.
-- Jika ada aset yang butuh warna berbeda per tema, bilang dan kita atur warnanya lewat CSS atau variasi berkas.
+- Simpan di `public/images/landing/` dengan nama di atas dan jalankan SVGO.
+- Buka di browser dengan latar terang dan latar `ink`, dan uji dicerminkan untuk RTL.
+- Kabari saya berkas mana yang sudah ada. Saya hubungkan ke komponen aset, atur ukurannya, dan menyesuaikan dokumen desain.
+- Gambar yang meniru foto tidak dibuat di Recraft. Foto asli dan placeholder dibahas di [`direction.md`](direction.md).
