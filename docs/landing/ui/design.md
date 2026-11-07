@@ -10,6 +10,7 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 | 2 | Tampilan tidak kaku: aset vektor organik dari Recraft sebagai pembatas, latar, dan hiasan | Permintaan client |
 | 3 | Layar intro "Click to begin" dipertahankan dengan batasan di bawah | Permintaan client, risiko SEO dikurangi lewat batasan |
 | 4 | Konten dirender di server dengan Blade | SEO |
+| 5 | Gerak dengan GSAP pada dial MOTION 2, dijelaskan di [`motion.md`](motion.md) | Tampilan tidak kaku, tetap terbaca dan ramah reduced motion |
 
 ## Layar intro
 

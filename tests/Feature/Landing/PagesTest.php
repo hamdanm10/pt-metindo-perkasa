@@ -39,6 +39,14 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_inner_pages_mark_headings_and_steps_for_animation(): void
+    {
+        $this->get('/en/about')->assertSee('data-anim="hero-title"', false)->assertSee('data-anim="heading"', false);
+        $this->get('/en/services')
+            ->assertSee('data-anim="steps"', false)
+            ->assertSee('data-step-number', false);
+    }
+
     public function test_page_titles_use_the_active_language(): void
     {
         $this->get('/id/about')->assertSee('<title>'.__('landing.nav.about', [], 'id').' | PT Metindo Perkasa</title>', false);

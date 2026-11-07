@@ -26,7 +26,7 @@
 
             @forelse ($articles as $article)
                 @if ($loop->first)
-                    <div class="mt-12 grid gap-x-12 gap-y-10 lg:grid-cols-12">
+                    <div data-anim="rows" class="mt-12 grid gap-x-12 gap-y-10 lg:grid-cols-12">
                 @endif
                 <article class="{{ $loop->first ? 'lg:col-span-7 lg:row-span-3' : 'lg:col-span-5' }} border-t-2 border-ink pt-6">
                     <p class="text-sm font-semibold text-muted">
@@ -34,7 +34,7 @@
                         <span class="mx-1" aria-hidden="true">/</span>
                         <time datetime="{{ $article['date'] }}">{{ $article['date'] }}</time>
                     </p>
-                    <h2 class="{{ $loop->first ? 'text-3xl sm:text-4xl' : 'text-2xl' }} mt-3 text-balance font-bold leading-tight text-ink">
+                    <h2 data-anim="heading" class="{{ $loop->first ? 'text-3xl sm:text-4xl' : 'text-2xl' }} mt-3 text-balance font-bold leading-tight text-ink">
                         <a href="{{ route('landing.articles.show', ['article' => $article['slug']]) }}" class="hover:text-brand-700">{{ __("articles.items.{$article['slug']}.title") }}</a>
                     </h2>
                     <p class="mt-4 max-w-xl text-lg text-muted">{{ __("articles.items.{$article['slug']}.text") }}</p>

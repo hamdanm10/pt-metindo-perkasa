@@ -21,6 +21,16 @@
     @endforeach
     <link rel="alternate" hreflang="x-default" href="{{ $urlFor(config('locales.default')) }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <script>
+        try {
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.classList.add('anim-hide');
+                setTimeout(function () {
+                    if (!window.__animReady) document.documentElement.classList.remove('anim-hide');
+                }, 3500);
+            }
+        } catch (e) {}
+    </script>
     @vite($assets)
     @stack('head')
 </head>

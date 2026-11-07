@@ -13,8 +13,8 @@
 
     <section class="bg-white">
         <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
-            <h2 class="text-3xl font-bold text-ink lg:col-span-4">{{ __('pages.products.processes') }}</h2>
-            <ul class="lg:col-span-8">
+            <h2 data-anim="heading" class="text-3xl font-bold text-ink lg:col-span-4">{{ __('pages.products.processes') }}</h2>
+            <ul data-anim="rows" class="lg:col-span-8">
                 @foreach ($category['processes'] as $process)
                     <li class="border-t border-ink/20 py-5 text-2xl font-semibold text-ink last:border-b" lang="en" dir="ltr">{{ $process }}</li>
                 @endforeach
@@ -24,8 +24,8 @@
 
     <section class="bg-lavender">
         <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-            <h2 class="text-2xl font-bold text-ink">{{ __('pages.products.others') }}</h2>
-            <ul class="mt-6 flex flex-wrap gap-3">
+            <h2 data-anim="heading" class="text-2xl font-bold text-ink">{{ __('pages.products.others') }}</h2>
+            <ul data-anim="rows" class="mt-6 flex flex-wrap gap-3">
                 @foreach ($others as $other)
                     <li>
                         <a href="{{ route('landing.products.show', ['category' => $other['slug']]) }}"

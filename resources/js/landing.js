@@ -1,3 +1,5 @@
+import './landing/motion.js';
+
 const menus = () => document.querySelectorAll('details[data-dismissible][open]');
 
 document.addEventListener('keydown', (event) => {
@@ -41,6 +43,7 @@ if (intro && getComputedStyle(intro).display !== 'none') {
 
         document.getElementById('main')?.setAttribute('tabindex', '-1');
         document.getElementById('main')?.focus({ preventScroll: true });
+        document.dispatchEvent(new Event('intro:closed'));
     };
 
     const close = () => {

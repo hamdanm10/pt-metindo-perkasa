@@ -25,8 +25,8 @@
     @if ($related)
         <section class="bg-lavender">
             <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-                <h2 class="text-2xl font-bold text-ink">{{ __('pages.articles.related') }}</h2>
-                <ul class="mt-8 grid gap-8 md:grid-cols-3">
+                <h2 data-anim="heading" class="text-2xl font-bold text-ink">{{ __('pages.articles.related') }}</h2>
+                <ul data-anim="rows" class="mt-8 grid gap-8 md:grid-cols-3">
                     @foreach ($related as $item)
                         <li class="border-t-2 border-ink pt-5">
                             <p class="text-sm font-semibold text-muted">

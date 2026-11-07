@@ -66,7 +66,7 @@ Aturan: teks merah di atas latar terang memakai `brand-700`. Di atas latar `ink`
 
 - Sudut membulat dan bentuk organik, bukan kotak dengan garis tepi tegas. Pembatas antarbagian boleh melengkung.
 - Tata letak tidak harus simetris. Gambar dan ilustrasi boleh bertumpuk atau keluar dari kolom, selama teks tetap terbaca dan tidak tertutup.
-- Gerak memakai GSAP seperti prototipe. Semua animasi menghormati `prefers-reduced-motion`.
+- Gerak memakai GSAP dengan dial MOTION 2: reveal saat gulir dan satu momen pembuka, tanpa gerak yang berjalan terus. Semua animasi menghormati `prefers-reduced-motion`. Daftar gerak dan aturannya: [`../../landing/ui/motion.md`](../../landing/ui/motion.md).
 
 ## Aksesibilitas
 

@@ -7,7 +7,7 @@
 
     <section class="bg-white">
         <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-            <ul>
+            <ul data-anim="rows">
                 @foreach ($categories as $category)
                     <li class="border-t border-ink/20 last:border-b">
                         <a href="{{ route('landing.products.show', ['category' => $category['slug']]) }}"

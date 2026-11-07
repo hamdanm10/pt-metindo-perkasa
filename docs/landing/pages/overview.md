@@ -18,7 +18,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | 8 | Filter artikel "All / Article / News" lewat parameter `?type=` di URL, tanpa JavaScript | Berfungsi, bisa dibagikan, dan tetap terbaca mesin pencari |
 | 9 | Data kategori dengan nama prosesnya di `config/landing.php`. Data artikel (slug, jenis, tanggal) di config, teksnya di `lang/<locale>/articles.php` | Satu sumber per jenis data sampai L4. Tiga artikel di `lang/*/home.php` dipindah ke sini |
 | 10 | Teks halaman di `lang/<locale>/pages.php`, memakai terjemahan prototipe client untuk `id`, `zh`, `ar`, `ja`. Nama kategori dan proses tetap bahasa Inggris seperti di prototipe | Aturan teks pengguna. Terjemahan baru ditulis sendiri hanya bila prototipe tidak punya, dan ditinjau penutur asli |
-| 11 | Dial: ENERGY 2 / RHYTHM 3 / MOTION 1, tiap halaman punya komposisi sendiri di bawah kepala halaman yang seragam | Tidak kaku, tetapi tetap dikenali sebagai satu situs |
+| 11 | Dial: ENERGY 2 / RHYTHM 3 / MOTION 2 ([`../ui/motion.md`](../ui/motion.md)), tiap halaman punya komposisi sendiri di bawah kepala halaman yang seragam | Tidak kaku, tetapi tetap dikenali sebagai satu situs |
 | 12 | Menu enam item sebaris mulai lebar `lg`, dengan pemilih bahasa berupa dropdown `<details>` yang menampilkan bahasa aktif. Di bawah `lg`, menu dan bahasa masuk ke panel "Menu" | Enam item ditambah lima bahasa tidak muat sebaris di lebar tablet |
 | 13 | Akses data statis lewat satu kelas `LandingContent` (kategori, artikel, anak perusahaan, menu). Diganti sumber database di L4 tanpa menyentuh controller dan view | Satu titik pergantian |
 | 14 | Catatan "konten contoh" memakai satu kunci `landing.sample_note` yang tidak menyebut jenis konten | Dipakai di artikel dan anak perusahaan |

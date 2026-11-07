@@ -90,6 +90,18 @@ class HomeTest extends TestCase
         $this->get('/en')->assertDontSee(__('landing.sample_note', [], 'en'));
     }
 
+    public function test_home_marks_the_elements_that_animate(): void
+    {
+        $this->get('/en')
+            ->assertSee('data-anim="hero-title"', false)
+            ->assertSee('data-anim="hero-art"', false)
+            ->assertSee('data-plate', false)
+            ->assertSee('data-anim="media"', false)
+            ->assertSee('data-anim="rows"', false)
+            ->assertSee('data-anim="card"', false)
+            ->assertSee("classList.add('anim-hide')", false);
+    }
+
     public function test_art_component_renders_only_when_the_file_exists(): void
     {
         $this->assertSame('', trim((string) $this->blade('<x-landing.art name="does-not-exist" />')));
