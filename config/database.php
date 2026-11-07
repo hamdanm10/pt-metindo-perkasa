@@ -7,6 +7,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Allow Destructive Commands
+    |--------------------------------------------------------------------------
+    |
+    | migrate:fresh, migrate:reset, migrate:rollback and db:wipe are refused
+    | outside the test run. Set DB_ALLOW_DESTRUCTIVE_COMMANDS=true for a single
+    | deliberate use.
+    |
+    */
+
+    'allow_destructive_commands' => (bool) env('DB_ALLOW_DESTRUCTIVE_COMMANDS', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Database Connection Name
     |--------------------------------------------------------------------------
     |
@@ -17,7 +30,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------

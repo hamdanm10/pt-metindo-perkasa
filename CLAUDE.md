@@ -150,12 +150,13 @@ Tiga peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). Be
 - Cakup jalur berhasil, jalur gagal (validasi, akses ditolak, tidak terautentikasi), dan kasus batas. Untuk fitur yang punya teks, uji juga locale yang berlaku.
 - Perbaikan bug disertai test yang gagal sebelum perbaikan dan lulus sesudahnya.
 - Semua test harus lulus sebelum commit dan sebelum merge.
-- **Semua test berjalan di PostgreSQL**, jenis database yang sama dengan aplikasi, bukan SQLite. Database test dibangun ulang di setiap run dan namanya harus berakhiran `_testing`. Test menolak berjalan di database lain supaya data asli tidak terhapus: jangan menghapus pengaman ini.
+- **Semua test berjalan di PostgreSQL**, jenis database yang sama dengan aplikasi, bukan SQLite. Database test adalah `pt_metindo_perkasa_testing` (diatur paksa di `phpunit.xml`) dan dibangun ulang di setiap run.
+- `tests/TestCase.php` menolak menjalankan test pada database yang namanya tidak berakhiran `_testing`, supaya data asli tidak pernah terhapus. Jangan menghapus pengaman ini.
+- Buat database test sekali di tiap mesin: `create database pt_metindo_perkasa_testing`.
 - Jangan menulis migration atau query yang hanya jalan di SQLite.
-- Perintah yang menghapus data (`migrate:fresh`, `migrate:reset`, `migrate:rollback`, `db:wipe`) tidak dijalankan terhadap database lokal. Menguji migration cukup lewat `composer test`.
+- Perintah yang menghapus data (`migrate:fresh`, `migrate:reset`, `migrate:rollback`, `db:wipe`) ditolak di luar test. Jangan menjalankannya terhadap database lokal. Menguji migration cukup lewat `composer test`. Untuk sengaja memakainya sekali, set `DB_ALLOW_DESTRUCTIVE_COMMANDS=true` sementara di `.env` (variabel dari shell tidak diteruskan ke kontainer PHP), lalu hapus lagi.
 - Setiap daftar data yang punya relasi wajib punya test yang memastikan jumlah query tidak bertambah saat baris bertambah.
 
-> **Belum sesuai kondisi repo saat ini:** PostgreSQL sudah dipakai untuk pengembangan (`.env`: `pgsql`, database `pt_metindo_perkasa`), tetapi `phpunit.xml` dan `.env.example` masih memakai SQLite, dan database test `pt_metindo_perkasa_testing` belum dibuat. Peralihan test ke PostgreSQL beserta pengaman `_testing` dikerjakan di branch `build/` tersendiri.
 
 ## Tooling
 
@@ -168,9 +169,8 @@ Tiga peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). Be
 
 - Sebelum commit jalankan `composer check`. Sebelum merge fitur jalankan juga `composer audit`.
 - Untuk merapikan gaya kode, jalankan `vendor/bin/pint`.
-- Larastan level 8 harus tetap lulus. Jangan menambahkan `@phpstan-ignore` atau baseline untuk menyembunyikan galat, perbaiki penyebabnya.
+- Larastan level 8 (menganalisis `app`, `routes`, dan `tests`) harus tetap lulus. Jangan menambahkan `@phpstan-ignore` atau baseline untuk menyembunyikan galat, perbaiki penyebabnya.
 
-> **Belum terpasang:** saat ini baru Pint dan PHPUnit. Larastan serta skrip `lint`, `analyse`, dan `check` ditambahkan di branch `build/` tersendiri.
 
 ## Panduan Perilaku Coding
 
