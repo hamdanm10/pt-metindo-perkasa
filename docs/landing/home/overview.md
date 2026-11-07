@@ -8,12 +8,12 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | Dial desain: ENERGY 2 / RHYTHM 3 / MOTION 1. Bagian berganti komposisi, tidak semuanya grid kartu yang sama | Permintaan client agar tidak kaku. Satu-satunya gerak adalah layar intro |
+| 1 | Dial desain: ENERGY 2 / RHYTHM 3 / MOTION 2. Bagian berganti komposisi, tidak semuanya grid kartu yang sama | Permintaan client agar tidak kaku. Gerak (layar intro dan animasi GSAP) dijelaskan di [`../ui/motion.md`](../ui/motion.md) |
 | 2 | Teks di `lang/<locale>/home.php` untuk kelima bahasa. Kunci tetap bahasa Inggris. Terjemahan `id`, `zh`, `ar`, `ja` memakai teks prototipe client bila ada, sisanya (judul dan deskripsi layanan, catatan contoh artikel) ditulis sendiri dan perlu ditinjau penutur asli | Aturan teks pengguna. Dipindah ke database di L4 |
 | 3 | Katalog di beranda hanya menampilkan **nama 13 kategori**, tetap dalam bahasa Inggris di semua bahasa seperti di prototipe. Produk, proses, TDS, dan harga tidak tampil | Datanya besar dan akan hidup di database (L4). Harga dan TDS belum diputuskan (L5) |
 | 4 | Tanpa tautan ke halaman yang belum ada. Kategori, layanan, dan artikel belum bisa diklik sampai L3 | Aturan navigasi: tidak ada tautan mati |
 | 5 | Daftar kategori (slug dan nama) dan nama mitra ada di `config/landing.php`. Slug dipakai untuk nama berkas ikon. Diganti database di L4 | Satu sumber untuk 13 kategori |
-| 6 | Klien ditampilkan sebagai **nama sektor** tanpa logo, mitra sebagai **nama** tanpa logo, tanpa animasi berjalan terus | Logo klien tidak tersedia dan tidak boleh dikarang. Gerak abadi dilarang oleh dial MOTION 1 |
+| 6 | Klien ditampilkan sebagai **nama sektor** tanpa logo, mitra sebagai **nama** tanpa logo, tanpa animasi berjalan terus | Logo klien tidak tersedia dan tidak boleh dikarang. Tidak ada gerak yang berjalan terus ([`../ui/motion.md`](../ui/motion.md)) |
 | 7 | Tiga artikel dari prototipe dipakai sebagai **contoh berlabel**, belum ada halaman detail | Konten contoh, diganti di L4. Bagian disembunyikan di production |
 | 8 | Video: tidak ada permintaan ke YouTube sebelum diklik. Tampil poster lokal dan tombol putar, lalu iframe `youtube-nocookie.com` dibuat saat diklik. ID video di `config/landing.php` (env `LANDING_INTRO_VIDEO_ID`), bagian disembunyikan bila kosong | Kecepatan, privasi, dan SEO. ID di prototipe belum dipastikan video asli |
 | 9 | Kontak (email, telepon) dari `config/landing.php` (env). Bagian dan tombol kontak hanya muncul bila diisi. Tombol "Talk to our team" memakai `mailto:` | Tombol harus berfungsi. Nilai di prototipe tampak contoh, belum dikonfirmasi |
@@ -44,8 +44,8 @@ Teks asli bahasa Inggris dari prototipe dipakai apa adanya sebagai sumber, lalu 
 Aturan dari [`../ui/design.md`](../ui/design.md), diwujudkan begini:
 
 1. Markup ada di HTML dan disembunyikan lewat CSS. Skrip kecil di `<head>` menandai `<html>` bila sesi ini belum melihat intro (`sessionStorage`), dan CSS menampilkannya. Tanpa JavaScript, intro tidak tampil.
-2. Elemen `role="dialog"` dengan `aria-modal`, fokus dipindahkan ke tombol, dan isi halaman lainnya diberi `inert` selama intro tampil. Klik, Enter pada tombol, atau Escape menutupnya, lalu fokus pindah ke konten utama.
-3. Animasi keluar memakai transisi CSS (geser ke atas, sekitar 0,6 detik), tanpa GSAP. Dengan `prefers-reduced-motion`, langsung hilang tanpa animasi.
+2. Elemen `role="dialog"` dengan `aria-modal`, fokus dipindahkan ke tombol setelah animasi masuk selesai, dan isi halaman lainnya diberi `inert` selama intro tampil. Klik, Enter, atau Escape menutupnya (pemicu ganda diabaikan), lalu fokus pindah ke konten utama. Bila skrip intro tidak jalan, pengaman 4 detik melepas intro supaya halaman tidak terkunci.
+3. Animasi masuk dan keluar memakai GSAP (`resources/js/landing/intro.js`): logo dan tombol muncul bergantian, lalu saat ditutup tirai naik dengan tepi bawah melengkung dan hero mulai saat tirai hampir hilang. Rinciannya di [`../ui/motion.md`](../ui/motion.md). Dengan `prefers-reduced-motion`, isi langsung terlihat dan intro langsung hilang tanpa animasi.
 4. Hanya di beranda dan sekali per sesi. Konten beranda sudah ada di HTML di belakangnya.
 5. Dampak pada LCP dan INP diukur di L6.
 

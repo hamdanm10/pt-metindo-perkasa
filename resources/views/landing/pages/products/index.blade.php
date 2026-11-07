@@ -1,0 +1,25 @@
+@extends('landing.layouts.app')
+
+@section('title', __('landing.nav.products'))
+
+@section('content')
+    <x-landing.page-header :title="__('pages.products.title')" :intro="__('pages.products.intro')" />
+
+    <section class="bg-white">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+            <ul data-anim="rows">
+                @foreach ($categories as $category)
+                    <li class="border-t border-ink/20 last:border-b">
+                        <a href="{{ route('landing.products.show', ['category' => $category['slug']]) }}"
+                           class="group grid gap-1 py-6 sm:grid-cols-12 sm:items-baseline sm:gap-8 sm:py-7">
+                            <span class="text-2xl font-bold text-ink group-hover:text-brand-700 sm:col-span-6 sm:text-3xl" lang="en" dir="ltr">{{ $category['name'] }}</span>
+                            <span class="text-lg text-muted sm:col-span-6">{{ __("pages.products.categories.{$category['slug']}") }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </section>
+
+    <x-landing.cta />
+@endsection

@@ -14,13 +14,24 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $__env->hasSection('title') ? trim($__env->yieldContent('title')).' | PT Metindo Perkasa' : 'PT Metindo Perkasa' }}</title>
+    {{-- yieldContent returns text that @section already escaped once. --}}
+    <title>{!! $__env->hasSection('title') ? trim($__env->yieldContent('title')).' | PT Metindo Perkasa' : 'PT Metindo Perkasa' !!}</title>
     <link rel="canonical" href="{{ $urlFor($code) }}">
     @foreach (config('locales.landing') as $target)
         <link rel="alternate" hreflang="{{ config("locales.locales.{$target}.html_lang") }}" href="{{ $urlFor($target) }}">
     @endforeach
     <link rel="alternate" hreflang="x-default" href="{{ $urlFor(config('locales.default')) }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <script>
+        try {
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.classList.add('anim-hide');
+                setTimeout(function () {
+                    if (!window.__animReady) document.documentElement.classList.remove('anim-hide');
+                }, 3500);
+            }
+        } catch (e) {}
+    </script>
     @vite($assets)
     @stack('head')
 </head>
@@ -31,7 +42,7 @@
 
     <x-landing.header />
 
-    <main id="main" class="flex-1">
+    <main id="main" class="flex-1 overflow-x-clip">
         @yield('content')
     </main>
 

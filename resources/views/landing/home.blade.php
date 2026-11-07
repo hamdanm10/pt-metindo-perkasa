@@ -5,6 +5,9 @@
         try {
             if (!sessionStorage.getItem('intro-seen')) {
                 document.documentElement.classList.add('intro-pending');
+                setTimeout(function () {
+                    if (!window.__introReady) document.documentElement.classList.remove('intro-pending');
+                }, 4000);
             }
         } catch (e) {}
     </script>
@@ -18,5 +21,5 @@
     @include('landing.home.services')
     @include('landing.home.clients')
     @include('landing.home.articles')
-    @include('landing.home.cta')
+    <x-landing.cta />
 @endsection

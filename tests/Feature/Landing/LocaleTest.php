@@ -86,7 +86,7 @@ class LocaleTest extends TestCase
             Arr::dot(require lang_path("{$code}/{$file}.php"))
         );
 
-        foreach (['landing', 'home'] as $file) {
+        foreach (['landing', 'home', 'pages', 'articles'] as $file) {
             $expected = $keys('en', $file);
 
             foreach (config('locales.landing') as $code) {

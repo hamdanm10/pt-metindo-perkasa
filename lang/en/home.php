@@ -23,6 +23,7 @@ return [
     'services' => [
         'title' => 'Services',
         'intro' => 'From job plating to chemical supply and technical consultation.',
+        'all' => 'View all',
         'items' => [
             'electroplating' => [
                 'title' => 'Electroplating Service',
@@ -55,35 +56,5 @@ return [
     'articles' => [
         'title' => 'Articles & news',
         'intro' => 'Updates, process notes, and company news.',
-        'sample' => 'Sample content from the prototype. It is replaced by real articles before release.',
-        'tags' => [
-            'news' => 'News',
-            'article' => 'Article',
-        ],
-        'items' => [
-            'quality_control' => [
-                'tag' => 'news',
-                'date' => '2026-10-02',
-                'title' => 'Quality Control in Plating',
-                'text' => 'How we keep bath chemistry and thickness within spec, batch after batch.',
-            ],
-            'pre_treatment' => [
-                'tag' => 'article',
-                'date' => '2026-09-28',
-                'title' => 'Choosing the Right Pre-Treatment',
-                'text' => 'Surface preparation decides coating adhesion. Here is how we approach it.',
-            ],
-            'alkaline_zinc' => [
-                'tag' => 'news',
-                'date' => '2026-09-20',
-                'title' => 'New Alkaline Zinc Line',
-                'text' => 'We have expanded our alkaline zinc plating capacity.',
-            ],
-        ],
-    ],
-    'cta' => [
-        'title' => 'Have a plating specification in mind?',
-        'text' => 'Tell us the process and substrate. Our team will walk you through the options.',
-        'button' => 'Talk to our team',
     ],
 ];

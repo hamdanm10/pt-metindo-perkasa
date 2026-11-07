@@ -10,6 +10,7 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 | 2 | Tampilan tidak kaku: aset vektor organik dari Recraft sebagai pembatas, latar, dan hiasan | Permintaan client |
 | 3 | Layar intro "Click to begin" dipertahankan dengan batasan di bawah | Permintaan client, risiko SEO dikurangi lewat batasan |
 | 4 | Konten dirender di server dengan Blade | SEO |
+| 5 | Gerak dengan GSAP pada dial MOTION 2, dijelaskan di [`motion.md`](motion.md) | Tampilan tidak kaku, tetap terbaca dan ramah reduced motion |
 
 ## Layar intro
 
@@ -19,7 +20,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Konten beranda **sudah ada di HTML** di belakang overlay, bukan dimuat setelah overlay ditutup.
 - Tersembunyi sampai JavaScript aktif, jadi tanpa JavaScript halaman langsung terlihat.
 - Bisa ditutup dengan klik, Enter, atau Escape. Fokus dipindahkan dengan benar.
-- Dengan `prefers-reduced-motion`, overlay tidak beranimasi atau dilewati.
+- Animasi masuk dan keluar memakai GSAP ([`motion.md`](motion.md)). Dengan `prefers-reduced-motion`, overlay tidak beranimasi.
 - Setelah jadi, ukur LCP dan INP dengan Lighthouse, dengan dan tanpa overlay. Hasilnya dicatat di dokumen ini. Jika skornya turun jauh, bahas penggantinya dengan client (misalnya animasi singkat yang menutup sendiri).
 
 ## Penggunaan aset vektor

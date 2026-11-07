@@ -78,16 +78,30 @@ class HomeTest extends TestCase
         $this->get('/id')
             ->assertSee('id="intro" role="dialog" aria-modal="true"', false)
             ->assertSee('data-intro-close', false)
+            ->assertSee('data-intro-item', false)
             ->assertSee(__('home.intro.begin', [], 'id'));
     }
 
-    public function test_sample_articles_are_hidden_in_production(): void
+    public function test_sample_articles_follow_the_sample_content_flag(): void
     {
-        $this->get('/en')->assertSee(__('home.articles.sample', [], 'en'));
+        config(['landing.sample_content' => true]);
+        $this->get('/en')->assertSee(__('landing.sample_note', [], 'en'));
 
-        $this->app['env'] = 'production';
+        config(['landing.sample_content' => false]);
+        $this->get('/en')->assertDontSee(__('landing.sample_note', [], 'en'));
+    }
 
-        $this->get('/en')->assertDontSee(__('home.articles.sample', [], 'en'));
+    public function test_home_marks_the_elements_that_animate(): void
+    {
+        $this->get('/en')
+            ->assertSee('data-anim="hero-title"', false)
+            ->assertSee('data-anim="hero-art"', false)
+            ->assertSee('data-plate', false)
+            ->assertSee('data-anim="media"', false)
+            ->assertSee('data-anim="rows"', false)
+            ->assertSee('data-anim="card"', false)
+            ->assertSee("classList.add('anim-hide')", false)
+            ->assertSee('__introReady', false);
     }
 
     public function test_art_component_renders_only_when_the_file_exists(): void

@@ -14,6 +14,7 @@ class SetLandingLocale
     /**
      * Apply the locale from the URL. The route constraint only lets supported
      * landing locales through, so an unknown locale never reaches this point.
+     * The parameter is dropped afterwards so controllers only receive their own.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -21,6 +22,7 @@ class SetLandingLocale
 
         app()->setLocale($locale);
         URL::defaults(['locale' => $locale]);
+        $request->route()->forgetParameter('locale');
 
         return $next($request);
     }

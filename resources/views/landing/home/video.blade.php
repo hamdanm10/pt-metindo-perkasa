@@ -4,7 +4,7 @@
     <section class="relative -mt-12 rounded-t-[3rem] bg-white">
         <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8 lg:py-28">
             <div class="lg:col-span-4">
-                <h2 class="text-balance text-3xl font-bold leading-tight text-ink sm:text-4xl">
+                <h2 data-anim="heading" class="text-balance text-3xl font-bold leading-tight text-ink sm:text-4xl">
                     {{ __('home.video.title') }}
                 </h2>
                 <p class="mt-5 text-lg text-muted">
@@ -13,7 +13,7 @@
             </div>
 
             <div class="lg:col-span-8">
-                <div data-video="{{ $videoId }}" data-video-title="{{ __('home.video.title') }}"
+                <div data-anim="media" data-video="{{ $videoId }}" data-video-title="{{ __('home.video.title') }}"
                      class="relative aspect-video overflow-hidden rounded-3xl bg-ink lg:rounded-se-[6rem]">
                     <x-landing.art name="video-poster" class="absolute inset-0 h-full w-full object-cover" />
                     <div class="absolute -bottom-1/3 -start-1/6 size-3/4 rounded-full bg-brand-600" aria-hidden="true"></div>

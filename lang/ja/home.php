@@ -23,6 +23,7 @@ return [
     'services' => [
         'title' => 'サービス',
         'intro' => '受託めっきから薬品供給、技術相談まで。',
+        'all' => 'すべて見る',
         'items' => [
             'electroplating' => [
                 'title' => '電気めっきサービス',
@@ -55,35 +56,5 @@ return [
     'articles' => [
         'title' => '記事・ニュース',
         'intro' => '更新情報、工程メモ、会社ニュース。',
-        'sample' => 'プロトタイプのサンプルコンテンツです。公開前に実際の記事へ差し替えます。',
-        'tags' => [
-            'news' => 'ニュース',
-            'article' => '記事',
-        ],
-        'items' => [
-            'quality_control' => [
-                'tag' => 'news',
-                'date' => '2026-10-02',
-                'title' => 'Quality Control in Plating',
-                'text' => 'How we keep bath chemistry and thickness within spec, batch after batch.',
-            ],
-            'pre_treatment' => [
-                'tag' => 'article',
-                'date' => '2026-09-28',
-                'title' => 'Choosing the Right Pre-Treatment',
-                'text' => 'Surface preparation decides coating adhesion. Here is how we approach it.',
-            ],
-            'alkaline_zinc' => [
-                'tag' => 'news',
-                'date' => '2026-09-20',
-                'title' => 'New Alkaline Zinc Line',
-                'text' => 'We have expanded our alkaline zinc plating capacity.',
-            ],
-        ],
-    ],
-    'cta' => [
-        'title' => 'めっき仕様はお決まりですか？',
-        'text' => '工程と素材をお知らせください。担当チームが選択肢をご案内します。',
-        'button' => '担当チームに相談する',
     ],
 ];
