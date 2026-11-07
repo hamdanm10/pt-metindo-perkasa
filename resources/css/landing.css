@@ -115,3 +115,11 @@
         transition: none;
     }
 }
+
+.hero-wedge {
+    clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+[dir='rtl'] .hero-wedge {
+    clip-path: polygon(0 0, 78% 0, 100% 100%, 0 100%);
+}

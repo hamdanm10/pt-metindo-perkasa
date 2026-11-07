@@ -42,6 +42,12 @@ const hero = () => {
         }, 0.15);
     }
 
+    const wedge = document.querySelector('[data-anim="hero-wedge"]');
+
+    if (wedge) {
+        timeline.from(wedge, { xPercent: 35 * dir, autoAlpha: 0, duration: 1, ease: 'power4.out' }, 0);
+    }
+
     const start = () => timeline.play();
 
     if (root.classList.contains('intro-pending')) {

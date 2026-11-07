@@ -23,6 +23,16 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Animasi masuk dan keluar memakai GSAP ([`motion.md`](motion.md)). Dengan `prefers-reduced-motion`, overlay tidak beranimasi.
 - Setelah jadi, ukur LCP dan INP dengan Lighthouse, dengan dan tanpa overlay. Hasilnya dicatat di dokumen ini. Jika skornya turun jauh, bahas penggantinya dengan client (misalnya animasi singkat yang menutup sendiri).
 
+## Hero
+
+Latar hero dibuat berwarna dengan elemen pendukung yang sedikit, tanpa menambah teks atau lencana:
+
+- **Blok indigo miring** di sisi kanan (`.hero-wedge`, tepi kirinya miring selaras garis logo, dibalik di RTL) sebagai latar pelat. Hanya tampil mulai lebar `lg`.
+- **Lingkaran merah** setengah tenggelam di dasar hero, menimpa tepi blok indigo.
+- **Pelat bertumpuk** (`hero-waves.svg`) di atasnya, dengan pelat putih, merah, dan biru tua yang kontras terhadap indigo.
+- Di bawah lebar `lg`, blok indigo menjadi ubin membulat di belakang pelat.
+- Pola garis miring tidak dipakai di hero karena menimpa teks.
+
 ## Navbar
 
 - **Menempel di atas** saat gulir (`position: sticky`). Saat halaman mulai bergulir (diamati lewat `IntersectionObserver` pada penanda di puncak halaman, tanpa pendengar gulir), tinggi header mengecil dari sekitar 69 ke 57 piksel dan muncul bayangan tipis. Transisinya CSS dan dimatikan oleh `prefers-reduced-motion`.

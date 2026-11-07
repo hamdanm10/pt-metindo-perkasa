@@ -37,7 +37,7 @@ Arah visual untuk putaran desain landing page berikutnya. Dokumen ini adalah sum
 
 ## Status putaran pertama
 
-Sudah ada: font judul, potongan miring, pola garis miring (kepala halaman dan katalog), hero memakai `hero-waves`, poster video, 9 dari 13 ikon (sisanya memakai tanda garis miring merah sebagai pengganti), dua ilustrasi layanan di halaman Services, dan placeholder foto. Pola garis di hero dihapus karena menimpa teks dan membuat hero ramai.
+Sudah ada: font judul, potongan miring, pola garis miring (kepala halaman dan katalog), hero memakai `hero-waves`, poster video, 9 dari 13 ikon (sisanya memakai tanda garis miring merah sebagai pengganti), dua ilustrasi layanan di halaman Services, dan placeholder foto. Pola garis di hero dihapus karena menimpa teks dan membuat hero ramai. Hero kini memakai blok indigo miring dan lingkaran merah sebagai latar (lihat bagian Hero di `design.md`).
 
 ## Cara menilai hasil
 

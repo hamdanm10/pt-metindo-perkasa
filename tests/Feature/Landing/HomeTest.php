@@ -97,6 +97,7 @@ class HomeTest extends TestCase
             ->assertSee('data-anim="hero-title"', false)
             ->assertSee('data-anim="hero-art"', false)
             ->assertSee('data-plate', false)
+            ->assertSee('data-anim="hero-wedge"', false)
             ->assertSee('data-anim="media"', false)
             ->assertSee('data-anim="rows"', false)
             ->assertSee('data-anim="card"', false)
