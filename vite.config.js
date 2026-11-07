@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/css/landing.css',
                 'resources/js/landing.js',
+                'resources/css/dashboard.css',
                 'resources/css/fonts/latin.css',
                 'resources/css/fonts/zh.css',
                 'resources/css/fonts/ja.css',
