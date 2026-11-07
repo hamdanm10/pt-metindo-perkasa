@@ -53,6 +53,11 @@ class PagesTest extends TestCase
         $this->get('/ja/services')->assertSee(__('pages.services.title', [], 'ja'));
     }
 
+    public function test_page_title_escapes_special_characters_only_once(): void
+    {
+        $this->get('/en/articles')->assertSee('<title>Articles &amp; News | PT Metindo Perkasa</title>', false);
+    }
+
     public function test_every_category_page_lists_its_processes(): void
     {
         foreach (config('landing.categories') as $category) {

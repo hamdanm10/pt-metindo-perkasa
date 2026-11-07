@@ -14,7 +14,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $__env->hasSection('title') ? trim($__env->yieldContent('title')).' | PT Metindo Perkasa' : 'PT Metindo Perkasa' }}</title>
+    {{-- yieldContent returns text that @section already escaped once. --}}
+    <title>{!! $__env->hasSection('title') ? trim($__env->yieldContent('title')).' | PT Metindo Perkasa' : 'PT Metindo Perkasa' !!}</title>
     <link rel="canonical" href="{{ $urlFor($code) }}">
     @foreach (config('locales.landing') as $target)
         <link rel="alternate" hreflang="{{ config("locales.locales.{$target}.html_lang") }}" href="{{ $urlFor($target) }}">
