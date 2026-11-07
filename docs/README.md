@@ -28,8 +28,8 @@ Folder fitur dibuat saat fitur pertamanya ditulis, bukan lebih awal. Setiap area
 | Area | Indeks | Isi |
 | --- | --- | --- |
 | Landing | [`landing/implementation-plan.md`](landing/implementation-plan.md) | Fase L1 sampai L7 landing page |
-| Bersama | `shared/implementation-plan.md` | Belum ada |
-| Admin | `roles/admin/implementation-plan.md` | Belum ada |
+| Bersama | [`shared/implementation-plan.md`](shared/implementation-plan.md) | Fondasi dashboard: infrastruktur, akun dan login, kerangka dashboard |
+| Admin | [`roles/admin/implementation-plan.md`](roles/admin/implementation-plan.md) | Kelola akun dan konten landing |
 | Staf | `roles/staff/implementation-plan.md` | Belum ada |
 | Customer | `roles/customer/implementation-plan.md` | Belum ada |
 

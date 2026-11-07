@@ -1,0 +1,21 @@
+# Peran Admin
+
+Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan dashboard ada di [`../../shared/implementation-plan.md`](../../shared/implementation-plan.md). Dikerjakan berurutan, satu fase satu branch dari `development`, mengikuti `CLAUDE.md`. Status keseluruhan: **rencana, belum ada kode**.
+
+## Fitur
+
+| Fase | Fitur | Dokumen | Branch | Status |
+| --- | --- | --- | --- | --- |
+| A1 | Kelola akun: membuat staf dan customer, atur ulang kata sandi, nonaktifkan akun | belum ditulis | belum ditentukan | Rencana. Butuh D1 dan D2 |
+| A2 | Kelola konten landing (kategori, produk, proses, layanan, klien, mitra, artikel, video) dalam banyak bahasa | belum ditulis (fase L4 di [`../../landing/implementation-plan.md`](../../landing/implementation-plan.md)) | `feat/landing-content` | Rencana. Butuh D1 dan D2 |
+
+## Keputusan
+
+| # | Keputusan | Nilai |
+| --- | --- | --- |
+| 1 | Akses | Admin memegang semua fitur. Hak staf yang lebih terbatas ditentukan per fitur |
+| 2 | Pengelola konten landing | Hanya `admin` |
+
+## Belum diputuskan
+
+- Daftar fitur admin lainnya dan batas hak staf. Dirancang per fitur saat dikerjakan.
