@@ -12,6 +12,4 @@ return [
     'remember' => 'Keep me signed in',
     'submit' => 'Sign in',
     'logout' => 'Sign out',
-    'signed_in_as' => 'Signed in as :name',
-    'dashboard_soon' => 'The dashboard is coming soon.',
 ];

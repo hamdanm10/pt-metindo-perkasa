@@ -8,7 +8,9 @@
             <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="555" height="100" class="absolute start-12 top-12 h-9 w-auto">
         </div>
 
-        <div class="flex items-center justify-center px-6 py-12 sm:px-12">
+        <div class="relative flex items-center justify-center px-6 py-12 sm:px-12">
+            <x-dashboard.locale-switcher :action="$localeAction" class="absolute end-6 top-6" />
+
             <div class="w-full max-w-sm">
                 <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="mb-10 h-9 w-auto lg:hidden">
 
