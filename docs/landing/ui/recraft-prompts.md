@@ -83,6 +83,6 @@ Hasilkan satu per satu dengan seed atau gaya yang sama supaya konsisten. Jika ga
 
 ## Setelah aset jadi
 
-- Simpan di `resources/images/landing/` dengan nama deskriptif (contoh `hero-waves.svg`, `divider-wave-top.svg`, `icon-zinc-plating.svg`).
+- Simpan di `public/images/landing/` dengan nama deskriptif (contoh `hero-waves.svg`, `divider-wave-top.svg`, `icon-zinc-plating.svg`).
 - Jalankan SVGO, buka di browser dengan latar terang dan latar `ink`, dan uji di RTL.
 - Jika ada aset yang butuh warna berbeda per tema, bilang dan kita atur warnanya lewat CSS atau variasi berkas.

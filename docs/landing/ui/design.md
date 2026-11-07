@@ -32,7 +32,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 | Katalog 13 kategori | Satu ikon per kategori, gaya sama | Subjek per kategori ada di dokumen prompt |
 | Hiasan sudut | Pola titik dan garis | Opsional, jangan ramai |
 
-Berkas vektor disimpan di `resources/images/landing/` (SVG), dioptimalkan dengan SVGO, dan dimuat sebagai `<img>` atau di-inline hanya bila perlu diwarnai lewat CSS. Ukuran tiap berkas dijaga kecil karena memengaruhi kecepatan.
+Berkas vektor disimpan di `public/images/landing/` (SVG), dioptimalkan dengan SVGO, dan dimuat sebagai `<img>` atau di-inline hanya bila perlu diwarnai lewat CSS. Ukuran tiap berkas dijaga kecil karena memengaruhi kecepatan.
 
 ## Aturan
 
