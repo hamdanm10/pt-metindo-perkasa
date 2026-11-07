@@ -183,7 +183,14 @@ Mengikuti [Karpathy Guidelines](https://x.com/karpathy/status/201588385748952287
 
 ## Desain
 
-Belum ditentukan. Sistem desain (warna, font, komponen, dukungan RTL dan font CJK) akan dibahas dan dicatat di `docs/` setelah diputuskan, lalu ditautkan dari sini.
+Warna merek dominan adalah **merah krimson** (`#D6283A`, sesuai logo), dengan teks gelap `#1B1F3B` dan latar lavender `#F3F2FF` sebagai netral, serta biru dan indigo sebagai aksen kedua. Warna dipakai lewat token tema Tailwind, bukan nilai hex di view. Landing dibuat tidak kaku dengan aset vektor dari Recraft. Fokus saat ini adalah landing page, dashboard menyusul.
+
+- Fondasi (warna, tipografi, RTL, kontras): [`docs/shared/design-system/overview.md`](docs/shared/design-system/overview.md)
+- Landing (layar intro, pemakaian aset): [`docs/landing/ui/design.md`](docs/landing/ui/design.md)
+- Prompt aset vektor Recraft: [`docs/landing/ui/recraft-prompts.md`](docs/landing/ui/recraft-prompts.md)
+- Aset acuan (logo, palet): `docs/references/`
+- Konten landing mengikuti situs prototipe `http://103.125.180.65/~wwwmetin/en/homepage-5`.
+- Mengubah keputusan desain berarti mengubah dokumen di atas di branch yang sama.
 
 ## Referensi Dokumen
 
@@ -195,6 +202,9 @@ Dokumen rancangan ada di `docs/`, per area dan per fitur, dengan satu `implement
 | --- | --- |
 | [`docs/README.md`](docs/README.md) | Peta dokumentasi dan panduan menulis dokumen |
 | [`docs/setup.md`](docs/setup.md) | Prasyarat lingkungan |
+| [`docs/shared/design-system/overview.md`](docs/shared/design-system/overview.md) | Sistem desain: warna, tipografi, RTL, kontras |
+| [`docs/landing/ui/design.md`](docs/landing/ui/design.md) | Desain landing page dan layar intro |
+| [`docs/landing/ui/recraft-prompts.md`](docs/landing/ui/recraft-prompts.md) | Prompt aset vektor Recraft |
 | `docs/shared/implementation-plan.md` | Indeks lintas peran (dibuat saat fitur pertama) |
 | `docs/landing/implementation-plan.md` | Indeks landing page (dibuat saat fitur pertama) |
 | `docs/roles/<peran>/implementation-plan.md` | Indeks admin, staff, dan customer (dibuat saat fitur pertama) |

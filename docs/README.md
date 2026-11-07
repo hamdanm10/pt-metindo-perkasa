@@ -8,10 +8,13 @@ Dokumen proyek dikelompokkan per **area** (landing, bersama, dan peran `admin`, 
 docs/
 ├── README.md                     peta ini
 ├── setup.md                      prasyarat lingkungan
+├── references/                   aset acuan: logo, favicon, palet warna
 ├── landing/                      landing page publik (5 bahasa)
-│   └── implementation-plan.md    indeks
+│   ├── ui/                       desain landing dan prompt aset vektor
+│   └── implementation-plan.md    indeks (dibuat saat fitur pertama)
 ├── shared/                       dipakai lebih dari satu peran
-│   └── implementation-plan.md    indeks
+│   ├── design-system/            fondasi desain: warna, tipografi, RTL
+│   └── implementation-plan.md    indeks (dibuat saat fitur pertama)
 └── roles/
     ├── admin/                    dashboard admin
     ├── staff/                    dashboard staf
