@@ -41,7 +41,7 @@
 
     <x-landing.header />
 
-    <main id="main" class="flex-1">
+    <main id="main" class="flex-1 overflow-x-clip">
         @yield('content')
     </main>
 

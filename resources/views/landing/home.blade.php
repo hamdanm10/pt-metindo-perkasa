@@ -5,6 +5,9 @@
         try {
             if (!sessionStorage.getItem('intro-seen')) {
                 document.documentElement.classList.add('intro-pending');
+                setTimeout(function () {
+                    if (!window.__introReady) document.documentElement.classList.remove('intro-pending');
+                }, 4000);
             }
         } catch (e) {}
     </script>

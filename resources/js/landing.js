@@ -1,3 +1,4 @@
+import './landing/intro.js';
 import './landing/motion.js';
 
 const menus = () => document.querySelectorAll('details[data-dismissible][open]');
@@ -20,50 +21,6 @@ document.addEventListener('click', (event) => {
         }
     });
 });
-
-const intro = document.getElementById('intro');
-const rest = document.querySelectorAll('header, main > :not(#intro), footer');
-
-if (intro && getComputedStyle(intro).display !== 'none') {
-    const root = document.documentElement;
-    const button = intro.querySelector('[data-intro-close]');
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    rest.forEach((element) => element.setAttribute('inert', ''));
-    button?.focus();
-
-    const finish = () => {
-        root.classList.remove('intro-pending');
-        intro.classList.remove('is-leaving');
-        rest.forEach((element) => element.removeAttribute('inert'));
-
-        try {
-            sessionStorage.setItem('intro-seen', '1');
-        } catch (error) {}
-
-        document.getElementById('main')?.setAttribute('tabindex', '-1');
-        document.getElementById('main')?.focus({ preventScroll: true });
-        document.dispatchEvent(new Event('intro:closed'));
-    };
-
-    const close = () => {
-        if (reduced) {
-            finish();
-
-            return;
-        }
-
-        intro.classList.add('is-leaving');
-        intro.addEventListener('transitionend', finish, { once: true });
-    };
-
-    button?.addEventListener('click', close);
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && root.classList.contains('intro-pending')) {
-            close();
-        }
-    });
-}
 
 document.querySelectorAll('[data-video]').forEach((box) => {
     box.querySelector('[data-video-play]')?.addEventListener('click', () => {

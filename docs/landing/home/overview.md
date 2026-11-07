@@ -44,8 +44,8 @@ Teks asli bahasa Inggris dari prototipe dipakai apa adanya sebagai sumber, lalu 
 Aturan dari [`../ui/design.md`](../ui/design.md), diwujudkan begini:
 
 1. Markup ada di HTML dan disembunyikan lewat CSS. Skrip kecil di `<head>` menandai `<html>` bila sesi ini belum melihat intro (`sessionStorage`), dan CSS menampilkannya. Tanpa JavaScript, intro tidak tampil.
-2. Elemen `role="dialog"` dengan `aria-modal`, fokus dipindahkan ke tombol, dan isi halaman lainnya diberi `inert` selama intro tampil. Klik, Enter pada tombol, atau Escape menutupnya, lalu fokus pindah ke konten utama.
-3. Animasi keluar memakai transisi CSS (geser ke atas, sekitar 0,6 detik), tanpa GSAP. Dengan `prefers-reduced-motion`, langsung hilang tanpa animasi.
+2. Elemen `role="dialog"` dengan `aria-modal`, fokus dipindahkan ke tombol setelah animasi masuk selesai, dan isi halaman lainnya diberi `inert` selama intro tampil. Klik, Enter, atau Escape menutupnya (pemicu ganda diabaikan), lalu fokus pindah ke konten utama. Bila skrip intro tidak jalan, pengaman 4 detik melepas intro supaya halaman tidak terkunci.
+3. Animasi masuk dan keluar memakai GSAP (`resources/js/landing/intro.js`): logo dan tombol muncul bergantian, lalu saat ditutup tirai naik dengan tepi bawah melengkung dan hero mulai saat tirai hampir hilang. Rinciannya di [`../ui/motion.md`](../ui/motion.md). Dengan `prefers-reduced-motion`, isi langsung terlihat dan intro langsung hilang tanpa animasi.
 4. Hanya di beranda dan sekali per sesi. Konten beranda sudah ada di HTML di belakangnya.
 5. Dampak pada LCP dan INP diukur di L6.
 

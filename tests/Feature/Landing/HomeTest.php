@@ -78,6 +78,7 @@ class HomeTest extends TestCase
         $this->get('/id')
             ->assertSee('id="intro" role="dialog" aria-modal="true"', false)
             ->assertSee('data-intro-close', false)
+            ->assertSee('data-intro-item', false)
             ->assertSee(__('home.intro.begin', [], 'id'));
     }
 
@@ -99,7 +100,8 @@ class HomeTest extends TestCase
             ->assertSee('data-anim="media"', false)
             ->assertSee('data-anim="rows"', false)
             ->assertSee('data-anim="card"', false)
-            ->assertSee("classList.add('anim-hide')", false);
+            ->assertSee("classList.add('anim-hide')", false)
+            ->assertSee('__introReady', false);
     }
 
     public function test_art_component_renders_only_when_the_file_exists(): void
