@@ -9,10 +9,10 @@ return [
     'nav' => [
         'home' => 'ホーム',
     ],
-    'home' => [
-        'heading' => '電気めっき・金属表面処理',
-    ],
     'footer' => [
+        'description' => '精密で再現性の高い金属仕上げのための電気めっき工程と関連薬品。',
+        'tagline' => 'Electroplating · Metal Finishing',
+        'contact' => 'お問い合わせ',
         'rights' => '無断転載を禁じます。',
     ],
 ];

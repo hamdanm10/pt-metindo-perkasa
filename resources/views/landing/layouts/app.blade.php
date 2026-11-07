@@ -22,6 +22,7 @@
     <link rel="alternate" hreflang="x-default" href="{{ $urlFor(config('locales.default')) }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     @vite($assets)
+    @stack('head')
 </head>
 <body class="flex min-h-screen flex-col bg-white font-sans text-ink antialiased">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-ink focus:ring-2 focus:ring-accent-blue">

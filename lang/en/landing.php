@@ -9,10 +9,10 @@ return [
     'nav' => [
         'home' => 'Home',
     ],
-    'home' => [
-        'heading' => 'Electroplating & Metal Finishing',
-    ],
     'footer' => [
+        'description' => 'Electroplating processes and supporting chemicals for precise, repeatable metal finishing.',
+        'tagline' => 'Electroplating · Metal Finishing',
+        'contact' => 'Contact',
         'rights' => 'All rights reserved.',
     ],
 ];
