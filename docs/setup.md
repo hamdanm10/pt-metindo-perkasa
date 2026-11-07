@@ -35,4 +35,5 @@ Setelah instalasi, minta pengguna me-restart terminal. Jika agent membutuhkan sh
 
 - Laravel Boost belum dipakai di proyek ini. Instruksi bootstrap-nya (`composer require laravel/boost` dan `php artisan boost:install`) dihapus dari `CLAUDE.md` karena tidak pernah dijalankan dan menyuruh agent memasangnya di setiap sesi. Pasang hanya bila tim memutuskan memakainya.
 - Database pengembangan memakai PostgreSQL (`DB_CONNECTION=pgsql`, database `pt_metindo_perkasa`) lewat layanan `postgres` di `.lerd.yaml`.
-- Database test (nama `pt_metindo_perkasa_testing`, harus berakhiran `_testing`) dibuat sekali di mesin masing-masing: `create database pt_metindo_perkasa_testing`. Peralihan `phpunit.xml` ke PostgreSQL belum dilakukan.
+- Database test (`pt_metindo_perkasa_testing`, harus berakhiran `_testing`) dibuat sekali di mesin masing-masing: `create database pt_metindo_perkasa_testing`. `phpunit.xml` sudah memakai PostgreSQL ini, dan test menolak berjalan di database lain.
+- Perintah pemeriksaan: `composer lint` (Pint), `composer analyse` (Larastan level 8), `composer test`, dan `composer check` yang menjalankan ketiganya.

@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,11 +19,16 @@ class SetLandingLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = (string) $request->route('locale');
+        $route = $request->route();
+        $locale = $route instanceof Route ? $route->parameter('locale') : null;
+
+        if (! is_string($locale)) {
+            return $next($request);
+        }
 
         app()->setLocale($locale);
         URL::defaults(['locale' => $locale]);
-        $request->route()->forgetParameter('locale');
+        $route->forgetParameter('locale');
 
         return $next($request);
     }

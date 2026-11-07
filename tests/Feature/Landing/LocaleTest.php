@@ -34,10 +34,10 @@ class LocaleTest extends TestCase
 
     public function test_only_arabic_is_right_to_left(): void
     {
-        $rtl = collect(config('locales.landing'))
-            ->filter(fn (string $code): bool => config("locales.locales.{$code}.dir") === 'rtl')
-            ->values()
-            ->all();
+        $rtl = array_values(array_filter(
+            config()->array('locales.landing'),
+            fn (string $code): bool => config("locales.locales.{$code}.dir") === 'rtl',
+        ));
 
         $this->assertSame(['ar'], $rtl);
     }
