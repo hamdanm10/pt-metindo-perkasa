@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "frontend-design@anthropic-plugin-directory": true,
+    "antislop@anti-slop": true,
+    "andrej-karpathy-skills@karpathy-skills": true
+  }
+}
