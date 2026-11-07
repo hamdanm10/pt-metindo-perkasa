@@ -7,15 +7,15 @@ Fondasi yang dipakai admin, staf, dan customer: infrastruktur pemeriksaan kode, 
 | Fase | Fitur | Dokumen | Branch | Status |
 | --- | --- | --- | --- | --- |
 | D0 | Infrastruktur: test di PostgreSQL, pengaman database, Larastan level 8, dan `composer check` | bagian Testing dan Tooling di [`../../CLAUDE.md`](../../CLAUDE.md) dan [`../setup.md`](../setup.md) | `build/postgres-testing` | Selesai, ter-merge ke `development` |
-| D1 | Fondasi akun: peran, login `/app/login` dan `/customer/login`, middleware per peran, perintah admin pertama | [`auth/overview.md`](auth/overview.md) | `feat/auth-foundation` | Selesai di kode, belum di-merge |
-| D2 | Kerangka dashboard: Livewire, tata letak, menu per peran, pemilih bahasa (`en` dan `id`), halaman beranda, dan desain dashboard | belum ditulis | `feat/dashboard-shell` | Rencana |
+| D1 | Fondasi akun: peran, login `/app/login` dan `/customer/login`, middleware per peran, perintah admin pertama | [`auth/overview.md`](auth/overview.md) | `feat/auth-foundation` | Selesai, ter-merge ke `development` |
+| D2 | Kerangka dashboard: tata letak, menu per peran, pemilih bahasa (`en` dan `id`), halaman beranda, dan desain dasar | [`dashboard/overview.md`](dashboard/overview.md) | `feat/dashboard-shell` | Rancangan ditulis, belum ada kode |
 
 ## Keputusan
 
 | # | Keputusan | Nilai |
 | --- | --- | --- |
 | 1 | Akun | Dibuat oleh admin, tanpa pendaftaran mandiri |
-| 2 | Antarmuka admin dan staf | Livewire (mulai D2), dengan halaman login Blade biasa |
+| 2 | Antarmuka admin dan staf | Livewire, dipasang saat fitur interaktif pertama (A1). Kerangka D2 memakai Blade biasa dan siap dipakai halaman Livewire. Halaman login tetap Blade |
 | 3 | Peran | `admin`, `staff`, `customer` dalam satu tabel `users` |
 | 4 | Desain dashboard | Dibahas di D2, setelah desain landing dianggap cukup |
 

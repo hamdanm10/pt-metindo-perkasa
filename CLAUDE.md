@@ -207,6 +207,7 @@ Dokumen rancangan ada di `docs/`, per area dan per fitur, dengan satu `implement
 | [`docs/landing/ui/recraft-prompts.md`](docs/landing/ui/recraft-prompts.md) | Prompt aset vektor Recraft |
 | [`docs/shared/implementation-plan.md`](docs/shared/implementation-plan.md) | Indeks lintas peran: fondasi dashboard, akun dan login |
 | [`docs/shared/auth/overview.md`](docs/shared/auth/overview.md) | Rancangan akun, peran, dan login (D1) |
+| [`docs/shared/dashboard/overview.md`](docs/shared/dashboard/overview.md) | Rancangan kerangka dashboard: tata letak, menu, pemilih bahasa (D2) |
 | [`docs/landing/implementation-plan.md`](docs/landing/implementation-plan.md) | Indeks landing page: fase dan status |
 | [`docs/roles/admin/implementation-plan.md`](docs/roles/admin/implementation-plan.md) | Indeks admin |
 | `docs/roles/<peran>/implementation-plan.md` | Indeks staff dan customer (dibuat saat fitur pertama) |
