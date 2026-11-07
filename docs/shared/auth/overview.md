@@ -16,13 +16,14 @@ Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `
 | 8 | Pengguna yang sudah masuk dan membuka halaman login diarahkan ke areanya. Pengguna yang masuk dengan peran salah ke area lain mendapat 403 | Jelas dan tidak ambigu |
 | 9 | Locale dashboard: `users.locale` bila masuk, lalu `session('locale')`, lalu `en`. Hanya `en` dan `id`. Pemilih bahasa dibuat di D2 | Mengikuti aturan locale di `CLAUDE.md` |
 | 10 | Halaman login memakai Blade, bukan Livewire | Satu formulir sederhana. Livewire dimulai di D2 |
-| 11 | Halaman setelah login di D1 hanya halaman rangka `/app` dan `/customer` berisi nama dan tombol keluar, digantikan di D2 | Agar login bisa diuji ujung ke ujung |
+| 11 | Halaman setelah login di D1 hanya halaman rangka `/app/dashboard` dan `/customer/dashboard` berisi nama dan tombol keluar, digantikan di D2. `/app` dan `/customer` dialihkan ke sana | Agar login bisa diuji ujung ke ujung |
+| 12 | Setelah masuk, pengguna dikembalikan ke halaman yang tadi dituju hanya bila halaman itu termasuk areanya. Halaman area lain diabaikan dan pengguna ke beranda areanya | Tanpa ini customer yang tadi menuju `/app` berakhir di halaman 403 |
 
 ## Alur
 
 1. Pengunjung membuka `/app/dashboard` tanpa login, lalu diarahkan ke `/app/login` (area customer ke `/customer/login`).
 2. Formulir login (email, kata sandi, ingat saya) dikirim ke Form Request, lalu ke Action `AuthenticateUser`.
-3. Action memeriksa batas percobaan, lalu mencocokkan kredensial dengan syarat peran termasuk area itu dan `is_active` benar. Sukses: sesi diregenerasi dan pengguna diarahkan ke areanya.
+3. Action memeriksa batas percobaan, lalu mencocokkan kredensial dengan syarat peran termasuk area itu dan `is_active` benar. Sukses: controller meregenerasi sesi dan mengarahkan pengguna (lihat keputusan 12).
 4. Gagal: pesan umum yang sama. Terlalu banyak percobaan: pesan dengan sisa detik.
 5. Keluar (`POST`): sesi dibatalkan dan token diperbarui, lalu kembali ke halaman login areanya.
 
@@ -39,13 +40,13 @@ Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `
 ## Struktur kode
 
 - `app/Enums/Role.php`, `app/Models/User.php` (cast `role`, helper peran), migrasi untuk kolom baru, dan factory dengan state `admin()`, `staff()`, `customer()`.
-- `app/Actions/Auth/AuthenticateUser.php`: tidak memakai `request()`. Menerima email, kata sandi, ingat saya, daftar peran yang diizinkan, dan kunci pembatasan.
+- `app/Actions/Auth/AuthenticateUser.php`: tidak memakai `request()` maupun sesi. Menerima email, kata sandi, ingat saya, daftar peran yang diizinkan, dan kunci pembatasan. `app/Actions/Users/CreateUser.php` membuat akun (dipakai perintah `admin:create` dan kelak fitur kelola akun).
 - `app/Http/Requests/Auth/LoginRequest.php` (dipakai kedua area).
-- Controller: `app/Http/Controllers/App/Auth/LoginController.php` dan `app/Http/Controllers/Customer/Auth/LoginController.php`, tipis, hanya memanggil Action.
+- Controller: kelas dasar `app/Http/Controllers/Auth/AuthenticatedSessionController.php` memuat alur masuk dan keluar. `app/Http/Controllers/App/Auth/LoginController.php` dan `app/Http/Controllers/Customer/Auth/LoginController.php` hanya mengisi peran, nama route, dan judulnya. `HomeController` di tiap area menampilkan halaman rangka.
 - Route: `routes/app/auth.php` (prefix `/app`, nama `app.*`) dan `routes/customer/auth.php` (prefix `/customer`, nama `customer.*`), dimuat di `bootstrap/app.php`.
-- Middleware: `EnsureRole` (alias `role`), `SetDashboardLocale`, dan pengalihan tamu dan pengguna masuk di `bootstrap/app.php`.
+- Middleware: `EnsureRole` (alias `role`, memeriksa peran dan keaktifan akun) dan `SetDashboardLocale`. Pengalihan tamu dan pengguna masuk diatur di `bootstrap/app.php`. Route `POST /{area}/login` juga dibatasi `throttle:30,1` per IP sebagai lapis kedua.
 - Perintah `app/Console/Commands/CreateAdmin.php` (interaktif, bisa juga lewat opsi, menolak email yang sudah ada).
-- View: `resources/views/auth/` (satu tata letak dan satu formulir, dipakai kedua area, bergaya merek) dan halaman rangka. CSS lewat entri dashboard yang memakai token tema yang sama.
+- View: `resources/views/layouts/auth.blade.php`, `resources/views/auth/login.blade.php` (satu formulir untuk kedua area, bergaya merek), dan `resources/views/auth/home.blade.php` (halaman rangka). CSS lewat entri `resources/css/dashboard.css` yang memakai token tema yang sama. Halaman memakai `noindex`.
 - `lang/{en,id}/auth.php` dan `lang/id/validation.php` (isi yang dipakai saja, bertambah sesuai kebutuhan).
 
 ## Langkah dan test
@@ -61,9 +62,10 @@ Test yang harus ada:
 - Batas percobaan: percobaan ke-6 ditolak, dan berhasil masuk mereset hitungan.
 - Tamu ke area terlindungi diarahkan ke login yang benar. Pengguna masuk ke halaman login diarahkan ke areanya. Peran salah ke area lain mendapat 403.
 - Keluar membatalkan sesi dan kembali ke login yang benar. Sesi diregenerasi saat masuk.
-- Perintah `admin:create`: membuat admin, menolak email ganda, dan menolak kata sandi lemah.
+- Halaman yang dituju sebelum masuk dipakai bila termasuk area itu, dan diabaikan bila dari area lain.
+- Perintah `admin:create`: membuat admin, menolak email ganda, dan menolak kata sandi lemah. `role`, `is_active`, dan `locale` tidak bisa diisi lewat mass assignment.
 - Locale dashboard mengikuti `users.locale`, lalu sesi, lalu `en`, dan nilai di luar `en` dan `id` jatuh ke `en`.
-- Unit: Action `AuthenticateUser` dan enum `Role`.
+- Unit: enum `Role`. Action `AuthenticateUser` diuji lewat test fitur login karena butuh database dan sesi.
 
 Pemeriksaan manual: alur login di browser (kedua area, `en` dan `id`) dan tampilan di ponsel.
 

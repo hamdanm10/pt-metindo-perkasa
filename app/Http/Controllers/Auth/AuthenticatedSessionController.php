@@ -1,0 +1,83 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Auth;
+
+use App\Actions\Auth\AuthenticateUser;
+use App\Enums\Role;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+abstract class AuthenticatedSessionController extends Controller
+{
+    /**
+     * @return list<Role>
+     */
+    abstract protected function roles(): array;
+
+    /** Route name of the login page of this area. */
+    abstract protected function loginRoute(): string;
+
+    /** Route name of the page shown after signing in. */
+    abstract protected function homeRoute(): string;
+
+    abstract protected function titleKey(): string;
+
+    public function create(): View
+    {
+        return view('auth.login', [
+            'title' => __($this->titleKey()),
+            'action' => route($this->loginRoute()),
+        ]);
+    }
+
+    public function store(LoginRequest $request, AuthenticateUser $authenticate): RedirectResponse
+    {
+        $authenticate->execute(
+            $request->string('email')->toString(),
+            $request->string('password')->toString(),
+            $request->boolean('remember'),
+            $this->roles(),
+            (string) $request->ip(),
+        );
+
+        $request->session()->regenerate();
+
+        return redirect()->to($this->destination($request));
+    }
+
+    /**
+     * Where to go after signing in: the page the user was sent away from, but only when
+     * it belongs to this area. A page of another area would just answer 403.
+     */
+    private function destination(Request $request): string
+    {
+        $home = route($this->homeRoute());
+        $intended = $request->session()->pull('url.intended');
+
+        if (! is_string($intended)) {
+            return $home;
+        }
+
+        $prefix = dirname((string) parse_url($home, PHP_URL_PATH));
+        $sameHost = parse_url($intended, PHP_URL_HOST) === parse_url($home, PHP_URL_HOST);
+        $path = (string) parse_url($intended, PHP_URL_PATH);
+
+        return $sameHost && str_starts_with($path, $prefix.'/') ? $intended : $home;
+    }
+
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route($this->loginRoute());
+    }
+}

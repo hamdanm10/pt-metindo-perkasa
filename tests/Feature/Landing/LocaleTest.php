@@ -45,8 +45,8 @@ class LocaleTest extends TestCase
     public function test_unknown_locale_returns_not_found(): void
     {
         $this->get('/xx')->assertNotFound();
-        $this->get('/app')->assertNotFound();
-        $this->get('/customer')->assertNotFound();
+        $this->get('/app')->assertRedirect('/app/login');
+        $this->get('/customer')->assertRedirect('/customer/login');
     }
 
     public function test_page_declares_canonical_and_alternates_for_every_locale(): void
