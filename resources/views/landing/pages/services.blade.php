@@ -14,14 +14,17 @@
         <div data-anim="rows" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             @foreach ($services as $service)
                 <div class="grid gap-4 border-t border-ink/20 py-10 lg:grid-cols-12 lg:gap-16 {{ $loop->last ? 'border-b' : '' }}">
-                    <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-4xl lg:col-span-5">{{ __("home.services.items.{$service}.title") }}</h2>
-                    <p class="text-xl text-muted lg:col-span-7">{{ __("home.services.items.{$service}.text") }}</p>
+                    <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-5xl lg:text-6xl lg:col-span-4">{{ __("home.services.items.{$service}.title") }}</h2>
+                    <p class="text-xl text-muted lg:col-span-5">{{ __("home.services.items.{$service}.text") }}</p>
+                    <div class="lg:col-span-3">
+                        <x-landing.art :name="'service-'.str_replace('_', '-', $service)" class="mx-auto h-44 w-auto" />
+                    </div>
                 </div>
             @endforeach
         </div>
     </section>
 
-    <section class="bg-ink text-white">
+    <section class="cut-top bg-ink text-white">
         <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
             <h2 data-anim="heading" class="text-3xl font-bold sm:text-5xl">{{ __('pages.services.how.title') }}</h2>
             <p class="mt-4 max-w-xl text-lg text-white/80">{{ __('pages.services.how.intro') }}</p>

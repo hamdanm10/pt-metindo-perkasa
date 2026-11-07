@@ -22,6 +22,7 @@ Animasi landing page dengan GSAP, supaya tampilan tidak kaku. Dial gerak naik da
 | `data-intro-item` | Layar intro | Masuk: logo lalu tombol naik dan muncul bergantian. Keluar: keduanya naik memudar, lalu tirai merah naik dengan tepi bawah melengkung, dan hero mulai saat tirai hampir hilang | Momen pembuka bermerek, tepi melengkung selaras dengan bentuk organik situs, dan peralihan halus ke beranda |
 | `hero-title` | Judul hero dan judul halaman | Baris naik keluar dari topeng | Membuka halaman dengan satu momen terarah |
 | `hero-item` | Paragraf dan tombol hero, ringkasan halaman | Naik dan muncul berurutan | Urutan baca: judul, lalu penjelasan, lalu aksi |
+| `hero-wedge` | Blok indigo miring di belakang pelat hero | Meluncur masuk dari sisi layar bersama pelat | Memberi latar berwarna dan kedalaman pada hero |
 | `hero-art` dan `data-plate` | Pelat hero | Pelat masuk bertumpuk dengan putaran, lalu bergeser pelan saat gulir (`scrub`) | Kesan lapisan logam, dan kedalaman |
 | `heading` | Semua `h2` tanpa tautan | Baris naik dari topeng saat terlihat | Menandai awal bagian |
 | `rows` | Daftar (katalog, proses, klien, mitra, artikel, layanan, anak perusahaan) | Item muncul berurutan | Daftar terbaca satu per satu |
@@ -29,7 +30,7 @@ Animasi landing page dengan GSAP, supaya tampilan tidak kaku. Dial gerak naik da
 | `steps` dan `data-step-number` | "How we work" | Garis tiap langkah tergambar berurutan, angka muncul memantul | Menunjukkan urutan langkah |
 | `media` | Kotak video | Membesar pelan dari 94 persen ke 100 persen saat gulir | Menarik mata ke video |
 
-Tidak dianimasikan: header, footer, menu, pemilih bahasa, dan teks isi. Interaksi (hover, fokus) tetap CSS.
+Tidak dianimasikan dengan GSAP: header, footer, menu, pemilih bahasa, dan teks isi. Header hanya punya transisi CSS saat menempel dan mengecil ([`design.md`](design.md), bagian Navbar). Interaksi (hover, fokus) tetap CSS.
 
 ## Struktur kode
 

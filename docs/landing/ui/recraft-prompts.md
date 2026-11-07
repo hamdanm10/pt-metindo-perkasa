@@ -1,88 +1,195 @@
 # Prompt Recraft untuk Aset Vektor Landing
 
-Prompt untuk membuat aset vektor di Recraft supaya landing tidak kaku. Prompt ditulis dalam bahasa Inggris karena dipakai langsung di alat. Pemakaian aset ada di [`design.md`](design.md), palet ada di [`../../shared/design-system/overview.md`](../../shared/design-system/overview.md).
+Prompt untuk membuat aset vektor di Recraft sesuai arah energetik di [`direction.md`](direction.md), tetapi dengan elemen sedikit. Setiap prompt ditulis lengkap dan berdiri sendiri, tinggal disalin. Prompt berbahasa Inggris karena dipakai langsung di alat. Pemakaian aset ada di [`design.md`](design.md), palet di [`../../shared/design-system/overview.md`](../../shared/design-system/overview.md).
 
 ## Pengaturan umum
 
-- Keluaran **vektor (SVG)**, latar **transparan**.
-- Jika Recraft menyediakan kontrol warna, masukkan palet ini dan jangan tambah warna lain:
+- Gaya **vector illustration**, keluaran **SVG**, latar **transparan**.
+- Warna hanya dari palet: crimson `#D6283A`, ink `#1B1F3B`, indigo `#6D5BD0`, blue `#1F4FB5`, lavender `#F3F2FF`, dan putih. Tiap aset memakai **dua atau tiga warna saja**. Jangan pakai coral.
+- Hindari komposisi yang bergantung arah kiri-kanan. Situs dipakai dalam Arab (RTL) dan komposisi akan dibalik.
+- Target berat berkas: di bawah 40 KB per ilustrasi, 5 KB per ikon.
 
-| Nama | Hex |
-| --- | --- |
-| Crimson (utama) | `#D6283A` |
-| Indigo | `#6D5BD0` |
-| Blue | `#1F4FB5` |
-| Lavender | `#F3F2FF` |
-| Ink | `#1B1F3B` |
-| White | `#FFFFFF` |
+## Supaya tidak terlalu ramai
 
-- Tanpa teks, huruf, atau logo di dalam gambar.
-- Tanpa foto, tekstur realistis, bayangan, atau gradien rumit. Warna datar dan bentuk bersih lebih mudah dioptimalkan.
-- Jangan memakai coral atau warna lain di luar palet.
-- Hasilkan beberapa variasi per prompt, pilih yang paling sederhana, lalu cek berat berkas SVG (target di bawah 50 KB per berkas, ikon di bawah 5 KB).
+Energik datang dari warna berani, sudut miring, dan skala besar, bukan dari banyak elemen.
 
-## Kalimat gaya (ditempel di semua prompt)
+- Maksimal **tiga bentuk besar** per ilustrasi. Satu bentuk utama, dan sisanya pendukung.
+- Sisakan **ruang kosong** sedikitnya 40 persen kanvas.
+- Kata yang membantu: `minimalist`, `very simple`, `large simple shapes`, `lots of empty space`.
+- Jika alat menyediakan negative prompt, isi: `extra shapes, decoration, patterns, small details, texture, gradient, shadow, text`.
+- Jika hasilnya masih ramai, **hapus satu elemen dari prompt per percobaan**, jangan menambah kata. Hasilkan 4 variasi dan pilih yang paling sepi.
 
-> Flat vector illustration, smooth organic curves, soft rounded shapes, clean geometric lines with round caps, limited palette of crimson #D6283A, indigo #6D5BD0, blue #1F4FB5, lavender #F3F2FF, ink #1B1F3B and white, no text, no gradients, no shadows, transparent background.
+## Aset
 
-## 1. Latar hero
+Nama berkas mengikuti tempat pemakaiannya. Simpan di `public/images/landing/`. Aset yang belum terhubung ke kode saya pasang saat putaran desain.
 
-> Wide abstract background for a website hero section, flowing wave shapes layered across the lower and right side, overlapping translucent-looking flat layers in lavender, indigo and crimson, a calm empty area on the left for headline text, feels like liquid metal flowing, 16:9. [kalimat gaya]
+### 1. Hero: `hero-waves.svg` (1:1)
 
-Pakai: latar hero. Pastikan area kosong cukup untuk teks.
+Coba dua versi, lalu pilih yang lebih enak.
 
-## 2. Pembatas bagian (atas dan bawah)
+Versi A, pelat bertumpuk:
 
-> Seamless horizontal section divider, a single smooth wave edge, two layered curves, wide and short, fills the lower edge in lavender with a thin crimson accent layer, repeatable left to right, 1440x200. [kalimat gaya]
+```
+Minimalist flat vector illustration, square composition, three large rounded rectangles stacked and slightly rotated like metal plates: the back plate ink navy #1B1F3B, the middle plate crimson #D6283A, the front plate white with one thin diagonal stripe. Lots of empty space around them, nothing else in the image, no text, no gradients, no shadows, transparent background.
+```
 
-Buat dua versi: gelombang menghadap ke atas dan ke bawah. Pakai di antara bagian halaman.
+Versi B, lingkaran dan garis:
 
-## 3. Blob lembut
+```
+Minimalist flat vector illustration, square composition, one large crimson #D6283A circle with one bold ink navy #1B1F3B diagonal band cutting across it, and one small indigo #6D5BD0 circle near the edge. Lots of empty space, nothing else in the image, no text, no gradients, no shadows, transparent background.
+```
 
-> Set of five soft organic blob shapes of different sizes, smooth asymmetric silhouettes, each in a flat single color from the palette (lavender, indigo, crimson, blue, light crimson tint), separated, no outlines. [kalimat gaya]
+### 2. Poster video: `video-poster.svg` (16:9)
 
-Pakai: di balik foto, kartu, atau judul bagian.
+```
+Minimalist flat vector background, wide 16:9, solid ink navy #1B1F3B with one large crimson #D6283A quarter circle in the bottom left corner and one thin diagonal crimson line crossing the top right corner, empty center, nothing else in the image, no text, no gradients, no shadows.
+```
 
-## 4. Ilustrasi tema electroplating
+### 3. Ikon 13 kategori: `icon-<slug>.svg` (1:1)
 
-> Abstract illustration of metal plating: stacked metal sheets with rounded corners, rising bubbles, and a droplet of solution falling into a bath, simplified to flat geometric shapes, indigo and blue for the liquid, crimson accents, white highlights, no machinery detail. [kalimat gaya]
+Satu gaya untuk semuanya: garis tebal berujung bulat seperti guratan monogram logo, dua warna (ink dan crimson). Jika paket Recraft punya pembuatan gaya dari gambar acuan, jadikan ikon pertama yang paling bagus sebagai gaya, lalu pakai untuk sisanya.
 
-Pakai: bagian pendekatan atau tentang kami.
+`icon-zinc-plating.svg`:
 
-## 5. Ikon 13 kategori
+```
+Single minimalist line icon of a metal bolt above a small plating tank, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
 
-Satu gaya untuk semuanya: garis tebal sama seperti guratan monogram logo (ujung membulat), dua warna (ink dan crimson), kanvas persegi, objek di tengah, tanpa latar.
+`icon-nickel-plating.svg`:
 
-Kalimat dasar per ikon:
+```
+Single minimalist line icon of a shiny faucet-like pipe fitting with two short sparkle lines, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
 
-> Single icon, thick uniform line style with round caps and round joins, two colors only: ink #1B1F3B lines with one crimson #D6283A accent shape, centered on a square canvas, plenty of padding, no fill background, no text. Subject: [subjek]
+`icon-copper-plating.svg`:
 
-Subjek (ganti `[subjek]`):
+```
+Single minimalist line icon of a coil of copper wire, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
 
-| # | Kategori | Subjek |
-| --- | --- | --- |
-| 01 | Zinc Plating | a metal bolt in a plating bath |
-| 02 | Nickel Plating | a shiny faucet-like fitting with sparkle |
-| 03 | Copper Plating | a coil of copper wire |
-| 04 | Hard Chrome | a hydraulic piston rod |
-| 05 | Tin Plating | a small electronic connector pin |
-| 06 | Electroless Nickel | a precision gear with a thin coating layer |
-| 07 | Anodizing | an aluminum plate with color layers |
-| 08 | Phosphating | a steel screw with a textured surface |
-| 09 | Plating on Plastic | a plastic knob with a metallic coating |
-| 10 | Metal Polishing | a polishing wheel and shine marks |
-| 11 | Sustainable Steel | a steel beam with a leaf |
-| 12 | Wastewater Treatment | a water droplet passing through a filter |
-| 13 | Chemical Laboratory | a laboratory flask and test tube |
+`icon-hard-chrome.svg`:
 
-Hasilkan satu per satu dengan seed atau gaya yang sama supaya konsisten. Jika gaya antar ikon mulai berbeda, buat ulang yang menyimpang.
+```
+Single minimalist line icon of a hydraulic piston rod inside a cylinder, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
 
-## 6. Pola hiasan sudut (opsional)
+`icon-tin-plating.svg`:
 
-> Subtle decorative corner pattern, a loose arrangement of small dots and short rounded lines fading toward one corner, only lavender, indigo and crimson tints, sparse, transparent background, square canvas. [kalimat gaya]
+```
+Single minimalist line icon of a small electronic connector pin, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-electroless-nickel.svg`:
+
+```
+Single minimalist line icon of a precision gear with a thin coating ring around it, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-anodizing.svg`:
+
+```
+Single minimalist line icon of an aluminum plate seen at an angle with three stacked color bands on its edge, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-phosphating.svg`:
+
+```
+Single minimalist line icon of a steel screw with a few short texture lines on its surface, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-plating-on-plastic.svg`:
+
+```
+Single minimalist line icon of a round plastic control knob with a glossy metallic ring, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-metal-polishing.svg`:
+
+```
+Single minimalist line icon of a round polishing wheel with three short shine lines, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-sustainable-steel.svg`:
+
+```
+Single minimalist line icon of a steel I-beam with a single leaf growing beside it, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-wastewater-treatment.svg`:
+
+```
+Single minimalist line icon of a water droplet above a simple filter funnel, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+`icon-chemical-laboratory.svg`:
+
+```
+Single minimalist line icon of a laboratory flask next to a test tube, thick uniform round-capped outline in ink navy #1B1F3B with one small crimson #D6283A accent shape, centered on a square canvas with generous padding, flat, very simple, no background, no text, no gradients.
+```
+
+### 4. Ilustrasi tiga layanan (4:3)
+
+`service-electroplating.svg`:
+
+```
+Minimalist flat vector spot illustration of three metal parts hanging above a plating tank, only simple geometric shapes, ink navy #1B1F3B and crimson #D6283A with one lavender #F3F2FF background shape, centered on a 4:3 canvas with lots of empty space around, no text, no people, no gradients, no shadows, transparent background.
+```
+
+`service-chemical-supply.svg`:
+
+```
+Minimalist flat vector spot illustration of two chemical drums and one bottle standing together, only simple geometric shapes, ink navy #1B1F3B and crimson #D6283A with one lavender #F3F2FF background shape, centered on a 4:3 canvas with lots of empty space around, no text, no people, no gradients, no shadows, transparent background.
+```
+
+`service-consultation.svg`:
+
+```
+Minimalist flat vector spot illustration of a round measuring gauge next to a clipboard with a simple checklist of plain lines, only simple geometric shapes, ink navy #1B1F3B and crimson #D6283A with one lavender #F3F2FF background shape, centered on a 4:3 canvas with lots of empty space around, no readable text, no people, no gradients, no shadows, transparent background.
+```
+
+### 5. About: `about-layers.svg` (4:3)
+
+```
+Minimalist flat vector side view of a plated metal sheet: one thick ink navy #1B1F3B base band with three thin horizontal coating bands above it in crimson #D6283A, lavender #F3F2FF and indigo #6D5BD0, and one clean diagonal cut across the right end revealing the layers, centered on a 4:3 canvas with lots of empty space, no labels, no text, no gradients, no shadows, transparent background.
+```
+
+### 6. Sampul artikel (16:9)
+
+`article-cover-1.svg`:
+
+```
+Minimalist abstract flat vector cover, 16:9, solid crimson #D6283A background with one large ink navy #1B1F3B circle partly cropped at the right edge and one thin white diagonal line, empty space on the left for a headline, no text, no gradients, no shadows.
+```
+
+`article-cover-2.svg`:
+
+```
+Minimalist abstract flat vector cover, 16:9, solid ink navy #1B1F3B background with one large crimson #D6283A rounded rectangle tilted slightly at the right and one thin lavender #F3F2FF diagonal line, empty space on the left for a headline, no text, no gradients, no shadows.
+```
+
+`article-cover-3.svg`:
+
+```
+Minimalist abstract flat vector cover, 16:9, solid lavender #F3F2FF background with one large indigo #6D5BD0 quarter circle in the bottom right corner and one thin crimson #D6283A diagonal line, empty space on the left for a headline, no text, no gradients, no shadows.
+```
+
+### 7. Ornamen
+
+`slash-pattern.svg` (1:1):
+
+```
+Minimalist flat vector pattern of five parallel diagonal lines of different thickness in crimson #D6283A on a transparent background, sparse and evenly spaced, square canvas, nothing else in the image, no text, no gradients, no shadows.
+```
+
+`corner-curve.svg` (1:1):
+
+```
+Minimalist flat vector large quarter circle in crimson #D6283A with one thin concentric arc in lavender #F3F2FF, placed in the corner of a square canvas, nothing else in the image, no text, no gradients, no shadows, transparent background.
+```
 
 ## Setelah aset jadi
 
-- Simpan di `public/images/landing/` dengan nama deskriptif (contoh `hero-waves.svg`, `divider-wave-top.svg`, `icon-zinc-plating.svg`).
-- Jalankan SVGO, buka di browser dengan latar terang dan latar `ink`, dan uji di RTL.
-- Jika ada aset yang butuh warna berbeda per tema, bilang dan kita atur warnanya lewat CSS atau variasi berkas.
+- Simpan di `public/images/landing/` dengan nama di atas dan jalankan SVGO.
+- Buka di browser dengan latar terang dan latar `ink`, dan uji dicerminkan untuk RTL.
+- Kabari saya berkas mana yang sudah ada. Saya hubungkan ke komponen aset, atur ukurannya, dan menyesuaikan dokumen desain.
+- Gambar yang meniru foto tidak dibuat di Recraft. Foto asli dan placeholder dibahas di [`direction.md`](direction.md).

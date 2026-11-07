@@ -23,17 +23,40 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Animasi masuk dan keluar memakai GSAP ([`motion.md`](motion.md)). Dengan `prefers-reduced-motion`, overlay tidak beranimasi.
 - Setelah jadi, ukur LCP dan INP dengan Lighthouse, dengan dan tanpa overlay. Hasilnya dicatat di dokumen ini. Jika skornya turun jauh, bahas penggantinya dengan client (misalnya animasi singkat yang menutup sendiri).
 
+## Hero
+
+Latar hero dibuat berwarna dengan elemen pendukung yang sedikit, tanpa menambah teks atau lencana:
+
+- **Blok indigo miring** di sisi kanan (`.hero-wedge`, tepi kirinya miring selaras garis logo, dibalik di RTL) sebagai latar pelat. Hanya tampil mulai lebar `lg`.
+- **Lingkaran merah** setengah tenggelam di dasar hero, menimpa tepi blok indigo.
+- **Pelat bertumpuk** (`hero-waves.svg`) di atasnya, dengan pelat putih, merah, dan biru tua yang kontras terhadap indigo.
+- Di bawah lebar `lg`, blok indigo menjadi ubin membulat di belakang pelat.
+- Pola garis miring tidak dipakai di hero karena menimpa teks.
+
+## Navbar
+
+- **Menempel di atas** saat gulir (`position: sticky`). Saat halaman mulai bergulir (diamati lewat `IntersectionObserver` pada penanda di puncak halaman, tanpa pendengar gulir), tinggi header mengecil dari sekitar 69 ke 57 piksel dan muncul bayangan tipis. Transisinya CSS dan dimatikan oleh `prefers-reduced-motion`.
+- Latar putih solid. Efek kaca (blur) sengaja tidak dipakai.
+- Tautan aktif ditandai garis miring merah di bawahnya (selaras garis logo), yang juga muncul saat hover. Di RTL, garis tumbuh dari sisi kanan.
+- Pemilih bahasa di desktop berupa tombol lavender berisi bahasa aktif dengan daftar turun berbayang. Di bawah lebar `lg`, tombol "Menu" berwarna merah membuka panel berisi menu dan bahasa.
+- Tujuan jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`.
+- Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
+
 ## Penggunaan aset vektor
 
-| Tempat | Aset | Catatan |
-| --- | --- | --- |
-| Latar hero | Bentuk gelombang organik | Teks hero tetap di atas area dengan kontras cukup |
-| Antarbagian | Pembatas gelombang atas dan bawah | Dibalik di RTL bila punya arah |
-| Di balik foto atau kartu | Blob lembut | Dekoratif, `aria-hidden` |
-| Katalog 13 kategori | Satu ikon per kategori, gaya sama | Subjek per kategori ada di dokumen prompt |
-| Hiasan sudut | Pola titik dan garis | Opsional, jangan ramai |
+Komponen `x-landing.art` memuat `public/images/landing/<nama>.svg` bila berkasnya ada, dan menampilkan isi cadangan (slot) bila belum. Gambar dimuat malas (`loading="lazy"`), kecuali yang diberi `eager` (hero dan kepala halaman). Gambar yang diposisikan sebagian di luar layar harus `eager`, karena peramban tidak memuat gambar malas yang berada di luar layar sehingga ukurannya nol.
 
-Berkas vektor disimpan di `public/images/landing/` (SVG), dioptimalkan dengan SVGO, dan dimuat sebagai `<img>` atau di-inline hanya bila perlu diwarnai lewat CSS. Ukuran tiap berkas dijaga kecil karena memengaruhi kecepatan.
+| Tempat | Aset | Cadangan bila belum ada |
+| --- | --- | --- |
+| Hero | `hero-waves.svg` (pelat bertumpuk dengan garis miring) | Tiga pelat dari CSS |
+| Poster video | `video-poster.svg` | Blok warna dan lingkaran dari CSS |
+| Kepala halaman dan katalog | `slash-pattern.svg` (garis miring merah) | Tidak ada |
+| Katalog dan daftar produk | `icon-<slug>.svg` dalam ubin putih | Tanda garis miring merah |
+| Halaman Services | `service-electroplating.svg`, `service-chemical-supply.svg`, `service-consultation.svg` | Tidak ada |
+
+Aset yang sudah dibuat tetapi belum dipakai: `hero-waves-2.svg`, `corner-curve.svg`, `about-layers.svg`, dan `article-cover-1.svg` (warnanya merah murni di luar palet dan kadrnya terpotong, jadi perlu dibuat ulang). Belum dibuat: ikon `metal-polishing`, `sustainable-steel`, `wastewater-treatment`, `chemical-laboratory`, ilustrasi `service-consultation`, dan sampul artikel 2 dan 3. Warna hasil Recraft sedikit meleset dari palet (misalnya merah poster lebih terang), dan itu diterima selama tidak mengganggu.
+
+Foto memakai `x-landing.photo` ([`direction.md`](direction.md)). Berkas vektor dioptimalkan dengan SVGO (`npx svgo --multipass`), yang menurunkan ukuran total dari sekitar 495 KB menjadi 186 KB dengan perbedaan piksel di bawah 0,1 persen.
 
 ## Aturan
 

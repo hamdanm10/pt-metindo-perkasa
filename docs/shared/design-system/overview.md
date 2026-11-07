@@ -48,8 +48,8 @@ Aturan: teks merah di atas latar terang memakai `brand-700`. Di atas latar `ink`
 
 ## Tipografi
 
-- Latin (`en`, `id`): **Figtree**, sama dengan prototipe.
-- Mandarin (`zh`): Noto Sans SC. Arab (`ar`): Noto Sans Arabic. Jepang (`ja`): Noto Sans JP.
+- Latin (`en`, `id`): **Figtree** untuk teks isi dan **Bricolage Grotesque** untuk judul (`h1` sampai `h3`).
+- Mandarin (`zh`): Noto Sans SC. Arab (`ar`): Noto Sans Arabic. Jepang (`ja`): Noto Sans JP. Untuk ketiganya judul memakai font yang sama dengan teks isi.
 - Font dipasang sendiri (self-host), bukan dari CDN pihak ketiga, supaya cepat dan tidak mengirim data pengunjung ke luar.
 - Hanya font untuk locale aktif yang dimuat. Font CJK besar, jadi dipakai subset atau `unicode-range`, dengan `font-display: swap`.
 - Tumpukan font diatur per locale lewat atribut `lang` pada `<html>`. Jangan memaksa satu font untuk semua bahasa.

@@ -1,9 +1,9 @@
 @php($sectors = ['automotive', 'electronics', 'machinery', 'construction', 'furniture_hardware', 'oil_gas'])
 
-<section class="bg-white">
+<section class="cut-top bg-white">
     <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div class="max-w-2xl">
-            <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-4xl">{{ __('home.clients.title') }}</h2>
+            <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-5xl lg:text-6xl">{{ __('home.clients.title') }}</h2>
             <p class="mt-4 text-lg text-muted">{{ __('home.clients.text') }}</p>
         </div>
 
