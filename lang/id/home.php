@@ -23,6 +23,7 @@ return [
     'services' => [
         'title' => 'Layanan',
         'intro' => 'Dari jasa pelapisan, suplai bahan kimia, hingga konsultasi teknis.',
+        'all' => 'Lihat semua',
         'items' => [
             'electroplating' => [
                 'title' => 'Layanan Electroplating',
@@ -55,35 +56,5 @@ return [
     'articles' => [
         'title' => 'Artikel & berita',
         'intro' => 'Pembaruan, catatan proses, dan berita perusahaan.',
-        'sample' => 'Konten contoh dari prototipe. Diganti artikel asli sebelum rilis.',
-        'tags' => [
-            'news' => 'Berita',
-            'article' => 'Artikel',
-        ],
-        'items' => [
-            'quality_control' => [
-                'tag' => 'news',
-                'date' => '2026-10-02',
-                'title' => 'Kendali Mutu dalam Pelapisan',
-                'text' => 'Cara kami menjaga kimia bak dan ketebalan tetap sesuai spesifikasi, batch demi batch.',
-            ],
-            'pre_treatment' => [
-                'tag' => 'article',
-                'date' => '2026-09-28',
-                'title' => 'Memilih Pra-Perlakuan yang Tepat',
-                'text' => 'Persiapan permukaan menentukan daya rekat lapisan. Begini pendekatan kami.',
-            ],
-            'alkaline_zinc' => [
-                'tag' => 'news',
-                'date' => '2026-09-20',
-                'title' => 'Lini Alkaline Zinc Baru',
-                'text' => 'Kami memperluas kapasitas pelapisan alkaline zinc.',
-            ],
-        ],
-    ],
-    'cta' => [
-        'title' => 'Punya spesifikasi pelapisan tertentu?',
-        'text' => 'Sampaikan proses dan material dasarnya. Tim kami akan bantu menjelaskan pilihannya.',
-        'button' => 'Bicara dengan tim kami',
     ],
 ];

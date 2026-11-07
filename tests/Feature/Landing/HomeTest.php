@@ -81,13 +81,13 @@ class HomeTest extends TestCase
             ->assertSee(__('home.intro.begin', [], 'id'));
     }
 
-    public function test_sample_articles_are_hidden_in_production(): void
+    public function test_sample_articles_follow_the_sample_content_flag(): void
     {
-        $this->get('/en')->assertSee(__('home.articles.sample', [], 'en'));
+        config(['landing.sample_content' => true]);
+        $this->get('/en')->assertSee(__('landing.sample_note', [], 'en'));
 
-        $this->app['env'] = 'production';
-
-        $this->get('/en')->assertDontSee(__('home.articles.sample', [], 'en'));
+        config(['landing.sample_content' => false]);
+        $this->get('/en')->assertDontSee(__('landing.sample_note', [], 'en'));
     }
 
     public function test_art_component_renders_only_when_the_file_exists(): void

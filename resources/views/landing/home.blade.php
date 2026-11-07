@@ -18,5 +18,5 @@
     @include('landing.home.services')
     @include('landing.home.clients')
     @include('landing.home.articles')
-    @include('landing.home.cta')
+    <x-landing.cta />
 @endsection

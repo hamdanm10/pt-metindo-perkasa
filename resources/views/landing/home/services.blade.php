@@ -5,6 +5,7 @@
         <div class="max-w-2xl">
             <h2 class="text-3xl font-bold text-ink sm:text-4xl">{{ __('home.services.title') }}</h2>
             <p class="mt-4 text-lg text-muted">{{ __('home.services.intro') }}</p>
+            <a href="{{ route('landing.services') }}" class="mt-3 inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">{{ __('home.services.all') }}</a>
         </div>
 
         <div class="mt-12 grid gap-5 lg:grid-cols-5">

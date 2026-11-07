@@ -1,10 +1,12 @@
+@props(['stacked' => false])
+
 @php
     $route = request()->route();
     $current = app()->getLocale();
 @endphp
 
 <nav aria-label="{{ __('landing.language') }}">
-    <ul class="flex flex-wrap items-center gap-x-1 gap-y-1">
+    <ul class="{{ $stacked ? 'flex flex-col' : 'flex flex-wrap items-center gap-x-1 gap-y-1' }}">
         @foreach (config('locales.landing') as $code)
             @php($locale = config("locales.locales.{$code}"))
             <li>
