@@ -6,6 +6,7 @@ return [
     'skip_to_content' => 'Lewati ke konten',
     'menu' => 'Menu',
     'language' => 'Bahasa',
+    'account_menu' => 'Menu akun',
     'nav' => [
         'home' => 'Beranda',
     ],

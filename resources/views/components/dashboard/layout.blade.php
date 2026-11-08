@@ -4,7 +4,6 @@
     $user = auth()->user();
     $menu = app(\App\Services\Dashboard\DashboardMenu::class)->forUser($user);
     $area = $user->role->usesStaffArea() ? 'app' : 'customer';
-    $role = __('dashboard.roles.'.$user->role->value);
     $sidebarLink = 'relative flex min-h-11 items-center rounded-lg px-4 text-base font-semibold text-white/85 hover:bg-white/10 hover:text-white '
         .'aria-[current=page]:bg-white/10 aria-[current=page]:font-bold aria-[current=page]:text-white '
         .'aria-[current=page]:before:absolute aria-[current=page]:before:inset-y-2 aria-[current=page]:before:start-0 aria-[current=page]:before:w-1.5 '
@@ -45,58 +44,43 @@
 
         <div class="flex min-w-0 flex-col">
             <header class="sticky top-0 z-30 border-b border-ink/10 bg-white">
-                <div class="flex items-center justify-between gap-4 px-4 py-2 lg:px-8">
+                <div class="px-4 py-2 lg:px-8">
+                <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-2">
                     <a href="{{ route($user->role->homeRoute()) }}" class="inline-flex rounded lg:hidden">
-                        <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-8 w-auto">
+                        <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-6 w-auto sm:h-8">
                     </a>
 
-                    <div class="hidden flex-1 lg:block"></div>
+                    <div class="ms-auto flex items-center gap-1 sm:gap-2">
+                        <x-dashboard.language-dropdown :action="route($area.'.locale')" />
+                        <x-dashboard.user-menu :user="$user" :area="$area" />
 
-                    <div class="hidden items-center gap-4 lg:flex">
-                        <x-dashboard.locale-switcher :action="route($area.'.locale')" />
-                        <div class="text-end leading-tight">
-                            <p class="text-sm font-bold">{{ $user->name }}</p>
-                            <p class="text-xs font-semibold text-muted">{{ $role }}</p>
-                        </div>
-                        <form method="POST" action="{{ route($area.'.logout') }}">
-                            @csrf
-                            <button type="submit" class="min-h-11 rounded-lg border border-ink/60 px-4 text-sm font-bold hover:bg-ink hover:text-white">{{ __('auth.logout') }}</button>
-                        </form>
-                    </div>
-
-                    <details class="relative lg:hidden" data-dismissible>
-                        <summary class="inline-flex min-h-11 min-w-11 cursor-pointer list-none items-center rounded-lg bg-brand-600 px-5 text-base font-bold text-white hover:bg-brand-700 [&::-webkit-details-marker]:hidden">
-                            {{ __('dashboard.menu') }}
-                        </summary>
-                        <div class="absolute end-0 top-full z-40 mt-3 w-72 max-w-[calc(100vw-2rem)] rounded-2xl bg-white p-3 shadow-xl ring-1 ring-ink/10">
-                            <nav aria-label="{{ __('dashboard.menu') }}">
-                                <ul>
-                                    @foreach ($menu as $item)
-                                        <li>
-                                            <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif
-                                               class="flex min-h-11 items-center rounded-lg px-3 text-base font-semibold hover:bg-lavender aria-[current=page]:bg-lavender aria-[current=page]:font-bold aria-[current=page]:text-brand-700">{{ __($item['label']) }}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </nav>
-                            <div class="mt-2 space-y-3 border-t border-ink/10 pt-3">
-                                <x-dashboard.locale-switcher :action="route($area.'.locale')" />
-                                <div class="px-1 leading-tight">
-                                    <p class="text-sm font-bold">{{ $user->name }}</p>
-                                    <p class="text-xs font-semibold text-muted">{{ $role }}</p>
-                                </div>
-                                <form method="POST" action="{{ route($area.'.logout') }}">
-                                    @csrf
-                                    <button type="submit" class="min-h-11 w-full rounded-lg border border-ink/60 px-4 text-sm font-bold hover:bg-ink hover:text-white">{{ __('auth.logout') }}</button>
-                                </form>
+                        <details class="relative lg:hidden" data-dismissible>
+                            <summary class="inline-flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-lg bg-brand-600 text-white hover:bg-brand-700 [&::-webkit-details-marker]:hidden"
+                                     aria-label="{{ __('dashboard.menu') }}">
+                                <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                            </summary>
+                            <div class="absolute end-0 top-full z-40 mt-2 w-60 max-w-[calc(100vw-2rem)] rounded-2xl bg-white p-2 shadow-xl ring-1 ring-ink/10">
+                                <nav aria-label="{{ __('dashboard.menu') }}">
+                                    <ul>
+                                        @foreach ($menu as $item)
+                                            <li>
+                                                <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif
+                                                   class="flex min-h-11 items-center rounded-lg px-3 text-base font-semibold hover:bg-lavender aria-[current=page]:bg-lavender aria-[current=page]:font-bold aria-[current=page]:text-brand-700">{{ __($item['label']) }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </nav>
                             </div>
-                        </div>
-                    </details>
+                        </details>
+                    </div>
+                </div>
                 </div>
             </header>
 
             <main id="main" class="flex-1 overflow-x-clip px-4 py-8 lg:px-8 lg:py-10">
-                {{ $slot }}
+                <div class="mx-auto w-full max-w-6xl">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
     </div>
