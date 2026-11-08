@@ -6,7 +6,7 @@ Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan
 
 | Fase | Fitur | Dokumen | Branch | Status |
 | --- | --- | --- | --- | --- |
-| A1 | Kelola akun: membuat staf dan customer, atur ulang kata sandi, nonaktifkan akun | belum ditulis | belum ditentukan | Rencana. Butuh D1 dan D2 |
+| A1 | Kelola akun: daftar, membuat, mengubah, atur ulang kata sandi, dan nonaktifkan akun | [`user-management/overview.md`](user-management/overview.md) | `feat/user-management` | Rancangan ditulis, belum ada kode |
 | A2 | Kelola konten landing (kategori, produk, proses, layanan, klien, mitra, artikel, video) dalam banyak bahasa | belum ditulis (fase L4 di [`../../landing/implementation-plan.md`](../../landing/implementation-plan.md)) | `feat/landing-content` | Rencana. Butuh D1 dan D2 |
 
 ## Keputusan
@@ -15,6 +15,7 @@ Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan
 | --- | --- | --- |
 | 1 | Akses | Admin memegang semua fitur. Hak staf yang lebih terbatas ditentukan per fitur |
 | 2 | Pengelola konten landing | Hanya `admin` |
+| 3 | Pengelola akun | Hanya `admin`. Staf tidak bisa membuat atau mengubah akun apa pun |
 
 ## Belum diputuskan
 
