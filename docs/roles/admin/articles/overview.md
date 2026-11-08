@@ -1,6 +1,6 @@
 # Kelola Artikel (A2)
 
-Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu bahasa satu tulisan. Hanya admin yang mengelola. Fitur ini berdiri sendiri: kelola konten landing lainnya (kalimat beranda, produk, layanan, dan seterusnya) **belum dikerjakan** dan dirancang terpisah nanti. Status fase di [`../implementation-plan.md`](../implementation-plan.md). Latar keputusan bahasa: [`../../../landing/pages/overview.md`](../../../landing/pages/overview.md).
+Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu bahasa satu tulisan. Hanya admin yang mengelola. Fitur ini berdiri sendiri: kelola konten landing lainnya (A4: kalimat beranda, layanan, dan seterusnya) **belum dikerjakan** dan dirancang terpisah nanti. Status fase di [`../implementation-plan.md`](../implementation-plan.md). Latar keputusan bahasa: [`../../../landing/pages/overview.md`](../../../landing/pages/overview.md).
 
 ## Keputusan
 

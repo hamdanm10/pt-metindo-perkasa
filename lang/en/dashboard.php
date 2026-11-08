@@ -13,6 +13,7 @@ return [
         'home' => 'Home',
         'users' => 'Accounts',
         'articles' => 'Articles',
+        'products' => 'Products',
     ],
     'home' => [
         'title' => 'Home',
