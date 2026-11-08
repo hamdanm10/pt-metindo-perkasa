@@ -66,6 +66,10 @@ Test (feature) yang harus ada:
 
 Pemeriksaan manual di browser: sidebar dan bilah atas di desktop, laci sidebar di ponsel (animasi, tutup lewat klik latar dan Escape, fokus), ganti bahasa, keluar, dan keyboard (Tab, Escape).
 
+## Halaman galat
+
+Galat di `/app/*` dan `/customer/*` memakai halaman galat bersama dalam `en` atau `id`. Rancangannya di bagian "Halaman galat" pada [`../../landing/ui/design.md`](../../landing/ui/design.md).
+
 ## Ditunda
 
 - Livewire (A1) dan komponen formulir dan tabel.
