@@ -11,6 +11,6 @@ class HomeController extends Controller
 {
     public function __invoke(): View
     {
-        return view('auth.home', ['logout' => route('customer.logout')]);
+        return view('dashboard.home');
     }
 }

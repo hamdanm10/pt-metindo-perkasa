@@ -12,6 +12,4 @@ return [
     'remember' => 'Biarkan saya tetap masuk',
     'submit' => 'Masuk',
     'logout' => 'Keluar',
-    'signed_in_as' => 'Masuk sebagai :name',
-    'dashboard_soon' => 'Dashboard segera hadir.',
 ];

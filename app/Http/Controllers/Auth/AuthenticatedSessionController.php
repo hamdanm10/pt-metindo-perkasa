@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\AuthenticateUser;
+use App\Actions\Users\UpdateLocale;
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,10 +35,11 @@ abstract class AuthenticatedSessionController extends Controller
         return view('auth.login', [
             'title' => __($this->titleKey()),
             'action' => route($this->loginRoute()),
+            'localeAction' => route(explode('.', $this->loginRoute())[0].'.locale'),
         ]);
     }
 
-    public function store(LoginRequest $request, AuthenticateUser $authenticate): RedirectResponse
+    public function store(LoginRequest $request, AuthenticateUser $authenticate, UpdateLocale $updateLocale): RedirectResponse
     {
         $authenticate->execute(
             $request->string('email')->toString(),
@@ -48,7 +51,23 @@ abstract class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $this->keepLanguageChosenBeforeSignIn($request, $updateLocale);
+
         return redirect()->to($this->destination($request));
+    }
+
+    /**
+     * A language picked on the login page is the latest explicit choice, so it becomes
+     * the account's language instead of being overridden by the stored one.
+     */
+    private function keepLanguageChosenBeforeSignIn(Request $request, UpdateLocale $updateLocale): void
+    {
+        $locale = $request->session()->get('locale');
+        $user = $request->user();
+
+        if ($user instanceof User && is_string($locale) && in_array($locale, config()->array('locales.dashboard'), true)) {
+            $updateLocale->execute($user, $locale);
+        }
     }
 
     /**

@@ -14,7 +14,7 @@ Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `
 | 6 | Admin pertama dibuat lewat `php artisan admin:create` | Tidak ada jalan masuk lain di awal |
 | 7 | Kata sandi minimal 8 karakter dengan huruf besar, huruf kecil, dan angka | Standar dasar yang wajar |
 | 8 | Pengguna yang sudah masuk dan membuka halaman login diarahkan ke areanya. Pengguna yang masuk dengan peran salah ke area lain mendapat 403 | Jelas dan tidak ambigu |
-| 9 | Locale dashboard: `users.locale` bila masuk, lalu `session('locale')`, lalu `en`. Hanya `en` dan `id`. Pemilih bahasa dibuat di D2 | Mengikuti aturan locale di `CLAUDE.md` |
+| 9 | Locale dashboard: `users.locale` bila masuk, lalu `session('locale')`, lalu `en`. Hanya `en` dan `id`. Pemilih bahasa dibuat di D2, dan bahasa yang dipilih di halaman login disimpan ke akun saat masuk | Mengikuti aturan locale di `CLAUDE.md` |
 | 10 | Halaman login memakai Blade, bukan Livewire | Satu formulir sederhana. Livewire dimulai di D2 |
 | 11 | Halaman setelah login di D1 hanya halaman rangka `/app/dashboard` dan `/customer/dashboard` berisi nama dan tombol keluar, digantikan di D2. `/app` dan `/customer` dialihkan ke sana | Agar login bisa diuji ujung ke ujung |
 | 12 | Setelah masuk, pengguna dikembalikan ke halaman yang tadi dituju hanya bila halaman itu termasuk areanya. Halaman area lain diabaikan dan pengguna ke beranda areanya | Tanpa ini customer yang tadi menuju `/app` berakhir di halaman 403 |

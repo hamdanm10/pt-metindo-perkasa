@@ -9,7 +9,7 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 | 1 | Satu tata letak dipakai kedua area (`/app` dan `/customer`). Isi menu berbeda per peran | Satu desain, satu perawatan |
 | 2 | **Livewire tidak dipasang di D2.** Kerangka memakai Blade biasa dan dibuat sebagai komponen tata letak yang bisa dipakai halaman Livewire. Livewire dipasang saat fitur interaktif pertama (A1, kelola akun) | D2 tidak punya interaksi yang membutuhkannya. Tidak memasang dependensi yang belum dipakai |
 | 3 | Pemilih bahasa memakai formulir `POST` biasa ke `/{area}/locale`, bukan komponen Livewire | Berfungsi juga di halaman login (tamu), tanpa JavaScript, dan mudah diuji |
-| 4 | Pilihan bahasa disimpan di `users.locale` bila sudah masuk, dan di sesi bila tamu | Mengikuti aturan locale di `CLAUDE.md` |
+| 4 | Pilihan bahasa disimpan di `users.locale` bila sudah masuk, dan di sesi bila tamu. Bahasa yang dipilih di halaman login (sesi) menjadi bahasa akun saat pengguna masuk | Mengikuti aturan locale di `CLAUDE.md`. Pilihan terbaru yang eksplisit tidak boleh dikalahkan oleh nilai tersimpan |
 | 5 | Menu awal hanya "Beranda". Tombol keluar ada di bilah atas | Tidak ada tautan ke halaman yang belum ada |
 | 6 | Beranda berisi sapaan, nama, dan peran, plus keadaan kosong yang menjelaskan bahwa fitur akan muncul di sini | Tidak ada angka atau ringkasan karangan |
 | 7 | Dial desain dashboard: ENERGY 1 / RHYTHM 1 / MOTION 1. Tenang, padat, dan jelas. Karakter merek hanya lewat warna aksen dan penanda miring pada menu aktif | Dashboard dipakai kerja, bukan dipamerkan |
@@ -57,7 +57,7 @@ Test (feature) yang harus ada:
 - Menu admin, staf, dan customer memuat hanya item yang diizinkan dan route yang ada. Item aktif bertanda `aria-current="page"`.
 - Pemilih bahasa: mengganti ke `id` menyimpan `users.locale` dan sesi untuk pengguna masuk, hanya sesi untuk tamu, menolak `zh` dan nilai tak dikenal, dan mengarahkan kembali.
 - Halaman dashboard memakai `<html lang>` sesuai locale, dan teks berganti setelah bahasa diubah.
-- Halaman login menampilkan pemilih bahasa dan teksnya ikut berubah untuk tamu.
+- Halaman login menampilkan pemilih bahasa dan teksnya ikut berubah untuk tamu. Bahasa yang dipilih sebelum masuk disimpan ke akun, dan masuk tanpa pilihan mempertahankan bahasa tersimpan.
 - Kunci `lang/{en,id}/dashboard.php` identik.
 - Unit: `DashboardMenu` (penyaringan per peran, item tanpa route diabaikan).
 

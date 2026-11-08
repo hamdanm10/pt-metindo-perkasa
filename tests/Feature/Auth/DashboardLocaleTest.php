@@ -28,7 +28,7 @@ class DashboardLocaleTest extends TestCase
         $user = User::factory()->staff()->create(['locale' => 'id']);
 
         $this->actingAs($user)->withSession(['locale' => 'en'])->get('/app/dashboard')
-            ->assertSee(__('auth.signed_in_as', ['name' => $user->name], 'id'));
+            ->assertSee(__('dashboard.home.greeting', ['name' => $user->name], 'id'));
     }
 
     public function test_a_locale_outside_the_dashboard_list_falls_back_to_english(): void
@@ -37,13 +37,15 @@ class DashboardLocaleTest extends TestCase
 
         $user = User::factory()->staff()->create(['locale' => 'ar']);
 
-        $this->actingAs($user)->get('/app/dashboard')->assertSee(__('auth.signed_in_as', ['name' => $user->name], 'en'));
+        $this->actingAs($user)->get('/app/dashboard')->assertSee(__('dashboard.home.greeting', ['name' => $user->name], 'en'));
     }
 
     public function test_dashboard_translation_keys_match_in_both_locales(): void
     {
-        $keys = fn (string $code): array => array_keys(Arr::dot(require lang_path("{$code}/auth.php")));
+        $keys = fn (string $code, string $file): array => array_keys(Arr::dot(require lang_path("{$code}/{$file}.php")));
 
-        $this->assertEqualsCanonicalizing($keys('en'), $keys('id'));
+        foreach (['auth', 'dashboard'] as $file) {
+            $this->assertEqualsCanonicalizing($keys('en', $file), $keys('id', $file), "Keys differ in {$file}");
+        }
     }
 }
