@@ -20,7 +20,6 @@ return [
         'name' => 'Name',
         'email' => 'Email',
         'role' => 'Role',
-        'locale' => 'Language',
         'status' => 'Status',
         'initial_password' => 'Initial password',
         'new_password' => 'New password',

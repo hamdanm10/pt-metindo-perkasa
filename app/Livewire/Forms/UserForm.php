@@ -21,8 +21,6 @@ class UserForm extends Form
 
     public string $role = 'customer';
 
-    public string $locale = 'en';
-
     public string $password = '';
 
     public function setUser(User $user): void
@@ -31,7 +29,6 @@ class UserForm extends Form
         $this->name = $user->name;
         $this->email = $user->email;
         $this->role = $user->role->value;
-        $this->locale = $user->locale;
     }
 
     /**
@@ -43,7 +40,6 @@ class UserForm extends Form
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user?->id)],
             'role' => ['required', Rule::enum(Role::class)],
-            'locale' => ['required', Rule::in(config()->array('locales.dashboard'))],
         ];
 
         if ($this->user === null) {

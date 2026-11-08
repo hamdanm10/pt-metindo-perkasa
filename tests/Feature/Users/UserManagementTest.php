@@ -68,6 +68,18 @@ class UserManagementTest extends TestCase
         $this->assertContains(SetDashboardLocale::class, $persistent);
     }
 
+    public function test_the_forms_have_no_language_field_and_editing_keeps_the_language(): void
+    {
+        $user = User::factory()->customer()->create(['locale' => 'id']);
+
+        $this->actingAs($this->admin())->get('/app/users/create')->assertDontSee('form-locale', false);
+        $this->get("/app/users/{$user->id}/edit")->assertDontSee('form-locale', false);
+
+        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user])->set('form.name', 'Renamed')->call('save')->assertHasNoErrors();
+
+        $this->assertSame('id', $user->refresh()->locale);
+    }
+
     public function test_the_list_searches_and_filters(): void
     {
         User::factory()->staff()->create(['name' => 'Budi Santoso', 'email' => 'budi@example.test']);
@@ -108,7 +120,6 @@ class UserManagementTest extends TestCase
             ->set('form.name', 'New Staff')
             ->set('form.email', ' New.Staff@Example.Test ')
             ->set('form.role', 'staff')
-            ->set('form.locale', 'id')
             ->set('form.password', 'Secret123')
             ->call('save')
             ->assertHasNoErrors()
@@ -117,7 +128,7 @@ class UserManagementTest extends TestCase
         $user = User::query()->where('email', 'new.staff@example.test')->firstOrFail();
 
         $this->assertSame(Role::Staff, $user->role);
-        $this->assertSame('id', $user->locale);
+        $this->assertSame('en', $user->locale);
         $this->assertTrue($user->is_active);
         $this->assertTrue(Hash::check('Secret123', $user->password));
     }
@@ -130,10 +141,9 @@ class UserManagementTest extends TestCase
             ->set('form.name', '')
             ->set('form.email', 'TAKEN@example.test')
             ->set('form.role', 'superuser')
-            ->set('form.locale', 'zh')
             ->set('form.password', 'weak')
             ->call('save')
-            ->assertHasErrors(['form.name', 'form.email', 'form.role', 'form.locale', 'form.password']);
+            ->assertHasErrors(['form.name', 'form.email', 'form.role', 'form.password']);
 
         $this->assertSame(1, User::query()->count() - 1);
     }

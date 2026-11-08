@@ -32,7 +32,6 @@ class Create extends Component
             $this->form->email,
             $this->form->password,
             Role::from($this->form->role),
-            $this->form->locale,
         );
 
         $this->form->password = '';

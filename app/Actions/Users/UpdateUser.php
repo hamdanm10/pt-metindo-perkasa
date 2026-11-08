@@ -14,7 +14,7 @@ class UpdateUser
     /**
      * @throws ValidationException
      */
-    public function execute(User $actor, User $target, string $name, string $email, Role $role, string $locale): User
+    public function execute(User $actor, User $target, string $name, string $email, Role $role): User
     {
         $losesAdminRole = $target->role === Role::Admin && $role !== Role::Admin;
 
@@ -30,7 +30,6 @@ class UpdateUser
             'name' => $name,
             'email' => Str::lower($email),
             'role' => $role,
-            'locale' => $locale,
         ])->save();
 
         return $target;

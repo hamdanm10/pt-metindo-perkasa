@@ -25,7 +25,7 @@ class UserActionsTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        app(UpdateUser::class)->execute($actor, $lastAdmin, 'Name', 'x@example.test', Role::Staff, 'en');
+        app(UpdateUser::class)->execute($actor, $lastAdmin, 'Name', 'x@example.test', Role::Staff);
     }
 
     public function test_an_inactive_admin_can_be_demoted_freely(): void
@@ -33,7 +33,7 @@ class UserActionsTest extends TestCase
         $actor = User::factory()->admin()->create();
         $inactive = User::factory()->admin()->inactive()->create();
 
-        app(UpdateUser::class)->execute($actor, $inactive, 'Name', 'x@example.test', Role::Staff, 'en');
+        app(UpdateUser::class)->execute($actor, $inactive, 'Name', 'x@example.test', Role::Staff);
 
         $this->assertSame(Role::Staff, $inactive->refresh()->role);
     }

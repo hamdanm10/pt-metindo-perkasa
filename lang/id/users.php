@@ -20,7 +20,6 @@ return [
         'name' => 'Nama',
         'email' => 'Email',
         'role' => 'Peran',
-        'locale' => 'Bahasa',
         'status' => 'Status',
         'initial_password' => 'Kata sandi awal',
         'new_password' => 'Kata sandi baru',

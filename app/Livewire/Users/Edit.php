@@ -48,7 +48,6 @@ class Edit extends Component
             $this->form->name,
             $this->form->email,
             Role::from($this->form->role),
-            $this->form->locale,
         );
 
         $this->user->refresh();
