@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services\Landing;
 
+use App\Services\Articles\LandingArticles;
+
 /**
  * Static landing content read from config. The catalog moves to the database
  * in phase L4, and this class is the only place that needs to change.
  */
 class LandingContent
 {
+    public function __construct(private readonly LandingArticles $articles) {}
+
     public function sampleContentEnabled(): bool
     {
         return (bool) config('landing.sample_content');
@@ -38,35 +42,6 @@ class LandingContent
     }
 
     /**
-     * @return list<array{slug: string, type: string, date: string}>
-     */
-    public function articles(?string $type = null): array
-    {
-        if (! $this->sampleContentEnabled()) {
-            return [];
-        }
-
-        return array_values(array_filter(
-            config('landing.articles'),
-            fn (array $article): bool => $type === null || $article['type'] === $type,
-        ));
-    }
-
-    /**
-     * @return array{slug: string, type: string, date: string}|null
-     */
-    public function article(string $slug): ?array
-    {
-        foreach ($this->articles() as $article) {
-            if ($article['slug'] === $slug) {
-                return $article;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * @return list<array{key: string, name: string, lat: float, lng: float}>
      */
     public function subsidiaries(): array
@@ -88,7 +63,7 @@ class LandingContent
             ['route' => 'landing.services', 'label' => 'landing.nav.services', 'active' => 'landing.services'],
         ];
 
-        if ($this->sampleContentEnabled()) {
+        if ($this->articles->hasAny(app()->getLocale())) {
             $items[] = ['route' => 'landing.articles.index', 'label' => 'landing.nav.articles', 'active' => 'landing.articles.*'];
         }
 

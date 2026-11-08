@@ -82,15 +82,6 @@ class HomeTest extends TestCase
             ->assertSee(__('home.intro.begin', [], 'id'));
     }
 
-    public function test_sample_articles_follow_the_sample_content_flag(): void
-    {
-        config(['landing.sample_content' => true]);
-        $this->get('/en')->assertSee(__('landing.sample_note', [], 'en'));
-
-        config(['landing.sample_content' => false]);
-        $this->get('/en')->assertDontSee(__('landing.sample_note', [], 'en'));
-    }
-
     public function test_home_marks_the_elements_that_animate(): void
     {
         $this->get('/en')

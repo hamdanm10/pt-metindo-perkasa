@@ -2,7 +2,10 @@
     $code = app()->getLocale();
     $locale = config("locales.locales.{$code}");
     $route = request()->route();
-    $urlFor = fn (string $target) => route($route->getName(), array_merge($route->parameters(), ['locale' => $target]));
+    $alternates = $alternateUrls ?? null;
+    $urlFor = fn (string $target) => $alternates[$target] ?? route($route->getName(), array_merge($route->parameters(), ['locale' => $target]));
+    $targets = $alternates === null ? config('locales.landing') : array_keys($alternates);
+    $default = in_array(config('locales.default'), $targets, true) ? config('locales.default') : ($targets[0] ?? $code);
     $assets = ['resources/css/landing.css', 'resources/css/fonts/latin.css', 'resources/js/landing.js'];
 
     if (in_array($code, ['zh', 'ja', 'ar'], true)) {
@@ -17,10 +20,10 @@
     {{-- yieldContent returns text that @section already escaped once. --}}
     <title>{!! $__env->hasSection('title') ? trim($__env->yieldContent('title')).' | PT Metindo Perkasa' : 'PT Metindo Perkasa' !!}</title>
     <link rel="canonical" href="{{ $urlFor($code) }}">
-    @foreach (config('locales.landing') as $target)
+    @foreach ($targets as $target)
         <link rel="alternate" hreflang="{{ config("locales.locales.{$target}.html_lang") }}" href="{{ $urlFor($target) }}">
     @endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ $urlFor(config('locales.default')) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $urlFor($default) }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <script>
         try {
@@ -41,7 +44,7 @@
     </a>
 
     <div data-header-sentinel class="absolute left-0 top-0 h-px w-px" aria-hidden="true"></div>
-    <x-landing.header />
+    <x-landing.header :alternates="$alternates" />
 
     <main id="main" class="flex-1 overflow-x-clip">
         @yield('content')

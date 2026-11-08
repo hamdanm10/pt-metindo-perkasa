@@ -14,7 +14,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | 4 | Tanpa tautan ke halaman yang belum ada. Kategori, layanan, dan artikel belum bisa diklik sampai L3 | Aturan navigasi: tidak ada tautan mati |
 | 5 | Daftar kategori (slug dan nama) dan nama mitra ada di `config/landing.php`. Slug dipakai untuk nama berkas ikon. Diganti database di L4 | Satu sumber untuk 13 kategori |
 | 6 | Klien ditampilkan sebagai **nama sektor** tanpa logo, mitra sebagai **nama** tanpa logo, tanpa animasi berjalan terus | Logo klien tidak tersedia dan tidak boleh dikarang. Tidak ada gerak yang berjalan terus ([`../ui/motion.md`](../ui/motion.md)) |
-| 7 | Tiga artikel dari prototipe dipakai sebagai **contoh berlabel**, belum ada halaman detail | Konten contoh, diganti di L4. Bagian disembunyikan di production |
+| 7 | Bagian artikel menampilkan tiga artikel terbaru yang terbit di bahasa itu (dari database, A2) dan hilang bila belum ada | Artikel contoh sudah dihapus |
 | 8 | Video: tidak ada permintaan ke YouTube sebelum diklik. Tampil poster lokal dan tombol putar, lalu iframe `youtube-nocookie.com` dibuat saat diklik. ID video di `config/landing.php` (env `LANDING_INTRO_VIDEO_ID`), bagian disembunyikan bila kosong | Kecepatan, privasi, dan SEO. ID di prototipe belum dipastikan video asli |
 | 9 | Kontak (email, telepon) dari `config/landing.php` (env). Bagian dan tombol kontak hanya muncul bila diisi. Tombol "Talk to our team" memakai `mailto:` | Tombol harus berfungsi. Nilai di prototipe tampak contoh, belum dikonfirmasi |
 | 10 | Aset vektor Recraft dipasang lewat komponen yang memuat `public/images/landing/<nama>.svg` bila berkasnya ada, kosong bila belum | Tampilan jalan tanpa aset, dan aset tinggal diletakkan |
@@ -33,7 +33,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | Katalog | 13 kategori dengan ikon (nama saja) | Ukuran kartu bervariasi, bukan 13 kartu identik |
 | Layanan | Electroplating Service, Chemical Supply, Technical Consultation | Tiga item dengan bobot berbeda |
 | Klien dan mitra | Enam sektor, lima nama mitra | Teks, tanpa logo |
-| Artikel | Tiga contoh berlabel | Hanya di lingkungan non-production |
+| Artikel | Tiga artikel terbaru terbit di bahasa itu | Disembunyikan bila belum ada |
 | Ajakan | "Have a plating specification in mind?" | Satu tombol `mailto:` |
 | Footer | Deskripsi singkat, kontak, hak cipta | Footer L1 diperluas, menu tetap Home |
 

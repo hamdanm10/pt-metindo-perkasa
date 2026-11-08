@@ -12,6 +12,7 @@ return [
     'nav' => [
         'home' => 'Home',
         'users' => 'Accounts',
+        'articles' => 'Articles',
     ],
     'home' => [
         'title' => 'Home',

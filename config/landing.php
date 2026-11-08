@@ -9,7 +9,7 @@ return [
     | Sample Content
     |--------------------------------------------------------------------------
     |
-    | Articles and subsidiaries are sample data from the prototype. They are
+    | Subsidiaries are sample data from the prototype. They are
     | shown outside production only, until real content replaces them.
     |
     */
@@ -49,17 +49,10 @@ return [
     | Sample Articles and Subsidiaries
     |--------------------------------------------------------------------------
     |
-    | Texts live in lang/{locale}/articles.php and lang/{locale}/pages.php.
+    | Texts live in lang/{locale}/pages.php.
     | Coordinates are city centers, not real addresses.
     |
     */
-
-    'articles' => [
-        ['slug' => 'quality-control-in-plating', 'type' => 'news', 'date' => '2026-10-02'],
-        ['slug' => 'choosing-the-right-pre-treatment', 'type' => 'article', 'date' => '2026-09-28'],
-        ['slug' => 'new-alkaline-zinc-line', 'type' => 'news', 'date' => '2026-09-20'],
-        ['slug' => 'introduction-to-electroplating', 'type' => 'article', 'date' => '2026-09-01'],
-    ],
 
     'subsidiaries' => [
         ['key' => 'medan', 'name' => 'PT Metindo Surface Medan', 'lat' => 3.5952, 'lng' => 98.6722],

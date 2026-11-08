@@ -18,7 +18,7 @@ Arah visual untuk putaran desain landing page berikutnya. Dokumen ini adalah sum
 | 4 | Tipografi: judul memakai **Bricolage Grotesque** (Latin) dengan bobot tebal dan jarak huruf rapat, serta lompatan ukuran besar. Mandarin, Arab, dan Jepang memakai Noto Sans seperti teks isi | Karakter lebih kuat tanpa merusak lima bahasa |
 | 5 | Bentuk: **potongan miring** antarbagian dan pada kepala halaman (`.cut-top` dan `.cut-bottom`, dibalik di RTL), pola garis miring dari logo di bagian gelap, dan sedikit lengkung | Tidak kaku, khas perusahaan ini, dan tidak ramai |
 | 6 | Foto memakai komponen `x-landing.photo`: gambar dimuat dari `public/images/landing/photos/<nama>.webp` (atau `.jpg`, `.jpeg`, `.png`) bila ada. Bila belum ada, tampil placeholder berlabel, hanya saat `LANDING_SAMPLE_CONTENT` aktif. Tidak ada foto stok atau gambar buatan sendiri | Aturan: jangan karang aset |
-| 7 | Tempat foto: `about-company`, `about-facilities`, dan `article-<slug>` (beranda, daftar, dan detail artikel). Ilustrasi vektor: hero (`hero-waves`), poster video, ikon kategori, ilustrasi layanan | Bagian yang seharusnya bergambar |
+| 7 | Tempat foto: `about-company`, dan `about-facilities`. Gambar artikel berasal dari thumbnail yang diunggah admin. Ilustrasi vektor: hero (`hero-waves`), poster video, ikon kategori, ilustrasi layanan | Bagian yang seharusnya bergambar |
 
 ## Batasan yang tetap berlaku
 

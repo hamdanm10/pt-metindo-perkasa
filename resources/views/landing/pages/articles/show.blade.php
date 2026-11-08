@@ -1,9 +1,23 @@
 @extends('landing.layouts.app')
 
-@section('title', __("articles.items.{$article['slug']}.title"))
+@section('title', $metaTitle)
+
+@push('head')
+    @if ($metaDescription !== '')
+        <meta name="description" content="{{ $metaDescription }}">
+        <meta property="og:description" content="{{ $metaDescription }}">
+    @endif
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:url" content="{{ $alternateUrls[app()->getLocale()] }}">
+    @if ($article['image'])
+        <meta property="og:image" content="{{ $article['image'] }}">
+    @endif
+    <meta name="twitter:card" content="summary_large_image">
+@endpush
 
 @section('content')
-    <x-landing.page-header :title="__('articles.items.'.$article['slug'].'.title')">
+    <x-landing.page-header :title="$article['title']">
         <a href="{{ route('landing.articles.index') }}" class="mb-6 inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">
             {{ __('landing.back') }}
         </a>
@@ -16,10 +30,13 @@
 
     <article class="bg-white">
         <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-24">
-            <x-landing.photo :name="'article-'.$article['slug']" ratio="aspect-video" class="mb-8 rounded-2xl" />
-            <p class="mb-4 inline-block rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold text-ink">{{ __('landing.sample_note') }}</p>
-            <p class="text-2xl font-semibold leading-snug text-ink">{{ __("articles.items.{$article['slug']}.text") }}</p>
-            <p class="mt-6 text-lg text-muted">{{ __("articles.items.{$article['slug']}.body") }}</p>
+            @if ($article['image'])
+                <img src="{{ $article['image'] }}" alt="{{ $article['alt'] }}" decoding="async" class="mb-8 aspect-video w-full rounded-2xl object-cover">
+            @endif
+            @if ($article['excerpt'] !== '')
+                <p class="text-2xl font-semibold leading-snug text-ink">{{ $article['excerpt'] }}</p>
+            @endif
+            <div class="article-body mt-8 text-lg text-ink">{!! $bodyHtml !!}</div>
         </div>
     </article>
 
@@ -36,7 +53,7 @@
                                 <time datetime="{{ $item['date'] }}">{{ $item['date'] }}</time>
                             </p>
                             <h3 class="mt-2 text-xl font-bold text-ink">
-                                <a href="{{ route('landing.articles.show', ['article' => $item['slug']]) }}" class="hover:text-brand-700">{{ __("articles.items.{$item['slug']}.title") }}</a>
+                                <a href="{{ route('landing.articles.show', ['article' => $item['slug']]) }}" class="hover:text-brand-700">{{ $item['title'] }}</a>
                             </h3>
                         </li>
                     @endforeach
