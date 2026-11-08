@@ -58,6 +58,16 @@ Aset yang sudah dibuat tetapi belum dipakai: `hero-waves-2.svg`, `corner-curve.s
 
 Foto memakai `x-landing.photo` ([`direction.md`](direction.md)). Berkas vektor dioptimalkan dengan SVGO (`npx svgo --multipass`), yang menurunkan ukuran total dari sekitar 495 KB menjadi 186 KB dengan perbedaan piksel di bawah 0,1 persen.
 
+## Halaman galat
+
+Halaman galat 403, 404, 419, 429, 500, dan 503 memakai satu komponen (`components/error-page`) dan view tipis di `resources/views/errors/`. Area dan bahasa dibaca dari URL oleh `App\Services\Errors\ErrorContext`, karena 404 tidak melewati middleware locale.
+
+- URL berawalan locale landing: tampilan landing dalam bahasa itu (Arab dengan `dir="rtl"`), tombol kembali ke `/{locale}`.
+- URL `/app/*` dan `/customer/*`: tampilan dashboard dalam `en` atau `id` (pengguna, sesi, lalu `en`), tombol kembali ke dashboard area itu.
+- URL lain: landing berbahasa `en`.
+- Galat 5xx tidak menyentuh sesi atau database, jadi memakai `en`. Pesan galat dan jejak tidak pernah ditampilkan. Halaman diberi `noindex`.
+- Teks di `lang/<locale>/errors.php` (lima bahasa). Tidak ada tombol "coba lagi" pada 503.
+
 ## Aturan
 
 - Teks tidak ditanam di dalam gambar atau SVG.
