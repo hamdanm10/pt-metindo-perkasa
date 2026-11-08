@@ -7,7 +7,7 @@ Admin mengelola akun staf, customer, dan admin lain dari dashboard: daftar denga
 | # | Keputusan | Alasan |
 | --- | --- | --- |
 | 1 | **Hanya admin** yang mengelola akun, di `/app/users`. Staf dan customer mendapat 403, dan menu "Akun" hanya tampil untuk admin | Keputusan client. Dijaga middleware dan Policy, bukan hanya menu |
-| 2 | Data akun: nama, email, peran, bahasa, dan kata sandi awal yang ditetapkan admin. Tidak ada kolom lain. Data khusus customer kelak masuk tabel profil terpisah | Sesuai aturan `users` di `CLAUDE.md` |
+| 2 | Data akun: nama, email, peran, dan kata sandi awal yang ditetapkan admin. Tidak ada kolom lain. **Bahasa tidak diisi admin**: akun baru berbahasa Inggris (`en`) dan pengguna mengubahnya sendiri lewat pemilih bahasa (D2). Data khusus customer kelak masuk tabel profil terpisah | Sesuai aturan `users` di `CLAUDE.md` |
 | 3 | **Akun tidak dihapus**, hanya dinonaktifkan (`is_active`) dan bisa diaktifkan lagi | Riwayat tetap utuh, dan penghapusan tidak bisa dibatalkan |
 | 4 | Kata sandi awal dan atur ulang kata sandi ditetapkan admin. Tanpa email, tanpa tautan | Keputusan di D1 |
 | 5 | Admin **tidak bisa** menonaktifkan atau menurunkan peran dirinya sendiri, dan tidak bisa menonaktifkan atau menurunkan admin aktif terakhir | Mencegah sistem tanpa admin |
@@ -23,8 +23,8 @@ Admin mengelola akun staf, customer, dan admin lain dari dashboard: daftar denga
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
 | Daftar | `/app/users` | Tabel nama, email, peran, status, dan tanggal dibuat. Pencarian nama atau email, penyaring peran dan status, dan tombol "Tambah akun" |
-| Tambah | `/app/users/create` | Nama, email, peran, bahasa, dan kata sandi awal |
-| Ubah | `/app/users/{user}/edit` | Nama, email, peran, dan bahasa. Bagian terpisah untuk atur ulang kata sandi, dan tombol nonaktifkan atau aktifkan |
+| Tambah | `/app/users/create` | Nama, email, peran, dan kata sandi awal |
+| Ubah | `/app/users/{user}/edit` | Nama, email, dan peran. Bahasa akun tidak diubah dari sini. Bagian terpisah untuk atur ulang kata sandi, dan tombol nonaktifkan atau aktifkan |
 
 1. Admin membuka daftar, mencari atau menyaring, lalu memilih akun.
 2. Tambah: mengisi formulir, simpan, kembali ke daftar dengan pesan sukses. Email disimpan huruf kecil.
@@ -34,7 +34,7 @@ Admin mengelola akun staf, customer, dan admin lain dari dashboard: daftar denga
 ## Aturan keamanan dan kasus tepi
 
 - Semua halaman dan aksi dijaga `role:admin` dan `UserPolicy` (`viewAny`, `create`, `update`, `deactivate`, `resetPassword`). Setiap aksi Livewire memanggil `authorize`, termasuk setelah halaman terbuka lama.
-- Id akun di komponen dikunci (`#[Locked]`), dan `role`, `locale`, serta kolom lain divalidasi di sisi server (`Rule::enum`, `Rule::in`). Nilai dari browser tidak dipercaya.
+- Id akun di komponen dikunci (`#[Locked]`), dan `role` serta kolom lain divalidasi di sisi server (`Rule::enum`). `locale` tidak ada di formulir sehingga tidak bisa diubah dari sini. Nilai dari browser tidak dipercaya.
 - Aturan admin terakhir dan diri sendiri diperiksa di Action, bukan di tampilan, dan menghasilkan pesan galat yang jelas.
 - Email unik tanpa membedakan huruf besar-kecil, kecuali akun yang sedang diubah. Kata sandi: minimal 8 karakter dengan huruf besar, huruf kecil, dan angka (aturan sama dengan `admin:create`).
 - Kata sandi tidak ditampilkan, tidak dicatat di log, dan kolom kata sandi dikosongkan setelah dikirim.
@@ -43,10 +43,10 @@ Admin mengelola akun staf, customer, dan admin lain dari dashboard: daftar denga
 
 ## Struktur kode
 
-- Pasang `livewire/livewire` (v4). Daftarkan persistent middleware di `AppServiceProvider`.
+- Pasang `livewire/livewire` (v4). Daftarkan persistent middleware di `AppServiceProvider`. `dashboard.css` memindai tampilan penomoran Livewire supaya kelas Tailwind-nya ikut dibuat.
 - Livewire: `app/Livewire/Users/Index.php`, `Create.php`, dan `Edit.php`, dengan objek formulir `app/Livewire/Forms/UserForm.php`. View di `resources/views/livewire/users/`.
-- Action di `app/Actions/Users/`: `CreateUser` (sudah ada), `UpdateUser`, `ResetUserPassword`, dan `SetUserActive`. Tanpa `request()`, dan aturan admin terakhir di sini.
-- `app/Policies/UserPolicy.php`. Route di `routes/app/users.php` dengan `role:admin`.
+- Action di `app/Actions/Users/`: `CreateUser` (sudah ada, bahasa selalu `en`), `UpdateUser`, `ResetUserPassword`, `SetUserActive`, dan `ListUsers` (pencarian, penyaring, penomoran). Tanpa `request()`, dan aturan admin terakhir di sini. `app/Services/Auth/SessionRevoker.php` mengakhiri sesi akun dan dipakai dua Action.
+- `app/Policies/UserPolicy.php` (`setActive` menolak diri sendiri). Route di `routes/app/users.php` dengan `role:admin`. Scope `User::activeAdmins()` dipakai aturan admin terakhir, dan trait `ResolvesActor` menyediakan pengguna yang sedang masuk di komponen.
 - `DashboardMenu` ditambah item "Akun" untuk admin.
 - Komponen Blade di `resources/views/components/dashboard/` dan `form/`: bidang formulir, pilihan, tombol, lencana, pesan, dan tabel.
 - `lang/{en,id}/users.php`, ditambah kolom di `lang/id/validation.php`.
@@ -64,7 +64,7 @@ Test yang harus ada:
 - Atur ulang kata sandi: kata sandi lama tidak berlaku, yang baru berlaku, dan sesi akun itu berakhir.
 - Nonaktifkan dan aktifkan: akun nonaktif tidak bisa masuk, sesinya berakhir saat itu juga, dan aktifkan mengembalikan akses.
 - Admin tidak bisa menonaktifkan atau menurunkan dirinya, dan tidak bisa menonaktifkan atau menurunkan admin aktif terakhir.
-- Persistent middleware: aksi Livewire dari admin yang kemudian dinonaktifkan atau diturunkan perannya ditolak.
+- Persistent middleware: test otomatis memastikan `EnsureRole` dan `SetDashboardLocale` terdaftar. Perilakunya (aksi Livewire dari admin yang sudah diturunkan perannya ditolak dengan 403) diperiksa di browser, karena test Livewire tidak melewati titik akhir pembaruan.
 - Teks tampil dalam `en` dan `id`, dan kunci `lang/*/users.php` identik.
 - Unit: setiap Action.
 

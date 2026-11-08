@@ -10,13 +10,18 @@ use Tests\TestCase;
 
 class DashboardMenuTest extends TestCase
 {
-    public function test_staff_area_roles_get_the_staff_home(): void
+    public function test_admin_gets_the_home_and_the_accounts_page(): void
     {
-        foreach (['admin', 'staff'] as $role) {
-            $menu = (new DashboardMenu)->forUser(User::factory()->{$role}()->make());
+        $menu = (new DashboardMenu)->forUser(User::factory()->admin()->make());
 
-            $this->assertSame(['app.dashboard'], array_column($menu, 'route'));
-        }
+        $this->assertSame(['app.dashboard', 'app.users.index'], array_column($menu, 'route'));
+    }
+
+    public function test_staff_gets_only_the_home(): void
+    {
+        $menu = (new DashboardMenu)->forUser(User::factory()->staff()->make());
+
+        $this->assertSame(['app.dashboard'], array_column($menu, 'route'));
     }
 
     public function test_customers_get_the_customer_home(): void

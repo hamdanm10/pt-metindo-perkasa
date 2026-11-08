@@ -18,7 +18,7 @@ class CreateUser
             'email' => Str::lower($email),
             'password' => $password,
             'role' => $role,
-            'locale' => (string) config('locales.default'),
+            'locale' => config()->string('locales.default'),
             'is_active' => true,
         ])->save();
 
