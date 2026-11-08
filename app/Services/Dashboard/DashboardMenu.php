@@ -22,6 +22,7 @@ class DashboardMenu
         return [
             ['route' => 'app.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'app.dashboard', 'roles' => Role::staffArea()],
             ['route' => 'app.users.index', 'label' => 'dashboard.nav.users', 'active' => 'app.users.*', 'roles' => [Role::Admin]],
+            ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'roles' => [Role::Admin]],
             ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'roles' => Role::customerArea()],
         ];
     }

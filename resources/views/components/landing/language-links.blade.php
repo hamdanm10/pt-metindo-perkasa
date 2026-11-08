@@ -1,4 +1,4 @@
-@props(['stacked' => false])
+@props(['stacked' => false, 'alternates' => null])
 
 @php
     $route = request()->route();
@@ -10,7 +10,7 @@
         @foreach (config('locales.landing') as $code)
             @php($locale = config("locales.locales.{$code}"))
             <li>
-                <a href="{{ route($route->getName(), array_merge($route->parameters(), ['locale' => $code])) }}"
+                <a href="{{ $alternates === null ? route($route->getName(), array_merge($route->parameters(), ['locale' => $code])) : ($alternates[$code] ?? route('landing.home', ['locale' => $code])) }}"
                    lang="{{ $locale['html_lang'] }}"
                    hreflang="{{ $locale['html_lang'] }}"
                    @if ($code === $current) aria-current="true" @endif

@@ -10,18 +10,18 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | --- | --- | --- |
 | 1 | Halaman: About, Products (indeks dan kategori), Services, Articles (daftar dan detail), Contact | Susunan prototipe `homepage-2` |
 | 2 | **Halaman detail proses (`/process/...`) tidak dibuat di L3** dan dipindah ke L4. Halaman kategori menampilkan nama proses tanpa tautan | Halaman itu murni data (langkah, diagram, bahan, TDS, harga) dan di prototipe pun masih kosong. Datanya hidup di database |
-| 3 | Satu penanda `landing.sample_content` (env `LANDING_SAMPLE_CONTENT`, bawaan aktif di luar production) mengatur semua konten contoh: artikel, anak perusahaan. Bila mati, bagian atau halamannya hilang, route artikel 404, dan menu "Articles & News" tidak tampil | Satu tombol untuk "konten contoh tidak boleh rilis". Menggantikan pemeriksaan `isProduction()` di beranda |
+| 3 | Satu penanda `landing.sample_content` (env `LANDING_SAMPLE_CONTENT`, bawaan aktif di luar production) mengatur konten contoh: anak perusahaan (artikel tidak lagi contoh, lihat catatan A2 di bawah). Bila mati, bagiannya hilang | Satu tombol untuk "konten contoh tidak boleh rilis". Menggantikan pemeriksaan `isProduction()` di beranda |
 | 4 | Sertifikasi (ISO 9001 dan ISO 14001) **tidak ditampilkan** | Di prototipe tampak contoh dan belum terverifikasi. Klaim sertifikasi tidak boleh dikarang |
 | 5 | Anak perusahaan (enam kota, tautan Google Maps) ditampilkan sebagai konten contoh | Data prototipe belum dikonfirmasi |
 | 6 | Contact hanya menampilkan data yang diisi di konfigurasi: alamat, telepon, email, jam kerja, WhatsApp. Tanpa formulir pesan | Formulir dikerjakan di L5. Tidak ada kontrol yang tidak berfungsi |
-| 7 | Menu: Home, About Us, Products, Services, Articles & News (bila konten contoh aktif), Contact. Footer memakai daftar yang sama | Semua tujuan sekarang ada |
+| 7 | Menu: Home, About Us, Products, Services, Articles & News (hanya di bahasa yang punya artikel terbit), Contact. Footer memakai daftar yang sama | Semua tujuan sekarang ada |
 | 8 | Filter artikel "All / Article / News" lewat parameter `?type=` di URL, tanpa JavaScript | Berfungsi, bisa dibagikan, dan tetap terbaca mesin pencari |
-| 9 | Data kategori dengan nama prosesnya di `config/landing.php`. Data artikel (slug, jenis, tanggal) di config, teksnya di `lang/<locale>/articles.php` | Satu sumber per jenis data sampai L4. Tiga artikel di `lang/*/home.php` dipindah ke sini |
+| 9 | Data kategori dengan nama prosesnya di `config/landing.php`. **Artikel sudah dari database** (A2): [`../../roles/admin/articles/overview.md`](../../roles/admin/articles/overview.md). `lang/<locale>/articles.php` hanya memuat label jenis artikel | Satu sumber per jenis data sampai L4. Tiga artikel di `lang/*/home.php` dipindah ke sini |
 | 10 | Teks halaman di `lang/<locale>/pages.php`, memakai terjemahan prototipe client untuk `id`, `zh`, `ar`, `ja`. Nama kategori dan proses tetap bahasa Inggris seperti di prototipe | Aturan teks pengguna. Terjemahan baru ditulis sendiri hanya bila prototipe tidak punya, dan ditinjau penutur asli |
 | 11 | Dial: ENERGY 2 / RHYTHM 3 / MOTION 2 ([`../ui/motion.md`](../ui/motion.md)), tiap halaman punya komposisi sendiri di bawah kepala halaman yang seragam | Tidak kaku, tetapi tetap dikenali sebagai satu situs |
 | 12 | Menu enam item sebaris mulai lebar `lg`, dengan pemilih bahasa berupa dropdown `<details>` yang menampilkan bahasa aktif. Di bawah `lg`, menu dan bahasa masuk ke panel "Menu" | Enam item ditambah lima bahasa tidak muat sebaris di lebar tablet |
-| 13 | Akses data statis lewat satu kelas `LandingContent` (kategori, artikel, anak perusahaan, menu). Diganti sumber database di L4 tanpa menyentuh controller dan view | Satu titik pergantian |
-| 14 | Catatan "konten contoh" memakai satu kunci `landing.sample_note` yang tidak menyebut jenis konten | Dipakai di artikel dan anak perusahaan |
+| 13 | Akses data statis lewat satu kelas `LandingContent` (kategori, anak perusahaan, menu). Artikel lewat `LandingArticles`. Diganti sumber database di L4 tanpa menyentuh controller dan view | Satu titik pergantian |
+| 14 | Catatan "konten contoh" memakai satu kunci `landing.sample_note` yang tidak menyebut jenis konten | Dipakai di anak perusahaan dan halaman tentang |
 
 ## Halaman
 
@@ -31,7 +31,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | Products | `/{locale}/products` | 13 kategori sebagai daftar bertautan ke halaman kategori |
 | Kategori | `/{locale}/products/{category}` | Nama kategori, daftar proses (tanpa tautan), kategori lain |
 | Services | `/{locale}/services` | Tiga layanan, dan "How we work" empat langkah berurutan (Enquiry, Spec review, Process and supply, Delivery) |
-| Articles | `/{locale}/articles` | Daftar artikel contoh dengan filter jenis |
+| Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu dengan filter jenis. 404 bila bahasa itu belum punya artikel terbit |
 | Artikel | `/{locale}/articles/{slug}` | Judul, jenis, tanggal, isi, artikel terkait |
 | Contact | `/{locale}/contact` | Data kontak yang dikonfigurasi dan tombol WhatsApp bila ada |
 
@@ -41,7 +41,8 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 
 - `{category}` dan `{slug}` dibatasi pada daftar di config. Nilai lain menghasilkan 404, dan nilainya tidak dipakai untuk membentuk jalur berkas atau query.
 - Parameter `?type=` hanya menerima `article` atau `news`, nilai lain diabaikan (menampilkan semua).
-- Konten contoh nonaktif: route artikel 404, tautan menu dan beranda hilang, bagian anak perusahaan tidak dirender.
+- Konten contoh nonaktif: bagian anak perusahaan tidak dirender.
+- Bahasa tanpa artikel terbit: route artikel 404, serta tautan menu dan bagian beranda hilang (A2).
 - Tautan Google Maps dibuat dari data anak perusahaan, dibuka dengan `rel="noopener noreferrer"` dan jelas ditandai sebagai tautan luar.
 - Tombol WhatsApp memakai `https://wa.me/<nomor>` dari konfigurasi dan hanya dirender bila nomor diisi.
 - Setiap halaman menyetel judul `<title>` per halaman dan `hreflang` serta `canonical` seperti kerangka. Deskripsi meta menyusul di L6.
@@ -51,7 +52,7 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 
 - Controller invokable atau resource di `app/Http/Controllers/Landing`: `AboutController`, `ProductController` (`index`, `show`), `ServiceController`, `ArticleController` (`index`, `show`), `ContactController`.
 - Route di `routes/landing/{about,products,services,articles,contact}.php`. Resource dipakai untuk products dan articles.
-- `config/landing.php` ditambah: `sample_content`, `categories[].processes`, `articles`, `subsidiaries`, `contact.address`, `contact.hours`, `contact.whatsapp` (env `LANDING_SAMPLE_CONTENT`, `LANDING_CONTACT_ADDRESS`, `LANDING_CONTACT_HOURS`, `LANDING_CONTACT_WHATSAPP`).
+- `config/landing.php` ditambah: `sample_content`, `categories[].processes`, `subsidiaries`, `contact.address`, `contact.hours`, `contact.whatsapp` (env `LANDING_SAMPLE_CONTENT`, `LANDING_CONTACT_ADDRESS`, `LANDING_CONTACT_HOURS`, `LANDING_CONTACT_WHATSAPP`).
 - `app/Services/Landing/LandingContent.php`: akses kategori, artikel, anak perusahaan, dan daftar menu. `SetLandingLocale` kini melepas parameter `locale` dari route setelah dipakai, supaya controller hanya menerima parameternya sendiri.
 - `lang/{en,id,zh,ar,ja}/pages.php` dan `articles.php`. Kunci `lang/*/landing.php` untuk menu ditambah.
 - View di `resources/views/landing/pages/` (satu berkas per halaman) dan komponen `x-landing.page-header` serta `x-landing.cta` (ajakan, dipakai juga beranda).

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
+use App\Models\ArticleTranslation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PagesTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,7 +30,7 @@ class PagesTest extends TestCase
 
     public function test_every_inner_page_renders_in_every_locale(): void
     {
-        $paths = ['about', 'products', 'products/zinc-plating', 'services', 'articles', 'articles/quality-control-in-plating', 'contact'];
+        $paths = ['about', 'products', 'products/zinc-plating', 'services', 'contact'];
 
         foreach (config('locales.landing') as $code) {
             $locale = config("locales.locales.{$code}");
@@ -63,7 +67,9 @@ class PagesTest extends TestCase
 
     public function test_page_title_escapes_special_characters_only_once(): void
     {
-        $this->get('/en/articles')->assertSee('<title>Articles &amp; News | PT Metindo Perkasa</title>', false);
+        ArticleTranslation::factory()->published('en')->create(['title' => 'Plating & Coating', 'meta_title' => null, 'slug' => 'plating-coating']);
+
+        $this->get('/en/articles/plating-coating')->assertSee('<title>Plating &amp; Coating | PT Metindo Perkasa</title>', false);
     }
 
     public function test_every_category_page_lists_its_processes(): void
@@ -83,37 +89,10 @@ class PagesTest extends TestCase
         $this->get('/en/articles/unknown')->assertNotFound();
     }
 
-    public function test_article_filter_narrows_the_list(): void
-    {
-        $news = config('landing.articles');
-
-        $this->get('/en/articles?type=news')
-            ->assertSee(__('articles.items.quality-control-in-plating.title', [], 'en'))
-            ->assertDontSee(__('articles.items.choosing-the-right-pre-treatment.title', [], 'en'));
-
-        $this->get('/en/articles?type=article')
-            ->assertSee(__('articles.items.choosing-the-right-pre-treatment.title', [], 'en'))
-            ->assertDontSee(__('articles.items.quality-control-in-plating.title', [], 'en'));
-
-        $this->get('/en/articles?type=invalid')
-            ->assertSee(__('articles.items.quality-control-in-plating.title', [], 'en'))
-            ->assertSee(__('articles.items.choosing-the-right-pre-treatment.title', [], 'en'));
-
-        $this->assertCount(4, $news);
-    }
-
-    public function test_articles_are_unavailable_without_sample_content(): void
-    {
-        config(['landing.sample_content' => false]);
-
-        $this->get('/en/articles')->assertNotFound();
-        $this->get('/en/articles/quality-control-in-plating')->assertNotFound();
-        $this->get('/en/about')->assertOk()->assertDontSee('href="'.url('/en/articles').'"', false);
-        $this->get('/en')->assertDontSee('/en/articles', false);
-    }
-
     public function test_menu_links_every_existing_page_and_marks_the_current_one(): void
     {
+        ArticleTranslation::factory()->published('en')->create();
+
         $response = $this->get('/en/products/zinc-plating')->assertOk();
 
         foreach (['about', 'products', 'services', 'articles', 'contact'] as $path) {

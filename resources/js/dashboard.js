@@ -77,3 +77,7 @@ if (sidebar && toggle) {
         }
     });
 }
+
+if (document.querySelector('[data-tiptap]')) {
+    import('./dashboard/editor.js');
+}

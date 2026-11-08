@@ -7,7 +7,8 @@ Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan
 | Fase | Fitur | Dokumen | Branch | Status |
 | --- | --- | --- | --- | --- |
 | A1 | Kelola akun: daftar, membuat, mengubah, atur ulang kata sandi, dan nonaktifkan akun | [`user-management/overview.md`](user-management/overview.md) | `feat/user-management` | Selesai, ter-merge ke `development` |
-| A2 | Kelola konten landing (kategori, produk, proses, layanan, klien, mitra, artikel, video) dalam banyak bahasa | belum ditulis (fase L4 di [`../../landing/implementation-plan.md`](../../landing/implementation-plan.md)) | `feat/landing-content` | Rencana. Butuh D1 dan D2 |
+| A2 | Kelola artikel dan berita landing dalam lima bahasa, terbit per bahasa | [`articles/overview.md`](articles/overview.md) | `feat/articles` | Selesai di kode, menunggu tinjauan |
+| A3 | Kelola konten landing lainnya (kategori, produk, layanan, klien, mitra, video, kalimat beranda) | belum ditulis (fase L4 di [`../../landing/implementation-plan.md`](../../landing/implementation-plan.md)) | `feat/landing-content` | Ditunda, isi landing belum final |
 
 ## Keputusan
 

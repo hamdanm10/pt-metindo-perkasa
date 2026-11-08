@@ -5,6 +5,4 @@ declare(strict_types=1);
 use App\Http\Controllers\Landing\ArticleController;
 use Illuminate\Support\Facades\Route;
 
-Route::resource('articles', ArticleController::class)
-    ->only(['index', 'show'])
-    ->where(['article' => implode('|', array_column(config('landing.articles'), 'slug'))]);
+Route::resource('articles', ArticleController::class)->only(['index', 'show']);
