@@ -14,6 +14,7 @@ return [
         'users' => 'Akun',
         'articles' => 'Artikel',
         'products' => 'Produk',
+        'services' => 'Layanan',
     ],
     'home' => [
         'title' => 'Beranda',

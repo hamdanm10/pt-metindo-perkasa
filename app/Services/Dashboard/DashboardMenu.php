@@ -24,6 +24,7 @@ class DashboardMenu
             ['route' => 'app.users.index', 'label' => 'dashboard.nav.users', 'active' => 'app.users.*', 'roles' => [Role::Admin]],
             ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'roles' => [Role::Admin]],
             ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'roles' => [Role::Admin]],
+            ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'roles' => [Role::Admin]],
             ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'roles' => Role::customerArea()],
         ];
     }

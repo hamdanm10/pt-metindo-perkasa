@@ -14,6 +14,7 @@ return [
         'users' => 'Accounts',
         'articles' => 'Articles',
         'products' => 'Products',
+        'services' => 'Services',
     ],
     'home' => [
         'title' => 'Home',
