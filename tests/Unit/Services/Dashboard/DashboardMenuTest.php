@@ -14,7 +14,7 @@ class DashboardMenuTest extends TestCase
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->admin()->make());
 
-        $this->assertSame(['app.dashboard', 'app.users.index', 'app.articles.index', 'app.products.index'], array_column($menu, 'route'));
+        $this->assertSame(['app.dashboard', 'app.users.index', 'app.articles.index', 'app.products.index', 'app.services.index'], array_column($menu, 'route'));
     }
 
     public function test_staff_gets_only_the_home(): void

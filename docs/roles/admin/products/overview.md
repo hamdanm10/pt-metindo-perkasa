@@ -1,6 +1,6 @@
 # Kelola Produk (A3)
 
-Admin menambah dan mengubah produk dari dashboard. Untuk saat ini produk hanya punya **nama** dan **deskripsi**. Belum tampil di landing: katalog landing masih memakai kategori di `config/landing.php` sampai fitur kelola konten landing (A4) dirancang. Status fase di [`../implementation-plan.md`](../implementation-plan.md).
+Admin menambah dan mengubah produk dari dashboard. Untuk saat ini produk hanya punya **nama** dan **deskripsi**. Belum tampil di landing: katalog landing masih memakai kategori di `config/landing.php` sampai fitur kelola konten landing (A5) dirancang. Status fase di [`../implementation-plan.md`](../implementation-plan.md).
 
 ## Keputusan
 
@@ -8,7 +8,7 @@ Admin menambah dan mengubah produk dari dashboard. Untuk saat ini produk hanya p
 | --- | --- | --- |
 | 1 | Hanya admin yang mengelola, di `/app/products`. Staf dan customer mendapat 403, dijaga middleware dan `ProductPolicy` | Keputusan client untuk pengelolaan konten |
 | 2 | Kolom: `name` (wajib, maks 255) dan `description` (opsional, maks 5000) | Cukup untuk tahap ini |
-| 3 | Satu bahasa saja, belum diterjemahkan ke lima bahasa landing | Rancangan multi-bahasa menunggu konsep konten landing (A4) |
+| 3 | Satu bahasa saja, belum diterjemahkan ke lima bahasa landing | Rancangan multi-bahasa menunggu konsep konten landing (A5) |
 | 4 | Belum ada hapus, kategori, gambar, TDS, atau harga | Ditunda sampai kebutuhannya jelas |
 | 5 | Livewire: `Products\Index` dan `Products\Editor` (tambah dan ubah satu komponen), logic di `SaveProduct` dan `ListProducts` | Mengikuti pola A1 dan artikel |
 
@@ -32,4 +32,4 @@ Akses per peran dan tamu (halaman dan aksi Livewire), menu hanya untuk admin, ta
 
 ## Ditunda
 
-- Terjemahan lima bahasa, hapus, kategori dan proses, gambar, TDS, harga, dan tampil di landing (A4).
+- Terjemahan lima bahasa, hapus, kategori dan proses, gambar, TDS, harga, dan tampil di landing (A5).
