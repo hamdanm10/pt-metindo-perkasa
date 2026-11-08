@@ -8,25 +8,27 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 | --- | --- | --- |
 | 1 | Satu tata letak dipakai kedua area (`/app` dan `/customer`). Isi menu berbeda per peran | Satu desain, satu perawatan |
 | 2 | **Livewire tidak dipasang di D2.** Kerangka memakai Blade biasa dan dibuat sebagai komponen tata letak yang bisa dipakai halaman Livewire. Livewire dipasang saat fitur interaktif pertama (A1, kelola akun) | D2 tidak punya interaksi yang membutuhkannya. Tidak memasang dependensi yang belum dipakai |
-| 3 | Pemilih bahasa memakai formulir `POST` biasa ke `/{area}/locale`, bukan komponen Livewire | Berfungsi juga di halaman login (tamu), tanpa JavaScript, dan mudah diuji |
+| 3 | Pemilih bahasa memakai formulir `POST` biasa ke `/{area}/locale`, bukan komponen Livewire. Di dashboard tampil sebagai **dropdown bahasa**, di halaman login sebagai tombol berdampingan | Berfungsi juga di halaman login (tamu), tanpa JavaScript, dan mudah diuji |
 | 4 | Pilihan bahasa disimpan di `users.locale` bila sudah masuk, dan di sesi bila tamu. Bahasa yang dipilih di halaman login (sesi) menjadi bahasa akun saat pengguna masuk | Mengikuti aturan locale di `CLAUDE.md`. Pilihan terbaru yang eksplisit tidak boleh dikalahkan oleh nilai tersimpan |
 | 5 | Menu awal hanya "Beranda". Tombol keluar ada di bilah atas | Tidak ada tautan ke halaman yang belum ada |
 | 6 | Beranda berisi sapaan, nama, dan peran, plus keadaan kosong yang menjelaskan bahwa fitur akan muncul di sini | Tidak ada angka atau ringkasan karangan |
 | 7 | Dial desain dashboard: ENERGY 1 / RHYTHM 1 / MOTION 1. Tenang, padat, dan jelas. Karakter merek hanya lewat warna aksen dan penanda miring pada menu aktif | Dashboard dipakai kerja, bukan dipamerkan |
 | 8 | Menu di ponsel memakai panel `<details>` seperti landing, tanpa pustaka JavaScript | Konsisten dan ringan |
-| 9 | Komponen yang dibuat hanya yang dipakai di D2: tata letak, kepala halaman, kartu, dan pemilih bahasa. Komponen formulir dan tabel dibuat bersama fitur pertama yang membutuhkannya | Tidak membangun yang belum dipakai |
+| 9 | Isi halaman dan bilah atas berada dalam **kontainer** berlebar maksimal `max-w-6xl` dan di tengah, supaya tetap terbaca di layar lebar dan sejajar dengan bilah atas | Isi tidak melebar tanpa batas di monitor besar |
+| 10 | Bilah atas memakai dua dropdown: **bahasa** (nama bahasa aktif, atau kodenya di ponsel) dan **pengguna** (inisial, nama, peran, lalu email, peran, dan Keluar di panelnya). Tombol Keluar tidak lagi berdiri sendiri | Bilah atas lebih ringkas dan memberi tempat untuk menu akun kelak |
+| 11 | Komponen yang dibuat hanya yang dipakai: tata letak, kepala halaman, kartu, pemilih bahasa untuk halaman login, dropdown bahasa, dan dropdown pengguna. Komponen formulir dan tabel dibuat bersama fitur pertama yang membutuhkannya | Tidak membangun yang belum dipakai |
 
 ## Tampilan
 
-- **Desktop:** sidebar tetap di kiri berlatar `ink` dengan logo putih dan menu. Item aktif ditandai garis miring merah (selaras landing). Bilah atas putih di atas konten: judul halaman di kiri, pemilih bahasa dan menu pengguna (nama, peran, keluar) di kanan. Area konten berlatar `lavender` dengan kartu putih.
-- **Ponsel:** sidebar disembunyikan. Bilah atas berisi logo dan tombol "Menu" merah yang membuka panel berisi menu, pemilih bahasa, dan keluar.
+- **Desktop:** sidebar tetap di kiri berlatar `ink` dengan logo putih dan menu. Item aktif ditandai garis miring merah (selaras landing). Bilah atas putih di atas konten, dengan dropdown bahasa dan dropdown pengguna di kanan, sejajar dengan tepi kanan kontainer isi. Area konten berlatar `lavender` dengan kartu putih di dalam kontainer.
+- **Ponsel:** sidebar disembunyikan. Bilah atas berisi logo, dropdown bahasa (kode `EN` atau `ID`), avatar pengguna, dan tombol berikon tiga garis berwarna merah yang membuka panel berisi menu.
 - Judul memakai font tampilan (Bricolage Grotesque untuk Latin), teks isi Figtree. Token warna sama dengan landing.
 - Kontras tiap pasangan baru dicek. Teks merah di atas latar `ink` tidak dipakai. Item aktif di sidebar memakai putih tebal dengan penanda merah.
 
 ## Alur
 
 1. Pengguna masuk dan tiba di beranda dashboard areanya.
-2. Pemilih bahasa mengirim `POST /{area}/locale` dengan `locale` (`en` atau `id`). Nilai lain ditolak. Pengguna yang sudah masuk disimpan ke `users.locale`, dan semua pengunjung disimpan ke sesi.
+2. Pemilih bahasa (dropdown di dashboard) mengirim `POST /{area}/locale` dengan `locale` (`en` atau `id`). Nilai lain ditolak. Pengguna yang sudah masuk disimpan ke `users.locale`, dan semua pengunjung disimpan ke sesi.
 3. Pengguna dikembalikan ke halaman sebelumnya, dan seluruh halaman kini berbahasa pilihan.
 
 ## Aturan keamanan dan kasus tepi
@@ -39,7 +41,7 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 
 ## Struktur kode
 
-- `resources/views/components/dashboard/`: `layout.blade.php` (sidebar, bilah atas, panel ponsel, tautan lewati-ke-konten), `page-header.blade.php`, `card.blade.php`, dan `locale-switcher.blade.php`. Pemilih bahasa juga dipakai di halaman login.
+- `resources/views/components/dashboard/`: `layout.blade.php` (sidebar, bilah atas, panel menu ponsel, kontainer isi, tautan lewati-ke-konten), `page-header.blade.php`, `card.blade.php`, `language-dropdown.blade.php`, `user-menu.blade.php`, dan `locale-switcher.blade.php` (tombol berdampingan, dipakai di halaman login).
 - `app/Services/Dashboard/DashboardMenu.php`: daftar item menu dan penyaringan per peran, satu-satunya tempat yang bertambah saat fitur baru jadi.
 - `app/Http/Controllers/Dashboard/LocaleController.php` (invokable), `app/Http/Requests/Dashboard/UpdateLocaleRequest.php`, dan Action `app/Actions/Users/UpdateLocale.php`.
 - Route `routes/app/locale.php` dan `routes/customer/locale.php` (dapat diakses tamu).
@@ -54,6 +56,7 @@ Langkah: teks dan daftar menu, komponen tata letak, pemilih bahasa dan route, ha
 Test (feature) yang harus ada:
 
 - Beranda tiap peran menampilkan sapaan dengan nama, peran dalam bahasa aktif, dan keadaan kosong.
+- Bilah atas memuat dropdown pengguna (inisial, email, peran, dan formulir Keluar), dropdown bahasa dengan kedua bahasa dan penanda aktif, dan isi berada dalam kontainer.
 - Menu admin, staf, dan customer memuat hanya item yang diizinkan dan route yang ada. Item aktif bertanda `aria-current="page"`.
 - Pemilih bahasa: mengganti ke `id` menyimpan `users.locale` dan sesi untuk pengguna masuk, hanya sesi untuk tamu, menolak `zh` dan nilai tak dikenal, dan mengarahkan kembali.
 - Halaman dashboard memakai `<html lang>` sesuai locale, dan teks berganti setelah bahasa diubah.

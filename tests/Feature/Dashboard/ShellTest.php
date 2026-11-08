@@ -25,6 +25,34 @@ class ShellTest extends TestCase
         }
     }
 
+    public function test_the_top_bar_has_a_user_dropdown_with_the_account_details_and_sign_out(): void
+    {
+        $user = User::factory()->staff()->create(['name' => 'Rina Wijaya', 'email' => 'rina@example.test']);
+
+        $this->actingAs($user)->get('/app/dashboard')
+            ->assertSee('aria-label="'.__('dashboard.account_menu').'"', false)
+            ->assertSee('rina@example.test')
+            ->assertSee('RW')
+            ->assertSee('action="'.url('/app/logout').'"', false)
+            ->assertSee(__('auth.logout'));
+    }
+
+    public function test_the_top_bar_has_a_language_dropdown_listing_both_languages(): void
+    {
+        $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')
+            ->assertSee('aria-label="'.__('dashboard.language').'"', false)
+            ->assertSee('English')
+            ->assertSee('Bahasa Indonesia')
+            ->assertSee('action="'.url('/app/locale').'"', false)
+            ->assertSee('aria-current="true"', false);
+    }
+
+    public function test_the_content_sits_in_a_centered_container(): void
+    {
+        $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')
+            ->assertSee('mx-auto w-full max-w-6xl', false);
+    }
+
     public function test_the_menu_lists_only_the_area_home_and_marks_it_current(): void
     {
         $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')
