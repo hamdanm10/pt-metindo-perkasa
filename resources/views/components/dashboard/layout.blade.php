@@ -25,11 +25,16 @@
     </a>
 
     <div class="min-h-screen lg:grid lg:grid-cols-[16rem_minmax(0,1fr)]">
-        <aside class="hidden bg-ink text-white lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col" style="--focus-ring: #ffffff">
-            <div class="px-6 py-6">
+        <div id="sidebar-backdrop" class="fixed inset-0 z-40 bg-ink/50 lg:hidden" data-sidebar-close aria-hidden="true"></div>
+
+        <aside id="sidebar" class="fixed inset-y-0 start-0 z-50 flex w-64 flex-col bg-ink text-white lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-auto" style="--focus-ring: #ffffff">
+            <div class="flex items-center justify-between px-6 py-6">
                 <a href="{{ route($user->role->homeRoute()) }}" class="inline-flex rounded">
                     <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-8 w-auto">
                 </a>
+                <button type="button" data-sidebar-close class="-me-3 inline-flex size-11 items-center justify-center rounded-lg hover:bg-white/10 lg:hidden" aria-label="{{ __('dashboard.close_menu') }}">
+                    <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                </button>
             </div>
             <nav aria-label="{{ __('dashboard.menu') }}" class="flex-1 px-3">
                 <ul class="space-y-1">
@@ -46,32 +51,19 @@
             <header class="sticky top-0 z-30 border-b border-ink/10 bg-white">
                 <div class="px-4 py-2 lg:px-8">
                 <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-2">
-                    <a href="{{ route($user->role->homeRoute()) }}" class="inline-flex rounded lg:hidden">
-                        <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-6 w-auto sm:h-8">
-                    </a>
+                    <div class="flex items-center gap-3">
+                        <button type="button" data-sidebar-toggle aria-controls="sidebar" aria-expanded="false" aria-label="{{ __('dashboard.open_menu') }}"
+                                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-brand-600 text-white hover:bg-brand-700 lg:hidden">
+                            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                        </button>
+                        <a href="{{ route($user->role->homeRoute()) }}" class="hidden rounded sm:inline-flex lg:hidden">
+                            <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-8 w-auto">
+                        </a>
+                    </div>
 
                     <div class="ms-auto flex items-center gap-1 sm:gap-2">
                         <x-dashboard.language-dropdown :action="route($area.'.locale')" />
                         <x-dashboard.user-menu :user="$user" :area="$area" />
-
-                        <details class="relative lg:hidden" data-dismissible>
-                            <summary class="inline-flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-lg bg-brand-600 text-white hover:bg-brand-700 [&::-webkit-details-marker]:hidden"
-                                     aria-label="{{ __('dashboard.menu') }}">
-                                <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-                            </summary>
-                            <div class="absolute end-0 top-full z-40 mt-2 w-60 max-w-[calc(100vw-2rem)] rounded-2xl bg-white p-2 shadow-xl ring-1 ring-ink/10">
-                                <nav aria-label="{{ __('dashboard.menu') }}">
-                                    <ul>
-                                        @foreach ($menu as $item)
-                                            <li>
-                                                <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif
-                                                   class="flex min-h-11 items-center rounded-lg px-3 text-base font-semibold hover:bg-lavender aria-[current=page]:bg-lavender aria-[current=page]:font-bold aria-[current=page]:text-brand-700">{{ __($item['label']) }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </nav>
-                            </div>
-                        </details>
                     </div>
                 </div>
                 </div>

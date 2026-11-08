@@ -47,6 +47,23 @@ class ShellTest extends TestCase
             ->assertSee('aria-current="true"', false);
     }
 
+    public function test_the_sidebar_is_a_drawer_on_small_screens_with_a_toggle_on_the_left(): void
+    {
+        $response = $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')
+            ->assertSee('id="sidebar"', false)
+            ->assertSee('data-sidebar-toggle', false)
+            ->assertSee('aria-controls="sidebar"', false)
+            ->assertSee('aria-expanded="false"', false)
+            ->assertSee('aria-label="'.__('dashboard.open_menu').'"', false)
+            ->assertSee('aria-label="'.__('dashboard.close_menu').'"', false)
+            ->assertSee('id="sidebar-backdrop"', false);
+
+        $html = (string) $response->getContent();
+
+        $this->assertLessThan(strpos($html, 'aria-label="'.__('dashboard.language').'"'), strpos($html, 'data-sidebar-toggle'));
+        $this->assertStringNotContainsString('<details class="relative lg:hidden"', $html);
+    }
+
     public function test_the_content_sits_in_a_centered_container(): void
     {
         $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')

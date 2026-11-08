@@ -5,6 +5,8 @@ declare(strict_types=1);
 return [
     'skip_to_content' => 'Skip to content',
     'menu' => 'Menu',
+    'open_menu' => 'Open menu',
+    'close_menu' => 'Close menu',
     'language' => 'Language',
     'account_menu' => 'Account menu',
     'nav' => [
