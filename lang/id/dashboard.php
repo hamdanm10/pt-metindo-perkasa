@@ -8,6 +8,7 @@ return [
     'language' => 'Bahasa',
     'nav' => [
         'home' => 'Beranda',
+        'users' => 'Akun',
     ],
     'home' => [
         'title' => 'Beranda',

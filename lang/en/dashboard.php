@@ -8,6 +8,7 @@ return [
     'language' => 'Language',
     'nav' => [
         'home' => 'Home',
+        'users' => 'Accounts',
     ],
     'home' => [
         'title' => 'Home',

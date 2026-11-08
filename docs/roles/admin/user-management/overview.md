@@ -43,10 +43,10 @@ Admin mengelola akun staf, customer, dan admin lain dari dashboard: daftar denga
 
 ## Struktur kode
 
-- Pasang `livewire/livewire` (v4). Daftarkan persistent middleware di `AppServiceProvider`.
+- Pasang `livewire/livewire` (v4). Daftarkan persistent middleware di `AppServiceProvider`. `dashboard.css` memindai tampilan penomoran Livewire supaya kelas Tailwind-nya ikut dibuat.
 - Livewire: `app/Livewire/Users/Index.php`, `Create.php`, dan `Edit.php`, dengan objek formulir `app/Livewire/Forms/UserForm.php`. View di `resources/views/livewire/users/`.
-- Action di `app/Actions/Users/`: `CreateUser` (sudah ada), `UpdateUser`, `ResetUserPassword`, dan `SetUserActive`. Tanpa `request()`, dan aturan admin terakhir di sini.
-- `app/Policies/UserPolicy.php`. Route di `routes/app/users.php` dengan `role:admin`.
+- Action di `app/Actions/Users/`: `CreateUser` (sudah ada, kini menerima bahasa), `UpdateUser`, `ResetUserPassword`, `SetUserActive`, dan `ListUsers` (pencarian, penyaring, penomoran). Tanpa `request()`, dan aturan admin terakhir di sini. `app/Services/Auth/SessionRevoker.php` mengakhiri sesi akun dan dipakai dua Action.
+- `app/Policies/UserPolicy.php` (`setActive` menolak diri sendiri). Route di `routes/app/users.php` dengan `role:admin`. Scope `User::activeAdmins()` dipakai aturan admin terakhir, dan trait `ResolvesActor` menyediakan pengguna yang sedang masuk di komponen.
 - `DashboardMenu` ditambah item "Akun" untuk admin.
 - Komponen Blade di `resources/views/components/dashboard/` dan `form/`: bidang formulir, pilihan, tombol, lencana, pesan, dan tabel.
 - `lang/{en,id}/users.php`, ditambah kolom di `lang/id/validation.php`.
@@ -64,7 +64,7 @@ Test yang harus ada:
 - Atur ulang kata sandi: kata sandi lama tidak berlaku, yang baru berlaku, dan sesi akun itu berakhir.
 - Nonaktifkan dan aktifkan: akun nonaktif tidak bisa masuk, sesinya berakhir saat itu juga, dan aktifkan mengembalikan akses.
 - Admin tidak bisa menonaktifkan atau menurunkan dirinya, dan tidak bisa menonaktifkan atau menurunkan admin aktif terakhir.
-- Persistent middleware: aksi Livewire dari admin yang kemudian dinonaktifkan atau diturunkan perannya ditolak.
+- Persistent middleware: test otomatis memastikan `EnsureRole` dan `SetDashboardLocale` terdaftar. Perilakunya (aksi Livewire dari admin yang sudah diturunkan perannya ditolak dengan 403) diperiksa di browser, karena test Livewire tidak melewati titik akhir pembaruan.
 - Teks tampil dalam `en` dan `id`, dan kunci `lang/*/users.php` identik.
 - Unit: setiap Action.
 
