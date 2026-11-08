@@ -13,7 +13,7 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 | 5 | Menu awal hanya "Beranda". Tombol keluar ada di bilah atas | Tidak ada tautan ke halaman yang belum ada |
 | 6 | Beranda berisi sapaan, nama, dan peran, plus keadaan kosong yang menjelaskan bahwa fitur akan muncul di sini | Tidak ada angka atau ringkasan karangan |
 | 7 | Dial desain dashboard: ENERGY 1 / RHYTHM 1 / MOTION 1. Tenang, padat, dan jelas. Karakter merek hanya lewat warna aksen dan penanda miring pada menu aktif | Dashboard dipakai kerja, bukan dipamerkan |
-| 8 | Menu di ponsel memakai panel `<details>` seperti landing, tanpa pustaka JavaScript | Konsisten dan ringan |
+| 8 | Di bawah lebar `lg`, sidebar menjadi **laci** yang meluncur masuk dari kiri ke kanan (transisi CSS 0,3 detik) saat tombol tiga garis di **sisi kiri** bilah atas ditekan, dengan tampilan yang sama seperti sidebar desktop dan latar gelap di belakangnya. Ditutup dengan tombol tutup, klik latar, atau Escape | Tampilan menu di ponsel sama dengan desktop, dan gerak sederhana tanpa pustaka |
 | 9 | Isi halaman dan bilah atas berada dalam **kontainer** berlebar maksimal `max-w-6xl` dan di tengah, supaya tetap terbaca di layar lebar dan sejajar dengan bilah atas | Isi tidak melebar tanpa batas di monitor besar |
 | 10 | Bilah atas memakai dua dropdown: **bahasa** (nama bahasa aktif, atau kodenya di ponsel) dan **pengguna** (inisial, nama, peran, lalu email, peran, dan Keluar di panelnya). Tombol Keluar tidak lagi berdiri sendiri | Bilah atas lebih ringkas dan memberi tempat untuk menu akun kelak |
 | 11 | Komponen yang dibuat hanya yang dipakai: tata letak, kepala halaman, kartu, pemilih bahasa untuk halaman login, dropdown bahasa, dan dropdown pengguna. Komponen formulir dan tabel dibuat bersama fitur pertama yang membutuhkannya | Tidak membangun yang belum dipakai |
@@ -21,7 +21,7 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 ## Tampilan
 
 - **Desktop:** sidebar tetap di kiri berlatar `ink` dengan logo putih dan menu. Item aktif ditandai garis miring merah (selaras landing). Bilah atas putih di atas konten, dengan dropdown bahasa dan dropdown pengguna di kanan, sejajar dengan tepi kanan kontainer isi. Area konten berlatar `lavender` dengan kartu putih di dalam kontainer.
-- **Ponsel:** sidebar disembunyikan. Bilah atas berisi logo, dropdown bahasa (kode `EN` atau `ID`), avatar pengguna, dan tombol berikon tiga garis berwarna merah yang membuka panel berisi menu.
+- **Ponsel:** bilah atas berisi tombol tiga garis merah di kiri (diikuti logo bila lebar cukup), serta dropdown bahasa (kode `EN` atau `ID`) dan avatar pengguna di kanan. Tombol tiga garis membuka sidebar sebagai laci dari kiri: latar gelap di belakangnya meredup, gulir halaman dikunci, fokus pindah ke laci dan terkurung di dalamnya, dan Escape atau klik latar menutupnya lalu mengembalikan fokus ke tombol. Laci yang tertutup tidak bisa difokuskan. Dengan `prefers-reduced-motion`, laci muncul tanpa animasi. Bila layar melebar ke `lg`, laci otomatis menutup dan sidebar menjadi tetap.
 - Judul memakai font tampilan (Bricolage Grotesque untuk Latin), teks isi Figtree. Token warna sama dengan landing.
 - Kontras tiap pasangan baru dicek. Teks merah di atas latar `ink` tidak dipakai. Item aktif di sidebar memakai putih tebal dengan penanda merah.
 
@@ -41,12 +41,12 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 
 ## Struktur kode
 
-- `resources/views/components/dashboard/`: `layout.blade.php` (sidebar, bilah atas, panel menu ponsel, kontainer isi, tautan lewati-ke-konten), `page-header.blade.php`, `card.blade.php`, `language-dropdown.blade.php`, `user-menu.blade.php`, dan `locale-switcher.blade.php` (tombol berdampingan, dipakai di halaman login).
+- `resources/views/components/dashboard/`: `layout.blade.php` (sidebar yang menjadi laci di ponsel, bilah atas, kontainer isi, tautan lewati-ke-konten), `page-header.blade.php`, `card.blade.php`, `language-dropdown.blade.php`, `user-menu.blade.php`, dan `locale-switcher.blade.php` (tombol berdampingan, dipakai di halaman login).
 - `app/Services/Dashboard/DashboardMenu.php`: daftar item menu dan penyaringan per peran, satu-satunya tempat yang bertambah saat fitur baru jadi.
 - `app/Http/Controllers/Dashboard/LocaleController.php` (invokable), `app/Http/Requests/Dashboard/UpdateLocaleRequest.php`, dan Action `app/Actions/Users/UpdateLocale.php`.
 - Route `routes/app/locale.php` dan `routes/customer/locale.php` (dapat diakses tamu).
 - `resources/views/dashboard/home.blade.php` menggantikan `auth/home.blade.php`. `HomeController` kedua area tetap, hanya mengganti view dan menyerahkan area.
-- `resources/js/dashboard.js` (menutup panel dengan Escape dan klik di luar) didaftarkan di `vite.config.js`, dan `resources/css/dashboard.css` diperluas.
+- `resources/js/dashboard.js` (menutup dropdown dengan Escape dan klik di luar, serta membuka dan menutup laci sidebar dengan pengurungan fokus) didaftarkan di `vite.config.js`, dan `resources/css/dashboard.css` diperluas.
 - `lang/{en,id}/dashboard.php`.
 
 ## Langkah dan test
@@ -64,7 +64,7 @@ Test (feature) yang harus ada:
 - Kunci `lang/{en,id}/dashboard.php` identik.
 - Unit: `DashboardMenu` (penyaringan per peran, item tanpa route diabaikan).
 
-Pemeriksaan manual di browser: sidebar dan bilah atas di desktop, panel di ponsel, ganti bahasa, keluar, dan keyboard (Tab, Escape).
+Pemeriksaan manual di browser: sidebar dan bilah atas di desktop, laci sidebar di ponsel (animasi, tutup lewat klik latar dan Escape, fokus), ganti bahasa, keluar, dan keyboard (Tab, Escape).
 
 ## Ditunda
 

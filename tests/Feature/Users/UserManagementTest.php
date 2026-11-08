@@ -114,6 +114,11 @@ class UserManagementTest extends TestCase
         $this->assertSame(30, $component->viewData('users')->total());
     }
 
+    public function test_the_table_scrolls_inside_its_own_wrapper(): void
+    {
+        $this->actingAs($this->admin())->get('/app/users')->assertSee('relative overflow-x-auto', false);
+    }
+
     public function test_admin_creates_an_account(): void
     {
         Livewire::actingAs($this->admin())->test(Create::class)

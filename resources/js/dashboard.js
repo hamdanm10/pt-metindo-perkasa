@@ -18,3 +18,62 @@ document.addEventListener('click', (event) => {
         }
     });
 });
+
+const root = document.documentElement;
+const sidebar = document.getElementById('sidebar');
+const toggle = document.querySelector('[data-sidebar-toggle]');
+
+if (sidebar && toggle) {
+    const isOpen = () => sidebar.hasAttribute('data-open');
+    const focusable = () => sidebar.querySelectorAll('a[href], button:not([disabled])');
+
+    const setOpen = (open) => {
+        sidebar.toggleAttribute('data-open', open);
+        root.toggleAttribute('data-sidebar-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+
+        if (open) {
+            focusable()[0]?.focus();
+        } else {
+            toggle.focus();
+        }
+    };
+
+    toggle.addEventListener('click', () => setOpen(!isOpen()));
+
+    document.querySelectorAll('[data-sidebar-close]').forEach((element) => {
+        element.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (!isOpen()) {
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            setOpen(false);
+        }
+
+        if (event.key === 'Tab') {
+            const items = focusable();
+            const first = items[0];
+            const last = items[items.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
+    });
+
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', (event) => {
+        if (event.matches && isOpen()) {
+            sidebar.removeAttribute('data-open');
+            root.removeAttribute('data-sidebar-open');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+}

@@ -5,6 +5,8 @@ declare(strict_types=1);
 return [
     'skip_to_content' => 'Lewati ke konten',
     'menu' => 'Menu',
+    'open_menu' => 'Buka menu',
+    'close_menu' => 'Tutup menu',
     'language' => 'Bahasa',
     'account_menu' => 'Menu akun',
     'nav' => [
