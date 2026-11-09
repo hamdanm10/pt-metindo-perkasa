@@ -34,7 +34,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <title>{{ $code }} | {{ $title }} | PT Metindo Perkasa</title>
-    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <style>body{margin:0;font-family:system-ui,sans-serif;background:#f3f2ff;color:#1b1f3b}</style>
     {!! $assetTags !!}
 </head>
@@ -47,7 +49,7 @@
 
         <div class="relative mx-auto w-full max-w-5xl px-6 py-16 lg:px-8">
             <a href="{{ $home }}" class="inline-flex rounded">
-                <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-8 w-auto">
+                <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-8 w-auto">
             </a>
 
             <p class="mt-12 text-[clamp(6rem,24vw,13rem)] font-extrabold leading-[0.85] tracking-tighter text-brand-600 rtl:text-right" aria-hidden="true" dir="ltr">{{ $code }}</p>

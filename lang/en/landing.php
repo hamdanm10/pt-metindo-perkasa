@@ -6,6 +6,7 @@ return [
     'skip_to_content' => 'Skip to content',
     'menu' => 'Menu',
     'language' => 'Language',
+    'talk' => 'Let\'s talk',
     'nav' => [
         'home' => 'Home',
         'about' => 'About Us',

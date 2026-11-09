@@ -6,9 +6,9 @@
     <x-landing.page-header :title="__('pages.about.title')" :intro="__('pages.about.intro')" />
 
     <section class="bg-white">
-        <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-28">
+        <div class="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-28">
             <div class="lg:col-span-5">
-                <h2 data-anim="heading" class="text-balance text-3xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
+                <h2 data-anim="heading" class="text-balance text-3xl font-black tracking-tight leading-tight text-ink sm:text-5xl lg:text-6xl">
                     {{ __('pages.about.approach.title') }}
                 </h2>
             </div>
@@ -23,21 +23,21 @@
     </section>
 
     <section class="bg-white pb-20 lg:pb-28">
-        <div class="mx-auto grid max-w-6xl gap-5 px-4 sm:px-6 lg:grid-cols-5 lg:px-8">
-            <div data-anim="card" data-from="start" class="rounded-3xl bg-brand-600 p-8 text-white sm:p-12 lg:col-span-3 lg:rounded-ss-[5rem]">
-                <h2 data-anim="heading" class="text-3xl font-bold">{{ __('pages.about.vision.title') }}</h2>
+        <div class="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-5 lg:px-8">
+            <div data-anim="card" data-from="start" class="rounded-lg bg-brand-600 p-8 text-white sm:p-12 lg:col-span-3">
+                <h2 data-anim="heading" class="text-3xl font-black tracking-tight">{{ __('pages.about.vision.title') }}</h2>
                 <p class="mt-5 max-w-md text-xl text-white">{{ __('pages.about.vision.text') }}</p>
             </div>
-            <div data-anim="card" data-from="end" class="rounded-3xl bg-ink p-8 text-white sm:p-12 lg:col-span-2">
-                <h2 data-anim="heading" class="text-3xl font-bold">{{ __('pages.about.mission.title') }}</h2>
+            <div data-anim="card" data-from="end" class="rounded-lg bg-ink p-8 text-white sm:p-12 lg:col-span-2">
+                <h2 data-anim="heading" class="text-3xl font-black tracking-tight">{{ __('pages.about.mission.title') }}</h2>
                 <p class="mt-5 text-xl text-white">{{ __('pages.about.mission.text') }}</p>
             </div>
         </div>
     </section>
 
     <section class="bg-lavender">
-        <div class="mx-auto grid max-w-6xl gap-6 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
-            <h2 data-anim="heading" class="text-3xl font-bold text-ink lg:col-span-5">{{ __('pages.about.facilities.title') }}</h2>
+        <div class="mx-auto grid max-w-7xl gap-6 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
+            <h2 data-anim="heading" class="text-3xl font-black tracking-tight text-ink lg:col-span-5">{{ __('pages.about.facilities.title') }}</h2>
             <div class="lg:col-span-7">
                 <p class="text-lg text-muted">{{ __('pages.about.facilities.text') }}</p>
                 <x-landing.photo name="about-facilities" ratio="aspect-video" class="mt-8" />
@@ -47,9 +47,9 @@
 
     @if ($subsidiaries)
         <section class="bg-white">
-            <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+            <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
                 <div class="max-w-2xl">
-                    <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-5xl lg:text-6xl">{{ __('pages.about.subsidiaries.title') }}</h2>
+                    <h2 data-anim="heading" class="text-3xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">{{ __('pages.about.subsidiaries.title') }}</h2>
                     <p class="mt-4 text-lg text-muted">{{ __('pages.about.subsidiaries.intro') }}</p>
                     <p class="mt-4 inline-block rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold text-ink">{{ __('landing.sample_note') }}</p>
                 </div>

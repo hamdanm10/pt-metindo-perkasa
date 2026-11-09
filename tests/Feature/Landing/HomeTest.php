@@ -86,30 +86,11 @@ class HomeTest extends TestCase
     {
         $this->get('/en')
             ->assertSee('data-anim="hero-title"', false)
-            ->assertSee('data-anim="hero-art"', false)
-            ->assertSee('data-plate', false)
-            ->assertSee('data-anim="hero-wedge"', false)
-            ->assertSee('data-anim="media"', false)
+            ->assertSee('data-anim="hero-item"', false)
+            ->assertSee('data-anim="heading"', false)
             ->assertSee('data-anim="rows"', false)
-            ->assertSee('data-anim="card"', false)
             ->assertSee("classList.add('anim-hide')", false)
             ->assertSee('__introReady', false);
-    }
-
-    public function test_art_component_shows_its_fallback_when_the_file_is_missing(): void
-    {
-        $html = (string) $this->blade('<x-landing.art name="does-not-exist"><span>fallback</span></x-landing.art>');
-
-        $this->assertStringContainsString('fallback', $html);
-        $this->assertStringNotContainsString('<img', $html);
-    }
-
-    public function test_category_icon_falls_back_to_a_mark_when_the_icon_is_missing(): void
-    {
-        $html = (string) $this->blade('<x-landing.category-icon slug="no-such-icon" />');
-
-        $this->assertStringContainsString('bg-brand-600', $html);
-        $this->assertStringNotContainsString('<img', $html);
     }
 
     public function test_photo_component_follows_files_and_the_sample_content_flag(): void
@@ -137,28 +118,25 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_hero_uses_the_vector_art_when_it_exists(): void
+    public function test_brand_assets_are_the_new_monogram(): void
     {
-        $this->get('/en')->assertSee('images/landing/hero-waves.svg', false);
+        foreach (['images/brand/logo.svg', 'images/brand/logo-white.svg', 'favicon.svg', 'favicon.ico', 'apple-touch-icon.png'] as $file) {
+            $this->assertFileExists(public_path($file));
+        }
+
+        $this->assertStringContainsString('#D6283A', (string) file_get_contents(public_path('images/brand/logo.svg')));
+        $this->assertStringContainsString('#FFFFFF', (string) file_get_contents(public_path('images/brand/logo-white.svg')));
+
+        $this->get('/en')
+            ->assertSee('images/brand/logo-white.svg', false)
+            ->assertSee('rel="icon" href="'.asset('favicon.svg').'"', false)
+            ->assertSee('rel="apple-touch-icon" href="'.asset('apple-touch-icon.png').'"', false);
     }
 
-    public function test_art_component_renders_only_when_the_file_exists(): void
+    public function test_header_links_the_contact_page_as_the_call_to_action(): void
     {
-        $this->assertSame('', trim((string) $this->blade('<x-landing.art name="does-not-exist" />')));
-
-        $name = 'test-art-'.uniqid();
-        $path = public_path("images/landing/{$name}.svg");
-
-        @mkdir(dirname($path), 0777, true);
-        file_put_contents($path, '<svg xmlns="http://www.w3.org/2000/svg"/>');
-
-        try {
-            $html = (string) $this->blade('<x-landing.art name="'.$name.'" />');
-
-            $this->assertStringContainsString("images/landing/{$name}.svg", $html);
-            $this->assertStringContainsString('alt=""', $html);
-        } finally {
-            unlink($path);
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")->assertSee(__('landing.talk', [], $code))->assertSee('href="'.url("/{$code}/contact").'"', false);
         }
     }
 }

@@ -1,44 +1,43 @@
-# Arah Desain Landing: Energik
+# Arah Desain Landing: Mengikuti newengen.com
 
-Arah visual untuk putaran desain landing page berikutnya. Dokumen ini adalah sumber tunggal untuk siapa pun yang mengerjakannya. Fondasi: [`../../shared/design-system/overview.md`](../../shared/design-system/overview.md). Desain umum: [`design.md`](design.md). Gerak: [`motion.md`](motion.md).
+Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun yang mengerjakannya. Fondasi: [`../../shared/design-system/overview.md`](../../shared/design-system/overview.md). Keputusan rinci: [`design.md`](design.md). Gerak: [`motion.md`](motion.md).
 
 ## Permintaan client
 
-- Tidak mau tampilan kaku seperti situs perusahaan profesional biasa. Maunya **energetik**.
-- Tidak ada situs referensi dan tidak ada foto. Gambar memakai **placeholder** sampai aset tersedia.
-- Aset vektor dibuat sendiri di Recraft nanti, setelah desainnya dinilai bagus. Tampilan harus sudah kuat tanpa aset itu.
+- Mengikuti gaya situs referensi `https://newengen.com/`, dengan **palet warna yang sama** (krimson, `ink`, lavender, aksen biru dan indigo).
+- Logo memakai monogram `docs/references/image.svg`, dan favicon dibuat ulang dari logo itu.
+- Tidak memaksakan ilustrasi Recraft yang lama. Ilustrasi atau foto baru diminta bila dibutuhkan.
+- Animasi dan layar intro disederhanakan. Fitur newengen yang tidak punya padanan (spanduk promo, testimoni, buletin) dilewati.
 
-## Keputusan
+## Yang diambil dari newengen
 
-| # | Keputusan | Alasan |
-| --- | --- | --- |
-| 1 | Arah: **lapisan logam (garis miring dan pelat berlapis dari logo) digabung tipografi dan bentuk besar** | Tidak butuh foto, cocok dengan aset Recraft, dan berakar pada logo |
-| 2 | Dial: ENERGY 3 / RHYTHM 3 / MOTION 2 | Energik berarti kontras ukuran, warna berani, dan komposisi tidak simetris. Gerak tetap tanpa pengulangan abadi |
-| 3 | Merah krimson makin dominan sebagai blok warna besar, dengan `ink` sebagai penyeimbang. Biru dan indigo sebagai aksen kedua | Mengikuti logo. Kontras tiap pasangan baru tetap dicek |
-| 4 | Tipografi: judul memakai **Bricolage Grotesque** (Latin) dengan bobot tebal dan jarak huruf rapat, serta lompatan ukuran besar. Mandarin, Arab, dan Jepang memakai Noto Sans seperti teks isi | Karakter lebih kuat tanpa merusak lima bahasa |
-| 5 | Bentuk: **potongan miring** antarbagian dan pada kepala halaman (`.cut-top` dan `.cut-bottom`, dibalik di RTL), pola garis miring dari logo di bagian gelap, dan sedikit lengkung | Tidak kaku, khas perusahaan ini, dan tidak ramai |
-| 6 | Foto memakai komponen `x-landing.photo`: gambar dimuat dari `public/images/landing/photos/<nama>.webp` (atau `.jpg`, `.jpeg`, `.png`) bila ada. Bila belum ada, tampil placeholder berlabel, hanya saat `LANDING_SAMPLE_CONTENT` aktif. Tidak ada foto stok atau gambar buatan sendiri | Aturan: jangan karang aset |
-| 7 | Tempat foto: `about-company`, dan `about-facilities`. Gambar artikel berasal dari thumbnail yang diunggah admin. Ilustrasi vektor: hero (`hero-waves`), poster video, ikon kategori, ilustrasi layanan | Bagian yang seharusnya bergambar |
+| Ciri newengen | Padanan di sini |
+| --- | --- |
+| Hero gelap, judul raksasa huruf kapital Figtree 900, paragraf pendek, dua tombol, panel gambar di kanan | Hero `ink`, panel lavender berisi monogram logo (foto bila sudah ada) |
+| Deretan logo klien di bawah hero | Baris sektor yang dilayani |
+| Kalimat besar sebagai pembuka bagian, lalu kartu | Katalog 13 kategori sebagai kartu bergaris tipis |
+| Layanan sebagai baris besar di latar gelap dengan tombol berpanah | Tiga layanan bernomor 01 sampai 03 |
+| Dinding logo klien | Kotak sektor dan mitra (teks, sampai logo asli tersedia) |
+| Tombol "Let's talk" berulang | Tombol di header, hero, dan blok ajakan krimson |
+| Footer lengkap | Logo, deskripsi, menu, kontak |
 
 ## Batasan yang tetap berlaku
 
-- Lima bahasa, termasuk Arab (RTL). Properti logis, tanpa pemecahan teks Arab per huruf, uji dengan teks panjang.
-- Semua teks tetap lewat `lang/<locale>` dan konten tetap dirender di server.
-- Kontras WCAG AA. Teks merah di atas latar gelap tidak boleh.
-- Tanpa klaim, angka, atau testimoni karangan. Tanpa logo klien.
-- Tanpa gerak yang berjalan terus. Semua gerak punya tujuan, ditulis di [`motion.md`](motion.md), dan menghormati `prefers-reduced-motion`.
-- Tidak ada tautan atau tombol yang tidak berfungsi.
+- Lima bahasa, termasuk Arab (RTL). Properti logis, uji dengan teks panjang.
+- Semua teks lewat `lang/<locale>` dan konten dirender di server.
+- Kontras WCAG AA. Teks merah di atas `ink` tidak boleh (hanya angka besar).
+- Tanpa klaim, angka, atau testimoni karangan. Tanpa logo klien karangan.
+- Gerak hanya yang ada di [`motion.md`](motion.md), dan menghormati `prefers-reduced-motion`.
+- Foto memakai komponen `x-landing.photo` (`public/images/landing/photos/<nama>.webp`, placeholder hanya saat `LANDING_SAMPLE_CONTENT` aktif). Tidak ada foto stok atau gambar buatan sendiri.
 - Perubahan desain berarti perubahan dokumen di branch yang sama.
 
-## Belum diputuskan
+## Aset yang akan memperkuat tampilan (belum wajib)
 
-- Apakah coral `#FF5A5F` dari palet "energetic" boleh dipakai untuk grafis besar (kontras putih di atasnya hanya 3,05, jadi tidak untuk teks).
-- Apakah slider atau gerak berulang pelan (misalnya untuk mitra) boleh. Saat ini dilarang oleh dial gerak.
+| Aset | Dipakai di | Keterangan |
+| --- | --- | --- |
+| Foto proses plating atau pabrik | Panel hero (menggantikan monogram) | Arah vertikal 4:5, pencahayaan gelap selaras `ink` |
+| `about-company`, `about-facilities` | Halaman About Us | Placeholder berlabel sampai ada foto |
+| Gambar tiap layanan (3) | Baris layanan di beranda dan halaman Services | Ilustrasi atau foto, rasio sekitar 4:3 |
+| Logo klien dan mitra | Dinding klien | Format SVG atau PNG transparan, dengan izin |
 
-## Status putaran pertama
-
-Sudah ada: font judul, potongan miring, pola garis miring (kepala halaman dan katalog), hero memakai `hero-waves`, poster video, 9 dari 13 ikon (sisanya memakai tanda garis miring merah sebagai pengganti), dua ilustrasi layanan di halaman Services, dan placeholder foto. Pola garis di hero dihapus karena menimpa teks dan membuat hero ramai. Hero kini memakai blok indigo miring dan lingkaran merah sebagai latar (lihat bagian Hero di `design.md`).
-
-## Cara menilai hasil
-
-Tangkapan layar situs Lerd (`https://pt-metindo-perkasa.test`) di 1280 px dan 390 px, Inggris dan Arab, sebelum dan sesudah. Pertanyaannya: apakah terlihat energetik dan khas, bukan hanya rapi, dan apakah tetap terbaca di semua bahasa.
+Ilustrasi Recraft lama (`hero-waves`, `slash-pattern`, ikon kategori, `service-*`, `video-poster`, dan lainnya) masih ada di `public/images/landing/` tetapi **tidak dipakai lagi**, begitu pula komponen `x-landing.art` dan `x-landing.category-icon` yang sudah dihapus. Prompt lama di [`recraft-prompts.md`](recraft-prompts.md) bersifat arsip.

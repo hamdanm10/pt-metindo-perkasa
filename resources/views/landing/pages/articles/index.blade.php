@@ -6,7 +6,7 @@
     <x-landing.page-header :title="__('pages.articles.title')" :intro="__('pages.articles.intro')" />
 
     <section class="bg-white">
-        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             <nav aria-label="{{ __('pages.articles.title') }}">
                 <ul class="flex flex-wrap gap-2">
                     @foreach ([['value' => null, 'key' => 'all'], ['value' => 'article', 'key' => 'article'], ['value' => 'news', 'key' => 'news']] as $filter)
@@ -35,7 +35,7 @@
                         <span class="mx-1" aria-hidden="true">/</span>
                         <time datetime="{{ $article['date'] }}">{{ $article['date'] }}</time>
                     </p>
-                    <h2 data-anim="heading" class="{{ $loop->first ? 'text-3xl sm:text-5xl lg:text-6xl' : 'text-2xl' }} mt-3 text-balance font-bold leading-tight text-ink">
+                    <h2 data-anim="heading" class="{{ $loop->first ? 'text-3xl sm:text-5xl lg:text-6xl' : 'text-2xl' }} mt-3 text-balance font-black tracking-tight leading-tight text-ink">
                         <a href="{{ route('landing.articles.show', ['article' => $article['slug']]) }}" class="hover:text-brand-700">{{ $article['title'] }}</a>
                     </h2>
                     <p class="mt-4 max-w-xl text-lg text-muted">{{ $article['excerpt'] }}</p>

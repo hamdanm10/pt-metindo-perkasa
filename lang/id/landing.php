@@ -6,6 +6,7 @@ return [
     'skip_to_content' => 'Lewati ke konten',
     'menu' => 'Menu',
     'language' => 'Bahasa',
+    'talk' => 'Mari bicara',
     'nav' => [
         'home' => 'Beranda',
         'about' => 'Tentang Kami',

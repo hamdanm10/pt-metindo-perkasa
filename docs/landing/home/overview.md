@@ -17,21 +17,21 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | 7 | Bagian artikel menampilkan tiga artikel terbaru yang terbit di bahasa itu (dari database, A2) dan hilang bila belum ada | Artikel contoh sudah dihapus |
 | 8 | Video: tidak ada permintaan ke YouTube sebelum diklik. Tampil poster lokal dan tombol putar, lalu iframe `youtube-nocookie.com` dibuat saat diklik. ID video di `config/landing.php` (env `LANDING_INTRO_VIDEO_ID`), bagian disembunyikan bila kosong | Kecepatan, privasi, dan SEO. ID di prototipe belum dipastikan video asli |
 | 9 | Kontak (email, telepon) dari `config/landing.php` (env). Bagian dan tombol kontak hanya muncul bila diisi. Tombol "Talk to our team" memakai `mailto:` | Tombol harus berfungsi. Nilai di prototipe tampak contoh, belum dikonfirmasi |
-| 10 | Aset vektor Recraft dipasang lewat komponen yang memuat `public/images/landing/<nama>.svg` bila berkasnya ada, kosong bila belum | Tampilan jalan tanpa aset, dan aset tinggal diletakkan |
+| 10 | Ilustrasi Recraft lama tidak dipakai lagi sejak redesign (Nov 2026). Gambar hero adalah monogram logo | Tampilan jalan tanpa aset, dan aset tinggal diletakkan |
 | 11 | Widget chat tidak dibuat | Belum diputuskan (L7) |
-| 12 | Sampai aset Recraft ada, hero memakai tumpukan pelat dari CSS dan poster video memakai blok warna. Tidak ada gambar buatan sendiri | Aset menyusul setelah desain dinilai bagus. Tampilan harus sudah layak tanpa aset |
+| 12 | Tidak ada gambar buatan sendiri selain logo. Foto dan ilustrasi baru diminta ke client bila dibutuhkan ([`../ui/direction.md`](../ui/direction.md)) | Aturan: jangan karang aset |
 | 13 | Kata kunci `.env`: `LANDING_INTRO_VIDEO_ID`, `LANDING_CONTACT_EMAIL`, `LANDING_CONTACT_PHONE` (kosong di `.env.example`) | Data kontak dan video belum dikonfirmasi |
 
 ## Susunan
 
 | Bagian | Isi | Catatan desain |
 | --- | --- | --- |
-| Layar intro | Logo putih di atas merah krimson, tombol "Click to begin" | Lihat aturan di bawah |
-| Hero | Judul, satu paragraf, dua tombol: "Explore processes" (ke bagian katalog) dan "Contact us" (`mailto:`) | Latar gelombang organik, area teks kosong |
-| Video pengantar | "See how we work" dengan poster dan tombol putar | Komposisi asimetris, miring dari hero |
+| Layar intro | Logo putih di atas `ink`, tombol krimson "Click to begin" | Lihat aturan di bawah |
+| Hero | Judul, satu paragraf, dua tombol: "Explore processes" (ke bagian katalog) dan "Contact us" (`mailto:`) | Latar `ink`, judul raksasa, panel monogram logo di kanan, baris sektor di bawah. Lihat [`../ui/design.md`](../ui/design.md) |
+| Video pengantar | "See how we work" dengan poster dan tombol putar | Hanya tampil bila ID video terisi |
 | Pendekatan | "Controlled process, consistent result." | Tanpa angka berurutan, karena isinya bukan urutan |
-| Katalog | 13 kategori dengan ikon (nama saja) | Ukuran kartu bervariasi, bukan 13 kartu identik |
-| Layanan | Electroplating Service, Chemical Supply, Technical Consultation | Tiga item dengan bobot berbeda |
+| Katalog | 13 kategori (nama saja) | Kartu bernomor dengan panah, tanpa ikon |
+| Layanan | Electroplating Service, Chemical Supply, Technical Consultation | Tiga baris bernomor di latar `ink` |
 | Klien dan mitra | Enam sektor, lima nama mitra | Teks, tanpa logo |
 | Artikel | Tiga artikel terbaru terbit di bahasa itu | Disembunyikan bila belum ada |
 | Ajakan | "Have a plating specification in mind?" | Satu tombol `mailto:` |
@@ -45,7 +45,7 @@ Aturan dari [`../ui/design.md`](../ui/design.md), diwujudkan begini:
 
 1. Markup ada di HTML dan disembunyikan lewat CSS. Skrip kecil di `<head>` menandai `<html>` bila sesi ini belum melihat intro (`sessionStorage`), dan CSS menampilkannya. Tanpa JavaScript, intro tidak tampil.
 2. Elemen `role="dialog"` dengan `aria-modal`, fokus dipindahkan ke tombol setelah animasi masuk selesai, dan isi halaman lainnya diberi `inert` selama intro tampil. Klik, Enter, atau Escape menutupnya (pemicu ganda diabaikan), lalu fokus pindah ke konten utama. Bila skrip intro tidak jalan, pengaman 4 detik melepas intro supaya halaman tidak terkunci.
-3. Animasi masuk dan keluar memakai GSAP (`resources/js/landing/intro.js`): logo dan tombol muncul bergantian, lalu saat ditutup tirai naik dengan tepi bawah melengkung dan hero mulai saat tirai hampir hilang. Rinciannya di [`../ui/motion.md`](../ui/motion.md). Dengan `prefers-reduced-motion`, isi langsung terlihat dan intro langsung hilang tanpa animasi.
+3. Animasi masuk dan keluar memakai GSAP (`resources/js/landing/intro.js`): logo dan tombol memudar masuk, dan saat ditutup seluruh layar memudar lalu hero mulai. Rinciannya di [`../ui/motion.md`](../ui/motion.md). Dengan `prefers-reduced-motion`, isi langsung terlihat dan intro langsung hilang tanpa animasi.
 4. Hanya di beranda dan sekali per sesi. Konten beranda sudah ada di HTML di belakangnya.
 5. Dampak pada LCP dan INP diukur di L6.
 
