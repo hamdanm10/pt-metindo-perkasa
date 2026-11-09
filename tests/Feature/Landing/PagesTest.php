@@ -61,7 +61,7 @@ class PagesTest extends TestCase
             ->assertSee('aria-current="page"', false);
     }
 
-    public function test_header_menu_has_no_home_item_and_languages_use_short_codes(): void
+    public function test_header_menu_has_no_home_item_and_the_chosen_language_shows_a_short_code(): void
     {
         $html = (string) $this->get('/en/about')->getContent();
         $start = (int) strpos($html, '<header data-header');
@@ -69,9 +69,9 @@ class PagesTest extends TestCase
 
         $this->assertStringNotContainsString('aria-current="page">Home', $header);
         $this->assertStringNotContainsString('>'.__('landing.nav.home', [], 'en').'<', str_replace(['<span class="uline">', '</span>'], ['>', '<'], $header));
-        $this->assertStringContainsString('aria-label="Bahasa Indonesia"', $header);
-        $this->assertMatchesRegularExpression('/>\s*ID\s*</', $header);
-        $this->assertDoesNotMatchRegularExpression('/>\s*Bahasa Indonesia\s*</', $header);
+        $this->assertMatchesRegularExpression('/>\s*EN\s*</', $header);
+        $this->assertMatchesRegularExpression('/>\s*Bahasa Indonesia\s*</', $header);
+        $this->assertMatchesRegularExpression('/>\s*English\s*</', $header);
     }
 
     public function test_page_titles_use_the_active_language(): void

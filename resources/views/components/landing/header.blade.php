@@ -36,8 +36,8 @@
                     <span class="uline" lang="{{ $currentLocale['html_lang'] }}" title="{{ $currentLocale['name'] }}">{{ strtoupper(app()->getLocale()) }}</span>
                     <svg viewBox="0 0 20 20" class="size-4" fill="currentColor" aria-hidden="true"><path d="M5.25 7.5 10 12.25 14.75 7.5l1.06 1.06L10 14.37 4.19 8.56 5.25 7.5Z"/></svg>
                 </summary>
-                <div class="absolute end-0 top-full z-20 mt-3 w-28 rounded-lg bg-white p-2 text-ink shadow-xl ring-1 ring-ink/10" style="--focus-ring: #1f4fb5">
-                    <x-landing.language-links stacked short :alternates="$alternates" />
+                <div class="absolute end-0 top-full z-20 mt-3 w-56 rounded-lg bg-white p-2 text-ink shadow-xl ring-1 ring-ink/10" style="--focus-ring: #1f4fb5">
+                    <x-landing.language-links stacked :alternates="$alternates" />
                 </div>
             </details>
             </div>
@@ -62,7 +62,7 @@
                     </ul>
                 </nav>
                 <div class="mt-2 border-t border-ink/10 pt-2">
-                    <x-landing.language-links short :alternates="$alternates" />
+                    <x-landing.language-links :alternates="$alternates" />
                 </div>
             </div>
         </details>
