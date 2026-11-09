@@ -9,22 +9,25 @@
             <div class="mt-[2.8vw] grid grid-cols-1 gap-x-[3.6vw] gap-y-10 md:grid-cols-3">
                 @foreach ($articles as $article)
                     <article>
-                        <a href="{{ route('landing.articles.show', ['article' => $article['slug']]) }}" class="group flex h-full flex-col focus-visible:outline-offset-4">
+                        <{{ $articlesAreSamples ? 'div' : 'a' }} @unless ($articlesAreSamples) href="{{ route('landing.articles.show', ['article' => $article['slug']]) }}" @endunless class="group flex h-full flex-col focus-visible:outline-offset-4">
                             <div class="relative aspect-[1/0.575] w-full overflow-hidden rounded-lg bg-lavender">
                                 @if ($article['image'])
                                     <img src="{{ $article['image'] }}" alt="{{ $article['alt'] }}" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover">
+                                @elseif ($articlesAreSamples)
+                                    <span class="absolute inset-0 p-5 text-xs font-semibold text-muted" lang="en" dir="ltr">[PHOTO] article thumbnail (uploaded in the dashboard)</span>
                                 @endif
                             </div>
                             <div class="mt-5 flex items-center gap-x-4">
                                 <span class="inline-flex h-[1.9rem] items-center rounded-full border border-ink px-[0.6rem] text-[0.7rem]">{{ __("articles.tags.{$article['type']}") }}</span>
                                 <time datetime="{{ $article['date'] }}" class="text-xs text-muted" dir="ltr">{{ \Illuminate\Support\Carbon::parse($article['date'])->format('d.m.y') }}</time>
                             </div>
-                            <h3 class="mt-4 text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-ink group-hover:underline group-hover:underline-offset-4 sm:pe-12">{{ $article['title'] }}</h3>
-                        </a>
+                            <h3 class="mt-4 text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-ink {{ $articlesAreSamples ? '' : 'group-hover:underline group-hover:underline-offset-4' }} sm:pe-12" @if ($articlesAreSamples) lang="en" dir="ltr" @endif>{{ $article['title'] }}</h3>
+                        </{{ $articlesAreSamples ? 'div' : 'a' }}>
                     </article>
                 @endforeach
             </div>
 
+            @unless ($articlesAreSamples)
             <div class="mt-10 flex justify-center">
                 <a href="{{ route('landing.articles.index') }}" class="btn-roll bg-brand-600 text-white">
                     <span class="btn-roll__inner flex min-h-11 items-center gap-2 px-6 font-bold">
@@ -33,6 +36,7 @@
                     </span>
                 </a>
             </div>
+            @endunless
         </div>
     </section>
 @endif

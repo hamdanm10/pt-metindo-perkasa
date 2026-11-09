@@ -33,6 +33,32 @@ class LandingArticles
             : array_values(array_filter($all, fn (array $item): bool => $item['type'] === $type));
     }
 
+    /**
+     * Three static cards for the home page while a language has no published article, so the
+     * layout can be reviewed. Only in sample mode. They link nowhere, because there is no page
+     * behind them.
+     *
+     * @return list<Summary>
+     */
+    public function placeholders(): array
+    {
+        if (! config()->boolean('landing.sample_content')) {
+            return [];
+        }
+
+        $today = now()->toDateString();
+
+        return array_map(fn (string $type): array => [
+            'slug' => '',
+            'type' => $type,
+            'title' => '[SAMPLE] Article title',
+            'excerpt' => '',
+            'date' => $today,
+            'image' => null,
+            'alt' => '',
+        ], ['article', 'news', 'article']);
+    }
+
     public function hasAny(string $locale): bool
     {
         return $this->list($locale) !== [];

@@ -355,4 +355,25 @@ class HomeTest extends TestCase
             $this->get("/{$code}")->assertSee(__('home.gallery.label', [], $code));
         }
     }
+
+    public function test_home_shows_three_static_sample_article_cards_while_there_is_no_article(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(3, substr_count((string) $response->getContent(), '[SAMPLE] Article title'));
+        $response->assertSee(__('home.articles.title'))
+            ->assertSee('[PHOTO] article thumbnail')
+            ->assertSee(__('articles.tags.news'))
+            ->assertDontSee('data-anim="rows"', false)
+            ->assertDontSee('href="'.url('/en/articles').'"', false);
+    }
+
+    public function test_sample_article_cards_are_hidden_outside_sample_mode(): void
+    {
+        config(['landing.sample_content' => false]);
+
+        $this->get('/en')->assertOk()->assertDontSee('[SAMPLE] Article title');
+    }
 }
