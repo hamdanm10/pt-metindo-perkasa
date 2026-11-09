@@ -8,11 +8,11 @@ Gerak landing mengikuti situs referensi `newengen.com` (putaran kedua redesign, 
 | --- | --- | --- |
 | 1 | GSAP (core, ScrollTrigger, SplitText) dan **Lenis** untuk gulir halus, semua dari npm dan ikut `landing.js` | Referensi memakai gulir halus (kelas `lenis`) dan reveal terkoordinasi |
 | 2 | Hanya `transform`, `opacity`, dan `height` untuk akordeon | Tidak memicu tata letak berat |
-| 3 | `prefers-reduced-motion: reduce`: tanpa Lenis, tanpa animasi GSAP, ticker diam, semua konten langsung terlihat. Akordeon tetap bisa dibuka tanpa animasi | Aksesibilitas |
+| 3 | `prefers-reduced-motion: reduce`: tanpa Lenis, tanpa animasi GSAP, semua konten langsung terlihat. Akordeon tetap bisa dibuka tanpa animasi | Aksesibilitas |
 | 4 | Konten selalu ada di HTML. Keadaan awal disembunyikan lewat `anim-hide` yang dilepas setelah GSAP siap, dengan pengaman 3,5 detik. Akordeon terbuka semua tanpa JavaScript | Terbaca mesin pencari dan tanpa halaman kosong |
 | 5 | **Judul tidak dipecah per huruf di bahasa Arab** (huruf bersambung). Di Arab judul naik-memudar utuh. Mandarin dan Jepang boleh dipecah per huruf | Huruf Arab rusak bila dipisah |
-| 6 | Gerak abadi dibolehkan hanya untuk **ticker sektor** di dasar hero (CSS, 40 detik per putaran, berhenti saat hover dan fokus, mati dengan reduced motion). Tidak ada gerak abadi lain | Ada di referensi (`marquee`), dan dibuat dengan CSS agar ringan |
-| 7 | Arah gerak ikut `dir` halaman (ticker dan panah dibalik di RTL) | Arab |
+| 6 | **Tidak ada gerak abadi.** Semua gerak dipicu muat halaman, gulir, atau klik. Ticker sektor di hero pernah ada dan sudah dihapus | Gerak berulang mengganggu bacaan dan menguras baterai |
+| 7 | Arah gerak ikut `dir` halaman (panah dibalik di RTL) | Arab |
 
 ## Daftar gerak
 
@@ -26,7 +26,6 @@ Gerak landing mengikuti situs referensi `newengen.com` (putaran kedua redesign, 
 | `data-anim="rows"`, `steps` | Kartu katalog, klien, artikel, langkah | Muncul berurutan (batch) | Kartu karya |
 | `data-header` | Header | Menyingkir ke atas saat gulir ke bawah (setelah 160 px), kembali saat gulir ke atas atau fokus masuk. Tidak menyingkir bila menu terbuka | Header `sh__content` |
 | `data-accordion` | Layanan di beranda | Satu panel terbuka, tinggi dan opacity beranimasi 0,55 detik, ikon plus menjadi minus | Akordeon layanan |
-| `.marquee` | Sektor di dasar hero | Berjalan pelan tanpa henti | `marquee` |
 | CSS | Panah, kartu katalog | Panah maju 4 px saat hover, kartu naik 6 px | Transisi 0,3 sampai 0,75 detik |
 | `data-intro-item` | Layar intro | Logo dan tombol memudar masuk, seluruh layar memudar saat ditutup | Layar pembuka titik |
 
@@ -43,5 +42,5 @@ Header, footer, menu, dan teks isi lain tidak dianimasikan GSAP. Peristiwa `intr
 - `resources/js/landing/motion.js`: Lenis, hero, reveal gulir, header pintar, dan akordeon. Seluruh gerak GSAP dibungkus `gsap.matchMedia()`.
 - `resources/js/landing/intro.js`: layar intro, `inert`, fokus, dan `sessionStorage`.
 - `resources/js/landing.js`: mengimpor keduanya, ditambah menu, dropdown, dan pemutar video.
-- `resources/css/landing.css`: `anim-hide`, penyembunyian intro, ticker, panah, ikon plus, dan aturan Lenis (`html.lenis`, `.lenis-smooth`).
+- `resources/css/landing.css`: `anim-hide`, penyembunyian intro, panah, ikon plus, dan aturan Lenis (`html.lenis`, `.lenis-smooth`).
 - Jangkar (`#catalog`) memakai `lenis.scrollTo` dan mengikuti `scroll-padding-top`.

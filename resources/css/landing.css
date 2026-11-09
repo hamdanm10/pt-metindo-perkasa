@@ -159,56 +159,7 @@ a:hover .nudge,
     transform: rotate(0);
 }
 
-/* Slow, endless ticker for the sectors strip. Paused on hover and focus. */
-.marquee {
-    overflow: hidden;
-}
-
-.marquee__track {
-    display: flex;
-    width: max-content;
-    animation: marquee 40s linear infinite;
-}
-
-.marquee:hover .marquee__track,
-.marquee:focus-within .marquee__track {
-    animation-play-state: paused;
-}
-
-.marquee__group {
-    display: flex;
-    flex-shrink: 0;
-    gap: 4rem;
-    padding-inline-end: 4rem;
-}
-
-@keyframes marquee {
-    to {
-        transform: translateX(-50%);
-    }
-}
-
-[dir='rtl'] .marquee__track {
-    animation-name: marquee-rtl;
-}
-
-@keyframes marquee-rtl {
-    to {
-        transform: translateX(50%);
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
-    .marquee__track {
-        animation: none;
-        flex-wrap: wrap;
-        width: auto;
-    }
-
-    .marquee__group[aria-hidden='true'] {
-        display: none;
-    }
-
     #catalog li > a:hover {
         transform: none;
     }

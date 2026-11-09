@@ -141,6 +141,11 @@ class HomeTest extends TestCase
         }
     }
 
+    public function test_hero_has_no_sector_ticker(): void
+    {
+        $this->get('/en')->assertDontSee('marquee', false);
+    }
+
     public function test_services_are_an_accordion_that_is_open_without_javascript(): void
     {
         $response = $this->get('/en')
@@ -151,12 +156,5 @@ class HomeTest extends TestCase
 
         $this->assertSame(3, substr_count((string) $response->getContent(), 'data-acc-item'));
         $response->assertSee(__('home.services.items.consultation.text'));
-    }
-
-    public function test_sectors_strip_is_a_ticker_with_one_copy_hidden_from_assistive_tech(): void
-    {
-        $response = $this->get('/id')->assertSee('class="marquee ', false)->assertSee('marquee__group', false);
-
-        $this->assertSame(1, preg_match_all('/marquee__group"\s+aria-hidden="true"/', (string) $response->getContent()));
     }
 }

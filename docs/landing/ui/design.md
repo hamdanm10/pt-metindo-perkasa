@@ -13,7 +13,7 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 | 5 | Sudut membulat kecil (`rounded-lg`), tanpa potongan miring, blok asimetris, atau latar berbentuk organik | Gaya newengen yang bersih. Bentuk miring lama dihapus |
 | 6 | **Tidak memakai ilustrasi Recraft yang lama.** Hero memakai monogram logo besar sebagai gambar. Bagian lain murni tipografi, angka, dan kartu. Ilustrasi atau foto baru diminta ke client bila memang dibutuhkan ([`direction.md`](direction.md)) | Permintaan client: jangan memaksakan ilustrasi lama |
 | 7 | Konten dirender di server dengan Blade | SEO |
-| 8 | Gerak mengikuti referensi (judul tumbuh per huruf, gulir halus Lenis, header yang menyingkir, akordeon layanan, ticker sektor), dijelaskan di [`motion.md`](motion.md) | Permintaan client. Sebelumnya sempat disederhanakan, lalu diminta disamakan dengan referensi |
+| 8 | Gerak mengikuti referensi (judul tumbuh per huruf, gulir halus Lenis, header yang menyingkir, akordeon layanan), dijelaskan di [`motion.md`](motion.md) | Permintaan client. Sebelumnya sempat disederhanakan, lalu diminta disamakan dengan referensi |
 | 9 | Layar intro dipertahankan dalam bentuk sederhana (logo dan tombol memudar masuk dan keluar) | Permintaan client |
 | 10 | Fitur newengen yang tidak punya padanan (spanduk promo, testimoni, buletin, logo klien) **dilewati** | Belum ada data atau fitur |
 
@@ -37,7 +37,6 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 ## Hero
 
 - Latar `ink`, dua kolom di `lg`: judul besar (`font-black`, huruf kapital, `clamp(3rem, 8.2vw, 7rem)`), paragraf, dan dua tombol (krimson berpanah, dan garis putih). Di kanan, panel lavender berisi monogram logo besar yang terpotong tepinya, sebagai pengganti foto.
-- Di bawahnya ticker sektor yang dilayani (otomotif, elektronik, dan seterusnya) yang berjalan pelan, dipisah garis tipis, mengganti deretan logo klien newengen.
 
 ## Navbar
 

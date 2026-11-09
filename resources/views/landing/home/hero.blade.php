@@ -1,7 +1,4 @@
-@php
-    $email = config('landing.contact.email');
-    $sectors = ['automotive', 'electronics', 'machinery', 'construction', 'furniture_hardware', 'oil_gas'];
-@endphp
+@php($email = config('landing.contact.email'))
 
 <section data-hero class="bg-ink text-white" style="--focus-ring: #ffffff">
     <div class="container-site grid items-center gap-12 pb-16 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1.17fr)_minmax(0,1fr)] lg:gap-[3.4vw] lg:pb-24 lg:pt-16">
@@ -26,18 +23,6 @@
 
         <div data-anim="hero-item" data-hero-panel class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:aspect-square" aria-hidden="true">
             <img src="{{ asset('images/brand/logo.svg') }}" alt="" width="612" height="256" class="absolute start-1/2 top-1/2 w-[120%] max-w-none -translate-y-1/2 -translate-x-1/2 rtl:translate-x-1/2">
-        </div>
-    </div>
-
-    <div class="marquee border-t border-white/20" aria-label="{{ __('home.clients.clients') }}">
-        <div class="marquee__track py-6 text-xl font-bold text-white/85">
-            @foreach ([false, true] as $copy)
-                <ul class="marquee__group" @if ($copy) aria-hidden="true" @endif>
-                    @foreach ($sectors as $sector)
-                        <li>{{ __("home.clients.sectors.{$sector}") }}</li>
-                    @endforeach
-                </ul>
-            @endforeach
         </div>
     </div>
 </section>

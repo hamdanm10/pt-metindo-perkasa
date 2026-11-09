@@ -14,7 +14,7 @@ Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun 
 | Ciri newengen | Padanan di sini |
 | --- | --- |
 | Hero gelap, judul raksasa huruf kapital Figtree 900, paragraf pendek, dua tombol, panel gambar di kanan | Hero `ink`, panel lavender berisi monogram logo (foto bila sudah ada) |
-| Deretan logo klien di bawah hero | Baris sektor yang dilayani |
+| Deretan logo klien di bawah hero | Tidak dipakai (baris sektor di hero dihapus). Klien ada di bagian Clients & Partners |
 | Kalimat besar sebagai pembuka bagian, lalu kartu | Katalog 13 kategori sebagai kartu bergaris tipis |
 | Layanan sebagai baris besar di latar gelap dengan tombol berpanah | Tiga layanan bernomor 01 sampai 03 |
 | Dinding logo klien | Kotak sektor dan mitra (teks, sampai logo asli tersedia) |

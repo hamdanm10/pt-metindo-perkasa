@@ -27,7 +27,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | Bagian | Isi | Catatan desain |
 | --- | --- | --- |
 | Layar intro | Logo putih di atas `ink`, tombol krimson "Click to begin" | Lihat aturan di bawah |
-| Hero | Judul, satu paragraf, dua tombol: "Explore processes" (ke bagian katalog) dan "Contact us" (`mailto:`) | Latar `ink`, judul raksasa, panel monogram logo di kanan, baris sektor di bawah. Lihat [`../ui/design.md`](../ui/design.md) |
+| Hero | Judul, satu paragraf, dua tombol: "Explore processes" (ke bagian katalog) dan "Contact us" (`mailto:`) | Latar `ink`, judul raksasa, panel monogram logo di kanan. Lihat [`../ui/design.md`](../ui/design.md) |
 | Video pengantar | "See how we work" dengan poster dan tombol putar | Hanya tampil bila ID video terisi |
 | Pendekatan | "Controlled process, consistent result." | Tanpa angka berurutan, karena isinya bukan urutan |
 | Katalog | 13 kategori (nama saja) | Kartu bernomor dengan panah, tanpa ikon |
