@@ -46,8 +46,9 @@ Header, footer, menu, dan teks isi lain tidak dianimasikan GSAP. Peristiwa `intr
 
 ## Struktur kode
 
-- `resources/js/landing/motion.js`: Lenis, hero, reveal gulir, header pintar, kartu katalog, video, dan daftar layanan. Seluruh gerak GSAP dibungkus `gsap.matchMedia()`.
-- `resources/js/landing/intro.js`: layar intro, `inert`, fokus, dan `sessionStorage`.
-- `resources/js/landing.js`: mengimpor keduanya, ditambah menu, dropdown, dan pemutar video.
+- `resources/js/landing/motion.js`: perakit. Mendaftarkan gulir halus, lalu menjalankan modul-modul di `resources/js/landing/motion/` setelah font siap. Seluruh gerak GSAP dibungkus `gsap.matchMedia()`.
+- `resources/js/landing/motion/`: satu berkas per bagian, yaitu `shared.js` (plugin, pembantu, `growLetters`), `smooth-scroll.js` (Lenis), `hero.js`, `reveals.js`, `header.js` (header pintar), `catalog.js`, `video.js`, `services.js`, `clients.js`, dan `gallery.js`.
+- `resources/js/landing/buttons.js`, `intro.js`, `header-state.js` (penanda `data-stuck`), `menus.js` (dropdown), dan `video-player.js` (pemutar video).
+- `resources/js/landing.js`: hanya mengimpor berkas-berkas di atas.
 - `resources/css/landing.css`: `anim-hide`, penyembunyian intro, panah, ikon plus, dan aturan Lenis (`html.lenis`, `.lenis-smooth`).
 - Jangkar (`#catalog`) memakai `lenis.scrollTo` dan mengikuti `scroll-padding-top`.

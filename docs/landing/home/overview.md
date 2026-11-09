@@ -64,7 +64,7 @@ Aturan dari [`../ui/design.md`](../ui/design.md), diwujudkan begini:
 - `lang/{en,id,zh,ar,ja}/home.php`: teks beranda.
 - `resources/views/landing/home.blade.php` menyusun bagian dari `resources/views/landing/home/*.blade.php` (satu berkas per bagian).
 - `resources/views/components/landing/art.blade.php`: memuat aset dari `public/images/landing/` bila ada.
-- `resources/js/landing.js` ditambah logika intro dan pemuat video. Tanpa pustaka tambahan.
+- `resources/js/landing.js` mengimpor logika intro dan pemuat video (kini di `resources/js/landing/`). Tanpa pustaka tambahan.
 - Footer di `resources/views/components/landing/footer.blade.php` diperluas.
 
 ## Langkah dan test
