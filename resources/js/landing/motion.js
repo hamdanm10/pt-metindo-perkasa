@@ -314,7 +314,7 @@ const services = () => {
     };
 };
 
-/** The header slides away when scrolling down and returns when scrolling up. */
+/** The header slides away when scrolling down past the first section and returns when scrolling up. */
 const smartHeader = () => {
     const header = document.querySelector('[data-header]');
 
@@ -322,8 +322,10 @@ const smartHeader = () => {
         return;
     }
 
-    const show = () => gsap.to(header, { yPercent: 0, duration: 0.4, ease: 'power3.out', overwrite: true });
-    const hide = () => gsap.to(header, { yPercent: -100, duration: 0.4, ease: 'power3.out', overwrite: true });
+    const first = document.querySelector('#main > section');
+    const show = () => gsap.to(header, { y: 0, duration: 0.75, ease: 'expo.out', overwrite: true });
+    const hide = () => gsap.to(header, { y: -(header.offsetHeight + 64), duration: 0.75, ease: 'expo.out', overwrite: true });
+    const limit = () => (first ? first.getBoundingClientRect().bottom + window.scrollY : 160);
 
     ScrollTrigger.create({
         start: 0,
@@ -331,9 +333,9 @@ const smartHeader = () => {
         onUpdate: (self) => {
             const busy = header.querySelector('details[open]') || header.contains(document.activeElement);
 
-            if (self.direction === 1 && self.scroll() > 160 && !busy) {
+            if (self.direction === 1 && self.scroll() > limit() && !busy) {
                 hide();
-            } else if (self.direction === -1 || self.scroll() <= 160) {
+            } else if (self.direction === -1 || self.scroll() <= limit()) {
                 show();
             }
         },

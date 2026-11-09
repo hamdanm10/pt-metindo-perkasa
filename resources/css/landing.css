@@ -73,26 +73,36 @@
 }
 
 /*
- * The header is a dark bar at the top of the page. After scrolling the bar goes clear and the
- * logo and the menu stay behind as separate dark chips, like the reference. The height never
- * changes, so the page does not jump.
+ * The header, measured from the reference. At the top it is a dark bar with the monogram and the
+ * name. After scrolling the bar goes clear and leaves two dark chips: the monogram alone (the
+ * name folds away) and the menu, beside the call to action. Every change takes 0.75 seconds with
+ * the same curve as the reference. The height never changes, so the page does not jump.
  */
+:root {
+    --header-ease: cubic-bezier(0.19, 1, 0.22, 1);
+    --header-chip-h: clamp(2.75rem, 3.06vw, 4.25rem);
+}
+
 [data-header] {
     background-color: var(--color-ink);
-    transition: background-color 0.35s ease;
+    transition: background-color 0.75s var(--header-ease);
 }
 
 [data-header][data-stuck] {
     background-color: transparent;
 }
 
+.header-bar {
+    height: clamp(4rem, 4.8vw, 6.5rem);
+}
+
 .header-chip {
     border-radius: 0.5rem;
     background-color: transparent;
     transition:
-        background-color 0.35s ease,
-        padding 0.35s ease,
-        box-shadow 0.35s ease;
+        background-color 0.75s var(--header-ease),
+        padding 0.75s var(--header-ease),
+        box-shadow 0.75s var(--header-ease);
 }
 
 [data-header][data-stuck] .header-chip {
@@ -102,26 +112,114 @@
         0 8px 24px rgba(27, 31, 59, 0.25);
 }
 
+.header-chip--logo {
+    height: var(--header-chip-h);
+}
+
 [data-header][data-stuck] .header-chip--logo {
-    padding: 0.5rem 0.75rem;
+    padding-inline: 0.75rem;
 }
 
-[data-header] .header-chip--logo img {
-    transition: height 0.35s ease;
+.header-mark {
+    height: clamp(2rem, 2.9vw, 3.5rem);
+    transition: height 0.75s var(--header-ease);
 }
 
-[data-header][data-stuck] .header-chip--logo img {
-    height: 1.75rem;
+[data-header][data-stuck] .header-mark {
+    height: clamp(1.5rem, 1.9vw, 2.25rem);
 }
 
-[data-header][data-stuck] .header-chip--nav {
-    padding-inline: 0.5rem;
+.header-brand {
+    max-width: 14em;
+    margin-inline-start: 0.75em;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: clamp(1rem, 1.5vw, 1.9rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+        max-width 0.75s var(--header-ease),
+        margin 0.75s var(--header-ease),
+        opacity 0.5s var(--header-ease);
+}
+
+[data-header][data-stuck] .header-brand {
+    max-width: 0;
+    margin-inline-start: 0;
+    opacity: 0;
+}
+
+@media (max-width: 40rem) {
+    .header-brand {
+        display: none;
+    }
+}
+
+.header-chip--nav {
+    height: var(--header-chip-h);
+    font-size: clamp(0.875rem, 1vw, 1.25rem);
+}
+
+.header-links {
+    gap: clamp(1.5rem, 2.78vw, 3.5rem);
+    padding-inline: clamp(1rem, 2.43vw, 3rem);
+}
+
+.header-chip--nav details > summary {
+    margin-inline-start: clamp(1.5rem, 2.78vw, 3.5rem);
+    margin-inline-end: clamp(1rem, 2.43vw, 3rem);
+}
+
+.header-link {
+    min-height: 2.75rem;
+}
+
+/* Underline of the reference: grows from the left on hover, leaves to the right, stays on the current page. */
+.uline {
+    position: relative;
+    display: inline-flex;
+    white-space: nowrap;
+}
+
+.uline::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 0.05em;
+    min-height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.75s var(--header-ease);
+}
+
+a:hover .uline::before,
+summary:hover .uline::before,
+a:focus-visible .uline::before,
+a[aria-current='page'] .uline::before {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+html[dir='rtl'] .uline::before {
+    transform-origin: left center;
+}
+
+html[dir='rtl'] a:hover .uline::before,
+html[dir='rtl'] summary:hover .uline::before,
+html[dir='rtl'] a:focus-visible .uline::before,
+html[dir='rtl'] a[aria-current='page'] .uline::before {
+    transform-origin: right center;
 }
 
 @media (prefers-reduced-motion: reduce) {
     [data-header],
     .header-chip,
-    [data-header] .header-chip--logo img {
+    .header-mark,
+    .header-brand,
+    .uline::before {
         transition: none;
     }
 }

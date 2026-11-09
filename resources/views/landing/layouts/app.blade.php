@@ -45,7 +45,7 @@
         {{ __('landing.skip_to_content') }}
     </a>
 
-    <div data-header-sentinel class="absolute left-0 top-0 h-px w-px" aria-hidden="true"></div>
+    <div data-header-sentinel class="absolute left-0 top-16 h-px w-px" aria-hidden="true"></div>
     <x-landing.header :alternates="$alternates" />
 
     <main id="main" class="flex-1 overflow-x-clip">
