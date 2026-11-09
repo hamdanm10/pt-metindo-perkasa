@@ -40,8 +40,9 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 
 ## Navbar
 
-- **Menempel di atas** (`position: sticky`), latar `ink` solid, logo putih di kiri. Menyingkir saat gulir ke bawah dan kembali saat gulir ke atas ([`motion.md`](motion.md)). Garis tipis muncul di bawahnya setelah halaman mulai bergulir.
-- Tautan putih, yang aktif bergaris bawah merah muda. Tombol "Let's talk" krimson berpanah (ke halaman Contact) menggantikan tautan Contact di menu desktop. Contact tetap ada di menu ponsel dan footer.
+- **Menempel di atas** (`position: sticky`), tinggi tetap 4,8vw (69 px di 1440 px) sehingga halaman tidak melompat. Logo di kiri: monogram putih dan tulisan **METINDO PERKASA** (teks HTML, huruf kapital berjarak). Di puncak halaman berupa bilah `ink` solid. **Setelah halaman bergulir** (`data-stuck`) bilah menjadi transparan dan tersisa dua ubin `ink` setinggi 44 px (sama dengan tombol) seperti referensi: ubin logo (tulisan melipat hilang, monogram mengecil) dan ubin menu (tautan dan bahasa), dengan tombol \"Let's talk\" di sampingnya. Semua peralihan 0,75 detik dengan kurva `cubic-bezier(0.19, 1, 0.22, 1)` milik referensi. Header menyingkir saat gulir ke bawah **setelah melewati seksi pertama (hero)** dan kembali saat gulir ke atas ([`motion.md`](motion.md)).
+- **Hover tautan menu:** garis bawah setebal 0,05em tumbuh dari kiri dan keluar ke kanan (0,75 detik, kurva yang sama), warna teks tidak berubah. Tautan halaman aktif tetap bergaris (kelas `.uline`). Ukuran huruf 1vw (14,4 px), jarak antar tautan 2,78vw.
+- Tautan putih, yang aktif bergaris bawah. Tombol "Let's talk" krimson berpanah (ke halaman Contact) menggantikan tautan Contact di menu desktop. Contact tetap ada di menu ponsel dan footer.
 - Pemilih bahasa: teks bahasa aktif dengan daftar turun putih. Di bawah `lg`, tombol "Menu" krimson membuka panel putih berisi menu dan bahasa.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
