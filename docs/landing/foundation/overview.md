@@ -11,7 +11,7 @@ Fondasi landing page publik: layout, navigasi, footer, penanganan locale lewat a
 | 3 | Locale hanya dari URL, tanpa cookie atau sesi di landing | Satu alamat satu bahasa, mudah diuji dan di-cache |
 | 4 | Daftar locale, nama bahasa, dan arah tulis ada di satu berkas `config/locales.php` | Tidak ditulis ulang di tempat lain. Dashboard memakai berkas yang sama dengan daftar sendiri |
 | 5 | Mandarin dianggap **Mandarin Sederhana**: URL `/zh`, atribut `lang="zh-Hans"`, font Noto Sans SC | Asumsi, perlu dikonfirmasi client |
-| 6 | Menu hanya menampilkan halaman yang sudah ada (L1: Home). Menu lain muncul saat fasenya selesai | Tidak ada tautan mati |
+| 6 | Menu hanya menampilkan halaman yang sudah ada (kini tanpa Home, karena logo menuju beranda). Menu lain muncul saat fasenya selesai | Tidak ada tautan mati |
 | 7 | Teks navigasi dan footer di `lang/<locale>/landing.php` untuk kelima bahasa | Aturan teks pengguna di `CLAUDE.md`. Dipindah ke database hanya untuk konten dinamis (L4) |
 | 8 | Token tema di satu berkas CSS yang dipakai bersama, landing punya entri CSS sendiri | Dashboard nanti memakai token yang sama tanpa menyalin |
 | 9 | Font dipasang sendiri lewat paket npm `@fontsource-variable/*` (Figtree, Bricolage Grotesque untuk judul dashboard, Noto Sans SC, JP, Arabic), satu berkas CSS per bahasa di `resources/css/fonts/` yang hanya dimuat di locale terkait | Tanpa CDN pihak ketiga. Versi variabel dipilih karena versi bobot tetap (400 dan 700) membuat CSS Mandarin dan Jepang sekitar 70 KB gzip per bahasa, sedangkan versi variabel sekitar 34 KB |
