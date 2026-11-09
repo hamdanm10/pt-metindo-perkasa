@@ -150,6 +150,7 @@ const catalog = () => {
     const contents = all('[data-catalog-tile-content]', stage);
     const captions = all('[data-catalog-caption]', stage);
     const badge = stage.querySelector('[data-catalog-badge]');
+    const action = stage.querySelector('[data-catalog-action]');
 
     // The stack, as in the reference hero: one wide card in front (always the second
     // tile) with the other three peeking out as narrow slices. Fractions of the panel
@@ -195,7 +196,8 @@ const catalog = () => {
         }, { x: 0, y: 0, scaleX: 1, scaleY: 1, ease: 'power2.inOut' }, 0)
         .to(badge, { autoAlpha: 0, duration: 0.15 }, 0)
         .fromTo(contents, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0.7)
-        .fromTo(captions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, 0.7);
+        .fromTo(captions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, 0.7)
+        .fromTo(action, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0.8);
 };
 
 /** The header slides away when scrolling down and returns when scrolling up. */

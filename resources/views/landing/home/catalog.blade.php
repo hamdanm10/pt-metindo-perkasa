@@ -6,7 +6,7 @@
 {{-- One section. The cards sit in the row at the bottom and, on wide screens, start stacked in the panel at the top, then travel down while scrolling. --}}
 <section id="catalog" class="scroll-mt-4 bg-lavender">
     <div data-catalog-stage class="container-site relative py-16 lg:py-[clamp(4rem,7vw,7rem)]">
-        <div class="grid items-center gap-10 lg:min-h-[calc(100svh-4.5rem-clamp(4rem,7vw,7rem))] lg:grid-cols-2 lg:gap-[4vw]">
+        <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-[4vw]">
             <div>
                 <h2 data-anim="heading" class="text-balance text-[clamp(2.25rem,5vw,6rem)] font-black leading-[0.98] tracking-tight text-ink">
                     {{ __('home.catalog.title') }}
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <ul class="mt-12 grid grid-cols-2 gap-4 lg:mt-16 lg:grid-cols-4">
+        <ul class="mt-10 grid grid-cols-2 gap-4 lg:mt-8 lg:grid-cols-4">
             @foreach ($featured as $category)
                 <li>
                     <a href="{{ route('landing.products.show', ['category' => $category['slug']]) }}" class="group block focus-visible:outline-offset-4">
@@ -49,7 +49,7 @@
             @endforeach
         </ul>
 
-        <a href="{{ route('landing.products.index') }}" class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
+        <a href="{{ route('landing.products.index') }}" data-catalog-action class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
             {{ __('home.catalog.all') }}<x-landing.arrow />
         </a>
     </div>
