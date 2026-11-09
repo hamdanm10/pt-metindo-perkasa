@@ -302,7 +302,7 @@ html.lenis body {
     align-items: center;
     justify-content: space-between;
     gap: clamp(1rem, 1.11vw, 1.4rem);
-    padding-inline: clamp(0.75rem, 0.83vw, 1.1rem);
+    padding-inline: clamp(1rem, 1.25vw, 1.6rem);
     white-space: nowrap;
 }
 

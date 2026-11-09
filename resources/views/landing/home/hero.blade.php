@@ -9,10 +9,10 @@
             <p data-anim="hero-item" class="mt-8 max-w-xl text-lg text-white/85 sm:text-xl">
                 {{ __('home.hero.text') }}
             </p>
-            <div data-anim="hero-item" class="mt-10 flex flex-wrap gap-3">
+            <div data-anim="hero-item" class="mt-10 flex flex-wrap gap-4">
                 <x-landing.button href="#catalog">{{ __('home.hero.explore') }}</x-landing.button>
                 @if ($email)
-                    <x-landing.button :href="'mailto:'.$email" variant="outline" :arrow="false">{{ __('home.hero.contact') }}</x-landing.button>
+                    <x-landing.button :href="'mailto:'.$email" variant="outline">{{ __('home.hero.contact') }}</x-landing.button>
                 @endif
             </div>
         </div>
