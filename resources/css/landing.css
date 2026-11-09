@@ -33,8 +33,7 @@
     h1,
     h2,
     h3 {
-        font-family: var(--font-display);
-        letter-spacing: -0.01em;
+        font-family: var(--font-sans);
     }
 
     #main:focus {
@@ -73,27 +72,6 @@
     visibility: hidden;
 }
 
-.cut-top {
-    --cut: clamp(1.5rem, 4vw, 4rem);
-    margin-top: calc(var(--cut) * -1);
-    padding-top: var(--cut);
-    clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
-}
-
-.cut-bottom {
-    --cut: clamp(1.5rem, 4vw, 4rem);
-    padding-bottom: calc(var(--cut) + 1.5rem);
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
-}
-
-[dir='rtl'] .cut-top {
-    clip-path: polygon(0 0, 100% var(--cut), 100% 100%, 0 100%);
-}
-
-[dir='rtl'] .cut-bottom {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - var(--cut)));
-}
-
 [data-header] {
     transition: box-shadow 0.25s ease;
 }
@@ -103,7 +81,7 @@
 }
 
 [data-header][data-stuck] {
-    box-shadow: 0 12px 28px -20px rgba(27, 31, 59, 0.6);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 [data-header][data-stuck] [data-header-inner] {
@@ -117,10 +95,135 @@
     }
 }
 
-.hero-wedge {
-    clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+/*
+ * Page container, measured from the reference site: full width with side padding of
+ * about 3.33vw, so the layout scales with the screen instead of stopping at 1280px.
+ */
+.container-site {
+    width: 100%;
+    max-width: 120rem;
+    margin-inline: auto;
+    padding-inline: clamp(0.75rem, 3.333vw, 4rem);
 }
 
-[dir='rtl'] .hero-wedge {
-    clip-path: polygon(0 0, 78% 0, 100% 100%, 0 100%);
+.section-y {
+    padding-block: clamp(5.6rem, 10.4vw, 9.4rem);
+}
+
+/* Arrows nudge forward when their link or button is hovered. Uses `translate`, so RTL flipping is untouched. */
+.nudge {
+    transition: translate 0.3s ease;
+}
+
+a:hover .nudge,
+.group:hover .nudge {
+    translate: 4px 0;
+}
+
+[dir='rtl'] a:hover .nudge,
+[dir='rtl'] .group:hover .nudge {
+    translate: -4px 0;
+}
+
+/* Cards lift a little on hover. */
+#catalog li > a {
+    transition:
+        transform 0.4s ease,
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+#catalog li > a:hover {
+    transform: translateY(-6px);
+}
+
+/* Plus that turns into a minus when the accordion item is open. */
+.plus::before,
+.plus::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+    background: currentColor;
+    transition: transform 0.4s ease;
+}
+
+.plus::after {
+    transform: rotate(90deg);
+}
+
+[data-open] .plus::after {
+    transform: rotate(0);
+}
+
+/* Slow, endless ticker for the sectors strip. Paused on hover and focus. */
+.marquee {
+    overflow: hidden;
+}
+
+.marquee__track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+}
+
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track {
+    animation-play-state: paused;
+}
+
+.marquee__group {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4rem;
+    padding-inline-end: 4rem;
+}
+
+@keyframes marquee {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+[dir='rtl'] .marquee__track {
+    animation-name: marquee-rtl;
+}
+
+@keyframes marquee-rtl {
+    to {
+        transform: translateX(50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+        animation: none;
+        flex-wrap: wrap;
+        width: auto;
+    }
+
+    .marquee__group[aria-hidden='true'] {
+        display: none;
+    }
+
+    #catalog li > a:hover {
+        transform: none;
+    }
+}
+
+/* Lenis smooth scrolling needs native smooth scrolling off. */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+    overflow: clip;
 }

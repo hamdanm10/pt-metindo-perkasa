@@ -18,10 +18,10 @@
 
 @section('content')
     <x-landing.page-header :title="$article['title']">
-        <a href="{{ route('landing.articles.index') }}" class="mb-6 inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">
+        <a href="{{ route('landing.articles.index') }}" class="mb-6 inline-flex min-h-11 items-center font-semibold text-white underline underline-offset-4">
             {{ __('landing.back') }}
         </a>
-        <p class="mb-4 text-sm font-semibold text-muted">
+        <p class="mb-4 text-sm font-semibold text-white/85">
             {{ __("articles.tags.{$article['type']}") }}
             <span class="mx-1" aria-hidden="true">/</span>
             <time datetime="{{ $article['date'] }}">{{ $article['date'] }}</time>
@@ -42,8 +42,8 @@
 
     @if ($related)
         <section class="bg-lavender">
-            <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-                <h2 data-anim="heading" class="text-2xl font-bold text-ink">{{ __('pages.articles.related') }}</h2>
+            <div class="container-site lg: section-y">
+                <h2 data-anim="heading" class="text-2xl font-black tracking-tight text-ink">{{ __('pages.articles.related') }}</h2>
                 <ul data-anim="rows" class="mt-8 grid gap-8 md:grid-cols-3">
                     @foreach ($related as $item)
                         <li class="border-t-2 border-ink pt-5">

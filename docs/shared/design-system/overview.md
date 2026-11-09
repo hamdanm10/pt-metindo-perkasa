@@ -6,11 +6,11 @@ Fondasi visual yang dipakai landing dan dashboard: warna, tipografi, bentuk, duk
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | **Merah krimson** adalah warna merek dominan | Logo (`docs/references/logo.svg`) dan prototipe berwarna merah. Palet "energetic" yang berbasis biru hanya diambil sebagian |
+| 1 | **Merah krimson** adalah warna merek dominan | Logo (monogram `docs/references/image.svg`, varian di `public/images/brand/`) dan prototipe berwarna merah. Palet "energetic" yang berbasis biru hanya diambil sebagian |
 | 2 | Teks gelap `#1B1F3B` dan latar lavender `#F3F2FF` dari palet dipakai sebagai netral | Kontras tinggi dan cocok dengan merah |
 | 3 | Biru dan indigo dari palet menjadi aksen kedua, bukan dominan | Supaya tidak berbenturan dengan logo merah |
 | 4 | Coral `#FF5A5F` tidak dipakai | Terlalu dekat dengan merah merek, dan kontras putih di atasnya hanya 3,05 |
-| 5 | Landing tidak kaku: bentuk organik dan aset vektor buatan Recraft | Permintaan client |
+| 5 | Landing mengikuti gaya newengen.com (hero gelap, judul raksasa, kartu bergaris, sudut membulat kecil) dengan palet yang sama. Ilustrasi Recraft lama tidak dipakai | Permintaan client (redesign Nov 2026), lihat [`../../landing/ui/direction.md`](../../landing/ui/direction.md) |
 | 6 | Satu fondasi (warna, tipografi, jarak) untuk landing dan dashboard | Komponen dibedakan: landing lega dan ekspresif, dashboard padat dan jelas |
 
 ## Warna
@@ -48,7 +48,7 @@ Aturan: teks merah di atas latar terang memakai `brand-700`. Di atas latar `ink`
 
 ## Tipografi
 
-- Latin (`en`, `id`): **Figtree** untuk teks isi dan **Bricolage Grotesque** untuk judul (`h1` sampai `h3`).
+- Latin (`en`, `id`): **Figtree** untuk teks isi. Judul **landing** juga Figtree (bobot 900, huruf kapital untuk judul besar). Judul **dashboard** memakai **Bricolage Grotesque**.
 - Mandarin (`zh`): Noto Sans SC. Arab (`ar`): Noto Sans Arabic. Jepang (`ja`): Noto Sans JP. Untuk ketiganya judul memakai font yang sama dengan teks isi.
 - Font dipasang sendiri (self-host), bukan dari CDN pihak ketiga, supaya cepat dan tidak mengirim data pengunjung ke luar.
 - Hanya font untuk locale aktif yang dimuat. Font CJK besar, jadi dipakai subset atau `unicode-range`, dengan `font-display: swap`.

@@ -1,26 +1,32 @@
 @php($services = ['electroplating', 'chemical_supply', 'consultation'])
 
-<section class="cut-top bg-lavender">
-    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div class="max-w-2xl">
-            <h2 data-anim="heading" class="text-3xl font-bold text-ink sm:text-5xl lg:text-6xl">{{ __('home.services.title') }}</h2>
-            <p class="mt-4 text-lg text-muted">{{ __('home.services.intro') }}</p>
-            <a href="{{ route('landing.services') }}" class="mt-3 inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">{{ __('home.services.all') }}</a>
+<section class="bg-ink text-white" style="--focus-ring: #ffffff">
+    <div class="container-site section-y">
+        <div class="max-w-3xl">
+            <h2 data-anim="grow" class="text-[clamp(2.25rem,5vw,6rem)] font-black uppercase leading-[0.98] tracking-tight">{{ __('home.services.title') }}</h2>
+            <p class="mt-5 text-lg text-white/85 sm:text-xl">{{ __('home.services.intro') }}</p>
         </div>
 
-        <div class="mt-12 grid gap-5 lg:grid-cols-5">
+        <div data-accordion data-anim="rows" class="mt-14">
             @foreach ($services as $service)
-                @if ($loop->first)
-                    <div data-anim="card" data-from="start" class="rounded-3xl bg-brand-600 p-8 text-white sm:p-10 lg:col-span-3 lg:row-span-2 lg:rounded-ss-[5rem] lg:p-12">
-                        <h3 class="text-3xl font-bold sm:text-4xl">{{ __("home.services.items.{$service}.title") }}</h3>
-                        <p class="mt-5 max-w-md text-lg text-white">{{ __("home.services.items.{$service}.text") }}</p>
+                <div data-acc-item class="border-t border-white/20">
+                    <h3>
+                        <button type="button" data-acc-button id="service-{{ $loop->iteration }}-button" aria-expanded="true" aria-controls="service-{{ $loop->iteration }}-panel"
+                                class="group flex min-h-24 w-full items-center gap-6 py-6 text-start lg:gap-10">
+                            <span class="w-16 shrink-0 text-4xl font-black text-brand-400 lg:w-24 lg:text-5xl" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                            <span class="flex-1 text-2xl font-bold sm:text-4xl">{{ __("home.services.items.{$service}.title") }}</span>
+                            <span class="plus relative size-8 shrink-0" aria-hidden="true"></span>
+                        </button>
+                    </h3>
+                    <div data-acc-panel id="service-{{ $loop->iteration }}-panel" role="region" aria-labelledby="service-{{ $loop->iteration }}-button">
+                        <div class="flex flex-col gap-6 pb-10 ps-[5.5rem] lg:flex-row lg:items-center lg:justify-between lg:ps-[8.5rem]">
+                            <p class="max-w-xl text-lg text-white/85">{{ __("home.services.items.{$service}.text") }}</p>
+                            <a href="{{ route('landing.services') }}" class="inline-flex min-h-12 items-center gap-2 self-start rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
+                                {{ __('home.services.all') }}<x-landing.arrow />
+                            </a>
+                        </div>
                     </div>
-                @else
-                    <div data-anim="card" data-from="end" class="rounded-3xl bg-white p-8 lg:col-span-2">
-                        <h3 class="text-xl font-bold text-ink sm:text-2xl">{{ __("home.services.items.{$service}.title") }}</h3>
-                        <p class="mt-3 text-muted">{{ __("home.services.items.{$service}.text") }}</p>
-                    </div>
-                @endif
+                </div>
             @endforeach
         </div>
     </div>

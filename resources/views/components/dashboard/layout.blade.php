@@ -16,7 +16,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <title>{{ $title }} | PT Metindo Perkasa</title>
-    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     @vite(['resources/css/dashboard.css', 'resources/css/fonts/latin.css', 'resources/js/dashboard.js'])
 </head>
 <body class="min-h-screen bg-lavender font-sans text-ink antialiased">
@@ -30,7 +32,7 @@
         <aside id="sidebar" class="fixed inset-y-0 start-0 z-50 flex w-64 flex-col bg-ink text-white lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-auto" style="--focus-ring: #ffffff">
             <div class="flex items-center justify-between px-6 py-6">
                 <a href="{{ route($user->role->homeRoute()) }}" class="inline-flex rounded">
-                    <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-8 w-auto">
+                    <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-8 w-auto">
                 </a>
                 <button type="button" data-sidebar-close class="-me-3 inline-flex size-11 items-center justify-center rounded-lg hover:bg-white/10 lg:hidden" aria-label="{{ __('dashboard.close_menu') }}">
                     <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
@@ -57,7 +59,7 @@
                             <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
                         </button>
                         <a href="{{ route($user->role->homeRoute()) }}" class="hidden rounded sm:inline-flex lg:hidden">
-                            <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="h-8 w-auto">
+                            <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-8 w-auto">
                         </a>
                     </div>
 

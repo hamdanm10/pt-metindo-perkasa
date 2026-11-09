@@ -1,15 +1,13 @@
 @php($email = config('landing.contact.email'))
 
 @if ($email)
-    <section class="bg-white pb-20 pt-16 lg:pb-28 lg:pt-20">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div data-anim="card" data-from="up" class="rounded-3xl bg-brand-600 px-8 py-14 text-white sm:px-14 sm:py-20 lg:rounded-ss-[6rem]">
-                <h2 data-anim="heading" class="max-w-2xl text-balance text-3xl font-bold leading-tight sm:text-5xl">{{ __('landing.cta.title') }}</h2>
-                <p class="mt-5 max-w-xl text-lg text-white">{{ __('landing.cta.text') }}</p>
-                <a href="mailto:{{ $email }}" class="mt-9 inline-flex min-h-12 items-center rounded-lg bg-white px-7 font-bold text-brand-700 hover:bg-lavender focus-visible:outline-white">
-                    {{ __('landing.cta.button') }}
-                </a>
-            </div>
+    <section class="bg-brand-600 text-white" style="--focus-ring: #ffffff">
+        <div class="container-site section-y">
+            <h2 data-anim="grow" class="max-w-4xl text-balance text-[clamp(2.5rem,7vw,5.5rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('landing.cta.title') }}</h2>
+            <p class="mt-6 max-w-xl text-lg sm:text-xl">{{ __('landing.cta.text') }}</p>
+            <a href="mailto:{{ $email }}" class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-white px-7 font-bold text-ink hover:bg-lavender">
+                {{ __('landing.cta.button') }}<x-landing.arrow />
+            </a>
         </div>
     </section>
 @endif

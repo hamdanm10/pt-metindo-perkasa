@@ -6,6 +6,7 @@ return [
     'skip_to_content' => '本文へスキップ',
     'menu' => 'メニュー',
     'language' => '言語',
+    'talk' => 'お問い合わせ',
     'nav' => [
         'home' => 'ホーム',
         'about' => '会社概要',

@@ -5,14 +5,14 @@
         <div class="relative hidden overflow-hidden bg-brand-600 lg:block" aria-hidden="true">
             <div class="absolute inset-y-0 end-0 w-2/3 bg-ink" style="clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%)"></div>
             <div class="absolute -bottom-20 start-1/4 size-72 rounded-full bg-accent-indigo"></div>
-            <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="555" height="100" class="absolute start-12 top-12 h-9 w-auto">
+            <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="absolute start-12 top-12 h-9 w-auto">
         </div>
 
         <div class="relative flex items-center justify-center px-6 py-12 sm:px-12">
             <x-dashboard.locale-switcher :action="$localeAction" class="absolute end-6 top-6" />
 
             <div class="w-full max-w-sm">
-                <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="555" height="100" class="mb-10 h-9 w-auto lg:hidden">
+                <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="mb-10 h-9 w-auto lg:hidden">
 
                 <h1 class="text-4xl font-extrabold leading-tight tracking-tight">{{ $title }}</h1>
 
