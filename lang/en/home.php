@@ -64,4 +64,9 @@ return [
         'intro' => 'Updates, process notes, and company news.',
         'all' => 'View all',
     ],
+    'about' => [
+        'label' => 'About',
+        'lines' => ['Plate it,', 'protect it,', 'and polish.'],
+        'text' => 'PT Metindo Perkasa is a metal finishing and electroplating specialist in Indonesia. We supply the chemicals, run the plating processes, and advise our customers at every step, so each coating is consistent and built to last.',
+    ],
 ];

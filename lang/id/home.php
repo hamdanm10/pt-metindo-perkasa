@@ -64,4 +64,9 @@ return [
         'intro' => 'Pembaruan, catatan proses, dan berita perusahaan.',
         'all' => 'Lihat semua',
     ],
+    'about' => [
+        'label' => 'Tentang',
+        'lines' => ['Lapisi,', 'lindungi,', 'dan poles.'],
+        'text' => 'PT Metindo Perkasa adalah spesialis finishing logam dan elektroplating di Indonesia. Kami memasok bahan kimia, menjalankan proses pelapisan, dan mendampingi pelanggan di setiap tahap, sehingga setiap lapisan konsisten dan tahan lama.',
+    ],
 ];

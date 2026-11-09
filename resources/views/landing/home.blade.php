@@ -22,5 +22,6 @@
     @include('landing.home.clients')
     @include('landing.home.gallery')
     @include('landing.home.articles')
+    @include('landing.home.about')
     <x-landing.cta />
 @endsection
