@@ -25,15 +25,15 @@
             </div>
 
             <div data-clients-stage class="relative mt-[3vw] lg:px-[3.9vw]">
-                <div class="grid gap-5 lg:grid-cols-5 lg:gap-[3.1vw]">
+                <div class="grid gap-5 lg:grid-cols-5 lg:gap-[2.5vw]">
                     <div class="{{ $testimonial ? 'lg:col-span-3' : 'lg:col-span-5' }}">
                         @foreach ($slides as $slide)
                             <ul data-clients-slide data-label="{{ $slide['label'] }}" @if (! $loop->first) hidden @endif
                                 class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-[2.5vw] {{ $testimonial ? '' : 'lg:grid-cols-5' }}">
                                 @foreach ($slide['items'] as $item)
-                                    <li data-client-cell class="relative flex aspect-[218/124] items-center justify-center rounded-lg border border-ink/60 p-5">
+                                    <li data-client-cell class="relative flex aspect-[218/124] items-center justify-center rounded-lg border border-ink">
                                         @if ($item['src'])
-                                            <img src="{{ $item['src'] }}" alt="{{ $item['name'] }}" loading="lazy" decoding="async" class="max-h-full max-w-full object-contain">
+                                            <span class="flex aspect-[3/2] w-1/2 items-center justify-center"><img src="{{ $item['src'] }}" alt="{{ $item['name'] }}" loading="lazy" decoding="async" class="size-full object-contain"></span>
                                         @elseif ($slide['key'] === 'partners')
                                             <span class="text-center text-xl font-bold" lang="en" dir="ltr">{{ $item['name'] }}</span>
                                         @else
@@ -46,8 +46,18 @@
                     </div>
 
                     @if ($testimonial)
-                        {{-- Placeholder only: there is no real testimonial yet, and none is made up. --}}
-                        <div class="flex min-h-64 items-start rounded-lg bg-accent-blue/10 p-8 text-sm font-semibold text-muted lg:col-span-2" lang="en" dir="ltr">[TESTIMONIAL] shown here when there is a real quote and name</div>
+                        {{-- Placeholder text only: there is no real testimonial yet, and none is made up. --}}
+                        <figure class="flex flex-col justify-between rounded-lg bg-accent-blue/10 px-[clamp(1.25rem,2.22vw,2.75rem)] py-[clamp(1.5rem,2.78vw,3.5rem)] lg:col-span-2" lang="en" dir="ltr">
+                            <div>
+                                <svg class="h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 30 17" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.0742 0.109896L10.8054 16.6515H0.2668L7.4037 0.109896H15.0742ZM29.5481 0.109896L25.346 16.6515H14.7407L21.8776 0.109896H29.5481Z"/></svg>
+                                <blockquote class="my-[1.39vw] text-[clamp(0.95rem,1.11vw,1.4rem)] leading-[1.42]">[SAMPLE] A short quote from a real client appears here, with the name and position of the person and the logo of the company, once there is one to show.</blockquote>
+                                <svg class="ms-auto h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 31 18" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.2143 17.312L19.4831 0.770378H30.0217L22.8848 17.312H15.2143ZM0.740402 17.312L4.9425 0.770378H15.5478L8.4109 17.312H0.740402Z"/></svg>
+                            </div>
+                            <figcaption class="mt-[2.8vw] text-[clamp(0.75rem,0.83vw,1.05rem)] leading-[1.35]">
+                                <div class="font-bold">[SAMPLE] Name</div>
+                                <div>Position, Company</div>
+                            </figcaption>
+                        </figure>
                     @endif
                 </div>
 

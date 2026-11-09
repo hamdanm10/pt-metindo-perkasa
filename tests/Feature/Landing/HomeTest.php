@@ -278,6 +278,19 @@ class HomeTest extends TestCase
             ->assertDontSee('Oil &amp; Gas', false);
     }
 
+    public function test_sample_mode_shows_a_styled_testimonial_placeholder_and_production_none(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $this->get('/en')->assertOk()
+            ->assertSee('<blockquote', false)
+            ->assertSee('[SAMPLE] Name');
+
+        config(['landing.sample_content' => false]);
+
+        $this->get('/en')->assertOk()->assertDontSee('<blockquote', false);
+    }
+
     public function test_clients_section_falls_back_to_placeholders_and_partner_names_without_logo_files(): void
     {
         $empty = sys_get_temp_dir().'/landing-logos-'.uniqid();
