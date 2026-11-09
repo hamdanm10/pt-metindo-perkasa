@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { about } from './motion/about.js';
 import { catalog } from './motion/catalog.js';
 import { clients } from './motion/clients.js';
 import { gallery } from './motion/gallery.js';
@@ -21,6 +22,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         scrollReveals();
         smartHeader();
         video();
+        about();
         gsap.matchMedia().add('(min-width: 1024px)', catalog);
         gsap.matchMedia().add('(min-width: 1024px)', services);
 

@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { createDeck } from './deck.js';
 import { all } from './shared.js';
 
 /**
@@ -23,47 +24,11 @@ export const catalog = () => {
     const captions = all('[data-catalog-caption]', stage);
     const action = stage.querySelector('[data-catalog-action]');
 
-    let active = 0;
-    let direction = 1;
-    let top = cards.length;
-    let playing = true;
+    const { loop, setPlaying } = createDeck({ deck, cards, medias });
 
-    gsap.set(deck, { transformOrigin: '50% 100%' });
-    gsap.set(cards, { transformOrigin: '0 0' });
     gsap.set(tiles, { autoAlpha: 0 });
     gsap.set(captions, { autoAlpha: 0 });
     gsap.set(action, { autoAlpha: 0 });
-
-    const slide = () => {
-        if (!playing) {
-            return;
-        }
-
-        if (active + direction >= cards.length || active + direction < 0) {
-            direction *= -1;
-        }
-
-        active += direction;
-
-        const media = medias[active];
-        const tilt = gsap.timeline();
-
-        tilt
-            .to(deck, { scale: 0.85, duration: 0.28, ease: 'power2.inOut' }, 0)
-            .to(media, { rotation: -4.75, scale: 1.047, duration: 0.28, ease: 'power2.inOut' }, 0)
-            .call(() => {
-                top += 1;
-                cards[active].style.zIndex = String(top);
-            }, null, 0.34)
-            .to(deck, { scale: 1, duration: 0.35, ease: 'power2.out' }, 0.28)
-            .to(media, { rotation: 0.55, scale: 0.994, duration: 0.3, ease: 'power2.out' }, 0.28)
-            .to(media, { rotation: 0, scale: 1, duration: 0.77, ease: 'power2.inOut' }, 0.58);
-    };
-
-    const loop = gsap.delayedCall(4, function tick() {
-        slide();
-        loop.restart(true);
-    });
 
     /** Where card `index` has to go to land on its tile, relative to where it sits now. */
     const toRow = (card, index) => {
@@ -85,7 +50,7 @@ export const catalog = () => {
             scrub: 0.6,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-                playing = self.progress < 0.01;
+                setPlaying(self.progress < 0.01);
             },
         },
     })

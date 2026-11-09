@@ -5,7 +5,7 @@ import { SplitText } from 'gsap/SplitText';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export const root = document.documentElement;
-export const all = (selector) => gsap.utils.toArray(selector);
+export const all = (selector, scope) => gsap.utils.toArray(selector, scope);
 
 /** Arabic letters join, so headlines in Arabic are never split into characters. */
 export const canSplitChars = () => !root.lang.toLowerCase().startsWith('ar');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
+use App\Services\Landing\LandingGallery;
 use Tests\TestCase;
 
 class HomeTest extends TestCase
@@ -43,7 +44,8 @@ class HomeTest extends TestCase
         }
 
         $response->assertDontSee($categories[4]['name']);
-        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-deck-card'));
+        // Four cards in the catalog deck, and one card per team photo in the About deck.
+        $this->assertSame(4 + count(app(LandingGallery::class)->slides()), substr_count((string) $response->getContent(), 'data-deck-card'));
         $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-tile '));
         $response->assertSee('data-catalog-stage', false)
             ->assertSee('data-catalog-panel', false)
@@ -385,6 +387,39 @@ class HomeTest extends TestCase
 
                 $this->assertNotSame("home.gallery.slides.{$key}.caption", $caption);
                 $response->assertSee($caption, false);
+            }
+        }
+    }
+
+    public function test_about_section_shows_the_headline_lines_graphics_text_button_and_photo_deck(): void
+    {
+        $response = $this->get('/en')->assertOk();
+
+        foreach (__('home.about.lines') as $line) {
+            $response->assertSee($line);
+        }
+
+        $this->assertSame(3, substr_count((string) $response->getContent(), 'data-about-art'));
+
+        $response->assertSee(__('home.about.label'))
+            ->assertSee(__('home.about.text'))
+            ->assertSee('data-about-deck-panel', false)
+            ->assertSee('href="'.route('landing.about', ['locale' => 'en']).'"', false);
+    }
+
+    public function test_about_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $response = $this->get("/{$code}")->assertOk();
+
+            foreach ([...__('home.about.lines', [], $code), __('home.about.label', [], $code), __('home.about.text', [], $code)] as $text) {
+                $this->assertIsString($text);
+                $this->assertNotSame('', $text);
+                $response->assertSee($text, false);
+            }
+
+            if ($code !== 'en') {
+                $this->assertNotSame(__('home.about.text', [], 'en'), __('home.about.text', [], $code));
             }
         }
     }
