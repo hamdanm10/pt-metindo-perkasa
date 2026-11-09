@@ -269,6 +269,51 @@ const video = () => {
     gsap.from(label, { autoAlpha: 0, y: 14, duration: 0.6, delay: 0.25, ease: 'power3.out', scrollTrigger: once });
 };
 
+/**
+ * Services, as in the reference: the list sticks to the screen and the scroll alone opens
+ * the services one by one. The open one closes while the next opens (height and opacity,
+ * scrubbed). Wide screens only. Elsewhere every service is open and static.
+ */
+const services = () => {
+    const track = document.querySelector('[data-services-track]');
+
+    if (!track) {
+        return;
+    }
+
+    const panels = all('[data-acc-panel]', track);
+    const count = panels.length;
+    const natural = (panel) => panel.querySelector('[data-acc-inner]').offsetHeight;
+
+    track.setAttribute('data-pinned', '');
+    track.style.height = `${100 + (count - 1) * 55 + 25}vh`;
+
+    gsap.set(panels.slice(1), { height: 0, autoAlpha: 0 });
+    gsap.set(panels, { overflow: 'hidden' });
+
+    const timeline = gsap.timeline({
+        defaults: { ease: 'power1.inOut' },
+        scrollTrigger: { trigger: track, start: 'top top', end: 'bottom bottom', scrub: 0.5, invalidateOnRefresh: true },
+    });
+
+    // 0.25 of rest, then each hand-over takes 1 and rests 0.25, as measured on the reference.
+    panels.slice(0, -1).forEach((panel, index) => {
+        const at = 0.25 + index * 1.25;
+
+        timeline
+            .to(panel, { height: 0, autoAlpha: 0, duration: 1 }, at)
+            .fromTo(panels[index + 1], { height: 0, autoAlpha: 0 }, { height: () => natural(panels[index + 1]), autoAlpha: 1, duration: 1 }, at);
+    });
+
+    timeline.to({}, { duration: 0.25 });
+
+    return () => {
+        track.removeAttribute('data-pinned');
+        track.style.height = '';
+        gsap.set(panels, { clearProps: 'height,opacity,visibility,overflow' });
+    };
+};
+
 /** The header slides away when scrolling down and returns when scrolling up. */
 const smartHeader = () => {
     const header = document.querySelector('[data-header]');
@@ -308,6 +353,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         smartHeader();
         video();
         gsap.matchMedia().add('(min-width: 1024px)', catalog);
+        gsap.matchMedia().add('(min-width: 1024px)', services);
 
         window.__animReady = true;
         root.classList.remove('anim-hide');
@@ -319,48 +365,3 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         root.classList.remove('anim-hide');
     };
 });
-
-/** Accordion for the services. Works with or without motion, and is open without JavaScript. */
-const accordion = () => {
-    const instant = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    all('[data-accordion]').forEach((list) => {
-        const items = Array.from(list.querySelectorAll('[data-acc-item]'));
-
-        const setState = (item, open, animate) => {
-            const button = item.querySelector('[data-acc-button]');
-            const panel = item.querySelector('[data-acc-panel]');
-
-            button.setAttribute('aria-expanded', String(open));
-            item.toggleAttribute('data-open', open);
-
-            if (!animate || instant) {
-                gsap.set(panel, { height: open ? 'auto' : 0, autoAlpha: open ? 1 : 0 });
-
-                return;
-            }
-
-            gsap.to(panel, {
-                height: open ? 'auto' : 0,
-                autoAlpha: open ? 1 : 0,
-                duration: 0.55,
-                ease: 'power3.inOut',
-                overwrite: true,
-                onComplete: () => ScrollTrigger.refresh(),
-            });
-        };
-
-        items.forEach((item, index) => {
-            gsap.set(item.querySelector('[data-acc-panel]'), { overflow: 'hidden' });
-            setState(item, index === 0, false);
-
-            item.querySelector('[data-acc-button]').addEventListener('click', () => {
-                const opening = !item.hasAttribute('data-open');
-
-                items.forEach((other) => setState(other, other === item && opening, true));
-            });
-        });
-    });
-};
-
-accordion();

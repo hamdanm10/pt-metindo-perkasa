@@ -1,7 +1,7 @@
 @props(['name', 'ratio' => 'aspect-[4/3]', 'alt' => '', 'bare' => false])
 
 @php
-    $file = collect(['webp', 'jpg', 'jpeg', 'png'])
+    $file = collect(['webp', 'svg', 'jpg', 'jpeg', 'png'])
         ->map(fn (string $extension): string => "images/landing/photos/{$name}.{$extension}")
         ->first(fn (string $path): bool => is_file(public_path($path)));
 @endphp

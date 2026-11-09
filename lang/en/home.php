@@ -26,6 +26,7 @@ return [
         'title' => 'Services',
         'intro' => 'From job plating to chemical supply and technical consultation.',
         'all' => 'View all',
+        'more' => 'Learn more',
         'items' => [
             'electroplating' => [
                 'title' => 'Electroplating Service',

@@ -26,6 +26,7 @@ return [
         'title' => 'サービス',
         'intro' => '受託めっきから薬品供給、技術相談まで。',
         'all' => 'すべて見る',
+        'more' => '詳しく見る',
         'items' => [
             'electroplating' => [
                 'title' => '電気めっきサービス',

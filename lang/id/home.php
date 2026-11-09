@@ -26,6 +26,7 @@ return [
         'title' => 'Layanan',
         'intro' => 'Dari jasa pelapisan, suplai bahan kimia, hingga konsultasi teknis.',
         'all' => 'Lihat semua',
+        'more' => 'Pelajari lebih lanjut',
         'items' => [
             'electroplating' => [
                 'title' => 'Layanan Electroplating',

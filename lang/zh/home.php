@@ -26,6 +26,7 @@ return [
         'title' => '服务',
         'intro' => '从代工电镀到化学品供应和技术咨询。',
         'all' => '查看全部',
+        'more' => '了解更多',
         'items' => [
             'electroplating' => [
                 'title' => '电镀服务',

@@ -39,7 +39,7 @@ Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun 
 | `about-company`, `about-facilities` | Halaman About Us | Placeholder berlabel sampai ada foto |
 | `product-zinc-plating`, `product-nickel-plating`, `product-copper-plating`, `product-hard-chrome` | Kartu katalog di beranda (tumpukan dan baris) | Portrait 365:620 (sekitar 3:5), minimal 730x1240, WebP atau JPG, di `public/images/landing/photos/`. Placeholder berlabel tampil sampai berkasnya ada. Kartu dipotong `object-cover` |
 | `video-thumbnail` | Kotak video di beranda | Rasio 16:9, minimal 1600x900, WebP atau JPG. Diganti dengan menimpa berkas di `public/images/landing/photos/`. Tanpa teks di dalam gambar. Bagian bawahnya ditutup gradasi gelap |
-| Gambar tiap layanan (3) | Baris layanan di beranda dan halaman Services | Ilustrasi atau foto, rasio sekitar 4:3 |
+| `service-electroplating`, `service-chemical-supply`, `service-consultation` | Panel kanan layanan di beranda | Ilustrasi diam rasio 16:9 (minimal 1600x900), SVG, WebP, JPG, atau PNG, di `public/images/landing/photos/`. Placeholder berlabel tampil sampai berkasnya ada. Bisa diganti animasi `.lottie` kelak |
 | Logo klien dan mitra | Dinding klien | Format SVG atau PNG transparan, dengan izin |
 
 Ilustrasi Recraft lama (`hero-waves`, `slash-pattern`, ikon kategori, `service-*`, `video-poster`, dan lainnya) masih ada di `public/images/landing/` tetapi **tidak dipakai lagi**, begitu pula komponen `x-landing.art` dan `x-landing.category-icon` yang sudah dihapus. Prompt lama di [`recraft-prompts.md`](recraft-prompts.md) bersifat arsip.

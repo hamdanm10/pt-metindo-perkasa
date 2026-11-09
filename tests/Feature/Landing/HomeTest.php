@@ -218,15 +218,30 @@ class HomeTest extends TestCase
         $this->get('/en')->assertDontSee('marquee', false);
     }
 
-    public function test_services_are_an_accordion_that_is_open_without_javascript(): void
+    public function test_services_list_is_complete_and_open_without_javascript(): void
     {
         $response = $this->get('/en')
-            ->assertSee('data-accordion', false)
-            ->assertSee('aria-expanded="true"', false)
-            ->assertSee('aria-controls="service-1-panel"', false)
-            ->assertSee('role="region"', false);
+            ->assertSee('data-services-track', false)
+            ->assertSee('data-services-pin', false)
+            ->assertSee(__('home.services.intro'));
 
         $this->assertSame(3, substr_count((string) $response->getContent(), 'data-acc-item'));
-        $response->assertSee(__('home.services.items.consultation.text'));
+
+        foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
+            $response->assertSee(__("home.services.items.{$service}.title"))
+                ->assertSee(__("home.services.items.{$service}.text"));
+        }
+
+        $response->assertDontSee('aria-expanded', false)
+            ->assertSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
+    }
+
+    public function test_services_learn_more_exists_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee(__('home.services.more', [], $code))
+                ->assertSee(__('home.services.intro', [], $code));
+        }
     }
 }

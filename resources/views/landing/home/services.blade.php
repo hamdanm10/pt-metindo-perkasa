@@ -1,29 +1,31 @@
 @php($services = ['electroplating', 'chemical_supply', 'consultation'])
 
-<section class="bg-ink text-white" style="--focus-ring: #ffffff">
-    <div class="container-site section-y">
-        <div class="max-w-3xl">
-            <h2 data-anim="grow" class="text-[clamp(2.25rem,5vw,6rem)] font-black uppercase leading-[0.98] tracking-tight">{{ __('home.services.title') }}</h2>
-            <p class="mt-5 text-lg text-white/85 sm:text-xl">{{ __('home.services.intro') }}</p>
-        </div>
+<section data-services class="bg-ink text-white" style="--focus-ring: #ffffff">
+    <div class="container-site pb-10 pt-16 lg:pb-[4.5vw] lg:pt-[clamp(4rem,9vw,10rem)]">
+        <h2 data-anim="heading" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase">{{ __('home.services.title') }}</h2>
+        <p data-anim="heading" class="mt-5 max-w-[80rem] text-balance text-[clamp(2rem,5.44vw,7.5rem)] font-bold leading-none">{{ __('home.services.intro') }}</p>
+    </div>
 
-        <div data-accordion data-anim="rows" class="mt-14">
+    {{-- On wide screens the track is tall and the list below sticks to the screen while the scroll opens the services one by one. Everywhere else every service is simply open. --}}
+    <div data-services-track class="relative">
+        <div data-services-pin class="bg-ink">
             @foreach ($services as $service)
                 <div data-acc-item class="border-t border-white/20">
-                    <h3>
-                        <button type="button" data-acc-button id="service-{{ $loop->iteration }}-button" aria-expanded="true" aria-controls="service-{{ $loop->iteration }}-panel"
-                                class="group flex min-h-24 w-full items-center gap-6 py-6 text-start lg:gap-10">
-                            <span class="w-16 shrink-0 text-4xl font-black text-brand-400 lg:w-24 lg:text-5xl" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                            <span class="flex-1 text-2xl font-bold sm:text-4xl">{{ __("home.services.items.{$service}.title") }}</span>
-                            <span class="plus relative size-8 shrink-0" aria-hidden="true"></span>
-                        </button>
+                    <h3 class="container-site flex min-h-20 items-center text-[clamp(1.5rem,2.11vw,3rem)] font-bold lg:h-[clamp(4.5rem,6.25vw,7rem)]">
+                        {{ __("home.services.items.{$service}.title") }}
                     </h3>
-                    <div data-acc-panel id="service-{{ $loop->iteration }}-panel" role="region" aria-labelledby="service-{{ $loop->iteration }}-button">
-                        <div class="flex flex-col gap-6 pb-10 ps-[5.5rem] lg:flex-row lg:items-center lg:justify-between lg:ps-[8.5rem]">
-                            <p class="max-w-xl text-lg text-white/85">{{ __("home.services.items.{$service}.text") }}</p>
-                            <a href="{{ route('landing.services') }}" class="inline-flex min-h-12 items-center gap-2 self-start rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
-                                {{ __('home.services.all') }}<x-landing.arrow />
-                            </a>
+                    <div data-acc-panel>
+                        <div data-acc-inner class="container-site flex flex-col gap-8 pb-12 lg:flex-row lg:items-start lg:justify-between lg:pb-[13vw]">
+                            <div class="max-w-[55rem] lg:w-[55%]">
+                                <p class="text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-white/90">{{ __("home.services.items.{$service}.text") }}</p>
+                                <a href="{{ route('landing.services') }}" class="mt-8 inline-flex min-h-11 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
+                                    {{ __('home.services.more') }}<x-landing.arrow />
+                                </a>
+                            </div>
+
+                            <div class="relative aspect-video w-full shrink-0 overflow-hidden rounded-lg bg-white/10 lg:w-[32%]" aria-hidden="true">
+                                <x-landing.photo :name="'service-'.str_replace('_', '-', $service)" ratio="aspect-video" bare class="absolute inset-0 size-full bg-transparent! text-white/80!" />
+                            </div>
                         </div>
                     </div>
                 </div>

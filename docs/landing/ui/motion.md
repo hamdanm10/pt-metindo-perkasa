@@ -7,9 +7,9 @@ Gerak landing mengikuti situs referensi `newengen.com` (putaran kedua redesign, 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
 | 1 | GSAP (core, ScrollTrigger, SplitText) dan **Lenis** untuk gulir halus, semua dari npm dan ikut `landing.js` | Referensi memakai gulir halus (kelas `lenis`) dan reveal terkoordinasi |
-| 2 | Hanya `transform`, `opacity`, dan `height` untuk akordeon | Tidak memicu tata letak berat |
-| 3 | `prefers-reduced-motion: reduce`: tanpa Lenis, tanpa animasi GSAP, semua konten langsung terlihat. Akordeon tetap bisa dibuka tanpa animasi | Aksesibilitas |
-| 4 | Konten selalu ada di HTML. Keadaan awal disembunyikan lewat `anim-hide` yang dilepas setelah GSAP siap, dengan pengaman 3,5 detik. Akordeon terbuka semua tanpa JavaScript | Terbaca mesin pencari dan tanpa halaman kosong |
+| 2 | Hanya `transform`, `opacity`, dan `height` untuk daftar layanan | Tidak memicu tata letak berat |
+| 3 | `prefers-reduced-motion: reduce`: tanpa Lenis, tanpa animasi GSAP, semua konten langsung terlihat. Daftar layanan tampil terbuka semua dan tidak menempel | Aksesibilitas |
+| 4 | Konten selalu ada di HTML. Keadaan awal disembunyikan lewat `anim-hide` yang dilepas setelah GSAP siap, dengan pengaman 3,5 detik. Daftar layanan terbuka semua tanpa JavaScript | Terbaca mesin pencari dan tanpa halaman kosong |
 | 5 | **Judul tidak dipecah per huruf di bahasa Arab** (huruf bersambung). Di Arab judul naik-memudar utuh. Mandarin dan Jepang boleh dipecah per huruf | Huruf Arab rusak bila dipisah |
 | 6 | **Tidak ada gerak abadi.** Semua gerak dipicu muat halaman, gulir, atau klik. Ticker sektor di hero pernah ada dan sudah dihapus | Gerak berulang mengganggu bacaan dan menguras baterai |
 | 7 | Arah gerak ikut `dir` halaman (panah dibalik di RTL) | Arab |
@@ -29,7 +29,7 @@ Gerak landing mengikuti situs referensi `newengen.com` (putaran kedua redesign, 
 | `data-video`, `data-video-parallax`, `data-video-circle` | Kotak video di beranda | Kotak **membuka** dari bingkai kecil membulat (`clip-path` dari 14 persen dan skala 0,9 ke penuh) mengikuti gulir (`scrub`, `top 95%` sampai `top 40%`). Thumbnail bergeser pelan di dalamnya (`yPercent` -5 ke 5, `scrub`). Lingkaran putar muncul memantul (`back.out`, putar -90 derajat) dan labelnya naik saat kotak mencapai 62 persen layar (sekali). Judul section memakai `grow` | Media yang membesar saat gulir |
 | Klik tombol putar | Kotak video | Lingkaran dan label membengkak ke skala 1,8 dan memudar (0,35 detik), lalu pemutar YouTube diganti masuk dan memudar tampil (0,5 detik). Hover memberi lingkaran halo yang melebar. Dengan reduced motion pemutar langsung dimuat tanpa animasi | Transisi ke pemutar |
 | `data-header` | Header | Menyingkir ke atas saat gulir ke bawah (setelah 160 px), kembali saat gulir ke atas atau fokus masuk. Tidak menyingkir bila menu terbuka | Header `sh__content` |
-| `data-accordion` | Layanan di beranda | Satu panel terbuka, tinggi dan opacity beranimasi 0,55 detik, ikon plus menjadi minus | Akordeon layanan |
+| `data-services-track`, `data-acc-item` | Layanan di beranda | **Diukur dari section Services referensi.** Pembungkus tinggi (`300vh` di referensi, di sini `100vh + 55vh per pergantian + 25vh`) berisi daftar yang `position: sticky` setinggi layar. Gulir saja yang membuka layanan satu per satu: panel yang terbuka menutup (tinggi dan opacity ke nol) sementara panel berikutnya membuka (ke tinggi aslinya, sekitar 450 px di 1440), bersamaan dan `scrub`. Tiap pergantian berdurasi 1 satuan dan diselingi jeda 0,25 satuan, dengan jeda 0,25 di awal supaya layanan pertama terbaca. Tidak ada klik. Hanya lebar 1024 px ke atas tanpa reduced motion. Di tempat lain semua layanan terbuka dan diam | Section Services referensi (`acc-services-item`) |
 | CSS | Panah, kartu katalog | Panah maju 4 px saat hover, kartu naik 6 px | Transisi 0,3 sampai 0,75 detik |
 | `data-intro-item` | Layar intro | Logo dan tombol memudar masuk, seluruh layar memudar saat ditutup | Layar pembuka titik |
 
@@ -43,7 +43,7 @@ Header, footer, menu, dan teks isi lain tidak dianimasikan GSAP. Peristiwa `intr
 
 ## Struktur kode
 
-- `resources/js/landing/motion.js`: Lenis, hero, reveal gulir, header pintar, dan akordeon. Seluruh gerak GSAP dibungkus `gsap.matchMedia()`.
+- `resources/js/landing/motion.js`: Lenis, hero, reveal gulir, header pintar, kartu katalog, video, dan daftar layanan. Seluruh gerak GSAP dibungkus `gsap.matchMedia()`.
 - `resources/js/landing/intro.js`: layar intro, `inert`, fokus, dan `sessionStorage`.
 - `resources/js/landing.js`: mengimpor keduanya, ditambah menu, dropdown, dan pemutar video.
 - `resources/css/landing.css`: `anim-hide`, penyembunyian intro, panah, ikon plus, dan aturan Lenis (`html.lenis`, `.lenis-smooth`).
