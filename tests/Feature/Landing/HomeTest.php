@@ -43,13 +43,29 @@ class HomeTest extends TestCase
         }
 
         $response->assertDontSee($categories[4]['name']);
-        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-tile-content'));
+        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-deck-card'));
+        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-tile '));
         $response->assertSee('data-catalog-stage', false)
             ->assertSee('data-catalog-panel', false)
             ->assertSee('data-catalog-badge', false)
             ->assertSee('id="catalog"', false)
             ->assertSee('href="'.url('/en/products').'"', false)
             ->assertSee(__('home.catalog.all', [], 'en'));
+    }
+
+    public function test_catalog_cards_show_placeholder_images_and_a_rounded_label(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $response = $this->get('/en')->assertOk();
+
+        foreach (array_slice(config('landing.categories'), 0, 4) as $category) {
+            $response->assertSee('[PHOTO] images/landing/photos/product-'.$category['slug'].'.webp');
+        }
+
+        $response->assertSee('data-catalog-badge', false)
+            ->assertSee('stroke-linejoin="round"', false);
+        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-label'));
     }
 
     public function test_catalog_description_and_button_exist_in_every_language(): void
@@ -87,7 +103,7 @@ class HomeTest extends TestCase
         try {
             $this->get('/en')
                 ->assertSee('photos/video-thumbnail.webp', false)
-                ->assertDontSee('[PHOTO]');
+                ->assertDontSee('[PHOTO] images/landing/photos/video-thumbnail.webp');
         } finally {
             unlink($path);
         }

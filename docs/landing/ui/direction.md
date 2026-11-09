@@ -37,6 +37,7 @@ Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun 
 | --- | --- | --- |
 | Foto proses plating atau pabrik | Panel hero (menggantikan monogram) | Arah vertikal 4:5, pencahayaan gelap selaras `ink` |
 | `about-company`, `about-facilities` | Halaman About Us | Placeholder berlabel sampai ada foto |
+| `product-zinc-plating`, `product-nickel-plating`, `product-copper-plating`, `product-hard-chrome` | Kartu katalog di beranda (tumpukan dan baris) | Portrait 365:620 (sekitar 3:5), minimal 730x1240, WebP atau JPG, di `public/images/landing/photos/`. Placeholder berlabel tampil sampai berkasnya ada. Kartu dipotong `object-cover` |
 | `video-thumbnail` | Kotak video di beranda | Rasio 16:9, minimal 1600x900, WebP atau JPG. Diganti dengan menimpa berkas di `public/images/landing/photos/`. Tanpa teks di dalam gambar. Bagian bawahnya ditutup gradasi gelap |
 | Gambar tiap layanan (3) | Baris layanan di beranda dan halaman Services | Ilustrasi atau foto, rasio sekitar 4:3 |
 | Logo klien dan mitra | Dinding klien | Format SVG atau PNG transparan, dengan izin |

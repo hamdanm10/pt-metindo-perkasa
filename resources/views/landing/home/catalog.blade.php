@@ -1,9 +1,9 @@
 @php
     $featured = array_slice(config('landing.categories'), 0, 4);
-    $tones = ['bg-ink text-white', 'bg-brand-600 text-white', 'bg-accent-indigo text-white', 'bg-accent-blue text-white'];
+    $tones = ['bg-ink', 'bg-brand-600', 'bg-accent-indigo', 'bg-accent-blue'];
 @endphp
 
-{{-- One section. The cards sit in the row at the bottom and, on wide screens, start stacked in the panel at the top, then travel down while scrolling. --}}
+{{-- One section. On wide screens the four cards start as a stacked deck beside the heading, change the front card by themselves, and travel down to the row when the page scrolls on. --}}
 <section id="catalog" class="scroll-mt-4 bg-lavender">
     <div data-catalog-stage class="container-site relative py-16 lg:py-[clamp(4rem,7vw,7rem)]">
         <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-[4vw]">
@@ -14,14 +14,27 @@
                 <p class="mt-6 max-w-xl text-lg text-muted sm:text-xl">{{ __('home.catalog.text') }}</p>
             </div>
 
-            {{-- Slot for the stacked cards, which fly in from the row below. The badge belongs to the front card. Hidden below lg, where there is no animation. --}}
+            {{-- Deck: four cards of the same size, each shifted by 13.7% of the panel, stacked by z-index. Decorative, the row below holds the real links. --}}
             <div data-catalog-panel class="relative hidden aspect-square w-full justify-self-end lg:block lg:max-w-[min(100%,68svh)]" aria-hidden="true">
-                <div data-catalog-badge class="absolute bottom-0 z-10 flex h-[19%] w-[56%] -translate-x-1/2 items-end justify-center bg-white px-4 pb-4 text-center text-ink ltr:left-[43.5%] rtl:left-[56.5%]"
-                     style="clip-path: polygon(50% 0, 100% 100%, 0 100%)">
-                    <span lang="en" dir="ltr">
-                        <span class="block text-sm font-bold">{{ $featured[1]['name'] }}</span>
-                        <span class="block text-xs">{{ $featured[1]['processes'][0] }}</span>
-                    </span>
+                <div data-deck class="absolute inset-0 origin-bottom">
+                    @foreach ($featured as $category)
+                        <article data-deck-card class="absolute top-0 h-full w-[58.9%]" style="inset-inline-start: {{ $loop->index * 13.7 }}%; z-index: {{ 4 - $loop->index }}">
+                            <div data-deck-media class="{{ $tones[$loop->index] }} relative size-full overflow-hidden rounded-lg">
+                                <x-landing.photo :name="'product-'.$category['slug']" ratio="aspect-[365/620]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
+                {{-- Label with rounded corners. One text block per card, the one of the front card is shown. --}}
+                <div data-catalog-badge class="absolute bottom-0 z-20 aspect-[340/100] w-[54%] -translate-x-1/2 text-center text-ink ltr:left-[23.5%] rtl:left-[76.5%]">
+                    <svg viewBox="0 0 340 100" class="absolute inset-0 size-full" aria-hidden="true"><path d="M170 12 L326 92 H14 Z" fill="#fff" stroke="#fff" stroke-width="22" stroke-linejoin="round"/></svg>
+                    @foreach ($featured as $category)
+                        <span data-catalog-label class="absolute inset-x-0 bottom-3 px-6" lang="en" dir="ltr" @if (! $loop->first) style="opacity: 0; visibility: hidden" @endif>
+                            <span class="block text-sm font-bold">{{ $category['name'] }}</span>
+                            <span class="block text-xs">{{ $category['processes'][0] }}</span>
+                        </span>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -30,11 +43,8 @@
             @foreach ($featured as $category)
                 <li>
                     <a href="{{ route('landing.products.show', ['category' => $category['slug']]) }}" class="group block focus-visible:outline-offset-4">
-                        <div data-catalog-tile class="{{ $tones[$loop->index % count($tones)] }} relative aspect-[3/4] overflow-hidden rounded-lg">
-                            <div data-catalog-tile-content class="absolute inset-0 flex flex-col justify-between p-5 sm:p-6">
-                                <span class="text-4xl font-black sm:text-6xl" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                                <x-landing.arrow class="size-8 self-end" />
-                            </div>
+                        <div data-catalog-tile class="{{ $tones[$loop->index] }} relative aspect-[365/620] overflow-hidden rounded-lg">
+                            <x-landing.photo :name="'product-'.$category['slug']" ratio="aspect-[365/620]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
                         </div>
                         <div data-catalog-caption class="mt-4">
                             <h3 class="text-xl font-bold leading-snug text-ink group-hover:text-brand-700" lang="en" dir="ltr">{{ $category['name'] }}</h3>

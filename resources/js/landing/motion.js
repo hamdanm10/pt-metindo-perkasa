@@ -131,11 +131,11 @@ const scrollReveals = () => {
 };
 
 /**
- * Catalog cards, as in the reference hero. They live in the product list, and start
- * stacked in the panel of the section above. The panel holds still while that section
- * is on screen; once the page scrolls on, the cards spread out and travel down to their
- * row (scrubbed). Only on wide screens. Without it, or without JavaScript, the cards are
- * simply the row.
+ * Catalog deck, measured from the reference hero: four cards of the same size, each shifted
+ * sideways and stacked by z-index. Every 4 seconds the front card changes (0 to 3 and back).
+ * The whole stack shrinks to 85% and returns while the new front card tilts and settles.
+ * When the page scrolls on, the cards leave the deck and travel down to the row (scrubbed).
+ * Wide screens only. Without it the deck is static and the row is plain.
  */
 const catalog = () => {
     const stage = document.querySelector('[data-catalog-stage]');
@@ -145,37 +145,77 @@ const catalog = () => {
         return;
     }
 
-    const rtl = root.dir === 'rtl';
+    const deck = slot.querySelector('[data-deck]');
+    const cards = all('[data-deck-card]', slot);
+    const medias = all('[data-deck-media]', slot);
+    const labels = all('[data-catalog-label]', slot);
+    const badge = slot.querySelector('[data-catalog-badge]');
     const tiles = all('[data-catalog-tile]', stage);
-    const contents = all('[data-catalog-tile-content]', stage);
     const captions = all('[data-catalog-caption]', stage);
-    const badge = stage.querySelector('[data-catalog-badge]');
     const action = stage.querySelector('[data-catalog-action]');
 
-    // The stack, as in the reference hero: one wide card in front (always the second
-    // tile) with the other three peeking out as narrow slices. Fractions of the panel
-    // width, left to right. Mirrored in RTL.
-    const stack = rtl
-        ? [[0, 0.135], [0.135, 0.27], [0.27, 0.86], [0.86, 1]]
-        : [[0, 0.14], [0.14, 0.73], [0.73, 0.865], [0.865, 1]];
+    let active = 0;
+    let direction = 1;
+    let top = cards.length;
+    let playing = true;
 
-    /** Where tile `index` sits inside the panel, relative to the stage. */
-    const panel = (tile, index) => {
-        const [from, to] = stack[rtl ? tiles.length - 1 - index : index];
-        const front = index === 1;
-        const height = slot.offsetHeight * (front ? 1 : 0.96);
+    gsap.set(deck, { transformOrigin: '50% 100%' });
+    gsap.set(cards, { transformOrigin: '0 0' });
+    gsap.set(tiles, { autoAlpha: 0 });
+    gsap.set(captions, { autoAlpha: 0 });
+    gsap.set(action, { autoAlpha: 0 });
+
+    const showLabel = (from, to) => {
+        gsap.to(labels[from], { autoAlpha: 0, y: -10, duration: 0.2, overwrite: true });
+        gsap.fromTo(labels[to], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.35, delay: 0.1, overwrite: true });
+    };
+
+    const slide = () => {
+        if (!playing) {
+            return;
+        }
+
+        const previous = active;
+
+        if (active + direction >= cards.length || active + direction < 0) {
+            direction *= -1;
+        }
+
+        active += direction;
+
+        const media = medias[active];
+        const tilt = gsap.timeline();
+
+        tilt
+            .to(deck, { scale: 0.85, duration: 0.28, ease: 'power2.inOut' }, 0)
+            .to(media, { rotation: -4.75, scale: 1.047, duration: 0.28, ease: 'power2.inOut' }, 0)
+            .call(() => {
+                top += 1;
+                cards[active].style.zIndex = String(top);
+                showLabel(previous, active);
+            }, null, 0.34)
+            .to(deck, { scale: 1, duration: 0.35, ease: 'power2.out' }, 0.28)
+            .to(media, { rotation: 0.55, scale: 0.994, duration: 0.3, ease: 'power2.out' }, 0.28)
+            .to(media, { rotation: 0, scale: 1, duration: 0.77, ease: 'power2.inOut' }, 0.58);
+    };
+
+    const loop = gsap.delayedCall(4, function tick() {
+        slide();
+        loop.restart(true);
+    });
+
+    /** Where card `index` has to go to land on its tile, relative to where it sits now. */
+    const toRow = (card, index) => {
+        const tile = tiles[index];
 
         return {
-            x: slot.offsetLeft + from * slot.offsetWidth - tile.offsetLeft,
-            y: slot.offsetTop + (front ? 0 : slot.offsetHeight * 0.02) - tile.offsetTop,
-            scaleX: ((to - from) * slot.offsetWidth) / tile.offsetWidth,
-            scaleY: height / tile.offsetHeight,
+            x: tile.offsetLeft - (slot.offsetLeft + card.offsetLeft),
+            y: tile.offsetTop - (slot.offsetTop + card.offsetTop),
+            scale: tile.offsetWidth / card.offsetWidth,
         };
     };
 
-    tiles.forEach((tile, index) => gsap.set(tile, { zIndex: index === 1 ? 3 : 1 }));
-
-    const timeline = gsap.timeline({
+    gsap.timeline({
         defaults: { ease: 'none' },
         scrollTrigger: {
             trigger: stage,
@@ -183,21 +223,24 @@ const catalog = () => {
             end: () => `+=${Math.max(300, tiles[0].offsetTop - window.innerHeight * 0.2)}`,
             scrub: 0.6,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+                playing = self.progress < 0.01;
+            },
         },
-    });
-
-    timeline
-        .fromTo(tiles, {
-            transformOrigin: '0 0',
-            x: (index, tile) => panel(tile, index).x,
-            y: (index, tile) => panel(tile, index).y,
-            scaleX: (index, tile) => panel(tile, index).scaleX,
-            scaleY: (index, tile) => panel(tile, index).scaleY,
-        }, { x: 0, y: 0, scaleX: 1, scaleY: 1, ease: 'power2.inOut' }, 0)
+    })
+        .to(cards, {
+            x: (index, card) => toRow(card, index).x,
+            y: (index, card) => toRow(card, index).y,
+            scale: (index, card) => toRow(card, index).scale,
+            ease: 'power2.inOut',
+        }, 0)
         .to(badge, { autoAlpha: 0, duration: 0.15 }, 0)
-        .fromTo(contents, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0.7)
+        .set(tiles, { autoAlpha: 1 }, 0.98)
+        .set(cards, { autoAlpha: 0 }, 0.98)
         .fromTo(captions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, 0.7)
         .fromTo(action, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0.8);
+
+    return () => loop.kill();
 };
 
 /** The header slides away when scrolling down and returns when scrolling up. */
