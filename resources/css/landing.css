@@ -81,6 +81,7 @@
 :root {
     --header-ease: cubic-bezier(0.19, 1, 0.22, 1);
     --header-chip-h: clamp(2.75rem, 3.06vw, 4.25rem);
+    --header-h: clamp(4rem, 4.8vw, 6.5rem);
 }
 
 [data-header] {
@@ -93,7 +94,13 @@
 }
 
 .header-bar {
-    height: clamp(4rem, 4.8vw, 6.5rem);
+    height: var(--header-h);
+}
+
+/* The first section runs under the header, so the clear header never shows the white page behind it. */
+#main > section:first-of-type {
+    margin-top: calc(var(--header-h) * -1);
+    border-top: var(--header-h) solid transparent;
 }
 
 .header-chip {
@@ -131,12 +138,13 @@
 
 .header-brand {
     max-width: 14em;
-    margin-inline-start: 0.75em;
+    margin-inline-start: 0.5em;
     overflow: hidden;
     white-space: nowrap;
-    font-size: clamp(1rem, 1.5vw, 1.9rem);
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-size: clamp(1.25rem, 2.7vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     transition:
         max-width 0.75s var(--header-ease),
@@ -158,17 +166,17 @@
 
 .header-chip--nav {
     height: var(--header-chip-h);
-    font-size: clamp(0.875rem, 1vw, 1.25rem);
+    font-size: clamp(0.75rem, 0.889vw, 1.1rem);
 }
 
 .header-links {
-    gap: clamp(1.5rem, 2.78vw, 3.5rem);
-    padding-inline: clamp(1rem, 2.43vw, 3rem);
+    gap: clamp(1.25rem, 2.22vw, 2.8rem);
+    padding-inline: clamp(1rem, 1.94vw, 2.4rem);
 }
 
 .header-chip--nav details > summary {
-    margin-inline-start: clamp(1.5rem, 2.78vw, 3.5rem);
-    margin-inline-end: clamp(1rem, 2.43vw, 3rem);
+    margin-inline-start: clamp(1.25rem, 2.22vw, 2.8rem);
+    margin-inline-end: clamp(1rem, 1.94vw, 2.4rem);
 }
 
 .header-link {
