@@ -367,6 +367,8 @@ class HomeTest extends TestCase
             ->assertSee('[PHOTO] article thumbnail')
             ->assertSee('class="title-hover"', false)
             ->assertSee(__('articles.tags.news'))
+            ->assertSee('class="btn-roll', false)
+            ->assertSee(__('home.articles.all'))
             ->assertDontSee('data-anim="rows"', false)
             ->assertDontSee('href="'.url('/en/articles').'"', false);
     }
