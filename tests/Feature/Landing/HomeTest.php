@@ -257,48 +257,66 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_clients_section_has_a_clients_slide_and_a_partners_slide(): void
+    public function test_clients_section_shows_the_client_and_partner_logos(): void
     {
-        config(['landing.sample_content' => true, 'landing.partners' => ['Alpha', 'Beta']]);
+        config(['landing.sample_content' => false]);
 
         $response = $this->get('/en')->assertOk();
 
         $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
-        $this->assertSame(9, substr_count((string) $response->getContent(), '[LOGO]'));
 
         $response->assertSee('data-chip', false)
             ->assertSee('data-clients-prev', false)
             ->assertSee('data-clients-next', false)
             ->assertSee('data-label="Clients"', false)
             ->assertSee('data-label="Partners"', false)
-            ->assertSee('Alpha')
+            ->assertSee('images/landing/clients/client-1.png', false)
+            ->assertSee('alt="Client 1"', false)
+            ->assertSee('images/landing/partners/partner-1.png', false)
+            ->assertDontSee('[LOGO]')
             ->assertDontSee('Furniture &amp; Hardware', false)
             ->assertDontSee('Oil &amp; Gas', false);
     }
 
-    public function test_clients_slides_use_logo_files_and_have_no_clients_slide_without_any_when_not_a_sample(): void
+    public function test_clients_section_falls_back_to_placeholders_and_partner_names_without_logo_files(): void
     {
-        config(['landing.sample_content' => false, 'landing.partners' => ['Alpha']]);
-
-        $response = $this->get('/en')->assertOk();
-        $this->assertSame(1, substr_count((string) $response->getContent(), 'data-clients-slide '));
-        $response->assertDontSee('data-clients-next', false);
-
-        $directory = public_path('images/landing/clients');
-        @mkdir($directory, 0777, true);
-        file_put_contents($directory.'/acme-motors.svg', '<svg xmlns="http://www.w3.org/2000/svg"/>');
+        $empty = sys_get_temp_dir().'/landing-logos-'.uniqid();
+        mkdir($empty);
+        config(['landing.logo_directory' => $empty, 'landing.sample_content' => true, 'landing.partners' => ['Alpha', 'Beta']]);
 
         try {
             $response = $this->get('/en')->assertOk();
 
             $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
-            $response->assertSee('images/landing/clients/acme-motors.svg', false)
-                ->assertSee('alt="Acme Motors"', false)
-                ->assertSee('data-clients-next', false)
-                ->assertDontSee('[LOGO]')
-                ->assertDontSee('[TESTIMONIAL]');
+            $this->assertSame(9, substr_count((string) $response->getContent(), '[LOGO]'));
+            $response->assertSee('Alpha');
+
+            config(['landing.sample_content' => false]);
+
+            $response = $this->get('/en')->assertOk();
+            $this->assertSame(1, substr_count((string) $response->getContent(), 'data-clients-slide '));
+            $response->assertDontSee('data-clients-next', false);
         } finally {
-            unlink($directory.'/acme-motors.svg');
+            rmdir($empty);
+        }
+    }
+
+    public function test_client_logos_are_read_from_the_logo_folder(): void
+    {
+        $directory = sys_get_temp_dir().'/landing-logos-'.uniqid();
+        mkdir($directory.'/clients', 0777, true);
+        file_put_contents($directory.'/clients/acme-motors.svg', '<svg xmlns="http://www.w3.org/2000/svg"/>');
+        config(['landing.logo_directory' => $directory, 'landing.sample_content' => false, 'landing.partners' => ['Alpha']]);
+
+        try {
+            $this->get('/en')->assertOk()
+                ->assertSee('images/landing/clients/acme-motors.svg', false)
+                ->assertSee('alt="Acme Motors"', false)
+                ->assertDontSee('[LOGO]');
+        } finally {
+            unlink($directory.'/clients/acme-motors.svg');
+            rmdir($directory.'/clients');
+            rmdir($directory);
         }
     }
 

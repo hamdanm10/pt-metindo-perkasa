@@ -44,6 +44,9 @@ return [
 
     'partners' => ['Epclen', 'Hanson SC', 'Jasco', 'Plus Clean', 'Metindo Lab'],
 
+    // Folder that holds the clients/ and partners/ logo folders. Tests point it at a temporary folder.
+    'logo_directory' => public_path('images/landing'),
+
     /*
     |--------------------------------------------------------------------------
     | Sample Articles and Subsidiaries

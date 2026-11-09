@@ -58,7 +58,7 @@ class LandingClients
      */
     private function logos(string $folder): array
     {
-        $directory = public_path("images/landing/{$folder}");
+        $directory = config()->string('landing.logo_directory').'/'.$folder;
         $files = is_dir($directory) ? (glob($directory.'/*') ?: []) : [];
         sort($files);
 
