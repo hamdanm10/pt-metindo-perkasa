@@ -178,3 +178,41 @@ html.lenis body {
 .lenis.lenis-stopped {
     overflow: clip;
 }
+
+/* Play button of the video: a halo on hover, and a swell and fade when it is pressed. */
+[data-video-circle] {
+    position: relative;
+}
+
+[data-video-circle]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid #fff;
+    opacity: 0;
+    transition:
+        scale 0.6s ease,
+        opacity 0.6s ease;
+}
+
+[data-video]:hover [data-video-circle]::after,
+[data-video-play]:focus-visible [data-video-circle]::after {
+    opacity: 0.6;
+    scale: 1.55;
+}
+
+[data-video].is-loading [data-video-circle],
+[data-video].is-loading [data-video-label] {
+    opacity: 0;
+    scale: 1.8;
+    transition:
+        scale 0.35s ease,
+        opacity 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-video-circle]::after {
+        transition: none;
+    }
+}

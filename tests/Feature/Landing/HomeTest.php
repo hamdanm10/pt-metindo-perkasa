@@ -107,6 +107,14 @@ class HomeTest extends TestCase
         }
     }
 
+    public function test_video_section_has_the_animation_hooks(): void
+    {
+        $this->get('/en')
+            ->assertSee('data-video-parallax', false)
+            ->assertSee('data-video-circle', false)
+            ->assertSee('data-video-label', false);
+    }
+
     public function test_video_section_shows_a_visible_play_label_in_every_language(): void
     {
         foreach (config('locales.landing') as $code) {
