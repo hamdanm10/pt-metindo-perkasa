@@ -49,7 +49,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 
 | Bagian | Latar | Isi |
 | --- | --- | --- |
-| Pengantar video | Putih | Hanya tampil bila `landing.intro_video_id` terisi. Judul kapital dan paragraf sebaris, lalu kotak video 16:9 selebar kontainer: thumbnail dengan gradasi gelap di bawah, lingkaran putar putih di tengah, label "Watch intro video" terlihat. Hover memperbesar thumbnail sedikit (mati dengan reduced motion) |
+| Pengantar video | Putih | Hanya tampil bila `landing.intro_video_id` terisi. Dua kolom di desktop (judul dan paragraf 5/12 di kiri, kotak video 16:9 7/12 di kanan, sekitar 770 px di layar 1440), bertumpuk di ponsel. Jarak vertikal lebih rapat dari bagian lain. Kotak video berisi thumbnail dengan gradasi gelap di bawah, lingkaran putar putih di tengah, label "Watch intro video" terlihat. Hover memperbesar thumbnail sedikit (mati dengan reduced motion) |
 | Katalog | Lavender | Kalimat besar, lalu kartu 13 kategori (4 kolom di desktop): nomor, nama, panah. Hover membalik ke `ink` |
 | Layanan | `ink` | Akordeon 01 sampai 03: judul dan ikon plus, panel berisi deskripsi dan tombol "View all" |
 | Klien dan mitra | Lavender | Sektor dan mitra sebagai kotak bergaris tipis |
