@@ -1,6 +1,11 @@
 @php
     $slides = app(\App\Services\Landing\LandingClients::class)->slides();
     $testimonial = config('landing.sample_content');
+    // Example testimonials, shown only in sample mode: one for each slide. The logo is one example file.
+    $quotes = [
+        'clients' => ['quote' => 'The Metindo team understood our finishing requirements from the first meeting. Coating quality stayed consistent across every batch, and delivery was always on schedule.', 'name' => 'Sample Customer', 'role' => 'Production Manager'],
+        'partners' => ['quote' => 'Working with Metindo as a supply partner has been smooth. Their technical support helps our team solve process issues quickly, and the chemicals always arrive as specified.', 'name' => 'Sample Partner', 'role' => 'Business Development'],
+    ];
 @endphp
 
 @if ($slides)
@@ -46,18 +51,26 @@
                     </div>
 
                     @if ($testimonial)
-                        {{-- Placeholder text only: there is no real testimonial yet, and none is made up. --}}
-                        <figure class="flex flex-col justify-between rounded-lg bg-accent-blue/10 px-[clamp(1.25rem,2.22vw,2.75rem)] py-[clamp(1.5rem,2.78vw,3.5rem)] lg:col-span-2" lang="en" dir="ltr">
-                            <div>
-                                <svg class="h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 30 17" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.0742 0.109896L10.8054 16.6515H0.2668L7.4037 0.109896H15.0742ZM29.5481 0.109896L25.346 16.6515H14.7407L21.8776 0.109896H29.5481Z"/></svg>
-                                <blockquote class="my-[1.39vw] text-[clamp(0.95rem,1.11vw,1.4rem)] leading-[1.42]">[SAMPLE] A short quote from a real client appears here, with the name and position of the person and the logo of the company, once there is one to show.</blockquote>
-                                <svg class="ms-auto h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 31 18" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.2143 17.312L19.4831 0.770378H30.0217L22.8848 17.312H15.2143ZM0.740402 17.312L4.9425 0.770378H15.5478L8.4109 17.312H0.740402Z"/></svg>
-                            </div>
-                            <figcaption class="mt-[2.8vw] text-[clamp(0.75rem,0.83vw,1.05rem)] leading-[1.35]">
-                                <div class="font-bold">[SAMPLE] Name</div>
-                                <div>Position, Company</div>
-                            </figcaption>
-                        </figure>
+                        {{-- Example text only, shown in sample mode. One testimonial per slide, and it changes with the slide. --}}
+                        <div class="lg:col-span-2">
+                            @foreach ($slides as $slide)
+                                @php($quote = $quotes[$slide['key']])
+                                <figure data-clients-testimonial @if (! $loop->first) hidden @endif class="flex h-full flex-col justify-between rounded-lg bg-accent-blue/10 px-[clamp(1.25rem,2.22vw,2.75rem)] py-[clamp(1.5rem,2.78vw,3.5rem)]" lang="en" dir="ltr">
+                                    <div>
+                                        <svg class="h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 30 17" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.0742 0.109896L10.8054 16.6515H0.2668L7.4037 0.109896H15.0742ZM29.5481 0.109896L25.346 16.6515H14.7407L21.8776 0.109896H29.5481Z"/></svg>
+                                        <blockquote class="my-[1.39vw] text-[clamp(0.95rem,1.11vw,1.4rem)] leading-[1.42]">{{ $quote['quote'] }}</blockquote>
+                                        <svg class="ms-auto h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 31 18" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.2143 17.312L19.4831 0.770378H30.0217L22.8848 17.312H15.2143ZM0.740402 17.312L4.9425 0.770378H15.5478L8.4109 17.312H0.740402Z"/></svg>
+                                    </div>
+                                    <figcaption class="mt-[2.8vw] flex items-end justify-between gap-4 text-[clamp(0.75rem,0.83vw,1.05rem)] leading-[1.35]">
+                                        <div>
+                                            <div class="font-bold">{{ $quote['name'] }}</div>
+                                            <div>{{ $quote['role'] }}</div>
+                                        </div>
+                                        <img src="{{ asset('images/landing/clients/client-3.png') }}" alt="" loading="lazy" decoding="async" class="h-[clamp(1.75rem,2.22vw,2.75rem)] w-auto">
+                                    </figcaption>
+                                </figure>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
 

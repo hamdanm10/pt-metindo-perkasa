@@ -5,7 +5,7 @@ import { all } from './shared.js';
 /**
  * Clients, as measured on the reference: the nine logo boxes shrink and drop away one after
  * another from the top left, the chip swaps its text and width, then the new logos pop in with
- * a little overshoot. It advances by itself every 5 seconds while the section is on screen,
+ * a little overshoot, and the testimonial beside them fades to the matching one. It advances by itself every 5 seconds while the section is on screen,
  * and the arrows move it by hand. Without motion preference it still switches, but instantly
  * and never by itself.
  */
@@ -20,6 +20,7 @@ export const clients = () => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const chip = section.querySelector('[data-chip]');
     const chipText = chip.querySelector('[data-chip-text]');
+    const quotes = Array.from(section.querySelectorAll('[data-clients-testimonial]'));
     const labels = slides.map((slide) => slide.dataset.label);
     const cellsOf = (index) => Array.from(slides[index].children);
     const wave = { each: 0.035, from: 'start', grid: 'auto' };
@@ -47,6 +48,9 @@ export const clients = () => {
             slide.hidden = position !== index;
         });
         chipText.textContent = labels[index];
+        quotes.forEach((quote, position) => {
+            quote.hidden = position !== index;
+        });
     };
 
     const go = (to) => {
@@ -72,6 +76,15 @@ export const clients = () => {
             .to(cellsOf(from), { y: 54, scale: 0, autoAlpha: 0, duration: 0.35, ease: 'power2.in', stagger: wave }, 0)
             .to(chipText, { yPercent: -130, duration: 0.2, ease: 'power2.in' }, 0.18)
             .to(chip, { width: widthFor(labels[to]), duration: 0.5, ease: 'power2.inOut' }, 0.25)
+            .to(quotes[from] ?? [], { autoAlpha: 0, duration: 0.3, ease: 'power1.in' }, 0.3)
+            .call(() => {
+                if (quotes[from] && quotes[to]) {
+                    quotes[from].hidden = true;
+                    gsap.set(quotes[from], { clearProps: 'opacity,visibility' });
+                    quotes[to].hidden = false;
+                    gsap.fromTo(quotes[to], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out', clearProps: 'transform,opacity,visibility' });
+                }
+            }, null, 0.62)
             .call(() => {
                 chipText.textContent = labels[to];
                 gsap.set(chipText, { yPercent: 130 });

@@ -278,17 +278,20 @@ class HomeTest extends TestCase
             ->assertDontSee('Oil &amp; Gas', false);
     }
 
-    public function test_sample_mode_shows_a_styled_testimonial_placeholder_and_production_none(): void
+    public function test_sample_mode_shows_a_client_and_a_partner_testimonial_with_a_logo_and_production_none(): void
     {
         config(['landing.sample_content' => true]);
 
-        $this->get('/en')->assertOk()
-            ->assertSee('<blockquote', false)
-            ->assertSee('[SAMPLE] Name');
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-testimonial'));
+        $response->assertSee('Sample Customer')
+            ->assertSee('Sample Partner')
+            ->assertSee('images/landing/clients/client-3.png', false);
 
         config(['landing.sample_content' => false]);
 
-        $this->get('/en')->assertOk()->assertDontSee('<blockquote', false);
+        $this->get('/en')->assertOk()->assertDontSee('data-clients-testimonial', false);
     }
 
     public function test_clients_section_falls_back_to_placeholders_and_partner_names_without_logo_files(): void
