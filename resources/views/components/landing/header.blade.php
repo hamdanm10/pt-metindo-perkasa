@@ -7,7 +7,6 @@
     $link = 'relative inline-flex min-h-11 items-center px-3 text-base font-semibold text-white/85 hover:text-white aria-[current=page]:text-white '
         .'after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:scale-x-0 after:bg-brand-400 after:transition-transform '
         .'hover:after:scale-x-100 aria-[current=page]:after:scale-x-100 motion-reduce:after:transition-none';
-    $pill = 'inline-flex min-h-11 items-center gap-2 rounded-lg bg-brand-600 px-5 text-base font-bold text-white hover:bg-brand-700';
 @endphp
 
 <header data-header class="sticky top-0 z-50 bg-ink text-white" style="--focus-ring: #ffffff">
@@ -40,13 +39,11 @@
                 </div>
             </details>
 
-            <a href="{{ route('landing.contact') }}" class="{{ $pill }}">{{ __('landing.talk') }}<x-landing.arrow /></a>
+            <x-landing.button :href="route('landing.contact')">{{ __('landing.talk') }}</x-landing.button>
         </div>
 
         <details class="relative lg:hidden" data-dismissible>
-            <summary class="inline-flex min-h-11 min-w-11 cursor-pointer list-none items-center rounded-lg bg-brand-600 px-5 text-base font-bold text-white hover:bg-brand-700 [&::-webkit-details-marker]:hidden">
-                {{ __('landing.menu') }}
-            </summary>
+            <x-landing.button as="summary" :arrow="false" class="list-none [&::-webkit-details-marker]:hidden">{{ __('landing.menu') }}</x-landing.button>
             <div class="absolute end-0 top-full z-20 mt-3 w-72 max-w-[calc(100vw-2rem)] rounded-lg bg-white p-3 text-ink shadow-xl ring-1 ring-ink/10" style="--focus-ring: #1f4fb5">
                 <nav aria-label="{{ __('landing.menu') }}">
                     <ul>

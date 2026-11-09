@@ -1,3 +1,4 @@
+import './landing/buttons.js';
 import './landing/intro.js';
 import './landing/motion.js';
 

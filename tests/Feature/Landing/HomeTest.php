@@ -49,7 +49,7 @@ class HomeTest extends TestCase
             ->assertSee('data-catalog-panel', false)
             ->assertSee('id="catalog"', false)
             ->assertSee('href="'.url('/en/processes').'"', false)
-            ->assertSee(__('home.catalog.all', [], 'en'));
+            ->assertSeeText(__('home.catalog.all', [], 'en'));
     }
 
     public function test_catalog_cards_show_placeholder_images_and_no_label(): void
@@ -71,7 +71,7 @@ class HomeTest extends TestCase
         foreach (config('locales.landing') as $code) {
             $this->get("/{$code}")
                 ->assertSee(__('home.catalog.text', [], $code))
-                ->assertSee(__('home.catalog.all', [], $code))
+                ->assertSeeText(__('home.catalog.all', [], $code))
                 ->assertSee('href="'.url("/{$code}/processes").'"', false);
         }
     }
@@ -151,7 +151,7 @@ class HomeTest extends TestCase
             ->assertSee('id="intro" role="dialog" aria-modal="true"', false)
             ->assertSee('data-intro-close', false)
             ->assertSee('data-intro-item', false)
-            ->assertSee(__('home.intro.begin', [], 'id'));
+            ->assertSeeText(__('home.intro.begin', [], 'id'));
     }
 
     public function test_home_marks_the_elements_that_animate(): void
@@ -208,7 +208,7 @@ class HomeTest extends TestCase
     public function test_header_links_the_contact_page_as_the_call_to_action(): void
     {
         foreach (config('locales.landing') as $code) {
-            $this->get("/{$code}")->assertSee(__('landing.talk', [], $code))->assertSee('href="'.url("/{$code}/contact").'"', false);
+            $this->get("/{$code}")->assertSeeText(__('landing.talk', [], $code))->assertSee('href="'.url("/{$code}/contact").'"', false);
         }
     }
 
@@ -252,7 +252,7 @@ class HomeTest extends TestCase
     {
         foreach (config('locales.landing') as $code) {
             $this->get("/{$code}")
-                ->assertSee(__('home.services.more', [], $code))
+                ->assertSeeText(__('home.services.more', [], $code))
                 ->assertSee(__('home.services.intro', [], $code));
         }
     }
@@ -367,8 +367,8 @@ class HomeTest extends TestCase
             ->assertSee('[PHOTO] article thumbnail')
             ->assertSee('class="title-hover"', false)
             ->assertSee(__('articles.tags.news'))
-            ->assertSee('class="btn-roll', false)
-            ->assertSee(__('home.articles.all'))
+            ->assertSee('data-btn', false)
+            ->assertSeeText(__('home.articles.all'))
             ->assertDontSee('data-anim="rows"', false)
             ->assertDontSee('href="'.url('/en/articles').'"', false);
     }

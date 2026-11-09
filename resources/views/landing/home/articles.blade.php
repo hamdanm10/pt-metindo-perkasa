@@ -29,12 +29,7 @@
 
             <div class="mt-10 flex justify-center">
                 {{-- With sample cards there is no article page yet, so the button is shown without a link. --}}
-                <{{ $articlesAreSamples ? 'span' : 'a' }} @unless ($articlesAreSamples) href="{{ route('landing.articles.index') }}" @endunless class="btn-roll bg-brand-600 text-white {{ $articlesAreSamples ? 'cursor-default' : '' }}">
-                    <span class="btn-roll__inner flex min-h-11 items-center gap-2 px-6 font-bold">
-                        <span class="btn-roll__label"><span>{{ __('home.articles.all') }}</span><span aria-hidden="true">{{ __('home.articles.all') }}</span></span>
-                        <x-landing.arrow />
-                    </span>
-                </{{ $articlesAreSamples ? 'span' : 'a' }}>
+                <x-landing.button :href="$articlesAreSamples ? null : route('landing.articles.index')">{{ __('home.articles.all') }}</x-landing.button>
             </div>
         </div>
     </section>

@@ -10,13 +10,9 @@
                 {{ __('home.hero.text') }}
             </p>
             <div data-anim="hero-item" class="mt-10 flex flex-wrap gap-3">
-                <a href="#catalog" class="inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
-                    {{ __('home.hero.explore') }}<x-landing.arrow />
-                </a>
+                <x-landing.button href="#catalog">{{ __('home.hero.explore') }}</x-landing.button>
                 @if ($email)
-                    <a href="mailto:{{ $email }}" class="inline-flex min-h-12 items-center rounded-lg border-2 border-white px-6 font-bold text-white hover:bg-white hover:text-ink">
-                        {{ __('home.hero.contact') }}
-                    </a>
+                    <x-landing.button :href="'mailto:'.$email" variant="outline" :arrow="false">{{ __('home.hero.contact') }}</x-landing.button>
                 @endif
             </div>
         </div>

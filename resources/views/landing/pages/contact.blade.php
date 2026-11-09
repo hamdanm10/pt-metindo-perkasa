@@ -40,10 +40,7 @@
                 </dl>
 
                 @isset($contact['whatsapp'])
-                    <a href="https://wa.me/{{ $contact['whatsapp'] }}" target="_blank" rel="noopener noreferrer"
-                       class="mt-10 inline-flex min-h-12 items-center rounded-lg bg-ink px-7 font-bold text-white hover:bg-brand-700">
-                        {{ __('pages.contact.whatsapp') }}
-                    </a>
+                    <x-landing.button :href="'https://wa.me/'.$contact['whatsapp']" target="_blank" rel="noopener noreferrer" variant="dark" class="mt-10">{{ __('pages.contact.whatsapp') }}</x-landing.button>
                 @endisset
             @else
                 <p class="text-xl text-muted">{{ __('pages.contact.empty') }}</p>
