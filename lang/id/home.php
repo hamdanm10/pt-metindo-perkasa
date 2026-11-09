@@ -30,15 +30,15 @@ return [
         'items' => [
             'electroplating' => [
                 'title' => 'Layanan Electroplating',
-                'text' => 'Layanan electroplating menyeluruh untuk komponen Anda.',
+                'text' => 'Layanan elektroplating menyeluruh untuk komponen Anda, mulai dari persiapan permukaan dan pelapisan hingga pembilasan, pengeringan, dan pemeriksaan akhir. Sampaikan bahan dasar, jenis lapisan, dan spesifikasinya, lalu kami menjalankan proses sesuai resep yang terdefinisi agar setiap batch menghasilkan mutu yang sama.',
             ],
             'chemical_supply' => [
                 'title' => 'Suplai Bahan Kimia',
-                'text' => 'Penyediaan bahan kimia electroplating dan material pendukung.',
+                'text' => 'Pasokan bahan kimia elektroplating dan bahan pendukung untuk lini pelapisan seng, nikel, tembaga, krom, timah, dan lainnya. Kami membantu Anda memilih produk yang tepat untuk bak proses dan menjaga lini Anda tetap berjalan dengan bahan kimia yang konsisten.',
             ],
             'consultation' => [
                 'title' => 'Konsultasi Teknis',
-                'text' => 'Konsultasi teknis untuk kebutuhan proses pelapisan Anda.',
+                'text' => 'Konsultasi teknis untuk kebutuhan proses pelapisan Anda. Kami mempelajari bahan dasar, proses yang berjalan, dan hasil yang diinginkan, lalu merekomendasikan penyesuaian pada bak proses, pra-perlakuan, atau cara pengendalian, agar masalah diselesaikan dari akarnya dan tidak berulang.',
             ],
         ],
     ],

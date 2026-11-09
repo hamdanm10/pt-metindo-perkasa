@@ -236,6 +236,19 @@ class HomeTest extends TestCase
             ->assertSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
     }
 
+    public function test_every_service_has_a_full_description_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
+                $this->assertGreaterThan(
+                    $code === 'en' || $code === 'id' ? 150 : 50,
+                    mb_strlen(__("home.services.items.{$service}.text", [], $code)),
+                    "{$code} {$service} description is too short",
+                );
+            }
+        }
+    }
+
     public function test_services_learn_more_exists_in_every_language(): void
     {
         foreach (config('locales.landing') as $code) {

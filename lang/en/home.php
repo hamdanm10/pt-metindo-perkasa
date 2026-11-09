@@ -30,15 +30,15 @@ return [
         'items' => [
             'electroplating' => [
                 'title' => 'Electroplating Service',
-                'text' => 'End-to-end electroplating service for your components.',
+                'text' => 'End-to-end electroplating service for your components, from surface preparation and plating to rinsing, drying, and final inspection. Tell us the substrate, the coating, and the specification, and we run the process to a defined recipe so every batch comes out the same.',
             ],
             'chemical_supply' => [
                 'title' => 'Chemical Supply',
-                'text' => 'Supply of electroplating chemicals and supporting materials.',
+                'text' => 'Supply of electroplating chemicals and supporting materials for zinc, nickel, copper, chrome, tin, and other plating lines. We help you choose the right products for your bath and keep your line running on consistent chemistry.',
             ],
             'consultation' => [
                 'title' => 'Technical Consultation',
-                'text' => 'Technical consultation for your plating process needs.',
+                'text' => 'Technical consultation for your plating process needs. We look at your substrate, your current process, and the result you want, then recommend adjustments to the bath, the pre-treatment, or the control routine, so problems are solved at the cause and do not come back.',
             ],
         ],
     ],
