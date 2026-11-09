@@ -24,7 +24,7 @@ return [
     ],
     'services' => [
         'title' => 'Layanan',
-        'intro' => 'Dari jasa pelapisan, suplai bahan kimia, hingga konsultasi teknis.',
+        'intro' => 'Pelapisan, pasokan, dan konsultasi.',
         'all' => 'Lihat semua',
         'more' => 'Pelajari lebih lanjut',
         'items' => [

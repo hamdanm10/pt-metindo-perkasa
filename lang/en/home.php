@@ -24,7 +24,7 @@ return [
     ],
     'services' => [
         'title' => 'Services',
-        'intro' => 'From job plating to chemical supply and technical consultation.',
+        'intro' => 'Plating, supply, and consultation.',
         'all' => 'View all',
         'more' => 'Learn more',
         'items' => [
