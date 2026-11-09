@@ -183,12 +183,12 @@ Mengikuti [Karpathy Guidelines](https://x.com/karpathy/status/201588385748952287
 
 ## Desain
 
-Warna merek dominan adalah **merah krimson** (`#D6283A`, sesuai logo), dengan teks gelap `#1B1F3B` dan latar lavender `#F3F2FF` sebagai netral, serta biru dan indigo sebagai aksen kedua. Warna dipakai lewat token tema Tailwind, bukan nilai hex di view. Landing mengikuti gaya `https://newengen.com/` (redesign Nov 2026) dengan palet yang sama, logo monogram `docs/references/image.svg`, dan tanpa ilustrasi Recraft lama. Fokus saat ini adalah landing page, dashboard menyusul.
+Warna merek dominan adalah **merah krimson** (`#D6283A`, sesuai logo), dengan teks gelap `#1B1F3B` dan latar lavender `#F3F2FF` sebagai netral, serta biru dan indigo sebagai aksen kedua. Warna dipakai lewat token tema Tailwind, bukan nilai hex di view. Landing mengikuti gaya `https://newengen.com/` (redesign Nov 2026) dengan palet yang sama, logo monogram `public/images/brand/logo.svg`, dan tanpa ilustrasi Recraft lama. Fokus saat ini adalah landing page, dashboard menyusul.
 
 - Fondasi (warna, tipografi, RTL, kontras): [`docs/shared/design-system/overview.md`](docs/shared/design-system/overview.md)
 - Landing (layar intro, pemakaian aset): [`docs/landing/ui/design.md`](docs/landing/ui/design.md)
 - Prompt aset vektor Recraft: [`docs/landing/ui/recraft-prompts.md`](docs/landing/ui/recraft-prompts.md)
-- Aset acuan (logo, palet): `docs/references/`. Logo dan favicon yang dipakai situs ada di `public/images/brand/` dan `public/`.
+- Logo dan favicon yang dipakai situs ada di `public/images/brand/` dan `public/`. Folder `docs/references/` sudah dihapus: aset acuan lama tersedia di riwayat git.
 - Bagian dan fitur landing mengikuti situs prototipe `http://103.125.180.65/~wwwmetin/en/homepage-2`. Tampilan dan UX dirancang ulang, prototipe hanya acuan isi dan fungsi. Fase dan statusnya di [`docs/landing/implementation-plan.md`](docs/landing/implementation-plan.md).
 - Mengubah keputusan desain berarti mengubah dokumen di atas di branch yang sama.
 

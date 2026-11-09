@@ -5,7 +5,7 @@ Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun 
 ## Permintaan client
 
 - Mengikuti gaya situs referensi `https://newengen.com/`, dengan **palet warna yang sama** (krimson, `ink`, lavender, aksen biru dan indigo).
-- Logo memakai monogram `docs/references/image.svg`, dan favicon dibuat ulang dari logo itu.
+- Logo memakai monogram `public/images/brand/logo.svg`, dan favicon dibuat ulang dari logo itu.
 - Tidak memaksakan ilustrasi Recraft yang lama. Ilustrasi atau foto baru diminta bila dibutuhkan.
 - Animasi disamakan dengan referensi (putaran kedua), layar intro tetap sederhana, dan animasi karakter memakai `.lottie`. Fitur newengen yang tidak punya padanan (spanduk promo, testimoni, buletin) dilewati.
 

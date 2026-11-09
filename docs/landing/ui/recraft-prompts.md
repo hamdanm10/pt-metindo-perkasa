@@ -1,6 +1,6 @@
 # Prompt Recraft untuk Aset Vektor Landing
 
-> **Arsip.** Setelah redesign Nov 2026 aset di dokumen ini tidak dipakai lagi ([`direction.md`](direction.md)). Dipertahankan sebagai acuan bila ilustrasi baru dibuat.
+> **Arsip.** Setelah redesign Nov 2026 aset di dokumen ini tidak dipakai lagi ([`direction.md`](direction.md)). Berkas SVG-nya sudah dihapus dari `public/images/landing/` (masih ada di riwayat git); dokumen ini dipertahankan sebagai acuan bila ilustrasi baru dibuat.
 
 Prompt untuk membuat aset vektor di Recraft sesuai arah energetik di [`direction.md`](direction.md), tetapi dengan elemen sedikit. Setiap prompt ditulis lengkap dan berdiri sendiri, tinggal disalin. Prompt berbahasa Inggris karena dipakai langsung di alat. Pemakaian aset ada di [`design.md`](design.md), palet di [`../../shared/design-system/overview.md`](../../shared/design-system/overview.md).
 

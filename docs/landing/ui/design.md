@@ -19,7 +19,7 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 
 ## Logo dan favicon
 
-- Logo: monogram "MP" garis (`docs/references/image.svg`, tanpa tulisan nama). Dipotong rapat dan dibuat dalam dua warna: `public/images/brand/logo.svg` (krimson `#D6283A`, untuk latar terang) dan `logo-white.svg` (untuk latar gelap). Satu SVG cukup untuk semua ukuran. Nama perusahaan ada di `alt` dan teks halaman, bukan di gambar. Berkas aslinya tidak diubah (warnanya `#E11E2B`).
+- Logo: monogram "MP" garis (tanpa tulisan nama). Dipotong rapat dan dibuat dalam dua warna: `public/images/brand/logo.svg` (krimson `#D6283A`, untuk latar terang) dan `logo-white.svg` (untuk latar gelap). Satu SVG cukup untuk semua ukuran. Nama perusahaan ada di `alt` dan teks halaman, bukan di gambar. Berkas aslinya tidak diubah (warnanya `#E11E2B`).
 - Favicon: petak krimson dengan monogram putih yang ditebalkan (garis tipis tidak terbaca di 16 piksel). `public/favicon.svg` dipakai peramban modern, `favicon.ico` (16, 32, 48) sebagai cadangan, dan `apple-touch-icon.png` (180). Ketiganya dibuat dari logo yang sama dan terpasang di semua layout (landing, dashboard, login, halaman galat).
 - Gambar berbagi Open Graph (1200x630) dibuat bersama L6.
 
