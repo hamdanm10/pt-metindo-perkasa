@@ -72,25 +72,56 @@
     visibility: hidden;
 }
 
+/*
+ * The header is a dark bar at the top of the page. After scrolling the bar goes clear and the
+ * logo and the menu stay behind as separate dark chips, like the reference. The height never
+ * changes, so the page does not jump.
+ */
 [data-header] {
-    transition: box-shadow 0.25s ease;
-}
-
-[data-header-inner] {
-    transition: padding 0.25s ease;
+    background-color: var(--color-ink);
+    transition: background-color 0.35s ease;
 }
 
 [data-header][data-stuck] {
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18);
+    background-color: transparent;
 }
 
-[data-header][data-stuck] [data-header-inner] {
-    padding-block: 0.375rem;
+.header-chip {
+    border-radius: 0.5rem;
+    background-color: transparent;
+    transition:
+        background-color 0.35s ease,
+        padding 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+[data-header][data-stuck] .header-chip {
+    background-color: var(--color-ink);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 8px 24px rgba(27, 31, 59, 0.25);
+}
+
+[data-header][data-stuck] .header-chip--logo {
+    padding: 0.5rem 0.75rem;
+}
+
+[data-header] .header-chip--logo img {
+    transition: height 0.35s ease;
+}
+
+[data-header][data-stuck] .header-chip--logo img {
+    height: 1.75rem;
+}
+
+[data-header][data-stuck] .header-chip--nav {
+    padding-inline: 0.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
     [data-header],
-    [data-header-inner] {
+    .header-chip,
+    [data-header] .header-chip--logo img {
         transition: none;
     }
 }

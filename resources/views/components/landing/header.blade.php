@@ -9,13 +9,14 @@
         .'hover:after:scale-x-100 aria-[current=page]:after:scale-x-100 motion-reduce:after:transition-none';
 @endphp
 
-<header data-header class="sticky top-0 z-50 bg-ink text-white" style="--focus-ring: #ffffff">
-    <div data-header-inner class="container-site flex items-center justify-between gap-4 py-3">
-        <a href="{{ route('landing.home') }}" class="inline-flex shrink-0 items-center rounded">
+<header data-header class="sticky top-0 z-50 pointer-events-none text-white" style="--focus-ring: #ffffff">
+    <div data-header-inner class="container-site flex h-20 items-center justify-between gap-4">
+        <a href="{{ route('landing.home') }}" class="header-chip header-chip--logo pointer-events-auto inline-flex shrink-0 items-center">
             <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-9 w-auto sm:h-10">
         </a>
 
-        <div class="hidden items-center gap-2 lg:flex">
+        <div class="pointer-events-auto hidden items-center gap-3 lg:flex">
+            <div class="header-chip header-chip--nav flex items-center">
             <nav aria-label="{{ __('landing.menu') }}">
                 <ul class="flex items-center">
                     @foreach ($mainMenu as $item)
@@ -38,11 +39,12 @@
                     <x-landing.language-links stacked :alternates="$alternates" />
                 </div>
             </details>
+            </div>
 
             <x-landing.button :href="route('landing.contact')">{{ __('landing.talk') }}</x-landing.button>
         </div>
 
-        <details class="relative lg:hidden" data-dismissible>
+        <details class="pointer-events-auto relative lg:hidden" data-dismissible>
             <x-landing.button as="summary" :arrow="false" class="list-none [&::-webkit-details-marker]:hidden">{{ __('landing.menu') }}</x-landing.button>
             <div class="absolute end-0 top-full z-20 mt-3 w-72 max-w-[calc(100vw-2rem)] rounded-lg bg-white p-3 text-ink shadow-xl ring-1 ring-ink/10" style="--focus-ring: #1f4fb5">
                 <nav aria-label="{{ __('landing.menu') }}">

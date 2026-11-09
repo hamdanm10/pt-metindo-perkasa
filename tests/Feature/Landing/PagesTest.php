@@ -56,6 +56,8 @@ class PagesTest extends TestCase
         $this->get('/en/about')
             ->assertSee('<header data-header class="sticky top-0 z-50', false)
             ->assertSee('data-header-sentinel', false)
+            ->assertSee('header-chip--logo', false)
+            ->assertSee('header-chip--nav', false)
             ->assertSee('aria-current="page"', false);
     }
 

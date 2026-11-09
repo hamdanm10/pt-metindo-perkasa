@@ -40,7 +40,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 
 ## Navbar
 
-- **Menempel di atas** (`position: sticky`), latar `ink` solid, logo putih di kiri. Menyingkir saat gulir ke bawah dan kembali saat gulir ke atas ([`motion.md`](motion.md)). Garis tipis muncul di bawahnya setelah halaman mulai bergulir.
+- **Menempel di atas** (`position: sticky`, tinggi tetap 5rem sehingga halaman tidak melompat), logo putih di kiri. Di puncak halaman berupa bilah `ink` solid. **Setelah halaman bergulir** (`data-stuck`) bilah menjadi transparan dan yang tersisa hanya dua ubin `ink` melayang seperti referensi: ubin logo (logo mengecil ke 1,75rem) dan ubin menu (tautan dan bahasa), dengan tombol "Let's talk" di sampingnya. Peralihan 0,35 detik. Header menyingkir saat gulir ke bawah dan kembali saat gulir ke atas ([`motion.md`](motion.md)).
 - Tautan putih, yang aktif bergaris bawah merah muda. Tombol "Let's talk" krimson berpanah (ke halaman Contact) menggantikan tautan Contact di menu desktop. Contact tetap ada di menu ponsel dan footer.
 - Pemilih bahasa: teks bahasa aktif dengan daftar turun putih. Di bawah `lg`, tombol "Menu" krimson membuka panel putih berisi menu dan bahasa.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
