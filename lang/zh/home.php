@@ -25,7 +25,6 @@ return [
     'services' => [
         'title' => '服务',
         'intro' => '电镀、供应与咨询。',
-        'all' => '查看全部',
         'more' => '了解更多',
         'items' => [
             'electroplating' => [
@@ -58,5 +57,6 @@ return [
     'articles' => [
         'title' => '文章与新闻',
         'intro' => '更新、工艺笔记与公司新闻。',
+        'all' => '查看全部',
     ],
 ];

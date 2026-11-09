@@ -235,3 +235,56 @@ html.lenis body {
         transition: none;
     }
 }
+
+/*
+ * Button whose dark fill rises from below and whose label rolls up on hover, as on the reference.
+ * Add `btn-roll` to a link with the structure used in the articles section.
+ */
+.btn-roll {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.btn-roll::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-ink);
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-roll__inner {
+    position: relative;
+}
+
+.btn-roll__label {
+    display: block;
+    height: 1.4em;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.btn-roll__label > span {
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-roll:hover::before,
+.btn-roll:focus-visible::before {
+    transform: none;
+}
+
+.btn-roll:hover .btn-roll__label > span,
+.btn-roll:focus-visible .btn-roll__label > span {
+    transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-roll::before,
+    .btn-roll__label > span {
+        transition: none;
+    }
+}

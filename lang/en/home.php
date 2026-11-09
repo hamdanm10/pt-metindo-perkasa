@@ -25,7 +25,6 @@ return [
     'services' => [
         'title' => 'Services',
         'intro' => 'Plating, supply, and consultation.',
-        'all' => 'View all',
         'more' => 'Learn more',
         'items' => [
             'electroplating' => [
@@ -58,5 +57,6 @@ return [
     'articles' => [
         'title' => 'Articles & news',
         'intro' => 'Updates, process notes, and company news.',
+        'all' => 'View all',
     ],
 ];

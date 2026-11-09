@@ -25,7 +25,6 @@ return [
     'services' => [
         'title' => 'Layanan',
         'intro' => 'Pelapisan, pasokan, dan konsultasi.',
-        'all' => 'Lihat semua',
         'more' => 'Pelajari lebih lanjut',
         'items' => [
             'electroplating' => [
@@ -58,5 +57,6 @@ return [
     'articles' => [
         'title' => 'Artikel & berita',
         'intro' => 'Pembaruan, catatan proses, dan berita perusahaan.',
+        'all' => 'Lihat semua',
     ],
 ];

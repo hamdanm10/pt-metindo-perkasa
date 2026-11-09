@@ -25,7 +25,6 @@ return [
     'services' => [
         'title' => 'サービス',
         'intro' => 'めっき、供給、コンサルティング。',
-        'all' => 'すべて見る',
         'more' => '詳しく見る',
         'items' => [
             'electroplating' => [
@@ -58,5 +57,6 @@ return [
     'articles' => [
         'title' => '記事・ニュース',
         'intro' => '更新情報、工程メモ、会社ニュース。',
+        'all' => 'すべて見る',
     ],
 ];
