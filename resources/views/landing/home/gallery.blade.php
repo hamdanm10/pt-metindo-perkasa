@@ -6,21 +6,21 @@
 @endphp
 
 @if ($slides)
-    {{-- Full-screen photos that slide into each other by themselves every 3 seconds, with the city, the company, and the local time below. --}}
+    {{-- Full-screen photos that slide into each other by themselves every 3 seconds, with a label, a caption, and a counter below. --}}
     <section data-gallery aria-label="{{ __('home.gallery.label') }}" class="relative w-full overflow-hidden bg-lavender text-ink">
         <div class="relative h-[100svh] overflow-hidden bg-ink">
             @foreach ($slides as $slide)
-                <figure data-gallery-slide data-city="{{ $slide['city'] }}" data-name="{{ $slide['name'] }}" data-timezone="{{ $slide['timezone'] }}"
+                <figure data-gallery-slide data-label="{{ $slide['label'] }}" data-caption="{{ $slide['caption'] }}"
                         class="{{ $tones[$loop->index % count($tones)] }} absolute inset-0 overflow-hidden" @if (! $loop->first) style="visibility: hidden" @endif>
-                    <x-landing.photo :name="'gallery-'.$slide['key']" ratio="aspect-video" bare :alt="$slide['name']" class="absolute inset-0 size-full bg-transparent! text-white!" />
+                    <x-landing.photo :name="'gallery-'.$slide['key']" ratio="aspect-video" bare :alt="$slide['caption']" class="absolute inset-0 size-full bg-transparent! text-white!" />
                 </figure>
             @endforeach
         </div>
 
         <div class="container-site flex pb-[2.2vw] pt-[1.7vw]">
-            <p data-gallery-city class="{{ $meta }} flex-1 overflow-hidden text-start leading-[1.7]"><span class="inline-block" data-gallery-text lang="en" dir="ltr">{{ $first['city'] }}</span></p>
-            <p data-gallery-name class="{{ $meta }} flex-1 overflow-hidden text-center leading-[1.7]"><span class="inline-block" data-gallery-text lang="en" dir="ltr">{{ $first['name'] }}</span></p>
-            <p class="{{ $meta }} flex-1 overflow-hidden text-end leading-[1.7]"><span class="inline-block" data-gallery-time dir="ltr">{{ $first['time'] }}</span></p>
+            <p data-gallery-label class="{{ $meta }} flex-1 overflow-hidden text-start leading-[1.7]"><span class="inline-block" data-gallery-text>{{ $first['label'] }}</span></p>
+            <p data-gallery-caption class="{{ $meta }} flex-1 overflow-hidden text-center leading-[1.7]"><span class="inline-block" data-gallery-text>{{ $first['caption'] }}</span></p>
+            <p class="{{ $meta }} flex-1 overflow-hidden text-end leading-[1.7]" dir="ltr"><span class="inline-block" data-gallery-count>01 / {{ str_pad((string) count($slides), 2, '0', STR_PAD_LEFT) }}</span></p>
         </div>
     </section>
 @endif

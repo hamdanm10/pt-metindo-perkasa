@@ -321,38 +321,37 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_gallery_shows_a_photo_per_location_with_city_company_and_local_time(): void
-    {
-        config(['landing.sample_content' => true]);
-
-        $response = $this->get('/en')->assertOk();
-
-        $this->assertSame(6, substr_count((string) $response->getContent(), 'data-gallery-slide '));
-
-        foreach (config('landing.subsidiaries') as $subsidiary) {
-            $response->assertSee('data-city="'.ucfirst($subsidiary['key']).'"', false)
-                ->assertSee('data-timezone="'.$subsidiary['timezone'].'"', false)
-                ->assertSee('[PHOTO] images/landing/photos/gallery-'.$subsidiary['key'].'.webp');
-        }
-
-        $response->assertSee('data-gallery-time', false)
-            ->assertSee(__('home.gallery.label'))
-            ->assertSee(now('Asia/Jakarta')->format('H:i'));
-    }
-
-    public function test_gallery_is_absent_when_the_locations_are_not_shown(): void
+    public function test_gallery_shows_the_team_photos_with_a_caption_for_each(): void
     {
         config(['landing.sample_content' => false]);
 
-        $this->get('/en')->assertOk()->assertDontSee('data-gallery', false);
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(3, substr_count((string) $response->getContent(), 'data-gallery-slide '));
+
+        foreach (['celebration', 'teamwork', 'togetherness'] as $key) {
+            $response->assertSee('images/landing/photos/gallery-'.$key.'.webp', false)
+                ->assertSee('data-label="'.__("home.gallery.slides.{$key}.label").'"', false)
+                ->assertSee('data-caption="'.__("home.gallery.slides.{$key}.caption").'"', false);
+        }
+
+        $response->assertSee('data-gallery-count', false)
+            ->assertSee('01 / 03')
+            ->assertSee(__('home.gallery.label'))
+            ->assertDontSee('[PHOTO]');
     }
 
-    public function test_gallery_label_exists_in_every_language(): void
+    public function test_gallery_captions_exist_in_every_language(): void
     {
-        config(['landing.sample_content' => true]);
-
         foreach (config('locales.landing') as $code) {
-            $this->get("/{$code}")->assertSee(__('home.gallery.label', [], $code));
+            $response = $this->get("/{$code}")->assertOk();
+
+            foreach (['celebration', 'teamwork', 'togetherness'] as $key) {
+                $caption = __("home.gallery.slides.{$key}.caption", [], $code);
+
+                $this->assertNotSame("home.gallery.slides.{$key}.caption", $caption);
+                $response->assertSee($caption, false);
+            }
         }
     }
 

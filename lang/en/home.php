@@ -52,7 +52,12 @@ return [
         'next' => 'Next clients',
     ],
     'gallery' => [
-        'label' => 'Our locations',
+        'label' => 'Our team',
+        'slides' => [
+            'celebration' => ['label' => 'Celebration', 'caption' => 'Celebrating wins together'],
+            'teamwork' => ['label' => 'Teamwork', 'caption' => 'Teamwork in every project'],
+            'togetherness' => ['label' => 'Togetherness', 'caption' => 'One goal, one team'],
+        ],
     ],
     'articles' => [
         'title' => 'Articles & news',

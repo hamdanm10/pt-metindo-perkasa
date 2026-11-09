@@ -52,7 +52,12 @@ return [
         'next' => 'Klien berikutnya',
     ],
     'gallery' => [
-        'label' => 'Lokasi kami',
+        'label' => 'Tim kami',
+        'slides' => [
+            'celebration' => ['label' => 'Perayaan', 'caption' => 'Merayakan keberhasilan bersama'],
+            'teamwork' => ['label' => 'Kerja tim', 'caption' => 'Kerja sama di setiap proyek'],
+            'togetherness' => ['label' => 'Kebersamaan', 'caption' => 'Satu tujuan, satu tim'],
+        ],
     ],
     'articles' => [
         'title' => 'Artikel & berita',
