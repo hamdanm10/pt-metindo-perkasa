@@ -1,4 +1,4 @@
-@props(['stacked' => false, 'alternates' => null])
+@props(['stacked' => false, 'alternates' => null, 'short' => false])
 
 @php
     $route = request()->route();
@@ -13,9 +13,10 @@
                 <a href="{{ $alternates === null ? route($route->getName(), array_merge($route->parameters(), ['locale' => $code])) : ($alternates[$code] ?? route('landing.home', ['locale' => $code])) }}"
                    lang="{{ $locale['html_lang'] }}"
                    hreflang="{{ $locale['html_lang'] }}"
+                   @if ($short) title="{{ $locale['name'] }}" aria-label="{{ $locale['name'] }}" @endif
                    @if ($code === $current) aria-current="true" @endif
                    class="flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-ink hover:bg-lavender aria-[current=true]:bg-lavender aria-[current=true]:font-bold aria-[current=true]:text-brand-700">
-                    {{ $locale['name'] }}
+                    {{ $short ? strtoupper($code) : $locale['name'] }}
                 </a>
             </li>
         @endforeach
