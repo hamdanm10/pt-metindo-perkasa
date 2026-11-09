@@ -8,7 +8,6 @@ Dokumen proyek dikelompokkan per **area** (landing, bersama, dan peran `admin`, 
 docs/
 ├── README.md                     peta ini
 ├── setup.md                      prasyarat lingkungan
-├── references/                   aset acuan: logo, favicon, palet warna
 ├── landing/                      landing page publik (5 bahasa)
 │   ├── ui/                       desain landing dan prompt aset vektor
 │   └── implementation-plan.md    indeks

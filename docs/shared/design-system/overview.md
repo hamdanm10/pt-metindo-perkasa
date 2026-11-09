@@ -6,7 +6,7 @@ Fondasi visual yang dipakai landing dan dashboard: warna, tipografi, bentuk, duk
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | **Merah krimson** adalah warna merek dominan | Logo (monogram `docs/references/image.svg`, varian di `public/images/brand/`) dan prototipe berwarna merah. Palet "energetic" yang berbasis biru hanya diambil sebagian |
+| 1 | **Merah krimson** adalah warna merek dominan | Logo (monogram di `public/images/brand/`) dan prototipe berwarna merah. Palet "energetic" yang berbasis biru hanya diambil sebagian |
 | 2 | Teks gelap `#1B1F3B` dan latar lavender `#F3F2FF` dari palet dipakai sebagai netral | Kontras tinggi dan cocok dengan merah |
 | 3 | Biru dan indigo dari palet menjadi aksen kedua, bukan dominan | Supaya tidak berbenturan dengan logo merah |
 | 4 | Coral `#FF5A5F` tidak dipakai | Terlalu dekat dengan merah merek, dan kontras putih di atasnya hanya 3,05 |
