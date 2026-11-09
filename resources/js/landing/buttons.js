@@ -25,21 +25,30 @@ if (hover && !calm) {
             return;
         }
 
-        gsap.set(fill, { yPercent: 100 });
-        gsap.set(copies[1], { y: 32 });
+        gsap.set(fill, { yPercent: 100, force3D: true });
+        gsap.set(copies[1], { y: 32, force3D: true });
 
         const roll = () => {
             const leaving = copies[shown];
 
             shown = 1 - shown;
 
-            gsap.set(copies[shown], { y: 32 });
+            // Snap the incoming copy below only when it has already gone above, so a quick second hover continues from where it is.
+            if (Number(gsap.getProperty(copies[shown][0], 'y')) < 0) {
+                gsap.set(copies[shown], { y: 32 });
+            }
+
             gsap.to(leaving, { y: -32, duration: 1, ease: 'expo.out', stagger: 0.04, overwrite: true });
             gsap.to(copies[shown], { y: 0, duration: 1, ease: 'expo.out', stagger: 0.04, overwrite: true });
         };
 
         const enter = () => {
-            gsap.fromTo(fill, { yPercent: 100 }, { yPercent: 0, duration: 0.6, delay: 0.04, ease: 'expo.out', overwrite: true });
+            // A fill that has left through the top starts again from below; one still leaving continues from where it is.
+            if (Number(gsap.getProperty(fill, 'yPercent')) < -80) {
+                gsap.set(fill, { yPercent: 100 });
+            }
+
+            gsap.to(fill, { yPercent: 0, duration: 0.6, delay: 0.04, ease: 'expo.out', overwrite: true });
             gsap.to(button, { color: hoverColor, duration: 0.3, overwrite: 'auto' });
 
             if (arrow) {

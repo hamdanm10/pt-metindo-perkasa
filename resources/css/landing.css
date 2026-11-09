@@ -332,6 +332,7 @@ html:not(.btn-motion) .btn:hover {
 
 html.btn-motion .btn__fill {
     display: block;
+    will-change: transform;
 }
 
 html.btn-motion .btn__label > span:last-child {
