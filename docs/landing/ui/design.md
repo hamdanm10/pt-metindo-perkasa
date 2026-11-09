@@ -45,7 +45,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Tautan putih, yang aktif bergaris bawah. Tombol "Let's talk" krimson berpanah (ke halaman Contact) menggantikan tautan Contact di menu desktop. Contact tetap ada di menu ponsel dan footer.
 - **Menu tanpa item Home** (logo sudah menuju beranda; Home tetap ada di footer). Ukuran dari referensi di 1440 px: huruf menu 0,889vw (12,8 px, berat 400), jarak antar tautan 2,22vw, padding ubin menu 1,94vw, tinggi ubin 44 px. Tulisan **METINDO PERKASA** di logo: huruf kapital (berat 600, 1,9vw, jarak huruf 0,03em), tingginya mengikuti wordmark referensi.
 - **Bagian pertama halaman menyambung ke bawah header** (margin negatif setinggi header), sehingga saat header menjadi transparan tidak ada latar putih di atas hero.
-- Pemilih bahasa: **kode singkat** (EN, ID, ZH, AR, JA) di tombol dan daftar turun putih; nama lengkap ada di `title` dan `aria-label`. Footer tetap memakai nama lengkap. Di bawah `lg`, tombol "Menu" krimson membuka panel putih berisi menu dan bahasa.
+- Pemilih bahasa: tombol menampilkan **kode singkat** bahasa yang dipilih (EN, ID, ZH, AR, JA; nama lengkapnya ada di `title`), sedangkan daftar turun putih dan panel ponsel memakai **nama lengkap** (English, Bahasa Indonesia, dan seterusnya), seperti footer. Di bawah `lg`, tombol "Menu" krimson membuka panel putih berisi menu dan bahasa.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
 ## Bagian beranda
