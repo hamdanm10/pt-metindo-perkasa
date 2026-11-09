@@ -27,7 +27,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-10 flex justify-center">
+            <div class="mt-16 flex justify-center">
                 {{-- With sample cards there is no article page yet, so the button is shown without a link. --}}
                 <x-landing.button :href="$articlesAreSamples ? null : route('landing.articles.index')">{{ __('home.articles.all') }}</x-landing.button>
             </div>
