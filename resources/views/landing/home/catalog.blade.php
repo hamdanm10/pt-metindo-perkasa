@@ -1,9 +1,6 @@
 @php
     $featured = array_slice(config('landing.categories'), 0, 4);
     $tones = ['bg-ink', 'bg-brand-600', 'bg-accent-indigo', 'bg-accent-blue'];
-    $rtl = config('locales.locales.'.app()->getLocale().'.dir') === 'rtl';
-    // Centre of the first card as a share of the panel width: half a card (58.9 / 2) plus no shift.
-    $firstCentre = 29.45;
 @endphp
 
 {{-- One section. On wide screens the four cards start as a stacked deck beside the heading, change the front card by themselves, and travel down to the row when the page scrolls on. --}}
@@ -26,17 +23,6 @@
                                 <x-landing.photo :name="'product-'.$category['slug']" ratio="aspect-[365/620]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
                             </div>
                         </article>
-                    @endforeach
-                </div>
-
-                {{-- Label with rounded corners, centred under the front card and following it. One text block per card. --}}
-                <div data-catalog-badge class="absolute bottom-0 z-20 aspect-[340/100] w-[54%] -translate-x-1/2 text-center text-ink" style="left: {{ $rtl ? 100 - $firstCentre : $firstCentre }}%">
-                    <svg viewBox="0 0 340 100" class="absolute inset-0 size-full" aria-hidden="true"><path d="M170 12 L326 92 H14 Z" fill="#fff" stroke="#fff" stroke-width="22" stroke-linejoin="round"/></svg>
-                    @foreach ($featured as $category)
-                        <span data-catalog-label class="absolute inset-x-0 bottom-3 px-6" lang="en" dir="ltr" @if (! $loop->first) style="opacity: 0; visibility: hidden" @endif>
-                            <span class="block text-sm font-bold">{{ $category['name'] }}</span>
-                            <span class="block text-xs">{{ $category['processes'][0] }}</span>
-                        </span>
                     @endforeach
                 </div>
             </div>

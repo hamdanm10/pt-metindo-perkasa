@@ -47,13 +47,12 @@ class HomeTest extends TestCase
         $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-tile '));
         $response->assertSee('data-catalog-stage', false)
             ->assertSee('data-catalog-panel', false)
-            ->assertSee('data-catalog-badge', false)
             ->assertSee('id="catalog"', false)
             ->assertSee('href="'.url('/en/products').'"', false)
             ->assertSee(__('home.catalog.all', [], 'en'));
     }
 
-    public function test_catalog_cards_show_placeholder_images_and_a_rounded_label(): void
+    public function test_catalog_cards_show_placeholder_images_and_no_label(): void
     {
         config(['landing.sample_content' => true]);
 
@@ -63,9 +62,8 @@ class HomeTest extends TestCase
             $response->assertSee('[PHOTO] images/landing/photos/product-'.$category['slug'].'.webp');
         }
 
-        $response->assertSee('data-catalog-badge', false)
-            ->assertSee('stroke-linejoin="round"', false);
-        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-label'));
+        $response->assertDontSee('data-catalog-badge', false)
+            ->assertDontSee('data-catalog-label', false);
     }
 
     public function test_catalog_description_and_button_exist_in_every_language(): void

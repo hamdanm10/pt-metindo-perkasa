@@ -148,13 +148,10 @@ const catalog = () => {
     const deck = slot.querySelector('[data-deck]');
     const cards = all('[data-deck-card]', slot);
     const medias = all('[data-deck-media]', slot);
-    const labels = all('[data-catalog-label]', slot);
-    const badge = slot.querySelector('[data-catalog-badge]');
     const tiles = all('[data-catalog-tile]', stage);
     const captions = all('[data-catalog-caption]', stage);
     const action = stage.querySelector('[data-catalog-action]');
 
-    const rtl = root.dir === 'rtl';
     let active = 0;
     let direction = 1;
     let top = cards.length;
@@ -166,24 +163,10 @@ const catalog = () => {
     gsap.set(captions, { autoAlpha: 0 });
     gsap.set(action, { autoAlpha: 0 });
 
-    const showLabel = (from, to) => {
-        gsap.to(labels[from], { autoAlpha: 0, y: -10, duration: 0.2, overwrite: true });
-        gsap.fromTo(labels[to], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.35, delay: 0.1, overwrite: true });
-    };
-
-    /** Centre of card `index` as a percentage of the panel width, from the left edge. */
-    const centre = (index) => {
-        const share = 13.7 * index + 58.9 / 2;
-
-        return rtl ? 100 - share : share;
-    };
-
     const slide = () => {
         if (!playing) {
             return;
         }
-
-        const previous = active;
 
         if (active + direction >= cards.length || active + direction < 0) {
             direction *= -1;
@@ -200,9 +183,7 @@ const catalog = () => {
             .call(() => {
                 top += 1;
                 cards[active].style.zIndex = String(top);
-                showLabel(previous, active);
             }, null, 0.34)
-            .to(badge, { left: `${centre(active)}%`, duration: 0.4, ease: 'power2.out' }, 0.28)
             .to(deck, { scale: 1, duration: 0.35, ease: 'power2.out' }, 0.28)
             .to(media, { rotation: 0.55, scale: 0.994, duration: 0.3, ease: 'power2.out' }, 0.28)
             .to(media, { rotation: 0, scale: 1, duration: 0.77, ease: 'power2.inOut' }, 0.58);
@@ -243,7 +224,6 @@ const catalog = () => {
             scale: (index, card) => toRow(card, index).scale,
             ease: 'power2.inOut',
         }, 0)
-        .to(badge, { autoAlpha: 0, duration: 0.15 }, 0)
         .set(tiles, { autoAlpha: 1 }, 0.98)
         .set(cards, { autoAlpha: 0 }, 0.98)
         .fromTo(captions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, 0.7)
