@@ -31,7 +31,7 @@
         <ul class="mt-10 grid grid-cols-2 gap-4 lg:mt-8 lg:grid-cols-4">
             @foreach ($featured as $category)
                 <li>
-                    <a href="{{ route('landing.products.show', ['category' => $category['slug']]) }}" class="group block focus-visible:outline-offset-4">
+                    <a href="{{ route('landing.processes.show', ['category' => $category['slug']]) }}" class="group block focus-visible:outline-offset-4">
                         <div data-catalog-tile class="{{ $tones[$loop->index] }} relative aspect-[365/620] overflow-hidden rounded-lg">
                             <x-landing.photo :name="'product-'.$category['slug']" ratio="aspect-[365/620]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
                         </div>
@@ -48,7 +48,7 @@
             @endforeach
         </ul>
 
-        <a href="{{ route('landing.products.index') }}" data-catalog-action class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
+        <a href="{{ route('landing.processes.index') }}" data-catalog-action class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
             {{ __('home.catalog.all') }}<x-landing.arrow />
         </a>
     </div>

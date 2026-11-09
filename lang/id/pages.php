@@ -38,11 +38,11 @@ return [
             ],
         ],
     ],
-    'products' => [
+    'processes' => [
         'label' => 'Katalog proses',
         'title' => 'Semua kategori proses',
         'intro' => 'Seluruh kategori proses electroplating yang kami tangani.',
-        'processes' => 'Proses',
+        'list' => 'Proses',
         'others' => 'Kategori lain',
         'categories' => [
             'zinc-plating' => 'Proses pelapisan seng',

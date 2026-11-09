@@ -30,7 +30,7 @@ class PagesTest extends TestCase
 
     public function test_every_inner_page_renders_in_every_locale(): void
     {
-        $paths = ['about', 'products', 'products/zinc-plating', 'services', 'contact'];
+        $paths = ['about', 'processes', 'processes/zinc-plating', 'services', 'contact'];
 
         foreach (config('locales.landing') as $code) {
             $locale = config("locales.locales.{$code}");
@@ -75,7 +75,7 @@ class PagesTest extends TestCase
     public function test_every_category_page_lists_its_processes(): void
     {
         foreach (config('landing.categories') as $category) {
-            $response = $this->get('/en/products/'.$category['slug'])->assertOk()->assertSee($category['name']);
+            $response = $this->get('/en/processes/'.$category['slug'])->assertOk()->assertSee($category['name']);
 
             foreach ($category['processes'] as $process) {
                 $response->assertSee($process);
@@ -83,9 +83,18 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_the_category_pages_are_called_processes_in_every_language_and_products_is_free(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")->assertSee(__('landing.nav.processes', [], $code));
+            $this->get("/{$code}/processes")->assertOk();
+            $this->get("/{$code}/products")->assertNotFound();
+        }
+    }
+
     public function test_unknown_category_and_article_return_not_found(): void
     {
-        $this->get('/en/products/unknown')->assertNotFound();
+        $this->get('/en/processes/unknown')->assertNotFound();
         $this->get('/en/articles/unknown')->assertNotFound();
     }
 
@@ -93,9 +102,9 @@ class PagesTest extends TestCase
     {
         ArticleTranslation::factory()->published('en')->create();
 
-        $response = $this->get('/en/products/zinc-plating')->assertOk();
+        $response = $this->get('/en/processes/zinc-plating')->assertOk();
 
-        foreach (['about', 'products', 'services', 'articles', 'contact'] as $path) {
+        foreach (['about', 'processes', 'services', 'articles', 'contact'] as $path) {
             $response->assertSee('href="'.url("/en/{$path}").'"', false);
         }
 

@@ -10,7 +10,7 @@ return [
     'nav' => [
         'home' => 'الرئيسية',
         'about' => 'من نحن',
-        'products' => 'المنتجات',
+        'processes' => 'العمليات',
         'services' => 'الخدمات',
         'articles' => 'المقالات والأخبار',
         'contact' => 'اتصل بنا',

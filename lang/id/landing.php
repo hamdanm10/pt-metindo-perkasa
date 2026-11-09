@@ -10,7 +10,7 @@ return [
     'nav' => [
         'home' => 'Beranda',
         'about' => 'Tentang Kami',
-        'products' => 'Produk',
+        'processes' => 'Proses',
         'services' => 'Layanan',
         'articles' => 'Artikel & Berita',
         'contact' => 'Kontak',

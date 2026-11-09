@@ -10,7 +10,7 @@ return [
     'nav' => [
         'home' => 'ホーム',
         'about' => '会社概要',
-        'products' => '製品',
+        'processes' => '工程',
         'services' => 'サービス',
         'articles' => '記事・ニュース',
         'contact' => 'お問い合わせ',

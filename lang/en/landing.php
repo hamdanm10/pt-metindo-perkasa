@@ -10,7 +10,7 @@ return [
     'nav' => [
         'home' => 'Home',
         'about' => 'About Us',
-        'products' => 'Products',
+        'processes' => 'Processes',
         'services' => 'Services',
         'articles' => 'Articles & News',
         'contact' => 'Contact',

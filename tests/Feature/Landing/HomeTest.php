@@ -30,7 +30,7 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_home_features_four_categories_and_links_to_all_products(): void
+    public function test_home_features_four_categories_and_links_to_all_processes(): void
     {
         $response = $this->get('/en')->assertOk();
         $categories = config('landing.categories');
@@ -39,7 +39,7 @@ class HomeTest extends TestCase
 
         foreach (array_slice($categories, 0, 4) as $category) {
             $response->assertSee($category['name'])
-                ->assertSee('href="'.url('/en/products/'.$category['slug']).'"', false);
+                ->assertSee('href="'.url('/en/processes/'.$category['slug']).'"', false);
         }
 
         $response->assertDontSee($categories[4]['name']);
@@ -48,7 +48,7 @@ class HomeTest extends TestCase
         $response->assertSee('data-catalog-stage', false)
             ->assertSee('data-catalog-panel', false)
             ->assertSee('id="catalog"', false)
-            ->assertSee('href="'.url('/en/products').'"', false)
+            ->assertSee('href="'.url('/en/processes').'"', false)
             ->assertSee(__('home.catalog.all', [], 'en'));
     }
 
@@ -72,7 +72,7 @@ class HomeTest extends TestCase
             $this->get("/{$code}")
                 ->assertSee(__('home.catalog.text', [], $code))
                 ->assertSee(__('home.catalog.all', [], $code))
-                ->assertSee('href="'.url("/{$code}/products").'"', false);
+                ->assertSee('href="'.url("/{$code}/processes").'"', false);
         }
     }
 

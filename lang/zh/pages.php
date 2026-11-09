@@ -38,11 +38,11 @@ return [
             ],
         ],
     ],
-    'products' => [
+    'processes' => [
         'label' => '工艺目录',
         'title' => '所有工艺类别',
         'intro' => '我们所涉及的全部电镀工艺类别。',
-        'processes' => '工艺',
+        'list' => '工艺',
         'others' => '其他类别',
         'categories' => [
             'zinc-plating' => 'Zinc plating process',
