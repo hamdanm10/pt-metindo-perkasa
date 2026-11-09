@@ -401,6 +401,12 @@ class HomeTest extends TestCase
 
         $this->assertSame(3, substr_count((string) $response->getContent(), 'data-about-art'));
 
+        // Hooks the hover animation moves: the chart, the bands, and the hexagons.
+        $response->assertSee('data-about-headline', false)
+            ->assertSee('data-art-chart', false)
+            ->assertSee('data-art-bar', false)
+            ->assertSee('data-art-hex', false);
+
         $response->assertSee(__('home.about.label'))
             ->assertSee(__('home.about.text'))
             ->assertSee('data-about-deck-panel', false)

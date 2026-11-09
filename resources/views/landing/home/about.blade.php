@@ -12,7 +12,7 @@
     <div class="container-site section-y">
         <h2 data-anim="heading" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase">{{ __('home.about.label') }}</h2>
 
-        <p class="mt-[3.4vw] text-[clamp(2.25rem,9.06vw,11rem)] font-black uppercase leading-[0.9] tracking-tight">
+        <p data-about-headline class="mt-[3.4vw] text-[clamp(2.25rem,9.06vw,11rem)] font-black uppercase leading-[0.9] tracking-tight">
             <span class="{{ $line }}">
                 <span data-anim="grow" class="inline-block">{{ $lines[0] }}</span>
                 <x-landing.about-art kind="bar" class="ms-auto md:ms-0" />
