@@ -52,7 +52,12 @@ return [
         'next' => '下一组客户',
     ],
     'gallery' => [
-        'label' => '我们的据点',
+        'label' => '我们的团队',
+        'slides' => [
+            'celebration' => ['label' => '庆祝', 'caption' => '一起庆祝每一次成功'],
+            'teamwork' => ['label' => '团队合作', 'caption' => '每个项目都靠团队协作'],
+            'togetherness' => ['label' => '凝聚力', 'caption' => '同心协力，目标一致'],
+        ],
     ],
     'articles' => [
         'title' => '文章与新闻',

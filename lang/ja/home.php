@@ -52,7 +52,12 @@ return [
         'next' => '次のお客様',
     ],
     'gallery' => [
-        'label' => '拠点',
+        'label' => '私たちのチーム',
+        'slides' => [
+            'celebration' => ['label' => 'お祝い', 'caption' => '成功をみんなで祝う'],
+            'teamwork' => ['label' => 'チームワーク', 'caption' => 'すべてのプロジェクトにチームワークを'],
+            'togetherness' => ['label' => '一体感', 'caption' => 'ひとつの目標、ひとつのチーム'],
+        ],
     ],
     'articles' => [
         'title' => '記事・ニュース',

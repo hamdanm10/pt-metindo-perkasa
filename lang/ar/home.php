@@ -52,7 +52,12 @@ return [
         'next' => 'العملاء التاليون',
     ],
     'gallery' => [
-        'label' => 'مواقعنا',
+        'label' => 'فريقنا',
+        'slides' => [
+            'celebration' => ['label' => 'احتفال', 'caption' => 'نحتفل بالنجاح معًا'],
+            'teamwork' => ['label' => 'العمل الجماعي', 'caption' => 'العمل الجماعي في كل مشروع'],
+            'togetherness' => ['label' => 'التكاتف', 'caption' => 'هدف واحد وفريق واحد'],
+        ],
     ],
     'articles' => [
         'title' => 'المقالات والأخبار',
