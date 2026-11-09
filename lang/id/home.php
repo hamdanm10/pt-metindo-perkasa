@@ -45,17 +45,12 @@ return [
     'clients' => [
         'eyebrow' => 'Klien',
         'title' => 'Klien & Partner',
-        'partners_short' => 'Partner',
+        'lead' => '',
+        'trail' => 'Kami',
+        'clients' => 'Klien',
+        'partners' => 'Partner',
         'previous' => 'Klien sebelumnya',
         'next' => 'Klien berikutnya',
-        'sectors' => [
-            'automotive' => 'Otomotif',
-            'electronics' => 'Elektronik',
-            'machinery' => 'Permesinan',
-            'construction' => 'Konstruksi',
-            'furniture_hardware' => 'Furnitur & Perkakas',
-            'oil_gas' => 'Minyak & Gas',
-        ],
     ],
     'articles' => [
         'title' => 'Artikel & berita',

@@ -45,17 +45,12 @@ return [
     'clients' => [
         'eyebrow' => 'العملاء',
         'title' => 'العملاء والشركاء',
-        'partners_short' => 'الشركاء',
+        'lead' => '',
+        'trail' => '',
+        'clients' => 'عملاؤنا',
+        'partners' => 'شركاؤنا',
         'previous' => 'العملاء السابقون',
         'next' => 'العملاء التاليون',
-        'sectors' => [
-            'automotive' => 'السيارات',
-            'electronics' => 'الإلكترونيات',
-            'machinery' => 'الآلات',
-            'construction' => 'البناء',
-            'furniture_hardware' => 'الأثاث والمعدات',
-            'oil_gas' => 'النفط والغاز',
-        ],
     ],
     'articles' => [
         'title' => 'المقالات والأخبار',

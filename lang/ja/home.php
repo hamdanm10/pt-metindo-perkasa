@@ -45,17 +45,12 @@ return [
     'clients' => [
         'eyebrow' => 'お客様',
         'title' => 'お客様とパートナー',
-        'partners_short' => 'パートナー',
+        'lead' => '当社の',
+        'trail' => '',
+        'clients' => 'お客様',
+        'partners' => 'パートナー',
         'previous' => '前のお客様',
         'next' => '次のお客様',
-        'sectors' => [
-            'automotive' => '自動車',
-            'electronics' => '電子機器',
-            'machinery' => '機械',
-            'construction' => '建設',
-            'furniture_hardware' => '家具・金物',
-            'oil_gas' => '石油・ガス',
-        ],
     ],
     'articles' => [
         'title' => '記事・ニュース',

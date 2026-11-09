@@ -45,17 +45,12 @@ return [
     'clients' => [
         'eyebrow' => 'Clients',
         'title' => 'Clients & Partners',
-        'partners_short' => 'Partners',
+        'lead' => 'Our',
+        'trail' => '',
+        'clients' => 'Clients',
+        'partners' => 'Partners',
         'previous' => 'Previous clients',
         'next' => 'Next clients',
-        'sectors' => [
-            'automotive' => 'Automotive',
-            'electronics' => 'Electronics',
-            'machinery' => 'Machinery',
-            'construction' => 'Construction',
-            'furniture_hardware' => 'Furniture & Hardware',
-            'oil_gas' => 'Oil & Gas',
-        ],
     ],
     'articles' => [
         'title' => 'Articles & news',

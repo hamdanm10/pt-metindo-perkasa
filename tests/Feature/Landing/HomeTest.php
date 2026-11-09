@@ -257,28 +257,34 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_clients_section_has_a_slide_per_sector_and_one_for_partners(): void
+    public function test_clients_section_has_a_clients_slide_and_a_partners_slide(): void
     {
         config(['landing.sample_content' => true, 'landing.partners' => ['Alpha', 'Beta']]);
 
         $response = $this->get('/en')->assertOk();
 
-        $this->assertSame(7, substr_count((string) $response->getContent(), 'data-clients-slide '));
-        $this->assertSame(9 * 6, substr_count((string) $response->getContent(), '[LOGO]'));
+        $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
+        $this->assertSame(9, substr_count((string) $response->getContent(), '[LOGO]'));
 
         $response->assertSee('data-chip', false)
             ->assertSee('data-clients-prev', false)
             ->assertSee('data-clients-next', false)
-            ->assertSee(__('home.clients.previous'))
+            ->assertSee('data-label="Clients"', false)
+            ->assertSee('data-label="Partners"', false)
             ->assertSee('Alpha')
-            ->assertSee('Automotive');
+            ->assertDontSee('Furniture &amp; Hardware', false)
+            ->assertDontSee('Oil &amp; Gas', false);
     }
 
-    public function test_clients_slides_use_logo_files_and_skip_sectors_without_any_when_not_a_sample(): void
+    public function test_clients_slides_use_logo_files_and_have_no_clients_slide_without_any_when_not_a_sample(): void
     {
         config(['landing.sample_content' => false, 'landing.partners' => ['Alpha']]);
 
-        $directory = public_path('images/landing/clients/automotive');
+        $response = $this->get('/en')->assertOk();
+        $this->assertSame(1, substr_count((string) $response->getContent(), 'data-clients-slide '));
+        $response->assertDontSee('data-clients-next', false);
+
+        $directory = public_path('images/landing/clients');
         @mkdir($directory, 0777, true);
         file_put_contents($directory.'/acme-motors.svg', '<svg xmlns="http://www.w3.org/2000/svg"/>');
 
@@ -286,13 +292,22 @@ class HomeTest extends TestCase
             $response = $this->get('/en')->assertOk();
 
             $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
-            $response->assertSee('images/landing/clients/automotive/acme-motors.svg', false)
+            $response->assertSee('images/landing/clients/acme-motors.svg', false)
                 ->assertSee('alt="Acme Motors"', false)
+                ->assertSee('data-clients-next', false)
                 ->assertDontSee('[LOGO]')
                 ->assertDontSee('[TESTIMONIAL]');
         } finally {
             unlink($directory.'/acme-motors.svg');
-            rmdir($directory);
+        }
+    }
+
+    public function test_the_chip_labels_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee('data-label="'.__('home.clients.clients', [], $code).'"', false)
+                ->assertSee('data-label="'.__('home.clients.partners', [], $code).'"', false);
         }
     }
 

@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Services\Landing;
 
 /**
- * The slides of the clients section: one per sector, made of the logo files found in
- * public/images/landing/clients/<sector>/, and one with the partner names. A sector without
- * logos has no slide, except in sample mode where it shows labelled placeholders.
+ * The two slides of the clients section: clients and partners. Logos come from
+ * public/images/landing/clients and public/images/landing/partners. Partners fall back to the
+ * names in config, and clients to labelled placeholders in sample mode. A slide with nothing to
+ * show is left out.
  *
  * @phpstan-type Item array{src: string|null, name: string}
  * @phpstan-type Slide array{key: string, label: string, items: list<Item>}
  */
 class LandingClients
 {
-    public const SECTORS = ['automotive', 'electronics', 'machinery', 'construction', 'furniture_hardware', 'oil_gas'];
-
     public const PER_SLIDE = 9;
 
     /** @var list<string> */
@@ -26,27 +25,29 @@ class LandingClients
      */
     public function slides(): array
     {
-        $slides = [];
+        $clients = $this->logos('clients');
 
-        foreach (self::SECTORS as $sector) {
-            $items = $this->logos($sector);
-
-            if ($items === [] && config()->boolean('landing.sample_content')) {
-                $items = array_fill(0, self::PER_SLIDE, ['src' => null, 'name' => 'Logo']);
-            }
-
-            if ($items !== []) {
-                $slides[] = ['key' => $sector, 'label' => __("home.clients.sectors.{$sector}"), 'items' => $items];
-            }
+        if ($clients === [] && config()->boolean('landing.sample_content')) {
+            $clients = array_fill(0, self::PER_SLIDE, ['src' => null, 'name' => 'Logo']);
         }
 
-        $partners = array_map(
-            fn (string $name): array => ['src' => null, 'name' => $name],
-            array_slice(config()->array('landing.partners'), 0, self::PER_SLIDE),
-        );
+        $partners = $this->logos('partners');
+
+        if ($partners === []) {
+            $partners = array_values(array_map(
+                fn (string $name): array => ['src' => null, 'name' => $name],
+                array_slice(config()->array('landing.partners'), 0, self::PER_SLIDE),
+            ));
+        }
+
+        $slides = [];
+
+        if ($clients !== []) {
+            $slides[] = ['key' => 'clients', 'label' => __('home.clients.clients'), 'items' => $clients];
+        }
 
         if ($partners !== []) {
-            $slides[] = ['key' => 'partners', 'label' => __('home.clients.partners_short'), 'items' => array_values($partners)];
+            $slides[] = ['key' => 'partners', 'label' => __('home.clients.partners'), 'items' => $partners];
         }
 
         return $slides;
@@ -55,9 +56,9 @@ class LandingClients
     /**
      * @return list<Item>
      */
-    private function logos(string $sector): array
+    private function logos(string $folder): array
     {
-        $directory = public_path("images/landing/clients/{$sector}");
+        $directory = public_path("images/landing/{$folder}");
         $files = is_dir($directory) ? (glob($directory.'/*') ?: []) : [];
         sort($files);
 
@@ -68,11 +69,9 @@ class LandingClients
                 continue;
             }
 
-            $name = pathinfo($file, PATHINFO_FILENAME);
-
             $items[] = [
-                'src' => asset("images/landing/clients/{$sector}/".basename($file)),
-                'name' => ucwords(str_replace(['-', '_'], ' ', $name)),
+                'src' => asset("images/landing/{$folder}/".basename($file)),
+                'name' => ucwords(str_replace(['-', '_'], ' ', pathinfo($file, PATHINFO_FILENAME))),
             ];
         }
 

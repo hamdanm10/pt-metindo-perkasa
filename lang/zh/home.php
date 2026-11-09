@@ -45,17 +45,12 @@ return [
     'clients' => [
         'eyebrow' => '客户',
         'title' => '客户与合作伙伴',
-        'partners_short' => '合作伙伴',
+        'lead' => '我们的',
+        'trail' => '',
+        'clients' => '客户',
+        'partners' => '合作伙伴',
         'previous' => '上一组客户',
         'next' => '下一组客户',
-        'sectors' => [
-            'automotive' => '汽车',
-            'electronics' => '电子',
-            'machinery' => '机械',
-            'construction' => '建筑',
-            'furniture_hardware' => '家具与五金',
-            'oil_gas' => '石油天然气',
-        ],
     ],
     'articles' => [
         'title' => '文章与新闻',
