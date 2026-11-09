@@ -20,6 +20,7 @@
     @include('landing.home.catalog')
     @include('landing.home.services')
     @include('landing.home.clients')
+    @include('landing.home.gallery')
     @include('landing.home.articles')
     <x-landing.cta />
 @endsection

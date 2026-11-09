@@ -52,6 +52,9 @@ return [
         'previous' => 'Klien sebelumnya',
         'next' => 'Klien berikutnya',
     ],
+    'gallery' => [
+        'label' => 'Lokasi kami',
+    ],
     'articles' => [
         'title' => 'Artikel & berita',
         'intro' => 'Pembaruan, catatan proses, dan berita perusahaan.',

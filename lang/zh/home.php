@@ -52,6 +52,9 @@ return [
         'previous' => '上一组客户',
         'next' => '下一组客户',
     ],
+    'gallery' => [
+        'label' => '我们的据点',
+    ],
     'articles' => [
         'title' => '文章与新闻',
         'intro' => '更新、工艺笔记与公司新闻。',

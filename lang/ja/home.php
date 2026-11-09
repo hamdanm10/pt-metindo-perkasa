@@ -52,6 +52,9 @@ return [
         'previous' => '前のお客様',
         'next' => '次のお客様',
     ],
+    'gallery' => [
+        'label' => '拠点',
+    ],
     'articles' => [
         'title' => '記事・ニュース',
         'intro' => '更新情報、工程メモ、会社ニュース。',

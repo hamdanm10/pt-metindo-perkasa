@@ -42,7 +42,7 @@ class LandingContent
     }
 
     /**
-     * @return list<array{key: string, name: string, lat: float, lng: float}>
+     * @return list<array{key: string, name: string, lat: float, lng: float, timezone: string}>
      */
     public function subsidiaries(): array
     {

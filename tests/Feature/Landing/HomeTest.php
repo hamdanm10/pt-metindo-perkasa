@@ -320,4 +320,39 @@ class HomeTest extends TestCase
                 ->assertSee(__('home.clients.next', [], $code));
         }
     }
+
+    public function test_gallery_shows_a_photo_per_location_with_city_company_and_local_time(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(6, substr_count((string) $response->getContent(), 'data-gallery-slide '));
+
+        foreach (config('landing.subsidiaries') as $subsidiary) {
+            $response->assertSee('data-city="'.ucfirst($subsidiary['key']).'"', false)
+                ->assertSee('data-timezone="'.$subsidiary['timezone'].'"', false)
+                ->assertSee('[PHOTO] images/landing/photos/gallery-'.$subsidiary['key'].'.webp');
+        }
+
+        $response->assertSee('data-gallery-time', false)
+            ->assertSee(__('home.gallery.label'))
+            ->assertSee(now('Asia/Jakarta')->format('H:i'));
+    }
+
+    public function test_gallery_is_absent_when_the_locations_are_not_shown(): void
+    {
+        config(['landing.sample_content' => false]);
+
+        $this->get('/en')->assertOk()->assertDontSee('data-gallery', false);
+    }
+
+    public function test_gallery_label_exists_in_every_language(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")->assertSee(__('home.gallery.label', [], $code));
+        }
+    }
 }

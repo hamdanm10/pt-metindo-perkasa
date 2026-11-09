@@ -52,6 +52,9 @@ return [
         'previous' => 'Previous clients',
         'next' => 'Next clients',
     ],
+    'gallery' => [
+        'label' => 'Our locations',
+    ],
     'articles' => [
         'title' => 'Articles & news',
         'intro' => 'Updates, process notes, and company news.',
