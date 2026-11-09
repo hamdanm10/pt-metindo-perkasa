@@ -280,6 +280,8 @@ html.lenis body {
     position: relative;
     display: inline-flex;
     overflow: hidden;
+    isolation: isolate;
+    clip-path: inset(0 round 0.5rem);
     border-radius: 0.5rem;
     font-size: clamp(0.875rem, 1vw, 1.25rem);
     font-weight: 700;
@@ -308,6 +310,9 @@ html.lenis body {
 
 .btn__label {
     display: grid;
+    overflow: hidden;
+    padding-block: 0.25em;
+    margin-block: -0.25em;
 }
 
 .btn__label > span {
