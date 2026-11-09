@@ -6,7 +6,7 @@
     <x-landing.page-header :title="__('pages.articles.title')" :intro="__('pages.articles.intro')" />
 
     <section class="bg-white">
-        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="container-site section-y">
             <nav aria-label="{{ __('pages.articles.title') }}">
                 <ul class="flex flex-wrap gap-2">
                     @foreach ([['value' => null, 'key' => 'all'], ['value' => 'article', 'key' => 'article'], ['value' => 'news', 'key' => 'news']] as $filter)

@@ -6,7 +6,7 @@
     <x-landing.page-header :title="__('pages.contact.title')" :intro="__('pages.contact.intro')" />
 
     <section class="bg-white pb-20 lg:pb-28">
-        <div class="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-24">
+        <div class="container-site pt-16 lg:pt-24">
             @if ($contact)
                 <dl class="grid gap-x-16 sm:grid-cols-2">
                     @isset($contact['address'])

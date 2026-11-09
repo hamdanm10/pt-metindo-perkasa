@@ -11,7 +11,7 @@
 @endphp
 
 <header data-header class="sticky top-0 z-50 bg-ink text-white" style="--focus-ring: #ffffff">
-    <div data-header-inner class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+    <div data-header-inner class="container-site flex items-center justify-between gap-4 py-3">
         <a href="{{ route('landing.home') }}" class="inline-flex shrink-0 items-center rounded">
             <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-9 w-auto sm:h-10">
         </a>

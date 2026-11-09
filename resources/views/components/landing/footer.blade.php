@@ -5,7 +5,7 @@
 @endphp
 
 <footer class="bg-ink text-white" style="--focus-ring: #ffffff">
-    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:px-8">
+    <div class="container-site grid gap-10 py-16 lg:grid-cols-12">
         <div class="lg:col-span-5">
             <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-14 w-auto">
             <p class="mt-6 max-w-md text-white/80">{{ __('landing.footer.description') }}</p>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="border-t border-white/20">
-        <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-sm text-white/80 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
+        <div class="container-site flex flex-col gap-2 py-6 text-sm text-white/80 sm:flex-row sm:justify-between">
             <p>&copy; {{ now()->year }} PT Metindo Perkasa. {{ __('landing.footer.rights') }}</p>
             <p>{{ __('landing.footer.tagline') }}</p>
         </div>

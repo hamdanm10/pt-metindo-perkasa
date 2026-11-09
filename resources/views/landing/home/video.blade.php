@@ -2,7 +2,7 @@
 
 @if ($videoId)
     <section class="relative bg-white">
-        <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8 lg:py-28">
+        <div class="container-site grid items-center gap-10 lg:grid-cols-12 lg:gap-14 section-y">
             <div class="lg:col-span-4">
                 <h2 data-anim="heading" class="text-balance text-4xl font-black uppercase leading-[0.98] tracking-tight text-ink sm:text-5xl">
                     {{ __('home.video.title') }}

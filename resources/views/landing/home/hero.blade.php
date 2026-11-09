@@ -4,9 +4,9 @@
 @endphp
 
 <section data-hero class="bg-ink text-white" style="--focus-ring: #ffffff">
-    <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-10 sm:px-6 sm:pt-14 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:pb-24 lg:pt-16">
-        <div class="lg:col-span-7">
-            <h1 data-anim="hero-title" class="text-balance text-[clamp(3rem,8.2vw,7rem)] font-black uppercase leading-[0.9] tracking-tight">
+    <div class="container-site grid items-center gap-12 pb-16 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1.17fr)_minmax(0,1fr)] lg:gap-[3.4vw] lg:pb-24 lg:pt-16">
+        <div>
+            <h1 data-anim="hero-title" class="text-balance text-[clamp(3rem,7.2vw,10rem)] font-black uppercase leading-[0.9] tracking-tight">
                 {{ __('home.hero.title') }}
             </h1>
             <p data-anim="hero-item" class="mt-8 max-w-xl text-lg text-white/85 sm:text-xl">
@@ -24,13 +24,13 @@
             </div>
         </div>
 
-        <div data-anim="hero-item" class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:col-span-5 lg:aspect-[4/5]" aria-hidden="true">
+        <div data-anim="hero-item" class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:aspect-square" aria-hidden="true">
             <img src="{{ asset('images/brand/logo.svg') }}" alt="" width="612" height="256" class="absolute start-1/2 top-1/2 w-[120%] max-w-none -translate-y-1/2 -translate-x-1/2 rtl:translate-x-1/2">
         </div>
     </div>
 
     <div class="border-t border-white/20">
-        <ul class="mx-auto flex max-w-7xl flex-wrap gap-x-10 gap-y-2 px-4 py-6 text-base font-semibold text-white/85 sm:px-6 lg:px-8">
+        <ul class="container-site flex flex-wrap gap-x-10 gap-y-2 py-6 text-base font-semibold text-white/85">
             @foreach ($sectors as $sector)
                 <li>{{ __("home.clients.sectors.{$sector}") }}</li>
             @endforeach

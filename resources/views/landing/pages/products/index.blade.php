@@ -6,7 +6,7 @@
     <x-landing.page-header :title="__('pages.products.title')" :intro="__('pages.products.intro')" />
 
     <section class="bg-white">
-        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="container-site section-y">
             <ul data-anim="rows">
                 @foreach ($categories as $category)
                     <li class="border-t border-ink/20 last:border-b">

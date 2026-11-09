@@ -6,7 +6,7 @@
     <x-landing.page-header :title="__('pages.about.title')" :intro="__('pages.about.intro')" />
 
     <section class="bg-white">
-        <div class="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-28">
+        <div class="container-site grid gap-10 lg:grid-cols-12 lg:gap-16 section-y">
             <div class="lg:col-span-5">
                 <h2 data-anim="heading" class="text-balance text-3xl font-black tracking-tight leading-tight text-ink sm:text-5xl lg:text-6xl">
                     {{ __('pages.about.approach.title') }}
@@ -23,7 +23,7 @@
     </section>
 
     <section class="bg-white pb-20 lg:pb-28">
-        <div class="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-5 lg:px-8">
+        <div class="container-site grid gap-5 lg:grid-cols-5">
             <div data-anim="card" data-from="start" class="rounded-lg bg-brand-600 p-8 text-white sm:p-12 lg:col-span-3">
                 <h2 data-anim="heading" class="text-3xl font-black tracking-tight">{{ __('pages.about.vision.title') }}</h2>
                 <p class="mt-5 max-w-md text-xl text-white">{{ __('pages.about.vision.text') }}</p>
@@ -36,7 +36,7 @@
     </section>
 
     <section class="bg-lavender">
-        <div class="mx-auto grid max-w-7xl gap-6 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
+        <div class="container-site grid gap-6 lg:grid-cols-12 lg:gap-16 section-y">
             <h2 data-anim="heading" class="text-3xl font-black tracking-tight text-ink lg:col-span-5">{{ __('pages.about.facilities.title') }}</h2>
             <div class="lg:col-span-7">
                 <p class="text-lg text-muted">{{ __('pages.about.facilities.text') }}</p>
@@ -47,7 +47,7 @@
 
     @if ($subsidiaries)
         <section class="bg-white">
-            <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+            <div class="container-site section-y">
                 <div class="max-w-2xl">
                     <h2 data-anim="heading" class="text-3xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">{{ __('pages.about.subsidiaries.title') }}</h2>
                     <p class="mt-4 text-lg text-muted">{{ __('pages.about.subsidiaries.intro') }}</p>

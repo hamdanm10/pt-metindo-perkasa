@@ -94,3 +94,18 @@
         transition: none;
     }
 }
+
+/*
+ * Page container, measured from the reference site: full width with side padding of
+ * about 3.33vw, so the layout scales with the screen instead of stopping at 1280px.
+ */
+.container-site {
+    width: 100%;
+    max-width: 120rem;
+    margin-inline: auto;
+    padding-inline: clamp(0.75rem, 3.333vw, 4rem);
+}
+
+.section-y {
+    padding-block: clamp(5.6rem, 10.4vw, 9.4rem);
+}

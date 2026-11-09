@@ -1,9 +1,9 @@
 @php($services = ['electroplating', 'chemical_supply', 'consultation'])
 
 <section class="bg-ink text-white" style="--focus-ring: #ffffff">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <div class="container-site section-y">
         <div class="max-w-3xl">
-            <h2 data-anim="heading" class="text-[clamp(2.25rem,6vw,5rem)] font-black uppercase leading-[0.98] tracking-tight">{{ __('home.services.title') }}</h2>
+            <h2 data-anim="heading" class="text-[clamp(2.25rem,5vw,6rem)] font-black uppercase leading-[0.98] tracking-tight">{{ __('home.services.title') }}</h2>
             <p class="mt-5 text-lg text-white/85 sm:text-xl">{{ __('home.services.intro') }}</p>
         </div>
 

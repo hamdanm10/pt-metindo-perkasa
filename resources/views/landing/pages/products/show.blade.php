@@ -12,7 +12,7 @@
     </x-landing.page-header>
 
     <section class="bg-white">
-        <div class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
+        <div class="container-site grid gap-10 lg:grid-cols-12 lg:gap-16 section-y">
             <h2 data-anim="heading" class="text-3xl font-black tracking-tight text-ink lg:col-span-4">{{ __('pages.products.processes') }}</h2>
             <ul data-anim="rows" class="lg:col-span-8">
                 @foreach ($category['processes'] as $process)
@@ -23,7 +23,7 @@
     </section>
 
     <section class="bg-lavender">
-        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="container-site lg: section-y">
             <h2 data-anim="heading" class="text-2xl font-black tracking-tight text-ink">{{ __('pages.products.others') }}</h2>
             <ul data-anim="rows" class="mt-6 flex flex-wrap gap-3">
                 @foreach ($others as $other)

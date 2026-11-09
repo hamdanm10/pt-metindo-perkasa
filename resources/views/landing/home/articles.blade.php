@@ -1,9 +1,9 @@
 @if ($articles)
     <section class="bg-white">
-        <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        <div class="container-site section-y">
             <div class="flex flex-wrap items-end justify-between gap-4">
                 <div class="max-w-2xl">
-                    <h2 data-anim="heading" class="text-balance text-[clamp(2.25rem,6vw,5rem)] font-black uppercase leading-[0.98] tracking-tight text-ink">{{ __('home.articles.title') }}</h2>
+                    <h2 data-anim="heading" class="text-balance text-[clamp(2.25rem,5vw,6rem)] font-black uppercase leading-[0.98] tracking-tight text-ink">{{ __('home.articles.title') }}</h2>
                     <p class="mt-5 text-lg text-muted sm:text-xl">{{ __('home.articles.intro') }}</p>
                 </div>
                 <a href="{{ route('landing.articles.index') }}" class="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-ink px-6 font-bold text-ink hover:bg-ink hover:text-white">

@@ -1,6 +1,6 @@
 <section id="catalog" class="scroll-mt-4 bg-lavender">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <h2 data-anim="heading" class="max-w-4xl text-balance text-[clamp(2.25rem,6vw,5rem)] font-black leading-[0.98] tracking-tight text-ink">
+    <div class="container-site section-y">
+        <h2 data-anim="heading" class="max-w-4xl text-balance text-[clamp(2.25rem,5vw,6rem)] font-black leading-[0.98] tracking-tight text-ink">
             {{ __('home.catalog.title') }}
         </h2>
 

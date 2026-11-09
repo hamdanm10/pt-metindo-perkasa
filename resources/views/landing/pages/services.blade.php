@@ -11,7 +11,7 @@
     <x-landing.page-header :title="__('pages.services.title')" :intro="__('pages.services.intro')" />
 
     <section class="bg-white">
-        <div data-anim="rows" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div data-anim="rows" class="container-site section-y">
             @foreach ($services as $service)
                 <div class="grid gap-4 border-t border-ink/20 py-10 lg:grid-cols-12 lg:gap-16 {{ $loop->last ? 'border-b' : '' }}">
                     <h2 data-anim="heading" class="text-3xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl lg:col-span-5">{{ __("home.services.items.{$service}.title") }}</h2>
@@ -22,7 +22,7 @@
     </section>
 
     <section class="bg-ink text-white">
-        <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        <div class="container-site section-y">
             <h2 data-anim="heading" class="text-3xl font-black tracking-tight sm:text-5xl">{{ __('pages.services.how.title') }}</h2>
             <p class="mt-4 max-w-xl text-lg text-white/80">{{ __('pages.services.how.intro') }}</p>
 

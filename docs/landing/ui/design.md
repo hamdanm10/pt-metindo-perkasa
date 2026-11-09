@@ -9,12 +9,13 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 | 1 | Susunan beranda mengikuti prototipe `homepage-2` (hero, pengantar video, katalog 13 kategori, layanan, klien dan mitra, artikel, ajakan menghubungi), tetapi **gayanya mengikuti newengen.com**: hero gelap dengan judul raksasa, bagian terang dan gelap berselang-seling, kartu bergaris tipis, tombol berpanah | Permintaan client untuk redesign (Nov 2026). Fase dan status di [`../implementation-plan.md`](../implementation-plan.md) |
 | 2 | Palet tetap: `ink` `#1B1F3B` sebagai permukaan gelap (pengganti hijau tua newengen), `lavender` `#F3F2FF` sebagai permukaan terang (pengganti krem), krimson `#D6283A` untuk tombol dan blok ajakan | Permintaan client: palet yang sama |
 | 3 | Judul memakai **Figtree 900 huruf kapital**, rapat (`tracking-tight`), ukuran fluid sampai sekitar 7 rem. Bricolage Grotesque tidak lagi dipakai di landing (masih di dashboard). Huruf kapital hanya berpengaruh pada Latin | Meniru judul newengen. Font Mandarin, Arab, dan Jepang tetap seperti di sistem desain |
-| 4 | Sudut membulat kecil (`rounded-lg`), tanpa potongan miring, blok asimetris, atau latar berbentuk organik | Gaya newengen yang bersih. Bentuk miring lama dihapus |
-| 5 | **Tidak memakai ilustrasi Recraft yang lama.** Hero memakai monogram logo besar sebagai gambar. Bagian lain murni tipografi, angka, dan kartu. Ilustrasi atau foto baru diminta ke client bila memang dibutuhkan ([`direction.md`](direction.md)) | Permintaan client: jangan memaksakan ilustrasi lama |
-| 6 | Konten dirender di server dengan Blade | SEO |
-| 7 | Gerak disederhanakan: satu gerak naik-memudar untuk judul, kartu, dan daftar, dijelaskan di [`motion.md`](motion.md) | Permintaan client |
-| 8 | Layar intro dipertahankan dalam bentuk sederhana (logo dan tombol memudar masuk dan keluar) | Permintaan client |
-| 9 | Fitur newengen yang tidak punya padanan (spanduk promo, testimoni, buletin, logo klien) **dilewati** | Belum ada data atau fitur |
+| 4 | **Kontainer meniru situs referensi** (diukur langsung): selebar layar dengan padding samping sekitar 3,33vw (48 px di 1440, 64 px di 1920, 12 px di ponsel), maksimal 1920 px. Kelas `.container-site`, bukan `max-w-7xl` yang berhenti di 1280 px. Jarak vertikal antarbagian `.section-y`: 90 px di ponsel sampai sekitar 150 px (10,4vw) di desktop. Judul besar ikut lebar layar (`clamp` dengan `vw`) | Permintaan client: tampilan harus mirip referensi, termasuk lebar isi |
+| 5 | Sudut membulat kecil (`rounded-lg`), tanpa potongan miring, blok asimetris, atau latar berbentuk organik | Gaya newengen yang bersih. Bentuk miring lama dihapus |
+| 6 | **Tidak memakai ilustrasi Recraft yang lama.** Hero memakai monogram logo besar sebagai gambar. Bagian lain murni tipografi, angka, dan kartu. Ilustrasi atau foto baru diminta ke client bila memang dibutuhkan ([`direction.md`](direction.md)) | Permintaan client: jangan memaksakan ilustrasi lama |
+| 7 | Konten dirender di server dengan Blade | SEO |
+| 8 | Gerak disederhanakan: satu gerak naik-memudar untuk judul, kartu, dan daftar, dijelaskan di [`motion.md`](motion.md) | Permintaan client |
+| 9 | Layar intro dipertahankan dalam bentuk sederhana (logo dan tombol memudar masuk dan keluar) | Permintaan client |
+| 10 | Fitur newengen yang tidak punya padanan (spanduk promo, testimoni, buletin, logo klien) **dilewati** | Belum ada data atau fitur |
 
 ## Logo dan favicon
 
