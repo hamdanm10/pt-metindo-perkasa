@@ -185,7 +185,7 @@ class LandingArticlesTest extends TestCase
             ->assertSee(__('articles.tags.article'))
             ->assertSee(__('articles.tags.news'))
             ->assertSee(now()->subDays(3)->format('d.m.y'))
-            ->assertSee('class="btn-roll', false)
+            ->assertSee('data-btn', false)
             ->assertSee('class="title-hover"', false)
             ->assertSee('href="'.url('/en/articles').'"', false);
 
@@ -197,7 +197,7 @@ class LandingArticlesTest extends TestCase
         foreach (config('locales.landing') as $code) {
             $this->publish($code, "slug-{$code}");
 
-            $this->get("/{$code}")->assertSee(__('home.articles.all', [], $code));
+            $this->get("/{$code}")->assertSeeText(__('home.articles.all', [], $code));
         }
     }
 }

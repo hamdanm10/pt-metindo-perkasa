@@ -48,8 +48,6 @@
             @endforeach
         </ul>
 
-        <a href="{{ route('landing.processes.index') }}" data-catalog-action class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
-            {{ __('home.catalog.all') }}<x-landing.arrow />
-        </a>
+        <x-landing.button :href="route('landing.processes.index')" data-catalog-action class="mt-10">{{ __('home.catalog.all') }}</x-landing.button>
     </div>
 </section>
