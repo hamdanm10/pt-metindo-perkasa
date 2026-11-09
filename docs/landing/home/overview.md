@@ -29,7 +29,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | Layar intro | Logo putih di atas `ink`, tombol krimson "Click to begin" | Lihat aturan di bawah |
 | Hero | Judul, satu paragraf, dua tombol: "Explore processes" (ke bagian katalog) dan "Contact us" (`mailto:`) | Latar `ink`, judul raksasa, panel monogram logo di kanan. Lihat [`../ui/design.md`](../ui/design.md) |
 | Video pengantar | "See how we work": judul dan paragraf di kiri, kotak video (7/12 lebar kontainer) di kanan dengan **thumbnail**, lingkaran putar, dan label "Watch intro video" yang terlihat | Hanya tampil bila ID video terisi. Thumbnail dari `public/images/landing/photos/video-thumbnail.{webp,jpg,jpeg,png}` (placeholder berlabel bila belum ada). Diklik baru memuat YouTube (`youtube-nocookie`), thumbnail tidak diambil dari YouTube supaya tidak ada permintaan ke pihak ketiga sebelum klik |
-| Controlled process | Section setinggi layar: judul, deskripsi, dan panel empat kartu menumpuk di kanan (di desktop) | Panel diam sampai section digulir lewat |
+| Controlled process | Section setinggi layar: judul, deskripsi, dan tumpukan empat kartu di kanan (di desktop): satu kartu depan, tiga mengintip, dengan label segitiga | Tumpukan diam sampai section digulir lewat |
 | Products | Judul, **empat dari 13 kategori** sebagai kartu bernomor (nama dan dua proses di bawahnya), dan tombol "View all products" ke `/{locale}/products` | Kartu pindah dari panel di section atas saat digulir ([`../ui/motion.md`](../ui/motion.md)). Sembilan kategori lain ada di halaman Products |
 | Layanan | Electroplating Service, Chemical Supply, Technical Consultation | Tiga baris bernomor di latar `ink` |
 | Klien dan mitra | Enam sektor, lima nama mitra | Teks, tanpa logo |

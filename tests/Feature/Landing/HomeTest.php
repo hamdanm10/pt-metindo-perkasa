@@ -46,6 +46,7 @@ class HomeTest extends TestCase
         $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-tile-content'));
         $response->assertSee('data-catalog-stage', false)
             ->assertSee('data-catalog-panel', false)
+            ->assertSee('data-catalog-badge', false)
             ->assertSee('id="catalog"', false)
             ->assertSee('href="'.url('/en/products').'"', false)
             ->assertSee(__('home.catalog.all', [], 'en'));

@@ -14,8 +14,16 @@
                 <p class="mt-6 max-w-xl text-lg text-muted sm:text-xl">{{ __('home.catalog.text') }}</p>
             </div>
 
-            {{-- Empty slot: the stacked cards fly into it. Hidden below lg, where there is no animation. --}}
-            <div data-catalog-panel class="hidden aspect-[4/5] max-h-[68svh] w-full lg:block" aria-hidden="true"></div>
+            {{-- Slot for the stacked cards, which fly in from the list below. The badge belongs to the front card. Hidden below lg, where there is no animation. --}}
+            <div data-catalog-panel class="relative hidden aspect-square w-full justify-self-end lg:block lg:max-w-[min(100%,68svh)]" aria-hidden="true">
+                <div data-catalog-badge class="absolute bottom-0 z-10 flex h-[19%] w-[56%] -translate-x-1/2 items-end justify-center bg-white px-4 pb-4 text-center text-ink ltr:left-[43.5%] rtl:left-[56.5%]"
+                     style="clip-path: polygon(50% 0, 100% 100%, 0 100%)">
+                    <span lang="en" dir="ltr">
+                        <span class="block text-sm font-bold">{{ $featured[1]['name'] }}</span>
+                        <span class="block text-xs">{{ $featured[1]['processes'][0] }}</span>
+                    </span>
+                </div>
+            </div>
         </div>
     </section>
 

@@ -149,19 +149,30 @@ const catalog = () => {
     const tiles = all('[data-catalog-tile]', stage);
     const contents = all('[data-catalog-tile-content]', stage);
     const captions = all('[data-catalog-caption]', stage);
+    const badge = stage.querySelector('[data-catalog-badge]');
+
+    // The stack, as in the reference hero: one wide card in front (always the second
+    // tile) with the other three peeking out as narrow slices. Fractions of the panel
+    // width, left to right. Mirrored in RTL.
+    const stack = rtl
+        ? [[0, 0.135], [0.135, 0.27], [0.27, 0.86], [0.86, 1]]
+        : [[0, 0.14], [0.14, 0.73], [0.73, 0.865], [0.865, 1]];
 
     /** Where tile `index` sits inside the panel, relative to the stage. */
     const panel = (tile, index) => {
-        const slice = slot.offsetWidth / tiles.length;
-        const place = rtl ? tiles.length - 1 - index : index;
+        const [from, to] = stack[rtl ? tiles.length - 1 - index : index];
+        const front = index === 1;
+        const height = slot.offsetHeight * (front ? 1 : 0.96);
 
         return {
-            x: slot.offsetLeft + place * slice - tile.offsetLeft,
-            y: slot.offsetTop - tile.offsetTop + (index % 2) * 14,
-            scaleX: slice / tile.offsetWidth,
-            scaleY: slot.offsetHeight / tile.offsetHeight,
+            x: slot.offsetLeft + from * slot.offsetWidth - tile.offsetLeft,
+            y: slot.offsetTop + (front ? 0 : slot.offsetHeight * 0.02) - tile.offsetTop,
+            scaleX: ((to - from) * slot.offsetWidth) / tile.offsetWidth,
+            scaleY: height / tile.offsetHeight,
         };
     };
+
+    tiles.forEach((tile, index) => gsap.set(tile, { zIndex: index === 1 ? 3 : 1 }));
 
     const timeline = gsap.timeline({
         defaults: { ease: 'none' },
@@ -182,6 +193,7 @@ const catalog = () => {
             scaleX: (index, tile) => panel(tile, index).scaleX,
             scaleY: (index, tile) => panel(tile, index).scaleY,
         }, { x: 0, y: 0, scaleX: 1, scaleY: 1, ease: 'power2.inOut' }, 0)
+        .to(badge, { autoAlpha: 0, duration: 0.15 }, 0)
         .fromTo(contents, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0.7)
         .fromTo(captions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, 0.7);
 };
