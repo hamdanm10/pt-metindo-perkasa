@@ -365,6 +365,7 @@ class HomeTest extends TestCase
         $this->assertSame(3, substr_count((string) $response->getContent(), '[SAMPLE] Article title'));
         $response->assertSee(__('home.articles.title'))
             ->assertSee('[PHOTO] article thumbnail')
+            ->assertSee('class="title-hover"', false)
             ->assertSee(__('articles.tags.news'))
             ->assertDontSee('data-anim="rows"', false)
             ->assertDontSee('href="'.url('/en/articles').'"', false);
