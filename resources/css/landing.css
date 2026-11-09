@@ -288,3 +288,41 @@ html.lenis body {
         transition: none;
     }
 }
+
+/*
+ * Hover of the article titles, as measured on the reference: a highlight one line high and a thin
+ * underline grow from the start of the text to its end (`background-size`, 0.75s on an
+ * ease-out-expo curve) and shrink back when the pointer leaves. Works over several lines.
+ */
+.title-hover {
+    background-image:
+        linear-gradient(var(--color-ink), var(--color-ink)),
+        linear-gradient(var(--color-brand-200), var(--color-brand-200));
+    background-repeat: no-repeat;
+    background-position:
+        0 95%,
+        0 90%;
+    background-size:
+        0 0.05em,
+        0 1em;
+    transition: background-size 0.75s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+[dir='rtl'] .title-hover {
+    background-position:
+        100% 95%,
+        100% 90%;
+}
+
+.group:hover .title-hover,
+.group:focus-visible .title-hover {
+    background-size:
+        100% 0.05em,
+        100% 1em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .title-hover {
+        transition: none;
+    }
+}

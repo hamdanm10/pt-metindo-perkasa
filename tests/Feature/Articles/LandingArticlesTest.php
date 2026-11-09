@@ -186,6 +186,7 @@ class LandingArticlesTest extends TestCase
             ->assertSee(__('articles.tags.news'))
             ->assertSee(now()->subDays(3)->format('d.m.y'))
             ->assertSee('class="btn-roll', false)
+            ->assertSee('class="title-hover"', false)
             ->assertSee('href="'.url('/en/articles').'"', false);
 
         $this->assertSame(2, substr_count((string) $response->getContent(), '<article>'));
