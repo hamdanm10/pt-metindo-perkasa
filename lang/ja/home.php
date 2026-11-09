@@ -43,10 +43,11 @@ return [
         ],
     ],
     'clients' => [
+        'eyebrow' => 'お客様',
         'title' => 'お客様とパートナー',
-        'text' => 'ご利用いただくメーカー様と、協業するブランド。',
-        'clients' => 'お客様',
-        'partners' => 'パートナー',
+        'partners_short' => 'パートナー',
+        'previous' => '前のお客様',
+        'next' => '次のお客様',
         'sectors' => [
             'automotive' => '自動車',
             'electronics' => '電子機器',

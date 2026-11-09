@@ -43,10 +43,11 @@ return [
         ],
     ],
     'clients' => [
+        'eyebrow' => '客户',
         'title' => '客户与合作伙伴',
-        'text' => '我们服务的制造商与合作的品牌。',
-        'clients' => '我们的客户',
-        'partners' => '合作伙伴',
+        'partners_short' => '合作伙伴',
+        'previous' => '上一组客户',
+        'next' => '下一组客户',
         'sectors' => [
             'automotive' => '汽车',
             'electronics' => '电子',

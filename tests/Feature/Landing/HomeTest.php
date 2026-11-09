@@ -161,7 +161,6 @@ class HomeTest extends TestCase
             ->assertSee('data-anim="hero-item"', false)
             ->assertSee('data-hero-panel', false)
             ->assertSee('data-anim="grow"', false)
-            ->assertSee('data-anim="rows"', false)
             ->assertSee("classList.add('anim-hide')", false)
             ->assertSee('__introReady', false);
     }
@@ -255,6 +254,55 @@ class HomeTest extends TestCase
             $this->get("/{$code}")
                 ->assertSee(__('home.services.more', [], $code))
                 ->assertSee(__('home.services.intro', [], $code));
+        }
+    }
+
+    public function test_clients_section_has_a_slide_per_sector_and_one_for_partners(): void
+    {
+        config(['landing.sample_content' => true, 'landing.partners' => ['Alpha', 'Beta']]);
+
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(7, substr_count((string) $response->getContent(), 'data-clients-slide '));
+        $this->assertSame(9 * 6, substr_count((string) $response->getContent(), '[LOGO]'));
+
+        $response->assertSee('data-chip', false)
+            ->assertSee('data-clients-prev', false)
+            ->assertSee('data-clients-next', false)
+            ->assertSee(__('home.clients.previous'))
+            ->assertSee('Alpha')
+            ->assertSee('Automotive');
+    }
+
+    public function test_clients_slides_use_logo_files_and_skip_sectors_without_any_when_not_a_sample(): void
+    {
+        config(['landing.sample_content' => false, 'landing.partners' => ['Alpha']]);
+
+        $directory = public_path('images/landing/clients/automotive');
+        @mkdir($directory, 0777, true);
+        file_put_contents($directory.'/acme-motors.svg', '<svg xmlns="http://www.w3.org/2000/svg"/>');
+
+        try {
+            $response = $this->get('/en')->assertOk();
+
+            $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
+            $response->assertSee('images/landing/clients/automotive/acme-motors.svg', false)
+                ->assertSee('alt="Acme Motors"', false)
+                ->assertDontSee('[LOGO]')
+                ->assertDontSee('[TESTIMONIAL]');
+        } finally {
+            unlink($directory.'/acme-motors.svg');
+            rmdir($directory);
+        }
+    }
+
+    public function test_clients_section_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee(__('home.clients.eyebrow', [], $code))
+                ->assertSee(__('home.clients.title', [], $code))
+                ->assertSee(__('home.clients.next', [], $code));
         }
     }
 }

@@ -43,10 +43,11 @@ return [
         ],
     ],
     'clients' => [
+        'eyebrow' => 'Klien',
         'title' => 'Klien & Partner',
-        'text' => 'Produsen yang kami layani dan brand yang bekerja sama dengan kami.',
-        'clients' => 'Klien Kami',
-        'partners' => 'Partner Kami',
+        'partners_short' => 'Partner',
+        'previous' => 'Klien sebelumnya',
+        'next' => 'Klien berikutnya',
         'sectors' => [
             'automotive' => 'Otomotif',
             'electronics' => 'Elektronik',

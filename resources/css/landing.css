@@ -206,3 +206,32 @@ html.lenis body {
     justify-content: center;
     overflow: hidden;
 }
+
+/* Clients: the arrows appear when the section is hovered or focused, and always on touch screens. */
+.clients-arrow {
+    opacity: 0;
+    scale: 0;
+    transition:
+        scale 0.3s ease,
+        opacity 0.3s ease,
+        background-color 0.2s ease;
+}
+
+[data-clients-stage]:hover .clients-arrow,
+[data-clients-stage]:focus-within .clients-arrow {
+    opacity: 1;
+    scale: 1;
+}
+
+@media (hover: none) {
+    .clients-arrow {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .clients-arrow {
+        transition: none;
+    }
+}

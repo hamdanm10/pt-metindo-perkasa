@@ -43,10 +43,11 @@ return [
         ],
     ],
     'clients' => [
+        'eyebrow' => 'Clients',
         'title' => 'Clients & Partners',
-        'text' => 'The manufacturers we serve and the brands we work with.',
-        'clients' => 'Our Clients',
-        'partners' => 'Our Partners',
+        'partners_short' => 'Partners',
+        'previous' => 'Previous clients',
+        'next' => 'Next clients',
         'sectors' => [
             'automotive' => 'Automotive',
             'electronics' => 'Electronics',
