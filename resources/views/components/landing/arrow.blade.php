@@ -1,1 +1,1 @@
-<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" {{ $attributes->class('size-5 shrink-0 rtl:-scale-x-100') }}><path d="M3.5 10h12.5M11 4.5 16.5 10 11 15.5"/></svg>
+<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" {{ $attributes->class('nudge size-5 shrink-0 rtl:-scale-x-100') }}><path d="M3.5 10h12.5M11 4.5 16.5 10 11 15.5"/></svg>

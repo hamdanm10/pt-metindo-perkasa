@@ -8,7 +8,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | Dial desain: ENERGY 2 / RHYTHM 3 / MOTION 2. Bagian berganti komposisi, tidak semuanya grid kartu yang sama | Permintaan client agar tidak kaku. Gerak (layar intro dan animasi GSAP) dijelaskan di [`../ui/motion.md`](../ui/motion.md) |
+| 1 | Dial desain: ENERGY 2 / RHYTHM 3 / MOTION mengikuti referensi ([`../ui/motion.md`](../ui/motion.md)). Bagian berganti komposisi, tidak semuanya grid kartu yang sama | Permintaan client agar tidak kaku. Gerak (layar intro dan animasi GSAP) dijelaskan di [`../ui/motion.md`](../ui/motion.md) |
 | 2 | Teks di `lang/<locale>/home.php` untuk kelima bahasa. Kunci tetap bahasa Inggris. Terjemahan `id`, `zh`, `ar`, `ja` memakai teks prototipe client bila ada, sisanya (judul dan deskripsi layanan, catatan contoh artikel) ditulis sendiri dan perlu ditinjau penutur asli | Aturan teks pengguna. Dipindah ke database di L4 |
 | 3 | Katalog di beranda hanya menampilkan **nama 13 kategori**, tetap dalam bahasa Inggris di semua bahasa seperti di prototipe. Produk, proses, TDS, dan harga tidak tampil | Datanya besar dan akan hidup di database (L4). Harga dan TDS belum diputuskan (L5) |
 | 4 | Tanpa tautan ke halaman yang belum ada. Kategori, layanan, dan artikel belum bisa diklik sampai L3 | Aturan navigasi: tidak ada tautan mati |

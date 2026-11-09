@@ -3,7 +3,7 @@
 <section class="bg-lavender">
     <div class="container-site section-y">
         <div class="max-w-3xl">
-            <h2 data-anim="heading" class="text-balance text-[clamp(2.25rem,5vw,6rem)] font-black uppercase leading-[0.98] tracking-tight text-ink">{{ __('home.clients.title') }}</h2>
+            <h2 data-anim="grow" class="text-balance text-[clamp(2.25rem,5vw,6rem)] font-black uppercase leading-[0.98] tracking-tight text-ink">{{ __('home.clients.title') }}</h2>
             <p class="mt-5 text-lg text-muted sm:text-xl">{{ __('home.clients.text') }}</p>
         </div>
 

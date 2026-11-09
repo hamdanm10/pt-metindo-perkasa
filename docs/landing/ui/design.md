@@ -13,7 +13,7 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 | 5 | Sudut membulat kecil (`rounded-lg`), tanpa potongan miring, blok asimetris, atau latar berbentuk organik | Gaya newengen yang bersih. Bentuk miring lama dihapus |
 | 6 | **Tidak memakai ilustrasi Recraft yang lama.** Hero memakai monogram logo besar sebagai gambar. Bagian lain murni tipografi, angka, dan kartu. Ilustrasi atau foto baru diminta ke client bila memang dibutuhkan ([`direction.md`](direction.md)) | Permintaan client: jangan memaksakan ilustrasi lama |
 | 7 | Konten dirender di server dengan Blade | SEO |
-| 8 | Gerak disederhanakan: satu gerak naik-memudar untuk judul, kartu, dan daftar, dijelaskan di [`motion.md`](motion.md) | Permintaan client |
+| 8 | Gerak mengikuti referensi (judul tumbuh per huruf, gulir halus Lenis, header yang menyingkir, akordeon layanan, ticker sektor), dijelaskan di [`motion.md`](motion.md) | Permintaan client. Sebelumnya sempat disederhanakan, lalu diminta disamakan dengan referensi |
 | 9 | Layar intro dipertahankan dalam bentuk sederhana (logo dan tombol memudar masuk dan keluar) | Permintaan client |
 | 10 | Fitur newengen yang tidak punya padanan (spanduk promo, testimoni, buletin, logo klien) **dilewati** | Belum ada data atau fitur |
 
@@ -37,11 +37,11 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 ## Hero
 
 - Latar `ink`, dua kolom di `lg`: judul besar (`font-black`, huruf kapital, `clamp(3rem, 8.2vw, 7rem)`), paragraf, dan dua tombol (krimson berpanah, dan garis putih). Di kanan, panel lavender berisi monogram logo besar yang terpotong tepinya, sebagai pengganti foto.
-- Di bawahnya satu baris sektor yang dilayani (otomotif, elektronik, dan seterusnya), dipisah garis tipis, mengganti deretan logo klien newengen.
+- Di bawahnya ticker sektor yang dilayani (otomotif, elektronik, dan seterusnya) yang berjalan pelan, dipisah garis tipis, mengganti deretan logo klien newengen.
 
 ## Navbar
 
-- **Menempel di atas** saat gulir (`position: sticky`), latar `ink` solid, logo putih di kiri. Saat halaman mulai bergulir (diamati lewat `IntersectionObserver` pada penanda di puncak), muncul garis tipis di bawahnya dan tinggi sedikit mengecil. Transisi CSS dimatikan oleh `prefers-reduced-motion`.
+- **Menempel di atas** (`position: sticky`), latar `ink` solid, logo putih di kiri. Menyingkir saat gulir ke bawah dan kembali saat gulir ke atas ([`motion.md`](motion.md)). Garis tipis muncul di bawahnya setelah halaman mulai bergulir.
 - Tautan putih, yang aktif bergaris bawah merah muda. Tombol "Let's talk" krimson berpanah (ke halaman Contact) menggantikan tautan Contact di menu desktop. Contact tetap ada di menu ponsel dan footer.
 - Pemilih bahasa: teks bahasa aktif dengan daftar turun putih. Di bawah `lg`, tombol "Menu" krimson membuka panel putih berisi menu dan bahasa.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
@@ -52,7 +52,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 | --- | --- | --- |
 | Pengantar video | Putih | Hanya tampil bila `landing.intro_video_id` terisi. Judul kapital, kotak video membulat kecil |
 | Katalog | Lavender | Kalimat besar, lalu kartu 13 kategori (4 kolom di desktop): nomor, nama, panah. Hover membalik ke `ink` |
-| Layanan | `ink` | Baris besar bernomor 01 sampai 03 dengan tombol "View all" |
+| Layanan | `ink` | Akordeon 01 sampai 03: judul dan ikon plus, panel berisi deskripsi dan tombol "View all" |
 | Klien dan mitra | Lavender | Sektor dan mitra sebagai kotak bergaris tipis |
 | Artikel | Putih | Tiga artikel terbaru (gambar, jenis, tanggal, judul), hanya bila ada |
 | Ajakan | Krimson | Judul kapital besar dan tombol putih |

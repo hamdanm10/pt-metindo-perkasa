@@ -24,16 +24,20 @@
             </div>
         </div>
 
-        <div data-anim="hero-item" class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:aspect-square" aria-hidden="true">
+        <div data-anim="hero-item" data-hero-panel class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:aspect-square" aria-hidden="true">
             <img src="{{ asset('images/brand/logo.svg') }}" alt="" width="612" height="256" class="absolute start-1/2 top-1/2 w-[120%] max-w-none -translate-y-1/2 -translate-x-1/2 rtl:translate-x-1/2">
         </div>
     </div>
 
-    <div class="border-t border-white/20">
-        <ul class="container-site flex flex-wrap gap-x-10 gap-y-2 py-6 text-base font-semibold text-white/85">
-            @foreach ($sectors as $sector)
-                <li>{{ __("home.clients.sectors.{$sector}") }}</li>
+    <div class="marquee border-t border-white/20" aria-label="{{ __('home.clients.clients') }}">
+        <div class="marquee__track py-6 text-xl font-bold text-white/85">
+            @foreach ([false, true] as $copy)
+                <ul class="marquee__group" @if ($copy) aria-hidden="true" @endif>
+                    @foreach ($sectors as $sector)
+                        <li>{{ __("home.clients.sectors.{$sector}") }}</li>
+                    @endforeach
+                </ul>
             @endforeach
-        </ul>
+        </div>
     </div>
 </section>
