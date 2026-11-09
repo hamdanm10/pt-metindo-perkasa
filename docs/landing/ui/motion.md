@@ -24,6 +24,7 @@ Gerak landing mengikuti situs referensi `newengen.com` (putaran kedua redesign, 
 | `data-anim="grow"` | Judul besar (Services, Clients, ajakan) | Huruf meninggi dari 0 ke penuh mengikuti gulir (`scrub`) | Judul "CLIENTS SHINE" |
 | `data-anim="heading"`, `card` | Judul biasa dan blok | Naik dan muncul saat terlihat | `js-t-fade-up` |
 | `data-anim="rows"`, `steps` | Kartu katalog, klien, artikel, langkah | Muncul berurutan (batch) | Kartu karya |
+| `data-catalog-stage` | Kartu katalog (Controlled process) | Hanya di lebar 1024 px ke atas. Keempat kartu mulai sebagai satu panel sempit di sisi kanan judul (kartu dipipihkan lewat `scaleX` dan `scaleY`, tanpa isi), lalu menyebar dan membesar menjadi satu baris saat section digulir masuk (`scrub`, dari `top 90%` sampai `top 15%`). Isi kartu dan keterangannya baru muncul di akhir. Di RTL panel ada di sisi kiri | Kartu hero yang berubah menjadi deretan kartu karya (`js-flip`) |
 | `data-header` | Header | Menyingkir ke atas saat gulir ke bawah (setelah 160 px), kembali saat gulir ke atas atau fokus masuk. Tidak menyingkir bila menu terbuka | Header `sh__content` |
 | `data-accordion` | Layanan di beranda | Satu panel terbuka, tinggi dan opacity beranimasi 0,55 detik, ikon plus menjadi minus | Akordeon layanan |
 | CSS | Panah, kartu katalog | Panah maju 4 px saat hover, kartu naik 6 px | Transisi 0,3 sampai 0,75 detik |
@@ -33,7 +34,6 @@ Header, footer, menu, dan teks isi lain tidak dianimasikan GSAP. Peristiwa `intr
 
 ## Yang belum ditiru
 
-- Kartu hero yang berubah menjadi deretan kartu karya (efek Flip), karena kita belum punya foto atau video.
 - Logo klien yang berganti bergantian dan teks yang bergeser di judul "Creating impact for".
 - Logo header yang menyusut menjadi ubin saat gulir (logo kita sudah monogram).
 

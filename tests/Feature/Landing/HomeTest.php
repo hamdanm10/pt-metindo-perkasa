@@ -30,14 +30,33 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_home_lists_every_configured_category(): void
+    public function test_home_features_four_categories_and_links_to_all_products(): void
     {
         $response = $this->get('/en')->assertOk();
+        $categories = config('landing.categories');
 
-        $this->assertCount(13, config('landing.categories'));
+        $this->assertCount(13, $categories);
 
-        foreach (config('landing.categories') as $category) {
-            $response->assertSee($category['name']);
+        foreach (array_slice($categories, 0, 4) as $category) {
+            $response->assertSee($category['name'])
+                ->assertSee('href="'.url('/en/products/'.$category['slug']).'"', false);
+        }
+
+        $response->assertDontSee($categories[4]['name']);
+        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-tile-content'));
+        $response->assertSee('data-catalog-stage', false)
+            ->assertSee('id="catalog"', false)
+            ->assertSee('href="'.url('/en/products').'"', false)
+            ->assertSee(__('home.catalog.all', [], 'en'));
+    }
+
+    public function test_catalog_description_and_button_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee(__('home.catalog.text', [], $code))
+                ->assertSee(__('home.catalog.all', [], $code))
+                ->assertSee('href="'.url("/{$code}/products").'"', false);
         }
     }
 

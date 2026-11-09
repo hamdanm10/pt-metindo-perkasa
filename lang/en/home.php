@@ -19,6 +19,8 @@ return [
     ],
     'catalog' => [
         'title' => 'Controlled process, consistent result.',
+        'text' => 'Every plating process we run follows a defined recipe, so a batch next month matches the one you approved today. Here are four of the chemical categories we supply.',
+        'all' => 'View all products',
     ],
     'services' => [
         'title' => 'Services',

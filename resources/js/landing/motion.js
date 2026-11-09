@@ -130,6 +130,52 @@ const scrollReveals = () => {
     });
 };
 
+/**
+ * Catalog cards, as in the reference hero: they start as one narrow panel beside the
+ * heading and spread into a row while the section scrolls into view (scrubbed). Only on
+ * wide screens. Without it, or without JavaScript, the cards are simply the final row.
+ */
+const catalog = () => {
+    const stage = document.querySelector('[data-catalog-stage]');
+
+    if (!stage) {
+        return;
+    }
+
+    const rtl = root.dir === 'rtl';
+    const tiles = all('[data-catalog-tile]', stage);
+    const contents = all('[data-catalog-tile-content]', stage);
+    const captions = all('[data-catalog-caption]', stage);
+
+    /** Where tile `index` sits in the compact panel, relative to the stage. */
+    const panel = (tile, index) => {
+        const width = stage.offsetWidth;
+        const panelWidth = width * 0.44;
+        const slice = panelWidth / tiles.length;
+        const slot = rtl ? tiles.length - 1 - index : index;
+        const left = rtl ? 0 : width - panelWidth;
+        const height = Math.min(tile.offsetHeight, Math.max(stage.firstElementChild.offsetHeight, tile.offsetHeight * 0.8));
+
+        return { x: left + slot * slice - tile.offsetLeft, y: -tile.offsetTop + (index % 2) * 14, scaleX: slice / tile.offsetWidth, scaleY: height / tile.offsetHeight };
+    };
+
+    const timeline = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: { trigger: stage, start: 'top 90%', end: 'top 15%', scrub: 0.6, invalidateOnRefresh: true },
+    });
+
+    timeline
+        .fromTo(tiles, {
+            transformOrigin: '0 0',
+            x: (index, tile) => panel(tile, index).x,
+            y: (index, tile) => panel(tile, index).y,
+            scaleX: (index, tile) => panel(tile, index).scaleX,
+            scaleY: (index, tile) => panel(tile, index).scaleY,
+        }, { x: 0, y: 0, scaleX: 1, scaleY: 1, ease: 'power2.inOut' }, 0)
+        .fromTo(contents, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0.7)
+        .fromTo(captions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, 0.7);
+};
+
 /** The header slides away when scrolling down and returns when scrolling up. */
 const smartHeader = () => {
     const header = document.querySelector('[data-header]');
@@ -167,6 +213,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         hero();
         scrollReveals();
         smartHeader();
+        gsap.matchMedia().add('(min-width: 1024px)', catalog);
 
         window.__animReady = true;
         root.classList.remove('anim-hide');

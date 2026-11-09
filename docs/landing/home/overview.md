@@ -10,7 +10,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | --- | --- | --- |
 | 1 | Dial desain: ENERGY 2 / RHYTHM 3 / MOTION mengikuti referensi ([`../ui/motion.md`](../ui/motion.md)). Bagian berganti komposisi, tidak semuanya grid kartu yang sama | Permintaan client agar tidak kaku. Gerak (layar intro dan animasi GSAP) dijelaskan di [`../ui/motion.md`](../ui/motion.md) |
 | 2 | Teks di `lang/<locale>/home.php` untuk kelima bahasa. Kunci tetap bahasa Inggris. Terjemahan `id`, `zh`, `ar`, `ja` memakai teks prototipe client bila ada, sisanya (judul dan deskripsi layanan, catatan contoh artikel) ditulis sendiri dan perlu ditinjau penutur asli | Aturan teks pengguna. Dipindah ke database di L4 |
-| 3 | Katalog di beranda hanya menampilkan **nama 13 kategori**, tetap dalam bahasa Inggris di semua bahasa seperti di prototipe. Produk, proses, TDS, dan harga tidak tampil | Datanya besar dan akan hidup di database (L4). Harga dan TDS belum diputuskan (L5) |
+| 3 | Katalog di beranda menampilkan **empat dari 13 kategori** (nama dan dua proses), tetap dalam bahasa Inggris di semua bahasa seperti di prototipe. Semua kategori ada di halaman Products. Produk, proses, TDS, dan harga tidak tampil | Datanya besar dan akan hidup di database (L4). Harga dan TDS belum diputuskan (L5) |
 | 4 | Tanpa tautan ke halaman yang belum ada. Kategori, layanan, dan artikel belum bisa diklik sampai L3 | Aturan navigasi: tidak ada tautan mati |
 | 5 | Daftar kategori (slug dan nama) dan nama mitra ada di `config/landing.php`. Slug dipakai untuk nama berkas ikon. Diganti database di L4 | Satu sumber untuk 13 kategori |
 | 6 | Klien ditampilkan sebagai **nama sektor** tanpa logo, mitra sebagai **nama** tanpa logo, tanpa animasi berjalan terus | Logo klien tidak tersedia dan tidak boleh dikarang. Tidak ada gerak yang berjalan terus ([`../ui/motion.md`](../ui/motion.md)) |
@@ -29,8 +29,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | Layar intro | Logo putih di atas `ink`, tombol krimson "Click to begin" | Lihat aturan di bawah |
 | Hero | Judul, satu paragraf, dua tombol: "Explore processes" (ke bagian katalog) dan "Contact us" (`mailto:`) | Latar `ink`, judul raksasa, panel monogram logo di kanan. Lihat [`../ui/design.md`](../ui/design.md) |
 | Video pengantar | "See how we work": judul dan paragraf di kiri, kotak video (7/12 lebar kontainer) di kanan dengan **thumbnail**, lingkaran putar, dan label "Watch intro video" yang terlihat | Hanya tampil bila ID video terisi. Thumbnail dari `public/images/landing/photos/video-thumbnail.{webp,jpg,jpeg,png}` (placeholder berlabel bila belum ada). Diklik baru memuat YouTube (`youtube-nocookie`), thumbnail tidak diambil dari YouTube supaya tidak ada permintaan ke pihak ketiga sebelum klik |
-| Pendekatan | "Controlled process, consistent result." | Tanpa angka berurutan, karena isinya bukan urutan |
-| Katalog | 13 kategori (nama saja) | Kartu bernomor dengan panah, tanpa ikon |
+| Katalog | Judul dan deskripsi, **empat kategori pertama** sebagai kartu, dan tombol "View all products" ke `/{locale}/products` | Kartu tegak berwarna bernomor, nama kategori dan dua proses di bawahnya. Sembilan kategori lain ada di halaman Products. Animasi gulirnya di [`../ui/motion.md`](../ui/motion.md) |
 | Layanan | Electroplating Service, Chemical Supply, Technical Consultation | Tiga baris bernomor di latar `ink` |
 | Klien dan mitra | Enam sektor, lima nama mitra | Teks, tanpa logo |
 | Artikel | Tiga artikel terbaru terbit di bahasa itu | Disembunyikan bila belum ada |
