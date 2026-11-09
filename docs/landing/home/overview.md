@@ -13,7 +13,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | 3 | Katalog di beranda menampilkan **empat dari 13 kategori** (nama dan dua proses), tetap dalam bahasa Inggris di semua bahasa seperti di prototipe. Semua kategori ada di halaman Products. Produk, proses, TDS, dan harga tidak tampil | Datanya besar dan akan hidup di database (L4). Harga dan TDS belum diputuskan (L5) |
 | 4 | Tanpa tautan ke halaman yang belum ada. Kategori, layanan, dan artikel belum bisa diklik sampai L3 | Aturan navigasi: tidak ada tautan mati |
 | 5 | Daftar kategori (slug dan nama) dan nama mitra ada di `config/landing.php`. Slug dipakai untuk nama berkas ikon. Diganti database di L4 | Satu sumber untuk 13 kategori |
-| 6 | Klien ditampilkan sebagai **nama sektor** tanpa logo, mitra sebagai **nama** tanpa logo, tanpa animasi berjalan terus | Logo klien tidak tersedia dan tidak boleh dikarang. Tidak ada gerak yang berjalan terus ([`../ui/motion.md`](../ui/motion.md)) |
+| 6 | Logo klien dan mitra dibaca dari `public/images/landing/clients/` dan `partners/` (folder dasar di `config('landing.logo_directory')`). Tanpa berkas, klien tampil sebagai placeholder (mode contoh) dan mitra sebagai nama. **Enam logo klien dan enam logo mitra yang terpasang sekarang adalah logo contoh milik perusahaan lain, dari client untuk menilai tampilan, bukan klien dan mitra PT Metindo Perkasa**; ganti dengan logo asli sebelum rilis | Logo yang dipasang tidak boleh dikarang atau disebut sebagai klien tanpa konfirmasi |
 | 7 | Bagian artikel menampilkan tiga artikel terbaru yang terbit di bahasa itu (dari database, A2) dan hilang bila belum ada | Artikel contoh sudah dihapus |
 | 8 | Video: tidak ada permintaan ke YouTube sebelum diklik. Tampil poster lokal dan tombol putar, lalu iframe `youtube-nocookie.com` dibuat saat diklik. ID video di `config/landing.php` (env `LANDING_INTRO_VIDEO_ID`), bagian disembunyikan bila kosong | Kecepatan, privasi, dan SEO. ID di prototipe belum dipastikan video asli |
 | 9 | Kontak (email, telepon) dari `config/landing.php` (env). Bagian dan tombol kontak hanya muncul bila diisi. Tombol "Talk to our team" memakai `mailto:` | Tombol harus berfungsi. Nilai di prototipe tampak contoh, belum dikonfirmasi |
@@ -86,7 +86,7 @@ Pemeriksaan manual di browser: intro (klik, Enter, Escape, dan sekali per sesi),
 ## Ditunda
 
 - Tautan kategori, layanan, dan artikel (L3), produk, proses, TDS, dan harga (L4 dan L5).
-- Artikel asli, logo klien dan mitra, dan data kontak resmi.
+- Artikel asli, logo klien dan mitra yang asli (yang terpasang sekarang adalah logo contoh), dan data kontak resmi.
 - Widget chat (L7). Di prototipe, tiap produk punya tombol "Ask on WhatsApp", jadi WhatsApp tampaknya jalur permintaan harga dan TDS. Itu dibahas di L5.
 - Pengukuran Lighthouse dan dampak intro (L6).
 - Terjemahan perlu ditinjau penutur asli.
