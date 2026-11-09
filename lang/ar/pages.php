@@ -38,11 +38,11 @@ return [
             ],
         ],
     ],
-    'products' => [
+    'processes' => [
         'label' => 'دليل العمليات',
         'title' => 'جميع فئات العمليات',
         'intro' => 'كل فئة من فئات عمليات الطلاء الكهربائي التي نعمل بها.',
-        'processes' => 'العمليات',
+        'list' => 'العمليات',
         'others' => 'فئات أخرى',
         'categories' => [
             'zinc-plating' => 'Zinc plating process',

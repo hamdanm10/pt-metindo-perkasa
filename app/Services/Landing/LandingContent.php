@@ -42,7 +42,7 @@ class LandingContent
     }
 
     /**
-     * @return list<array{key: string, name: string, lat: float, lng: float}>
+     * @return list<array{key: string, name: string, lat: float, lng: float, timezone: string}>
      */
     public function subsidiaries(): array
     {
@@ -59,7 +59,7 @@ class LandingContent
         $items = [
             ['route' => 'landing.home', 'label' => 'landing.nav.home', 'active' => 'landing.home'],
             ['route' => 'landing.about', 'label' => 'landing.nav.about', 'active' => 'landing.about'],
-            ['route' => 'landing.products.index', 'label' => 'landing.nav.products', 'active' => 'landing.products.*'],
+            ['route' => 'landing.processes.index', 'label' => 'landing.nav.processes', 'active' => 'landing.processes.*'],
             ['route' => 'landing.services', 'label' => 'landing.nav.services', 'active' => 'landing.services'],
         ];
 

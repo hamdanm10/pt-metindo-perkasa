@@ -30,14 +30,49 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_home_lists_every_configured_category(): void
+    public function test_home_features_four_categories_and_links_to_all_processes(): void
     {
         $response = $this->get('/en')->assertOk();
+        $categories = config('landing.categories');
 
-        $this->assertCount(13, config('landing.categories'));
+        $this->assertCount(13, $categories);
 
-        foreach (config('landing.categories') as $category) {
-            $response->assertSee($category['name']);
+        foreach (array_slice($categories, 0, 4) as $category) {
+            $response->assertSee($category['name'])
+                ->assertSee('href="'.url('/en/processes/'.$category['slug']).'"', false);
+        }
+
+        $response->assertDontSee($categories[4]['name']);
+        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-deck-card'));
+        $this->assertSame(4, substr_count((string) $response->getContent(), 'data-catalog-tile '));
+        $response->assertSee('data-catalog-stage', false)
+            ->assertSee('data-catalog-panel', false)
+            ->assertSee('id="catalog"', false)
+            ->assertSee('href="'.url('/en/processes').'"', false)
+            ->assertSee(__('home.catalog.all', [], 'en'));
+    }
+
+    public function test_catalog_cards_show_placeholder_images_and_no_label(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $response = $this->get('/en')->assertOk();
+
+        foreach (array_slice(config('landing.categories'), 0, 4) as $category) {
+            $response->assertSee('[PHOTO] images/landing/photos/product-'.$category['slug'].'.webp');
+        }
+
+        $response->assertDontSee('data-catalog-badge', false)
+            ->assertDontSee('data-catalog-label', false);
+    }
+
+    public function test_catalog_description_and_button_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee(__('home.catalog.text', [], $code))
+                ->assertSee(__('home.catalog.all', [], $code))
+                ->assertSee('href="'.url("/{$code}/processes").'"', false);
         }
     }
 
@@ -48,6 +83,43 @@ class HomeTest extends TestCase
             ->assertSee('data-video-play', false)
             ->assertDontSee('youtube', false)
             ->assertDontSee('<iframe', false);
+    }
+
+    public function test_video_thumbnail_is_a_placeholder_until_the_file_exists_and_never_comes_from_youtube(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $this->get('/en')
+            ->assertSee('[PHOTO] images/landing/photos/video-thumbnail.webp')
+            ->assertSee(__('home.video.play'))
+            ->assertDontSee('ytimg', false);
+
+        $path = public_path('images/landing/photos/video-thumbnail.webp');
+        @mkdir(dirname($path), 0777, true);
+        file_put_contents($path, 'x');
+
+        try {
+            $this->get('/en')
+                ->assertSee('photos/video-thumbnail.webp', false)
+                ->assertDontSee('[PHOTO] images/landing/photos/video-thumbnail.webp');
+        } finally {
+            unlink($path);
+        }
+    }
+
+    public function test_video_section_has_the_animation_hooks(): void
+    {
+        $this->get('/en')
+            ->assertSee('data-video-parallax', false)
+            ->assertSee('data-video-circle', false)
+            ->assertSee('data-video-label', false);
+    }
+
+    public function test_video_section_shows_a_visible_play_label_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")->assertSee(__('home.video.play', [], $code));
+        }
     }
 
     public function test_video_section_is_absent_without_a_video_id(): void
@@ -89,7 +161,6 @@ class HomeTest extends TestCase
             ->assertSee('data-anim="hero-item"', false)
             ->assertSee('data-hero-panel', false)
             ->assertSee('data-anim="grow"', false)
-            ->assertSee('data-anim="rows"', false)
             ->assertSee("classList.add('anim-hide')", false)
             ->assertSee('__introReady', false);
     }
@@ -141,22 +212,147 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_services_are_an_accordion_that_is_open_without_javascript(): void
+    public function test_hero_has_no_sector_ticker(): void
     {
-        $response = $this->get('/en')
-            ->assertSee('data-accordion', false)
-            ->assertSee('aria-expanded="true"', false)
-            ->assertSee('aria-controls="service-1-panel"', false)
-            ->assertSee('role="region"', false);
-
-        $this->assertSame(3, substr_count((string) $response->getContent(), 'data-acc-item'));
-        $response->assertSee(__('home.services.items.consultation.text'));
+        $this->get('/en')->assertDontSee('marquee', false);
     }
 
-    public function test_sectors_strip_is_a_ticker_with_one_copy_hidden_from_assistive_tech(): void
+    public function test_services_list_is_complete_and_open_without_javascript(): void
     {
-        $response = $this->get('/id')->assertSee('class="marquee ', false)->assertSee('marquee__group', false);
+        $response = $this->get('/en')
+            ->assertSee('data-services-track', false)
+            ->assertSee('data-services-pin', false)
+            ->assertSee(__('home.services.intro'));
 
-        $this->assertSame(1, preg_match_all('/marquee__group"\s+aria-hidden="true"/', (string) $response->getContent()));
+        $this->assertSame(3, substr_count((string) $response->getContent(), 'data-acc-item'));
+
+        foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
+            $response->assertSee(__("home.services.items.{$service}.title"))
+                ->assertSee(__("home.services.items.{$service}.text"));
+        }
+
+        $response->assertDontSee('aria-expanded', false)
+            ->assertSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
+    }
+
+    public function test_every_service_has_a_full_description_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
+                $this->assertGreaterThan(
+                    $code === 'en' || $code === 'id' ? 150 : 50,
+                    mb_strlen(__("home.services.items.{$service}.text", [], $code)),
+                    "{$code} {$service} description is too short",
+                );
+            }
+        }
+    }
+
+    public function test_services_learn_more_exists_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee(__('home.services.more', [], $code))
+                ->assertSee(__('home.services.intro', [], $code));
+        }
+    }
+
+    public function test_clients_section_has_a_clients_slide_and_a_partners_slide(): void
+    {
+        config(['landing.sample_content' => true, 'landing.partners' => ['Alpha', 'Beta']]);
+
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
+        $this->assertSame(9, substr_count((string) $response->getContent(), '[LOGO]'));
+
+        $response->assertSee('data-chip', false)
+            ->assertSee('data-clients-prev', false)
+            ->assertSee('data-clients-next', false)
+            ->assertSee('data-label="Clients"', false)
+            ->assertSee('data-label="Partners"', false)
+            ->assertSee('Alpha')
+            ->assertDontSee('Furniture &amp; Hardware', false)
+            ->assertDontSee('Oil &amp; Gas', false);
+    }
+
+    public function test_clients_slides_use_logo_files_and_have_no_clients_slide_without_any_when_not_a_sample(): void
+    {
+        config(['landing.sample_content' => false, 'landing.partners' => ['Alpha']]);
+
+        $response = $this->get('/en')->assertOk();
+        $this->assertSame(1, substr_count((string) $response->getContent(), 'data-clients-slide '));
+        $response->assertDontSee('data-clients-next', false);
+
+        $directory = public_path('images/landing/clients');
+        @mkdir($directory, 0777, true);
+        file_put_contents($directory.'/acme-motors.svg', '<svg xmlns="http://www.w3.org/2000/svg"/>');
+
+        try {
+            $response = $this->get('/en')->assertOk();
+
+            $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
+            $response->assertSee('images/landing/clients/acme-motors.svg', false)
+                ->assertSee('alt="Acme Motors"', false)
+                ->assertSee('data-clients-next', false)
+                ->assertDontSee('[LOGO]')
+                ->assertDontSee('[TESTIMONIAL]');
+        } finally {
+            unlink($directory.'/acme-motors.svg');
+        }
+    }
+
+    public function test_the_chip_labels_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee('data-label="'.__('home.clients.clients', [], $code).'"', false)
+                ->assertSee('data-label="'.__('home.clients.partners', [], $code).'"', false);
+        }
+    }
+
+    public function test_clients_section_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")
+                ->assertSee(__('home.clients.eyebrow', [], $code))
+                ->assertSee(__('home.clients.title', [], $code))
+                ->assertSee(__('home.clients.next', [], $code));
+        }
+    }
+
+    public function test_gallery_shows_a_photo_per_location_with_city_company_and_local_time(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(6, substr_count((string) $response->getContent(), 'data-gallery-slide '));
+
+        foreach (config('landing.subsidiaries') as $subsidiary) {
+            $response->assertSee('data-city="'.ucfirst($subsidiary['key']).'"', false)
+                ->assertSee('data-timezone="'.$subsidiary['timezone'].'"', false)
+                ->assertSee('[PHOTO] images/landing/photos/gallery-'.$subsidiary['key'].'.webp');
+        }
+
+        $response->assertSee('data-gallery-time', false)
+            ->assertSee(__('home.gallery.label'))
+            ->assertSee(now('Asia/Jakarta')->format('H:i'));
+    }
+
+    public function test_gallery_is_absent_when_the_locations_are_not_shown(): void
+    {
+        config(['landing.sample_content' => false]);
+
+        $this->get('/en')->assertOk()->assertDontSee('data-gallery', false);
+    }
+
+    public function test_gallery_label_exists_in_every_language(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")->assertSee(__('home.gallery.label', [], $code));
+        }
     }
 }

@@ -38,11 +38,11 @@ return [
             ],
         ],
     ],
-    'products' => [
+    'processes' => [
         'label' => 'Process catalogue',
         'title' => 'All process categories',
         'intro' => 'Every electroplating process category we work with.',
-        'processes' => 'Processes',
+        'list' => 'Processes',
         'others' => 'Other categories',
         'categories' => [
             'zinc-plating' => 'Zinc plating process',

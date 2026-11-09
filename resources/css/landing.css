@@ -138,77 +138,7 @@ a:hover .nudge,
     transform: translateY(-6px);
 }
 
-/* Plus that turns into a minus when the accordion item is open. */
-.plus::before,
-.plus::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    top: 50%;
-    height: 2px;
-    margin-top: -1px;
-    background: currentColor;
-    transition: transform 0.4s ease;
-}
-
-.plus::after {
-    transform: rotate(90deg);
-}
-
-[data-open] .plus::after {
-    transform: rotate(0);
-}
-
-/* Slow, endless ticker for the sectors strip. Paused on hover and focus. */
-.marquee {
-    overflow: hidden;
-}
-
-.marquee__track {
-    display: flex;
-    width: max-content;
-    animation: marquee 40s linear infinite;
-}
-
-.marquee:hover .marquee__track,
-.marquee:focus-within .marquee__track {
-    animation-play-state: paused;
-}
-
-.marquee__group {
-    display: flex;
-    flex-shrink: 0;
-    gap: 4rem;
-    padding-inline-end: 4rem;
-}
-
-@keyframes marquee {
-    to {
-        transform: translateX(-50%);
-    }
-}
-
-[dir='rtl'] .marquee__track {
-    animation-name: marquee-rtl;
-}
-
-@keyframes marquee-rtl {
-    to {
-        transform: translateX(50%);
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
-    .marquee__track {
-        animation: none;
-        flex-wrap: wrap;
-        width: auto;
-    }
-
-    .marquee__group[aria-hidden='true'] {
-        display: none;
-    }
-
     #catalog li > a:hover {
         transform: none;
     }
@@ -226,4 +156,135 @@ html.lenis body {
 
 .lenis.lenis-stopped {
     overflow: clip;
+}
+
+/* Play button of the video: a halo on hover, and a swell and fade when it is pressed. */
+[data-video-circle] {
+    position: relative;
+}
+
+[data-video-circle]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid #fff;
+    opacity: 0;
+    transition:
+        scale 0.6s ease,
+        opacity 0.6s ease;
+}
+
+[data-video]:hover [data-video-circle]::after,
+[data-video-play]:focus-visible [data-video-circle]::after {
+    opacity: 0.6;
+    scale: 1.55;
+}
+
+[data-video].is-loading [data-video-circle],
+[data-video].is-loading [data-video-label] {
+    opacity: 0;
+    scale: 1.8;
+    transition:
+        scale 0.35s ease,
+        opacity 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-video-circle]::after {
+        transition: none;
+    }
+}
+
+/* Services: while pinned, the list takes the whole screen and stays put. */
+[data-services-track][data-pinned] [data-services-pin] {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100svh;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Clients: the arrows appear when the section is hovered or focused, and always on touch screens. */
+.clients-arrow {
+    opacity: 0;
+    scale: 0;
+    transition:
+        scale 0.3s ease,
+        opacity 0.3s ease,
+        background-color 0.2s ease;
+}
+
+[data-clients-stage]:hover .clients-arrow,
+[data-clients-stage]:focus-within .clients-arrow {
+    opacity: 1;
+    scale: 1;
+}
+
+@media (hover: none) {
+    .clients-arrow {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .clients-arrow {
+        transition: none;
+    }
+}
+
+/*
+ * Button whose dark fill rises from below and whose label rolls up on hover, as on the reference.
+ * Add `btn-roll` to a link with the structure used in the articles section.
+ */
+.btn-roll {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.btn-roll::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-ink);
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-roll__inner {
+    position: relative;
+}
+
+.btn-roll__label {
+    display: block;
+    height: 1.4em;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.btn-roll__label > span {
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-roll:hover::before,
+.btn-roll:focus-visible::before {
+    transform: none;
+}
+
+.btn-roll:hover .btn-roll__label > span,
+.btn-roll:focus-visible .btn-roll__label > span {
+    transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-roll::before,
+    .btn-roll__label > span {
+        transition: none;
+    }
 }

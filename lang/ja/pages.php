@@ -38,11 +38,11 @@ return [
             ],
         ],
     ],
-    'products' => [
+    'processes' => [
         'label' => '工程カタログ',
         'title' => 'すべての工程カテゴリー',
         'intro' => '当社が扱うすべての電気めっき工程カテゴリー。',
-        'processes' => '工程',
+        'list' => '工程',
         'others' => 'その他のカテゴリー',
         'categories' => [
             'zinc-plating' => 'Zinc plating process',

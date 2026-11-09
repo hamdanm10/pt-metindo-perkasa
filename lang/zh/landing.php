@@ -10,7 +10,7 @@ return [
     'nav' => [
         'home' => '首页',
         'about' => '关于我们',
-        'products' => '产品',
+        'processes' => '工艺',
         'services' => '服务',
         'articles' => '文章与新闻',
         'contact' => '联系我们',

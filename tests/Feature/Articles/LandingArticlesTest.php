@@ -171,4 +171,32 @@ class LandingArticlesTest extends TestCase
             $this->get("/{$code}/articles/slug-{$code}")->assertOk();
         }
     }
+
+    public function test_home_articles_section_follows_the_reference_layout(): void
+    {
+        $this->publish('en', 'first', null, ['title' => 'First article', 'published_at' => now()->subDays(3)]);
+        $this->publish('en', 'second', Article::factory()->news()->create(), ['title' => 'Second article', 'published_at' => now()->subDays(2)]);
+
+        $response = $this->get('/en')->assertOk();
+
+        $response->assertSee('data-anim="grow"', false)
+            ->assertSee(__('home.articles.title'))
+            ->assertSee(__('home.articles.intro'))
+            ->assertSee(__('articles.tags.article'))
+            ->assertSee(__('articles.tags.news'))
+            ->assertSee(now()->subDays(3)->format('d.m.y'))
+            ->assertSee('class="btn-roll', false)
+            ->assertSee('href="'.url('/en/articles').'"', false);
+
+        $this->assertSame(2, substr_count((string) $response->getContent(), '<article>'));
+    }
+
+    public function test_home_articles_button_label_exists_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->publish($code, "slug-{$code}");
+
+            $this->get("/{$code}")->assertSee(__('home.articles.all', [], $code));
+        }
+    }
 }

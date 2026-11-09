@@ -8,11 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Services\Landing\LandingContent;
 use Illuminate\Contracts\View\View;
 
-class ProductController extends Controller
+class ProcessController extends Controller
 {
     public function index(LandingContent $content): View
     {
-        return view('landing.pages.products.index', ['categories' => $content->categories()]);
+        return view('landing.pages.processes.index', ['categories' => $content->categories()]);
     }
 
     public function show(LandingContent $content, string $category): View
@@ -26,6 +26,6 @@ class ProductController extends Controller
             fn (array $item): bool => $item['slug'] !== $current['slug'],
         ));
 
-        return view('landing.pages.products.show', ['category' => $current, 'others' => $others]);
+        return view('landing.pages.processes.show', ['category' => $current, 'others' => $others]);
     }
 }

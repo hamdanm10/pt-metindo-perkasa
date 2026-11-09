@@ -14,7 +14,7 @@ Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun 
 | Ciri newengen | Padanan di sini |
 | --- | --- |
 | Hero gelap, judul raksasa huruf kapital Figtree 900, paragraf pendek, dua tombol, panel gambar di kanan | Hero `ink`, panel lavender berisi monogram logo (foto bila sudah ada) |
-| Deretan logo klien di bawah hero | Baris sektor yang dilayani |
+| Deretan logo klien di bawah hero | Tidak dipakai (baris sektor di hero dihapus). Klien ada di bagian Clients & Partners |
 | Kalimat besar sebagai pembuka bagian, lalu kartu | Katalog 13 kategori sebagai kartu bergaris tipis |
 | Layanan sebagai baris besar di latar gelap dengan tombol berpanah | Tiga layanan bernomor 01 sampai 03 |
 | Dinding logo klien | Kotak sektor dan mitra (teks, sampai logo asli tersedia) |
@@ -37,7 +37,11 @@ Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun 
 | --- | --- | --- |
 | Foto proses plating atau pabrik | Panel hero (menggantikan monogram) | Arah vertikal 4:5, pencahayaan gelap selaras `ink` |
 | `about-company`, `about-facilities` | Halaman About Us | Placeholder berlabel sampai ada foto |
-| Gambar tiap layanan (3) | Baris layanan di beranda dan halaman Services | Ilustrasi atau foto, rasio sekitar 4:3 |
-| Logo klien dan mitra | Dinding klien | Format SVG atau PNG transparan, dengan izin |
+| `product-zinc-plating`, `product-nickel-plating`, `product-copper-plating`, `product-hard-chrome` | Kartu katalog di beranda (tumpukan dan baris) | Portrait 365:620 (sekitar 3:5), minimal 730x1240, WebP atau JPG, di `public/images/landing/photos/`. Placeholder berlabel tampil sampai berkasnya ada. Kartu dipotong `object-cover` |
+| `gallery-medan`, `gallery-jakarta`, `gallery-surabaya`, `gallery-balikpapan`, `gallery-makassar`, `gallery-jayapura` | Galeri foto layar penuh di beranda | Foto lokasi atau kegiatan di tiap kota, **milik perusahaan sendiri**. Lanskap 16:9, minimal 2400x1350, WebP atau JPG, di `public/images/landing/photos/` (nama mengikuti `gallery-<kunci anak perusahaan>`). Placeholder berlabel tampil sampai berkasnya ada. Jangan memakai foto yang diambil dari mesin pencari: bukan milik perusahaan dan melanggar hak cipta |
+| `video-thumbnail` | Kotak video di beranda | Rasio 16:9, minimal 1600x900, WebP atau JPG. Diganti dengan menimpa berkas di `public/images/landing/photos/`. Tanpa teks di dalam gambar. Bagian bawahnya ditutup gradasi gelap |
+| `service-electroplating`, `service-chemical-supply`, `service-consultation` | Panel kanan layanan di beranda | Ilustrasi diam rasio 16:9 (minimal 1600x900), SVG, WebP, JPG, atau PNG, di `public/images/landing/photos/`. Placeholder berlabel tampil sampai berkasnya ada. Bisa diganti animasi `.lottie` kelak |
+| Logo klien dan logo mitra | Slider klien di beranda | Maksimal 9 per slide, SVG atau PNG transparan, dengan izin. Taruh di `public/images/landing/clients/` dan `public/images/landing/partners/`, dengan nama berkas yang menjadi nama (`acme-motors.svg` menjadi "Acme Motors"). Tanpa logo mitra, nama mitra di `config/landing.php` tampil sebagai teks. Slide Clients baru muncul di production bila folder `clients/` berisi logo |
+| Testimoni klien (kutipan, nama, jabatan, logo) | Kartu di kanan slider | Dari client, dengan izin. Belum ada, jadi hanya placeholder |
 
 Ilustrasi Recraft lama (`hero-waves`, `slash-pattern`, ikon kategori, `service-*`, `video-poster`, dan lainnya) masih ada di `public/images/landing/` tetapi **tidak dipakai lagi**, begitu pula komponen `x-landing.art` dan `x-landing.category-icon` yang sudah dihapus. Prompt lama di [`recraft-prompts.md`](recraft-prompts.md) bersifat arsip.
