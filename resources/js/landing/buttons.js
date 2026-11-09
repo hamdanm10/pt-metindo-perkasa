@@ -1,10 +1,10 @@
 import gsap from 'gsap';
 
 /**
- * Hover of the landing button, as measured on the reference. The fill rises from below in about
- * 0.6 seconds (`expo.out`) and leaves through the top when the pointer goes. The label has two
+ * Hover of the landing button, from the reference sizes with softer easing. The fill rises from below in
+ * 0.75 seconds (`power4.out`) and leaves through the top when the pointer goes. The label has two
  * copies: the shown one rolls up 32 px while the other comes from 32 px below, word by word
- * (0.04 seconds apart, 1 second, `expo.out`). The same roll runs on enter and on leave, always
+ * (0.035 seconds apart, 0.9 seconds, `power4.out`). The same roll runs on enter and on leave, always
  * upwards. The arrow steps 4 px back. Only for pointer devices and without reduced motion.
  */
 const hover = window.matchMedia('(hover: hover)').matches;
@@ -38,8 +38,8 @@ if (hover && !calm) {
                 gsap.set(copies[shown], { y: 32 });
             }
 
-            gsap.to(leaving, { y: -32, duration: 1, ease: 'expo.out', stagger: 0.04, overwrite: true });
-            gsap.to(copies[shown], { y: 0, duration: 1, ease: 'expo.out', stagger: 0.04, overwrite: true });
+            gsap.to(leaving, { y: -32, duration: 0.9, ease: 'power4.out', stagger: 0.035, overwrite: true });
+            gsap.to(copies[shown], { y: 0, duration: 0.9, ease: 'power4.out', stagger: 0.035, overwrite: true });
         };
 
         const enter = () => {
@@ -48,8 +48,8 @@ if (hover && !calm) {
                 gsap.set(fill, { yPercent: 100 });
             }
 
-            gsap.to(fill, { yPercent: 0, duration: 0.6, delay: 0.04, ease: 'expo.out', overwrite: true });
-            gsap.to(button, { color: hoverColor, duration: 0.3, overwrite: 'auto' });
+            gsap.to(fill, { yPercent: 0, duration: 0.75, delay: 0.03, ease: 'power4.out', overwrite: true });
+            gsap.to(button, { color: hoverColor, duration: 0.4, ease: 'power2.out', overwrite: 'auto' });
 
             if (arrow) {
                 gsap.to(arrow, { x: -4, duration: 0.5, ease: 'power3.out', overwrite: true });
@@ -59,8 +59,8 @@ if (hover && !calm) {
         };
 
         const leave = () => {
-            gsap.to(fill, { yPercent: -100, duration: 0.6, delay: 0.07, ease: 'expo.out', overwrite: true, onComplete: () => gsap.set(fill, { yPercent: 100 }) });
-            gsap.to(button, { color: rest, duration: 0.3, overwrite: 'auto' });
+            gsap.to(fill, { yPercent: -100, duration: 0.75, delay: 0.05, ease: 'power4.out', overwrite: true, onComplete: () => gsap.set(fill, { yPercent: 100 }) });
+            gsap.to(button, { color: rest, duration: 0.4, ease: 'power2.out', overwrite: 'auto' });
 
             if (arrow) {
                 gsap.to(arrow, { x: 0, duration: 0.5, ease: 'power3.out', overwrite: true });
