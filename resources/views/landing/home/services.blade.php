@@ -15,7 +15,7 @@
                         {{ __("home.services.items.{$service}.title") }}
                     </h3>
                     <div data-acc-panel>
-                        <div data-acc-inner class="container-site flex flex-col gap-8 pb-12 lg:flex-row lg:items-start lg:justify-between lg:pb-[13vw]">
+                        <div data-acc-inner class="container-site flex flex-col gap-8 pb-12 lg:flex-row lg:items-start lg:justify-between lg:pb-[3.5vw]">
                             <div class="max-w-[55rem] lg:w-[55%]">
                                 <p class="text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-white/90">{{ __("home.services.items.{$service}.text") }}</p>
                                 <a href="{{ route('landing.services') }}" class="mt-8 inline-flex min-h-11 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
