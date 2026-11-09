@@ -50,6 +50,35 @@ class HomeTest extends TestCase
             ->assertDontSee('<iframe', false);
     }
 
+    public function test_video_thumbnail_is_a_placeholder_until_the_file_exists_and_never_comes_from_youtube(): void
+    {
+        config(['landing.sample_content' => true]);
+
+        $this->get('/en')
+            ->assertSee('[PHOTO] images/landing/photos/video-thumbnail.webp')
+            ->assertSee(__('home.video.play'))
+            ->assertDontSee('ytimg', false);
+
+        $path = public_path('images/landing/photos/video-thumbnail.webp');
+        @mkdir(dirname($path), 0777, true);
+        file_put_contents($path, 'x');
+
+        try {
+            $this->get('/en')
+                ->assertSee('photos/video-thumbnail.webp', false)
+                ->assertDontSee('[PHOTO]');
+        } finally {
+            unlink($path);
+        }
+    }
+
+    public function test_video_section_shows_a_visible_play_label_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->get("/{$code}")->assertSee(__('home.video.play', [], $code));
+        }
+    }
+
     public function test_video_section_is_absent_without_a_video_id(): void
     {
         config(['landing.intro_video_id' => null]);

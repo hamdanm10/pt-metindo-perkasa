@@ -28,7 +28,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | --- | --- | --- |
 | Layar intro | Logo putih di atas `ink`, tombol krimson "Click to begin" | Lihat aturan di bawah |
 | Hero | Judul, satu paragraf, dua tombol: "Explore processes" (ke bagian katalog) dan "Contact us" (`mailto:`) | Latar `ink`, judul raksasa, panel monogram logo di kanan. Lihat [`../ui/design.md`](../ui/design.md) |
-| Video pengantar | "See how we work" dengan poster dan tombol putar | Hanya tampil bila ID video terisi |
+| Video pengantar | "See how we work": judul besar dan paragraf di satu baris, lalu kotak video selebar kontainer dengan **thumbnail**, lingkaran putar, dan label "Watch intro video" yang terlihat | Hanya tampil bila ID video terisi. Thumbnail dari `public/images/landing/photos/video-thumbnail.{webp,jpg,jpeg,png}` (placeholder berlabel bila belum ada). Diklik baru memuat YouTube (`youtube-nocookie`), thumbnail tidak diambil dari YouTube supaya tidak ada permintaan ke pihak ketiga sebelum klik |
 | Pendekatan | "Controlled process, consistent result." | Tanpa angka berurutan, karena isinya bukan urutan |
 | Katalog | 13 kategori (nama saja) | Kartu bernomor dengan panah, tanpa ikon |
 | Layanan | Electroplating Service, Chemical Supply, Technical Consultation | Tiga baris bernomor di latar `ink` |
