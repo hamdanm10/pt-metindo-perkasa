@@ -3,17 +3,27 @@
     $tones = ['bg-ink text-white', 'bg-brand-600 text-white', 'bg-accent-indigo text-white', 'bg-accent-blue text-white'];
 @endphp
 
-<section id="catalog" class="scroll-mt-4 bg-lavender">
-    <div class="container-site section-y">
-        <div data-catalog-stage class="relative">
-            <div class="max-w-xl">
+{{-- One stage for two sections: the cards sit in the product list below, and on wide screens they start stacked in the panel of the first section. --}}
+<div data-catalog-stage class="relative">
+    <section id="catalog" class="scroll-mt-4 bg-lavender">
+        <div class="container-site grid items-center gap-10 py-16 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-2 lg:gap-[4vw] lg:py-[clamp(4rem,7vw,7rem)]">
+            <div>
                 <h2 data-anim="heading" class="text-balance text-[clamp(2.25rem,5vw,6rem)] font-black leading-[0.98] tracking-tight text-ink">
                     {{ __('home.catalog.title') }}
                 </h2>
-                <p class="mt-6 text-lg text-muted sm:text-xl">{{ __('home.catalog.text') }}</p>
+                <p class="mt-6 max-w-xl text-lg text-muted sm:text-xl">{{ __('home.catalog.text') }}</p>
             </div>
 
-            <ul class="mt-12 grid grid-cols-2 gap-4 lg:mt-16 lg:grid-cols-4">
+            {{-- Empty slot: the stacked cards fly into it. Hidden below lg, where there is no animation. --}}
+            <div data-catalog-panel class="hidden aspect-[4/5] max-h-[68svh] w-full lg:block" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <section class="bg-white">
+        <div class="container-site section-y">
+            <h2 data-anim="heading" class="text-[clamp(2rem,4vw,4.75rem)] font-black uppercase leading-[0.98] tracking-tight text-ink">{{ __('landing.nav.products') }}</h2>
+
+            <ul class="mt-10 grid grid-cols-2 gap-4 lg:mt-14 lg:grid-cols-4">
                 @foreach ($featured as $category)
                     <li>
                         <a href="{{ route('landing.products.show', ['category' => $category['slug']]) }}" class="group block focus-visible:outline-offset-4">
@@ -35,10 +45,10 @@
                     </li>
                 @endforeach
             </ul>
-        </div>
 
-        <a href="{{ route('landing.products.index') }}" class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
-            {{ __('home.catalog.all') }}<x-landing.arrow />
-        </a>
-    </div>
-</section>
+            <a href="{{ route('landing.products.index') }}" class="mt-10 inline-flex min-h-12 items-center gap-2 rounded-lg bg-brand-600 px-6 font-bold text-white hover:bg-brand-700">
+                {{ __('home.catalog.all') }}<x-landing.arrow />
+            </a>
+        </div>
+    </section>
+</div>

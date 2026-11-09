@@ -131,14 +131,17 @@ const scrollReveals = () => {
 };
 
 /**
- * Catalog cards, as in the reference hero: they start as one narrow panel beside the
- * heading and spread into a row while the section scrolls into view (scrubbed). Only on
- * wide screens. Without it, or without JavaScript, the cards are simply the final row.
+ * Catalog cards, as in the reference hero. They live in the product list, and start
+ * stacked in the panel of the section above. The panel holds still while that section
+ * is on screen; once the page scrolls on, the cards spread out and travel down to their
+ * row (scrubbed). Only on wide screens. Without it, or without JavaScript, the cards are
+ * simply the row.
  */
 const catalog = () => {
     const stage = document.querySelector('[data-catalog-stage]');
+    const slot = stage?.querySelector('[data-catalog-panel]');
 
-    if (!stage) {
+    if (!stage || !slot) {
         return;
     }
 
@@ -147,21 +150,28 @@ const catalog = () => {
     const contents = all('[data-catalog-tile-content]', stage);
     const captions = all('[data-catalog-caption]', stage);
 
-    /** Where tile `index` sits in the compact panel, relative to the stage. */
+    /** Where tile `index` sits inside the panel, relative to the stage. */
     const panel = (tile, index) => {
-        const width = stage.offsetWidth;
-        const panelWidth = width * 0.44;
-        const slice = panelWidth / tiles.length;
-        const slot = rtl ? tiles.length - 1 - index : index;
-        const left = rtl ? 0 : width - panelWidth;
-        const height = Math.min(tile.offsetHeight, Math.max(stage.firstElementChild.offsetHeight, tile.offsetHeight * 0.8));
+        const slice = slot.offsetWidth / tiles.length;
+        const place = rtl ? tiles.length - 1 - index : index;
 
-        return { x: left + slot * slice - tile.offsetLeft, y: -tile.offsetTop + (index % 2) * 14, scaleX: slice / tile.offsetWidth, scaleY: height / tile.offsetHeight };
+        return {
+            x: slot.offsetLeft + place * slice - tile.offsetLeft,
+            y: slot.offsetTop - tile.offsetTop + (index % 2) * 14,
+            scaleX: slice / tile.offsetWidth,
+            scaleY: slot.offsetHeight / tile.offsetHeight,
+        };
     };
 
     const timeline = gsap.timeline({
         defaults: { ease: 'none' },
-        scrollTrigger: { trigger: stage, start: 'top 90%', end: 'top 15%', scrub: 0.6, invalidateOnRefresh: true },
+        scrollTrigger: {
+            trigger: stage,
+            start: 'top top',
+            end: () => `+=${Math.max(300, tiles[0].offsetTop - window.innerHeight * 0.2)}`,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+        },
     });
 
     timeline
