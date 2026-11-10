@@ -28,6 +28,7 @@ return [
             'title' => 'Anak perusahaan kami',
             'intro' => 'Grup kami beroperasi dari beberapa kota di Indonesia. Pilih pin atau nama perusahaan untuk membuka lokasinya di Google Maps.',
             'open_map' => 'Buka di Google Maps',
+            'map' => 'Peta Indonesia dengan lokasi anak perusahaan kami',
             'items' => [
                 'medan' => 'Medan · Jasa electroplating',
                 'jakarta' => 'Jakarta · Pasokan bahan kimia plating',

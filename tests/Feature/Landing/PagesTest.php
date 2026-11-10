@@ -195,6 +195,39 @@ class PagesTest extends TestCase
             ->assertDontSee('mailto:', false);
     }
 
+    public function test_about_subsidiaries_are_pins_on_a_map_with_a_card_each(): void
+    {
+        $html = (string) $this->get('/en/about')->getContent();
+
+        $this->assertSame(6, substr_count($html, 'data-pin="'));
+        $this->assertSame(6, substr_count($html, 'data-sub="'));
+        $this->assertStringContainsString('data-map-land', $html);
+        $this->assertStringContainsString('aria-label="'.__('pages.about.subsidiaries.map', [], 'en').'"', $html);
+        $this->assertMatchesRegularExpression('/data-pin="jakarta"[^>]*style="left: 26\.27%; top: 70\.6%"/s', $html);
+        $this->assertStringContainsString('google.com/maps/search/?api=1&query=3.5952,98.6722', $html);
+    }
+
+    public function test_about_has_no_map_when_the_subsidiaries_are_not_shown(): void
+    {
+        config(['landing.sample_content' => false]);
+
+        $this->get('/en/about')->assertOk()->assertDontSee('data-map-stage', false);
+    }
+
+    public function test_about_texts_and_map_label_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $response = $this->get("/{$code}/about")->assertOk();
+
+            foreach (['pages.about.title', 'pages.about.intro', 'pages.about.approach.title', 'pages.about.vision.text', 'pages.about.subsidiaries.map'] as $key) {
+                $text = __($key, [], $code);
+
+                $this->assertNotSame($key, $text);
+                $response->assertSee($text, false);
+            }
+        }
+    }
+
     public function test_about_hides_certifications_and_gates_subsidiaries(): void
     {
         $this->get('/en/about')

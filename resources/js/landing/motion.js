@@ -11,6 +11,7 @@ import { scrollReveals } from './motion/reveals.js';
 import { services } from './motion/services.js';
 import { root } from './motion/shared.js';
 import { smoothScroll } from './motion/smooth-scroll.js';
+import { subsidiaries } from './motion/subsidiaries.js';
 import { video } from './motion/video.js';
 
 const mm = gsap.matchMedia();
@@ -25,6 +26,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         video();
         about();
         cta();
+        subsidiaries();
         gsap.matchMedia().add('(min-width: 1024px)', catalog);
         gsap.matchMedia().add('(min-width: 1024px)', services);
 

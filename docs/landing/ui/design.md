@@ -49,6 +49,17 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Pemilih bahasa: tombol menampilkan **kode singkat** bahasa yang dipilih (EN, ID, ZH, AR, JA; nama lengkapnya ada di `title`), sedangkan daftar turun putih dan panel ponsel memakai **nama lengkap** (English, Bahasa Indonesia, dan seterusnya), seperti footer. **Di bawah `lg` menu berupa hamburger** (bukan dropdown): kotak krimson 42 px (sudut 5 px) berisi tiga garis 16x3 px yang menjadi tanda silang saat terbuka (0,75 detik, kurva yang sama dengan header). Ia membuka **panel `ink` layar penuh** (`#mobile-menu`) seperti referensi: tiap menu satu baris selebar layar (huruf 24 px tebal, padding 16x12 px, garis tipis putih 20 persen di atas dan bawah, halaman aktif berwarna `brand-300`), diikuti pilihan bahasa dengan nama lengkap (bahasa aktif berlatar putih). Latar halaman meredup di belakangnya dan gulir halaman dikunci selama menu terbuka. Menutup lewat tombol, Escape, atau memilih tautan.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
+## Halaman About
+
+Isi mengikuti halaman About prototipe (`http://103.125.180.65/~wwwmetin/en/about`: profil perusahaan, pendekatan, visi dan misi, fasilitas, anak perusahaan, ajakan); sertifikasi tetap tidak ditampilkan (belum dikonfirmasi). Tampilannya dirancang ulang dengan gaya landing. Dari atas ke bawah:
+
+- **Pembuka** (`ink`): label "Company profile" (`brand-300`), judul kapital besar (7,2vw, huruf tumbuh), pengantar, dan dua tombol ke Processes dan Services (seperti dua tautan di prototipe).
+- **Pendekatan** (lavender): dua kolom 5:7. Judul besar di kiri **menempel** (`sticky`) sementara dua paragraf (1,5vw, yang kedua lebih redup) dan foto perusahaan di kanan dibaca.
+- **Visi dan misi:** dua kartu besar bernomor 01 dan 02 (krimson 3:2 dan `ink`), angka raksasa transparan yang menebal dan kartu naik sedikit saat hover.
+- **Fasilitas** (putih): foto di kiri dan judul serta teks di kanan.
+- **Anak perusahaan** (`ink`): **peta Indonesia** seperti prototipe, tetapi dirancang ulang. Gambar peta sama (SVG 1000 x 383, proyeksi equirectangular: sudut kiri atas 94,5 BT dan 6,5 LU, 21,276 satuan per derajat) dan **posisi pin dihitung dari lintang dan bujur** anak perusahaan (`LandingMap`), bukan ditulis tangan, sehingga cocok dengan prototipe (misalnya Medan 8,88% / 16,14%). Pin ikon lokasi krimson (6 di layar sempit hingga 10 di layar lebar); saat di-hover atau difokus pin **membesar, berubah putih, berdenyut, dan menampilkan nama kota**, dan **kartu yang bersesuaian di bawah peta menyala** (garis tepi krimson, naik 4 px), begitu pula sebaliknya. Di bawah peta kartu bernomor (tiga kolom di layar lebar) berisi nama perusahaan, kota dan bidangnya, dan tautan "Open in Google Maps" (tab baru). Seluruh bagian hanya tampil di mode contoh karena datanya masih contoh, lengkap dengan catatan contoh.
+- **Ajakan:** kartu ajakan seperti di halaman lain.
+
 ## Footer
 
 Disamakan dengan footer referensi, **tanpa marquee logo mitra** dan **tanpa formulir newsletter** (belum ada layanan untuk menerimanya). Latar `ink`. Dari atas ke bawah:
