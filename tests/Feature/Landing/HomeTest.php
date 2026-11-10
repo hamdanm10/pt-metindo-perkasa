@@ -148,7 +148,9 @@ class HomeTest extends TestCase
             ->assertSee('href="'.route('landing.contact', ['locale' => 'en']).'"', false)
             ->assertSee('href="mailto:hello@example.test"', false)
             ->assertSee('href="tel:+6281200000000"', false)
-            ->assertSee('data-cta-art', false);
+            ->assertSee('data-cta-art', false)
+            // The headline width follows its own font size, so no word breaks in the middle on wide screens.
+            ->assertSee('max-w-[11em]', false);
 
         // The three CTA graphics and the three of the About headline have different clip ids.
         preg_match_all('/<clipPath id="(art-[a-z]+-[0-9a-f]{6})"/', (string) $response->getContent(), $found);
