@@ -74,13 +74,15 @@ class PagesTest extends TestCase
         $this->assertMatchesRegularExpression('/>\s*English\s*</', $header);
     }
 
-    public function test_footer_has_the_wordmark_back_to_top_button_menu_and_no_marquee(): void
+    public function test_footer_has_the_logo_with_the_name_back_to_top_button_menu_and_no_marquee(): void
     {
         $html = (string) $this->get('/en/about')->getContent();
         $start = (int) strpos($html, '<footer');
         $footer = substr($html, $start, (int) strpos($html, '</footer>', $start) - $start);
 
-        $this->assertStringContainsString('footer-wordmark', $footer);
+        $this->assertStringContainsString('footer-brand__first', $footer);
+        $this->assertStringContainsString('Metindo', $footer);
+        $this->assertStringNotContainsString('footer-wordmark', $footer);
         $this->assertStringContainsString('data-to-top', $footer);
         $this->assertStringContainsString('aria-label="'.__('landing.footer.top', [], 'en').'"', $footer);
         $this->assertStringContainsString(__('landing.footer.description', [], 'en'), $footer);

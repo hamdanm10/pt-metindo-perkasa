@@ -12,24 +12,15 @@
     $label = 'text-[clamp(0.75rem,0.833vw,1.05rem)] text-white/55';
 @endphp
 
-{{-- Footer, as on the reference: a name across the full width, a line, the logo above the company text with a button and the email and phone large, then the menu, the address and the offices in columns. The reference also has a newsletter form and a logo marquee; neither is here. --}}
+{{-- Footer: the logo with the company name beside it above the company text with a button and the email and phone large, then the menu, the address and the offices in columns. The reference also has a newsletter form and a logo marquee; neither is here. --}}
 <footer class="bg-ink text-white" style="--focus-ring: #ffffff">
     <div class="container-site">
-        <div class="py-[clamp(2.5rem,6.67vw,8rem)]" lang="en" dir="ltr">
-            <svg class="footer-wordmark block h-auto w-full" viewBox="0 0 1344 92" role="img" aria-label="PT Metindo Perkasa" focusable="false">
-                <text x="0" y="88" textLength="1344" lengthAdjust="spacingAndGlyphs" font-size="126" font-weight="800" fill="currentColor" style="text-transform: uppercase">Metindo Perkasa</text>
-            </svg>
-        </div>
-    </div>
-
-    <hr class="border-0 border-t border-white/20">
-
-    <div class="container-site">
         {{-- Text and button on the left; on the right the two contact lines that matter most, large, where the reference has its newsletter. --}}
-        <div class="mt-[clamp(3rem,6.67vw,8rem)] grid gap-x-[2.5vw] gap-y-10 lg:grid-cols-[25fr_25fr_43.33fr]">
+        <div class="grid gap-x-[2.5vw] gap-y-10 pt-[clamp(3rem,6.67vw,8rem)] lg:grid-cols-[25fr_25fr_43.33fr]">
             <div class="lg:col-span-2">
-                <a href="{{ route('landing.home') }}" class="mb-[1.6vw] inline-flex max-lg:mb-5" aria-label="PT Metindo Perkasa">
+                <a href="{{ route('landing.home') }}" class="footer-brand mb-[1.6vw] inline-flex items-center max-lg:mb-5">
                     <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-[clamp(2.25rem,3.3vw,4rem)] w-auto">
+                    <span class="footer-brand__name"><span class="footer-brand__first">Metindo</span> <span class="footer-brand__second">Perkasa</span></span>
                 </a>
                 <p class="max-w-[38.9vw] text-[clamp(1rem,1.22vw,1.5rem)] leading-[1.42] max-lg:max-w-xl">{{ __('landing.footer.description') }}</p>
                 <x-landing.button :href="route('landing.contact')" class="mt-[1.7vw] max-lg:mt-6">{{ __('landing.talk') }}</x-landing.button>

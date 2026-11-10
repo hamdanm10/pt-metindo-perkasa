@@ -496,7 +496,24 @@ span.btn,
     cursor: default;
 }
 
-/* Footer: the name across the page in a soft tone of the page colour. */
-.footer-wordmark {
-    color: color-mix(in srgb, var(--color-accent-indigo) 38%, color-mix(in srgb, var(--color-lavender) 22%, var(--color-ink)));
+/* Footer logo: the monogram with the name beside it in two lines, like the navbar. */
+.footer-brand__name {
+    display: flex;
+    flex-direction: column;
+    margin-inline-start: 0.9em;
+    padding-inline-start: 0.9em;
+    border-inline-start: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: clamp(0.85rem, 1.25vw, 1.65rem);
+    line-height: 1.18;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.footer-brand__first {
+    font-weight: 800;
+}
+
+.footer-brand__second {
+    font-weight: 400;
 }
