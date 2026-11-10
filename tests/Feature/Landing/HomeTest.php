@@ -296,7 +296,7 @@ class HomeTest extends TestCase
 
         // The only aria-expanded are the three buttons that open something: the mobile menu, the chat and WhatsApp. The services need none.
         $this->assertSame(3, substr_count((string) $response->getContent(), 'aria-expanded'));
-        $response->assertSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
+        $response->assertSee('images/landing/photos/service-chemical-supply.webp', false)->assertDontSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
     }
 
     public function test_every_service_has_a_full_description_in_every_language(): void
