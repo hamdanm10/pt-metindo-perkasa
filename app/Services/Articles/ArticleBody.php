@@ -60,4 +60,17 @@ class ArticleBody
     {
         return trim(strip_tags($this->render($document))) === '';
     }
+
+    /**
+     * Minutes to read an HTML body: about 200 words a minute, and about 400 characters a minute
+     * for Chinese and Japanese, which have no spaces between words. Never less than one.
+     */
+    public static function readingMinutes(string $html): int
+    {
+        $text = trim(html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5));
+        $cjk = (int) preg_match_all('/[\x{3040}-\x{30ff}\x{3400}-\x{9fff}]/u', $text);
+        $words = count(preg_split('/\s+/u', (string) preg_replace('/[\x{3040}-\x{30ff}\x{3400}-\x{9fff}]/u', ' ', $text), -1, PREG_SPLIT_NO_EMPTY) ?: []);
+
+        return max(1, (int) ceil($words / 200 + $cjk / 400));
+    }
 }

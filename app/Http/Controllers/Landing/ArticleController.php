@@ -19,9 +19,16 @@ class ArticleController extends Controller
 
         $type = in_array($request->query('type'), ['article', 'news'], true) ? $request->query('type') : null;
 
+        $all = $articles->list($locale);
+
         return view('landing.pages.articles.index', [
             'articles' => $articles->list($locale, $type),
             'type' => $type,
+            'counts' => [
+                'all' => count($all),
+                'article' => count(array_filter($all, fn (array $item): bool => $item['type'] === 'article')),
+                'news' => count(array_filter($all, fn (array $item): bool => $item['type'] === 'news')),
+            ],
         ]);
     }
 

@@ -32,8 +32,8 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | Processes | `/{locale}/processes` | Jumlah kategori, **daftar tab 13 kategori dengan panel rinci** (proses lengkap dan tautan "View all N processes" ke halaman kategori; mengikuti `homepage-5`), dan penjelasan empat tingkat katalog. Tanpa label "Process catalogue"; lihat [`../ui/design.md`](../ui/design.md), bagian Processes |
 | Kategori | `/{locale}/processes/{category}` | Nama kategori, daftar proses (tanpa tautan), kategori lain |
 | Services | `/{locale}/services` | Tiga layanan masing-masing dengan **ilustrasi** (sama dengan daftar layanan di beranda) dan tombol ke Contact, tautan loncat di pembuka, dan "How we work" empat langkah berurutan (Enquiry, Spec review, Process and supply, Delivery). Tanpa label "What we do"; lihat [`../ui/design.md`](../ui/design.md), bagian Services |
-| Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu dengan filter jenis. 404 bila bahasa itu belum punya artikel terbit |
-| Artikel | `/{locale}/articles/{slug}` | Judul, jenis, tanggal, isi, artikel terkait |
+| Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu: satu artikel terbaru besar, kartu untuk sisanya, dan filter jenis dengan jumlah. 404 bila bahasa itu belum punya artikel terbit (kecuali mode contoh, yang menampilkan lima artikel contoh) |
+| Artikel | `/{locale}/articles/{slug}` | **Halaman baca ala Medium** (kolom 680 px): judul, jenis, tanggal, waktu baca, gambar, isi, tombol bagikan, dan artikel terkait |
 | Contact | `/{locale}/contact` | Data kontak yang dikonfigurasi dan tombol WhatsApp bila ada |
 
 Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bila perlu) dan diakhiri ajakan menghubungi yang sama seperti beranda. Tautan kategori, layanan, dan artikel di beranda diaktifkan di fase ini.

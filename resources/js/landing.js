@@ -9,3 +9,4 @@ import './landing/mobile-menu.js';
 import './landing/about-map.js';
 import './landing/process-tabs.js';
 import './landing/contact-widgets.js';
+import './landing/copy-link.js';

@@ -12,11 +12,14 @@ use Illuminate\Support\Facades\Cache;
  * Published articles for the landing, one language at a time. There is no fallback to
  * another language: a language without a published translation has no articles.
  *
- * @phpstan-type Summary array{slug: string, type: string, title: string, excerpt: string, date: string, image: string|null, alt: string}
+ * @phpstan-type Summary array{slug: string, type: string, title: string, excerpt: string, date: string, image: string|null, alt: string, minutes: int, sample: bool}
  */
 class LandingArticles
 {
-    public function __construct(private readonly ThumbnailStore $thumbnails) {}
+    public function __construct(
+        private readonly ThumbnailStore $thumbnails,
+        private readonly SampleArticles $samples = new SampleArticles,
+    ) {}
 
     /**
      * Newest first. Cached per language and cleared whenever an article changes.
@@ -28,35 +31,19 @@ class LandingArticles
         /** @var list<Summary> $all */
         $all = Cache::rememberForever($this->key($locale), fn (): array => $this->query($locale));
 
+        if ($all === [] && $this->sampling()) {
+            $all = $this->samples->summaries();
+        }
+
         return $type === null
             ? $all
             : array_values(array_filter($all, fn (array $item): bool => $item['type'] === $type));
     }
 
-    /**
-     * Three static cards for the home page while a language has no published article, so the
-     * layout can be reviewed. Only in sample mode. They link nowhere, because there is no page
-     * behind them.
-     *
-     * @return list<Summary>
-     */
-    public function placeholders(): array
+    /** True while the sample articles stand in for real ones: sample mode, and nothing published in the language. */
+    private function sampling(): bool
     {
-        if (! config()->boolean('landing.sample_content')) {
-            return [];
-        }
-
-        $today = now()->toDateString();
-
-        return array_map(fn (string $type): array => [
-            'slug' => '',
-            'type' => $type,
-            'title' => '[SAMPLE] Article title',
-            'excerpt' => '',
-            'date' => $today,
-            'image' => null,
-            'alt' => '',
-        ], ['article', 'news', 'article']);
+        return config()->boolean('landing.sample_content');
     }
 
     public function hasAny(string $locale): bool
@@ -75,7 +62,7 @@ class LandingArticles
             ->first();
 
         if ($article === null) {
-            return null;
+            return $this->sample($locale, $slug);
         }
 
         $translation = $article->translations->where('locale', $locale)->firstOrFail();
@@ -92,6 +79,40 @@ class LandingArticles
             'meta_description' => (string) ($translation->meta_description ?: $translation->excerpt),
             'alternates' => $alternates,
         ];
+    }
+
+    /**
+     * A sample article, but only while the language has no published article of its own.
+     *
+     * @return array{summary: Summary, body_html: string, meta_title: string, meta_description: string, alternates: array<string, string>}|null
+     */
+    private function sample(string $locale, string $slug): ?array
+    {
+        if (! $this->sampling() || $this->hasPublished($locale)) {
+            return null;
+        }
+
+        $sample = $this->samples->find($slug);
+
+        if ($sample === null) {
+            return null;
+        }
+
+        return [
+            'summary' => $sample['summary'],
+            'body_html' => $sample['body_html'],
+            'meta_title' => $sample['summary']['title'],
+            'meta_description' => $sample['summary']['excerpt'],
+            'alternates' => array_fill_keys(config()->array('locales.landing'), $slug),
+        ];
+    }
+
+    private function hasPublished(string $locale): bool
+    {
+        /** @var list<Summary> $all */
+        $all = Cache::rememberForever($this->key($locale), fn (): array => $this->query($locale));
+
+        return $all !== [];
     }
 
     /**
@@ -152,6 +173,8 @@ class LandingArticles
             'date' => $translation->published_at?->toDateString() ?? '',
             'image' => $path === null ? null : $this->thumbnails->url($path),
             'alt' => (string) ($translation->image_alt ?: $translation->title),
+            'minutes' => ArticleBody::readingMinutes($translation->body_html ?? ''),
+            'sample' => false,
         ];
     }
 }

@@ -22,6 +22,9 @@ class LandingArticlesTest extends TestCase
 
         $this->withoutVite();
         Cache::flush();
+
+        // These tests are about published articles, not the sample ones that stand in when there are none.
+        config(['landing.sample_content' => false]);
     }
 
     /**

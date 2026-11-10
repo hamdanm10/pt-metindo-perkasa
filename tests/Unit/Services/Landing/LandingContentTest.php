@@ -35,6 +35,8 @@ class LandingContentTest extends TestCase
 
     public function test_menu_lists_articles_only_for_a_language_with_a_published_article(): void
     {
+        config(['landing.sample_content' => false]);
+
         $this->assertNotContains('landing.articles.index', array_column($this->content()->menu(), 'route'));
 
         ArticleTranslation::factory()->published('en')->create();
