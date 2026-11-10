@@ -668,3 +668,16 @@ html.menu-open {
         opacity: 0.4;
     }
 }
+
+/* Process list: all panels share one cell of a grid, so the tallest sets the height and nothing jumps when the choice changes. */
+.ppanel:not([data-active]) {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* On small screens the panels sit in a column, so the unchosen ones leave the flow instead of leaving a gap. */
+@media (max-width: 63.99rem) {
+    .ppanel:not([data-active]) {
+        display: none;
+    }
+}

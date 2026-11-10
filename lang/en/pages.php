@@ -39,9 +39,21 @@ return [
         ],
     ],
     'processes' => [
-        'label' => 'Process catalogue',
         'title' => 'All process categories',
         'intro' => 'Every electroplating process category we work with.',
+        'position' => 'Category :number of :total',
+        'view_all' => 'View all :count processes',
+        'count' => 'Process categories',
+        'organised' => [
+            'title' => 'How the catalogue is organised',
+            'intro' => 'Four levels, from category down to the chemicals used in each step.',
+            'steps' => [
+                'category' => ['title' => 'Category', 'text' => 'Browse process categories such as alkaline or acid types.'],
+                'process' => ['title' => 'Process', 'text' => 'Open a category to see its specific processes.'],
+                'diagram' => ['title' => 'Diagram', 'text' => 'Follow the step-by-step process flow.'],
+                'materials' => ['title' => 'Materials', 'text' => 'Inspect the chemicals used in each step.'],
+            ],
+        ],
         'list' => 'Processes',
         'others' => 'Other categories',
         'categories' => [

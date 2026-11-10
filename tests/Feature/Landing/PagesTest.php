@@ -228,6 +228,69 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_process_index_is_a_tab_list_with_a_panel_per_category_and_no_catalogue_label(): void
+    {
+        $categories = config('landing.categories');
+        $html = (string) $this->get('/en/processes')->getContent();
+
+        $this->assertSame(count($categories), preg_match_all('/data-ptab\s/', $html));
+        $this->assertSame(count($categories), preg_match_all('/<article role="tabpanel"/', $html));
+        $this->assertSame(1, substr_count($html, 'data-active'));
+        $this->assertStringContainsString('role="tablist"', $html);
+        $this->assertStringContainsString('data-count="'.count($categories).'"', $html);
+        $this->assertStringNotContainsString('Process catalogue', $html);
+
+        foreach ($categories as $category) {
+            $slug = $category['slug'];
+
+            $this->assertStringContainsString('id="tab-'.$slug.'" aria-controls="panel-'.$slug.'"', $html);
+            $this->assertStringContainsString('id="panel-'.$slug.'" aria-labelledby="tab-'.$slug.'"', $html);
+            $this->assertStringContainsString('href="'.route('landing.processes.show', ['locale' => 'en', 'category' => $slug]).'"', $html);
+            $this->assertStringContainsString(__("pages.processes.categories.{$slug}", [], 'en'), $html);
+
+            foreach ($category['processes'] as $process) {
+                $this->assertStringContainsString(e($process), $html);
+            }
+        }
+
+        // The button label is split into one span per word, so look at the text only.
+        $text = (string) preg_replace('/\s+/', ' ', strip_tags($html));
+
+        $this->assertStringContainsString(__('pages.processes.view_all', ['count' => count($categories[0]['processes'])], 'en'), $text);
+    }
+
+    public function test_process_index_explains_the_four_levels_of_the_catalogue(): void
+    {
+        $html = (string) $this->get('/en/processes')->getContent();
+
+        $this->assertStringContainsString('data-steps', $html);
+        $this->assertSame(4, substr_count($html, 'data-step>') + substr_count($html, 'data-step '));
+
+        foreach (['category', 'process', 'diagram', 'materials'] as $step) {
+            $this->assertStringContainsString(__("pages.processes.organised.steps.{$step}.title", [], 'en'), $html);
+            $this->assertStringContainsString(__("pages.processes.organised.steps.{$step}.text", [], 'en'), $html);
+        }
+    }
+
+    public function test_process_index_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $response = $this->get("/{$code}/processes")->assertOk();
+
+            foreach (['title', 'intro', 'count', 'organised.title', 'organised.intro', 'organised.steps.diagram.text'] as $key) {
+                $text = __("pages.processes.{$key}", [], $code);
+
+                $this->assertNotSame("pages.processes.{$key}", $text);
+                $response->assertSee($text, false);
+            }
+
+            // These two carry a number, so check them filled in.
+            $count = count(config('landing.categories.0.processes'));
+            $response->assertSeeText(__('pages.processes.view_all', ['count' => $count], $code), false)
+                ->assertSee(__('pages.processes.position', ['number' => '01', 'total' => count(config('landing.categories'))], $code), false);
+        }
+    }
+
     public function test_about_hides_certifications_and_gates_subsidiaries(): void
     {
         $this->get('/en/about')
