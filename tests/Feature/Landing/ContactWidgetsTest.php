@@ -54,6 +54,32 @@ class ContactWidgetsTest extends TestCase
         }
     }
 
+    public function test_each_panel_sits_in_the_group_of_its_own_button_and_the_chat_has_no_text_box(): void
+    {
+        $html = (string) $this->get('/en')->getContent();
+
+        // Chat button group, then WhatsApp button group, side by side; each panel comes right before its own button.
+        $chatPanel = (int) strpos($html, 'data-panel="chat"');
+        $chatButton = (int) strpos($html, 'data-widget-toggle="chat"');
+        $waPanel = (int) strpos($html, 'data-panel="whatsapp"');
+        $waButton = (int) strpos($html, 'data-widget-toggle="whatsapp"');
+
+        $this->assertTrue($chatPanel < $chatButton && $chatButton < $waPanel && $waPanel < $waButton);
+        $this->assertStringNotContainsString('data-chat-input', $html);
+        $this->assertStringNotContainsString('data-chat-form', $html);
+    }
+
+    public function test_the_talk_option_is_offered_only_with_numbers(): void
+    {
+        config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null]);
+
+        $this->assertNull($this->rules($this->page('/en'))['talk']);
+
+        config(['landing.contact.whatsapp' => '6281200000001']);
+
+        $this->assertSame(__('chat.chat.talk'), $this->rules($this->page('/en'))['talk']);
+    }
+
     public function test_without_numbers_only_the_chat_button_is_shown(): void
     {
         config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null]);
@@ -80,13 +106,9 @@ class ContactWidgetsTest extends TestCase
         $this->assertSame(route('landing.processes.index'), $topics['processes']['link']['url']);
         $this->assertSame(route('landing.about'), $topics['company']['link']['url']);
 
-        foreach ($topics as $topic) {
-            $this->assertNotEmpty($topic['keywords']);
-            $this->assertSame($topic['keywords'], array_map('mb_strtolower', $topic['keywords']));
-        }
-
         $this->assertSame(__('chat.chat.welcome'), $rules['welcome']);
-        $this->assertSame(__('chat.chat.fallback'), $rules['fallback']);
+        $this->assertSame(__('chat.chat.again'), $rules['again']);
+        $this->assertSame(__('chat.chat.talk'), $rules['talk']);
     }
 
     public function test_topics_without_data_are_left_out(): void
@@ -104,17 +126,16 @@ class ContactWidgetsTest extends TestCase
             $response = $this->get("/{$code}")->assertOk();
             $rules = $this->rules($this->page("/{$code}"));
 
-            foreach (['welcome', 'fallback'] as $key) {
+            foreach (['welcome', 'again', 'talk'] as $key) {
                 $this->assertNotSame("chat.chat.{$key}", $rules[$key]);
             }
 
-            $this->assertSame(__('chat.chat.title', [], $code), __('chat.chat.title', [], $code));
             $this->assertNotSame('chat.chat.title', __('chat.chat.title', [], $code));
             $response->assertSee(__('chat.open_chat', [], $code), false);
 
             foreach ($rules['topics'] as $topic) {
                 $this->assertNotSame('', $topic['label']);
-                $this->assertNotEmpty($topic['keywords']);
+                $this->assertNotSame('', $topic['answer']);
             }
         }
 
@@ -129,13 +150,13 @@ class ContactWidgetsTest extends TestCase
     }
 
     /**
-     * @return array{welcome: string, fallback: string, topics: list<array{id: string, label: string, answer: string, keywords: list<string>, link: array{label: string, url: string}}>}
+     * @return array{welcome: string, again: string, talk: string|null, topics: list<array{id: string, label: string, answer: string, link: array{label: string, url: string}}>}
      */
     private function rules(string $html): array
     {
         preg_match('/data-chat-rules="([^"]*)"/', $html, $found);
 
-        /** @var array{welcome: string, fallback: string, topics: list<array{id: string, label: string, answer: string, keywords: list<string>, link: array{label: string, url: string}}>} $rules */
+        /** @var array{welcome: string, again: string, talk: string|null, topics: list<array{id: string, label: string, answer: string, link: array{label: string, url: string}}>} $rules */
         $rules = json_decode(html_entity_decode($found[1] ?? '{}', ENT_QUOTES), true, 512, JSON_THROW_ON_ERROR);
 
         return $rules;

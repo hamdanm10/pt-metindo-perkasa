@@ -5,10 +5,11 @@ import gsap from 'gsap';
  * from its bottom corner (0.5 seconds, `expo.out`); closing: it fades down (0.25 seconds). Escape
  * or a click outside closes it and the focus goes back to its button.
  *
- * The chat is rule-based. The server sends the topics for the active language: a label, an
- * answer, a link, and keywords. A typed question gets the topic whose keywords appear in it most
- * often; a topic button answers directly; otherwise the assistant says it cannot answer and offers
- * the topics. All text is put in with `textContent`, so nothing typed is ever read as HTML.
+ * The chat is rule-based and has no text box. The server sends the topics for the active language,
+ * each with a label, an answer and a link. The assistant greets, then shows the topics as option
+ * bubbles; tapping one adds it as the visitor's message, the assistant answers, and the options
+ * come back under the answer (with an option to talk to customer service when there are numbers).
+ * All text is put in with `textContent`.
  */
 const root = document.querySelector('[data-widgets]');
 
@@ -38,7 +39,7 @@ if (root) {
             gsap.fromTo(panel, { autoAlpha: 0, y: 18, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: 'expo.out', clearProps: 'transform' });
         }
 
-        const target = panel.querySelector('[data-chat-input], a[href]');
+        const target = panel.querySelector('[data-chat-log] button, a[href]');
 
         window.setTimeout(() => target?.focus({ preventScroll: true }), calm ? 0 : 120);
     };
@@ -80,7 +81,8 @@ if (root) {
     });
 
     document.addEventListener('click', (event) => {
-        if (open && event.target instanceof Node && !root.contains(event.target)) {
+        // The path is taken when the click happens: a bubble that removed itself is no longer in the page, but it was inside.
+        if (open && !event.composedPath().includes(root)) {
             hide(false);
         }
     });
@@ -91,11 +93,8 @@ if (root) {
 function initChat() {
     const rulesNode = root.querySelector('[data-chat-rules]');
     const log = root.querySelector('[data-chat-log]');
-    const topicList = root.querySelector('[data-chat-topics]');
-    const form = root.querySelector('[data-chat-form]');
-    const input = root.querySelector('[data-chat-input]');
 
-    if (!rulesNode || !log || !form || !input) {
+    if (!rulesNode || !log) {
         return;
     }
 
@@ -109,9 +108,16 @@ function initChat() {
 
     const topics = Array.isArray(rules.topics) ? rules.topics : [];
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let options = null;
 
     const scroll = () => {
         log.scrollTop = log.scrollHeight;
+    };
+
+    const enter = (node) => {
+        if (!calm) {
+            gsap.from(node, { y: 12, autoAlpha: 0, duration: 0.4, ease: 'expo.out' });
+        }
     };
 
     const bubble = (from) => {
@@ -120,14 +126,11 @@ function initChat() {
 
         row.className = from === 'user' ? 'flex max-w-[88%] flex-col items-end self-end' : 'flex max-w-[88%] flex-col items-start self-start';
         body.className = from === 'user'
-            ? 'rounded-lg rounded-ee-sm bg-ink px-3 py-2 text-sm text-white'
-            : 'rounded-lg rounded-es-sm bg-white px-3 py-2 text-sm text-ink shadow-sm';
+            ? 'rounded-2xl rounded-ee-sm bg-ink px-3.5 py-2 text-sm text-white'
+            : 'rounded-2xl rounded-es-sm bg-white px-3.5 py-2 text-sm text-ink shadow-sm';
         row.append(body);
         log.append(row);
-
-        if (!calm) {
-            gsap.from(row, { y: 12, autoAlpha: 0, duration: 0.4, ease: 'expo.out' });
-        }
+        enter(row);
 
         return { row, body };
     };
@@ -147,9 +150,52 @@ function initChat() {
         }
 
         scroll();
+
+        return row;
     };
 
-    const reply = (topic) => {
+    const option = (label, onChoose) => {
+        const button = document.createElement('button');
+
+        button.type = 'button';
+        button.textContent = label;
+        button.className = 'rounded-2xl rounded-es-sm border border-brand-600 bg-white px-3.5 py-2 text-start text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-600 hover:text-white focus-visible:outline-offset-2';
+        button.addEventListener('click', onChoose);
+
+        return button;
+    };
+
+    /** The option bubbles, left aligned like the assistant's. Taking them away once one is chosen keeps the log short. */
+    const showOptions = () => {
+        options?.remove();
+        options = document.createElement('div');
+        options.className = 'flex flex-col items-start gap-2 self-start';
+        options.setAttribute('role', 'group');
+
+        topics.forEach((topic) => {
+            options.append(option(topic.label, () => choose(topic)));
+        });
+
+        if (rules.talk) {
+            const talk = option(rules.talk, () => {
+                options?.remove();
+                root.querySelector('[data-widget-toggle="whatsapp"]')?.click();
+            });
+
+            talk.className = talk.className.replace('border-brand-600 bg-white text-brand-700', 'border-[#128c4a] bg-white text-[#128c4a]').replace('hover:bg-brand-600', 'hover:bg-[#128c4a]');
+            options.append(talk);
+        }
+
+        log.append(options);
+        enter(options);
+        scroll();
+    };
+
+    const choose = (topic) => {
+        options?.remove();
+        options = null;
+        const asked = say('user', topic.label);
+
         const typing = bubble('bot');
 
         typing.body.textContent = '...';
@@ -158,55 +204,14 @@ function initChat() {
 
         window.setTimeout(() => {
             typing.row.remove();
-            say('bot', topic ? topic.answer : rules.fallback, topic?.link ?? null);
+            say('bot', topic.answer, topic.link);
+            say('bot', rules.again ?? '');
+            showOptions();
+            // Keep the question and its answer in view; the options sit below and can be reached by scrolling.
+            log.scrollTo({ top: Math.max(asked.offsetTop - 12, 0), behavior: calm ? 'auto' : 'smooth' });
         }, calm ? 0 : 550);
     };
 
-    const match = (question) => {
-        const text = question.toLowerCase();
-        let best = null;
-        let bestScore = 0;
-
-        topics.forEach((topic) => {
-            const score = (topic.keywords ?? []).filter((word) => word !== '' && text.includes(word)).length;
-
-            if (score > bestScore) {
-                best = topic;
-                bestScore = score;
-            }
-        });
-
-        return best;
-    };
-
-    topics.forEach((topic) => {
-        const item = document.createElement('li');
-        const button = document.createElement('button');
-
-        button.type = 'button';
-        button.textContent = topic.label;
-        button.className = 'shrink-0 whitespace-nowrap rounded-full border border-ink/25 px-3 py-1 text-xs font-bold text-ink hover:border-brand-600 hover:bg-brand-600 hover:text-white';
-        button.addEventListener('click', () => {
-            say('user', topic.label);
-            reply(topic);
-        });
-        item.append(button);
-        topicList.append(item);
-    });
-
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const question = input.value.trim();
-
-        if (question === '') {
-            return;
-        }
-
-        input.value = '';
-        say('user', question);
-        reply(match(question));
-    });
-
     say('bot', rules.welcome ?? '');
+    showOptions();
 }

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Services\Landing;
 
 /**
- * The rules of the rule-based chat assistant, in the active language. Every topic has a label for
- * its quick button, keywords that a typed question is matched against, and an answer built only
- * from what the site already says (the number of process categories, the contact details in the
- * configuration). Topics whose data is missing are left out. Nothing here is generated: the
- * browser only picks the topic whose keywords appear in the question.
+ * The topics of the rule-based chat assistant, in the active language. Every topic has a label
+ * for its option bubble, an answer built only from what the site already says (the number of
+ * process categories, the contact details in the configuration), and a link. Topics whose data is
+ * missing are left out. Nothing here is generated: the visitor taps a bubble and the browser shows
+ * the matching answer.
  *
- * @phpstan-type Topic array{id: string, label: string, answer: string, keywords: list<string>, link: array{label: string, url: string}|null}
+ * @phpstan-type Topic array{id: string, label: string, answer: string, link: array{label: string, url: string}}
  */
 class LandingChat
 {
@@ -62,13 +62,10 @@ class LandingChat
      */
     private function topic(string $id, string $answer, string $route): array
     {
-        $keywords = trans("chat.topics.{$id}.keywords");
-
         return [
             'id' => $id,
             'label' => $this->line("chat.topics.{$id}.label"),
             'answer' => $answer,
-            'keywords' => is_array($keywords) ? array_values(array_map(fn (mixed $word): string => mb_strtolower((string) $word), $keywords)) : [],
             'link' => ['label' => $this->line("chat.topics.{$id}.link"), 'url' => route($route)],
         ];
     }
