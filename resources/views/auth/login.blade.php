@@ -3,9 +3,9 @@
 @section('body')
     <main class="grid min-h-screen lg:grid-cols-[5fr_6fr]">
         <div class="relative flex flex-col justify-between overflow-hidden bg-ink px-6 py-8 text-white sm:px-12 lg:p-14" style="--focus-ring: #ffffff">
-            <a href="{{ route('landing.home', ['locale' => 'en']) }}" class="login-brand inline-flex w-fit items-center" aria-label="{{ __('auth.back_to_site') }}">
+            <a href="{{ route('landing.home', ['locale' => 'en']) }}" class="brand-lockup inline-flex w-fit items-center" aria-label="{{ __('auth.back_to_site') }}">
                 <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-10 w-auto">
-                <span class="login-brand__name"><span class="font-extrabold">Metindo</span> <span>Perkasa</span></span>
+                <span class="brand-lockup__name"><span class="font-extrabold">Metindo</span> <span>Perkasa</span></span>
             </a>
 
             <div class="login-rise max-lg:mt-12 lg:pb-6">

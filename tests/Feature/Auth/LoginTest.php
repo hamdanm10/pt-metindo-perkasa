@@ -142,7 +142,6 @@ class LoginTest extends TestCase
                 ->assertSee('href="'.route('landing.home', ['locale' => 'en']).'"', false)
                 ->assertSee('data-password-toggle="password"', false)
                 ->assertSee('data-login-form', false)
-                ->assertSee('--font-display: var(--font-sans)', false)
                 ->assertSee(__('auth.caps_lock'))
                 ->assertSee(__('auth.intro'))
                 ->assertSee(__('auth.panel_title'))

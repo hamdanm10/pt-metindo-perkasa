@@ -113,7 +113,7 @@
 }
 
 /* Logo with the name beside it in two lines, like the landing navbar and footer. */
-.login-brand__name {
+.brand-lockup__name {
     display: flex;
     flex-direction: column;
     margin-inline-start: 0.9em;
@@ -123,4 +123,27 @@
     line-height: 1.18;
     letter-spacing: 0.3em;
     text-transform: uppercase;
+}
+
+/* Dashboard dropdowns: dark chips and dark panels like the landing navbar. */
+.dd-chevron {
+    transition: rotate 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+details[open] > .dd-summary .dd-chevron {
+    rotate: 180deg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    details[open] > .dd-panel {
+        animation: dd-open 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        transform-origin: top right;
+    }
+
+    @keyframes dd-open {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+    }
 }

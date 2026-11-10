@@ -64,6 +64,17 @@ class ShellTest extends TestCase
         $this->assertStringNotContainsString('<details class="relative lg:hidden"', $html);
     }
 
+    public function test_the_shell_uses_the_landing_style_brand_lockup_menu_label_and_dark_dropdowns(): void
+    {
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->getContent();
+
+        $this->assertStringContainsString('brand-lockup__name', $html);
+        $this->assertStringContainsString('dd-panel', $html);
+        $this->assertSame(2, substr_count($html, 'dd-summary'));
+        $this->assertStringContainsString('uppercase', $html);
+        $this->assertStringNotContainsString('Bricolage', $html);
+    }
+
     public function test_the_content_sits_in_a_centered_container(): void
     {
         $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')
