@@ -24,8 +24,12 @@
 
     <div class="relative flex items-center">
         <hr class="w-full border-0 border-t border-white/20">
-        <button type="button" data-to-top aria-label="{{ __('landing.footer.top') }}" class="footer-top absolute start-1/2 top-1/2 flex h-[clamp(3.5rem,5.55vw,7rem)] w-[clamp(3.1rem,5vw,6.3rem)] -translate-y-1/2 items-center justify-center bg-brand-600 hover:bg-brand-700 ltr:-translate-x-1/2 rtl:translate-x-1/2">
-            <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-[38%] w-auto">
+        <button type="button" data-to-top aria-label="{{ __('landing.footer.top') }}" class="footer-top group absolute start-1/2 top-1/2 flex h-[clamp(3.5rem,5.55vw,7rem)] w-[clamp(3.1rem,5vw,6.3rem)] -translate-y-1/2 items-center justify-center text-brand-600 hover:text-brand-500 ltr:-translate-x-1/2 rtl:translate-x-1/2">
+            {{-- A hexagon with round corners (the stroke rounds the joins), then the monogram on top. --}}
+            <svg class="absolute inset-0 size-full" viewBox="0 0 72 80" aria-hidden="true" focusable="false">
+                <polygon points="36,7 65,23.5 65,56.5 36,73 7,56.5 7,23.5" fill="currentColor" stroke="currentColor" stroke-width="12" stroke-linejoin="round"/>
+            </svg>
+            <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="relative w-[64%] transition-transform duration-500 group-hover:-translate-y-0.5">
         </button>
     </div>
 

@@ -502,8 +502,7 @@ span.btn,
 }
 
 .footer-top {
-    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-    transition: scale 0.75s var(--header-ease), background-color 0.35s ease;
+    transition: scale 0.75s var(--header-ease), color 0.35s ease;
 }
 
 .footer-top:hover {
@@ -511,7 +510,8 @@ span.btn,
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .footer-top {
+    .footer-top,
+    .footer-top img {
         transition: none;
     }
 }
