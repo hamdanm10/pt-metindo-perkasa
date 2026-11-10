@@ -14,7 +14,6 @@ export default defineConfig({
                 'resources/css/dashboard.css',
                 'resources/js/dashboard.js',
                 'resources/css/fonts/latin.css',
-                'resources/css/fonts/auth.css',
                 'resources/css/fonts/zh.css',
                 'resources/css/fonts/ja.css',
                 'resources/css/fonts/ar.css',
