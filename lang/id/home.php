@@ -5,7 +5,6 @@ declare(strict_types=1);
 return [
     'intro' => [
         'begin' => 'Klik untuk mulai',
-        'hint' => 'atau tekan Enter',
     ],
     'hero' => [
         'title' => 'Metal Expert Indonesia',

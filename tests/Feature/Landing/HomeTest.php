@@ -181,27 +181,27 @@ class HomeTest extends TestCase
             ->assertSee('id="intro" role="dialog" aria-modal="true"', false)
             ->assertSee('data-intro-close', false)
             ->assertSee('data-intro-item', false)
-            ->assertSeeText(__('home.intro.begin', [], 'id'))
-            ->assertSeeText(__('home.intro.hint', [], 'id'))
-            ->assertSee('data-intro-languages', false)
-            ->assertSee('data-intro-name', false);
+            ->assertSeeText(__('home.intro.begin', [], 'id'));
     }
 
-    public function test_intro_offers_every_language_and_its_texts_exist_in_all_of_them(): void
+    public function test_intro_shows_the_hero_headline_word_by_word_and_a_plain_language_list(): void
     {
         $html = (string) $this->get('/en')->getContent();
         $start = (int) strpos($html, 'id="intro"');
-        $intro = substr($html, $start, (int) strpos($html, 'data-intro-languages', $start) + 2500 - $start);
+        $intro = substr($html, $start, (int) strpos($html, '</nav>', $start) + 3000 - $start);
+
+        $this->assertSame(count(explode(' ', __('home.hero.title'))), substr_count($intro, 'data-intro-word'));
 
         foreach (config('locales.landing') as $code) {
             $this->assertStringContainsString('hreflang="'.config("locales.locales.{$code}.html_lang").'"', $intro);
-
-            $this->assertNotSame('home.intro.hint', __('home.intro.hint', [], $code));
+            $this->assertStringContainsString('href="'.route('landing.home', ['locale' => $code]).'"', $intro);
             $this->assertNotSame('home.intro.begin', __('home.intro.begin', [], $code));
         }
 
-        $this->assertStringContainsString('Metindo', $intro);
-        $this->assertStringContainsString(__('landing.footer.tagline'), $intro);
+        // Plain text codes in a flat list: no chips, no glow, no ring.
+        $this->assertStringNotContainsString('data-intro-light', $intro);
+        $this->assertStringNotContainsString('data-intro-ring', $intro);
+        $this->assertStringContainsString('aria-current="true"', $intro);
     }
 
     public function test_home_marks_the_elements_that_animate(): void

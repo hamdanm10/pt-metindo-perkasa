@@ -1,33 +1,38 @@
 {{-- Hidden by CSS until a script in <head> marks this session as new. The home page is already in the HTML behind it. --}}
-<div id="intro" role="dialog" aria-modal="true" aria-label="PT Metindo Perkasa"
-     tabindex="-1" class="fixed inset-0 z-[80] flex-col items-center justify-center overflow-hidden bg-ink px-6 text-center text-white outline-none" style="--focus-ring: #ffffff">
-    {{-- Soft crimson and indigo light drifting behind everything, and the monogram very large and faint. --}}
-    <div data-intro-light class="pointer-events-none absolute -start-[15vw] -top-[20vw] size-[55vw] rounded-full bg-brand-600/25 blur-[7vw]" aria-hidden="true"></div>
-    <div data-intro-light class="pointer-events-none absolute -bottom-[25vw] -end-[15vw] size-[50vw] rounded-full bg-accent-indigo/30 blur-[7vw]" aria-hidden="true"></div>
-    <img data-intro-mark src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="pointer-events-none absolute left-1/2 top-1/2 w-[110vw] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-[0.04]" aria-hidden="true">
-
-    <div class="relative flex flex-1 flex-col items-center justify-center">
-        <div class="flex items-center gap-[clamp(0.9rem,1.6vw,2rem)]">
-            <img data-intro-item data-intro-logo src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-[clamp(3.25rem,7vw,8rem)] w-auto">
-            <span data-intro-item data-intro-line class="h-[clamp(3rem,6.4vw,7.5rem)] w-px origin-top bg-white/40" aria-hidden="true"></span>
-            <span data-intro-item data-intro-name class="flex flex-col text-start text-[clamp(1.1rem,2.7vw,3.25rem)] uppercase leading-[1.15]">
-                <span class="overflow-hidden"><span data-intro-word class="inline-block font-extrabold tracking-[0.3em]">Metindo</span></span>
-                <span class="overflow-hidden"><span data-intro-word class="inline-block font-normal tracking-[0.3em]">Perkasa</span></span>
-            </span>
+<div id="intro" role="dialog" aria-modal="true" aria-label="PT Metindo Perkasa" tabindex="-1"
+     class="fixed inset-0 z-[80] flex-col bg-brand-600 text-white outline-none" style="--focus-ring: #ffffff">
+    <div class="container-site flex h-full flex-col pb-[clamp(1rem,2.2vw,2.75rem)] pt-[clamp(1rem,1.8vw,2.25rem)]">
+        {{-- Top: the monogram on the left and the languages as plain text on the right. --}}
+        <div class="flex items-center justify-between">
+            <img data-intro-item data-intro-logo src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-[clamp(2rem,3.2vw,4rem)] w-auto">
+            <nav data-intro-item aria-label="{{ __('landing.language') }}">
+                <ul class="flex items-center gap-[clamp(0.9rem,1.6vw,2rem)] text-[clamp(0.8rem,0.95vw,1.15rem)] font-extrabold uppercase">
+                    @foreach (config('locales.landing') as $code)
+                        @php($locale = config("locales.locales.{$code}"))
+                        <li>
+                            <a href="{{ route('landing.home', ['locale' => $code]) }}" lang="{{ $locale['html_lang'] }}" hreflang="{{ $locale['html_lang'] }}" title="{{ $locale['name'] }}" @if ($code === app()->getLocale()) aria-current="true" @endif
+                               class="inline-flex min-h-11 items-center {{ $code === app()->getLocale() ? '' : 'text-white/70 hover:text-white' }}"><span class="uline">{{ $code }}</span></a>
+                        </li>
+                    @endforeach
+                </ul>
+            </nav>
         </div>
 
-        <p data-intro-item data-intro-tagline class="mt-[clamp(1.5rem,3vw,3.5rem)] text-[clamp(0.7rem,0.95vw,1.1rem)] font-extrabold uppercase tracking-[0.3em] text-brand-300">{{ __('landing.footer.tagline') }}</p>
+        {{-- The headline of the home page, very large, each line rising out of its own mask. --}}
+        <p class="flex flex-1 flex-col justify-end pb-[clamp(1.25rem,2.5vw,3rem)] text-[clamp(3.25rem,11.5vw,14rem)] font-black uppercase leading-[0.88] tracking-tight" aria-hidden="true">
+            @foreach (explode(' ', __('home.hero.title')) as $word)
+                <span class="block overflow-hidden"><span data-intro-word class="block">{{ $word }}</span></span>
+            @endforeach
+        </p>
 
-        <div data-intro-item data-intro-action class="relative mt-[clamp(2rem,4vw,4.5rem)] flex flex-col items-center gap-4">
-            <span class="relative">
-                <span data-intro-ring class="pointer-events-none absolute inset-0 rounded-lg border-2 border-brand-300" aria-hidden="true"></span>
-                <x-landing.button as="button" type="button" data-intro-close variant="light">{{ __('home.intro.begin') }}</x-landing.button>
+        {{-- The way in: one wide bar. --}}
+        <button type="button" data-intro-close data-intro-item
+                class="intro-bar group flex h-[clamp(4rem,7.5vw,9.5rem)] w-full items-center justify-between rounded-lg bg-ink px-[clamp(1.25rem,2.6vw,3.25rem)] text-start text-white focus-visible:outline-offset-4">
+            <span class="relative block overflow-hidden text-[clamp(1.15rem,3vw,3.75rem)] font-black uppercase leading-none">
+                <span class="block transition-transform duration-500 [transition-timing-function:var(--header-ease)] group-hover:-translate-y-full">{{ __('home.intro.begin') }}</span>
+                <span class="absolute inset-0 block translate-y-full text-brand-300 transition-transform duration-500 [transition-timing-function:var(--header-ease)] group-hover:translate-y-0" aria-hidden="true">{{ __('home.intro.begin') }}</span>
             </span>
-            <span class="text-[clamp(0.7rem,0.8vw,0.95rem)] text-white/55 max-sm:hidden">{{ __('home.intro.hint') }}</span>
-        </div>
-    </div>
-
-    <div data-intro-item data-intro-languages class="relative pb-[clamp(1.25rem,2.5vw,2.5rem)]">
-        <x-landing.language-links dark />
+            <svg viewBox="0 0 21 20" fill="none" class="size-[clamp(1.5rem,3vw,3.75rem)] shrink-0 transition-transform duration-500 [transition-timing-function:var(--header-ease)] group-hover:translate-x-2 rtl:-scale-x-100 rtl:group-hover:-translate-x-2" aria-hidden="true"><path d="M10.0691 2L17.9004 10.1014L10.0691 17.6626" stroke="currentColor" stroke-width="3"/><path d="M0 9.83154H16.7814" stroke="currentColor" stroke-width="3"/></svg>
+        </button>
     </div>
 </div>
