@@ -50,9 +50,77 @@
     }
 }
 
+/* Login fields follow the landing form: small uppercase label, underline that turns crimson on focus. */
+.login-field {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0 0.7rem;
+    border: 0;
+    border-bottom: 2px solid color-mix(in srgb, var(--color-ink) 25%, transparent);
+    border-radius: 0;
+    background: transparent;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.login-field:focus {
+    border-bottom-color: var(--color-brand-600);
+}
+
+.login-field[aria-invalid='true'] {
+    border-bottom-color: var(--color-brand-600);
+}
+
+.login-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    transition: color 0.3s ease;
+}
+
+.login-group:focus-within .login-label {
+    color: var(--color-brand-600);
+}
+
+.login-submit[data-busy] {
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .login-rise {
+        animation: login-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes login-rise {
+        from {
+            opacity: 0;
+            transform: translateY(1.5rem);
+        }
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     #sidebar,
     #sidebar-backdrop {
         transition: none !important;
     }
+}
+
+/* Logo with the name beside it in two lines, like the landing navbar and footer. */
+.login-brand__name {
+    display: flex;
+    flex-direction: column;
+    margin-inline-start: 0.9em;
+    padding-inline-start: 0.9em;
+    border-inline-start: 1px solid rgb(255 255 255 / 0.35);
+    font-size: 1rem;
+    line-height: 1.18;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
 }

@@ -81,3 +81,44 @@ if (sidebar && toggle) {
 if (document.querySelector('[data-tiptap]')) {
     import('./dashboard/editor.js');
 }
+
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    const input = document.getElementById(button.dataset.passwordToggle);
+
+    button.addEventListener('click', () => {
+        const visible = input.type === 'password';
+
+        input.type = visible ? 'text' : 'password';
+        button.setAttribute('aria-pressed', String(visible));
+        button.setAttribute('aria-label', visible ? button.dataset.hide : button.dataset.show);
+        button.querySelector('[data-eye]').hidden = visible;
+        button.querySelector('[data-eye-off]').hidden = !visible;
+    });
+});
+
+const loginForm = document.querySelector('[data-login-form]');
+
+if (loginForm) {
+    const password = loginForm.querySelector('#password');
+    const caps = loginForm.querySelector('[data-caps]');
+    const submit = loginForm.querySelector('button[type="submit"]');
+
+    password.addEventListener('keydown', (event) => {
+        caps.hidden = !event.getModifierState('CapsLock');
+    });
+    password.addEventListener('blur', () => {
+        caps.hidden = true;
+    });
+
+    // Stops a second click from sending the form twice while the first request is on its way.
+    loginForm.addEventListener('submit', (event) => {
+        if (submit.hasAttribute('data-busy')) {
+            event.preventDefault();
+
+            return;
+        }
+
+        submit.setAttribute('data-busy', '');
+        submit.querySelector('[data-submit-text]').textContent = submit.dataset.busyLabel;
+    });
+}
