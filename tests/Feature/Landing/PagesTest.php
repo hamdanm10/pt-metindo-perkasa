@@ -228,6 +228,49 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_process_index_shows_a_card_per_category_without_the_catalogue_label(): void
+    {
+        $categories = config('landing.categories');
+        $html = (string) $this->get('/en/processes')->getContent();
+
+        $this->assertSame(count($categories), substr_count($html, 'data-spot'));
+        $this->assertStringContainsString('data-count="'.count($categories).'"', $html);
+        $this->assertStringNotContainsString('Process catalogue', $html);
+
+        foreach ($categories as $category) {
+            $this->assertStringContainsString('href="'.route('landing.processes.show', ['locale' => 'en', 'category' => $category['slug']]).'"', $html);
+            $this->assertStringContainsString($category['name'], $html);
+            $this->assertStringContainsString(__("pages.processes.categories.{$category['slug']}", [], 'en'), $html);
+        }
+    }
+
+    public function test_process_index_explains_the_four_levels_of_the_catalogue(): void
+    {
+        $html = (string) $this->get('/en/processes')->getContent();
+
+        $this->assertStringContainsString('data-steps', $html);
+        $this->assertSame(4, substr_count($html, 'data-step>') + substr_count($html, 'data-step '));
+
+        foreach (['category', 'process', 'diagram', 'materials'] as $step) {
+            $this->assertStringContainsString(__("pages.processes.organised.steps.{$step}.title", [], 'en'), $html);
+            $this->assertStringContainsString(__("pages.processes.organised.steps.{$step}.text", [], 'en'), $html);
+        }
+    }
+
+    public function test_process_index_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $response = $this->get("/{$code}/processes")->assertOk();
+
+            foreach (['title', 'intro', 'count', 'view', 'organised.title', 'organised.intro', 'organised.steps.diagram.text'] as $key) {
+                $text = __("pages.processes.{$key}", [], $code);
+
+                $this->assertNotSame("pages.processes.{$key}", $text);
+                $response->assertSee($text, false);
+            }
+        }
+    }
+
     public function test_about_hides_certifications_and_gates_subsidiaries(): void
     {
         $this->get('/en/about')

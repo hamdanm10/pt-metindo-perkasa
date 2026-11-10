@@ -39,9 +39,20 @@ return [
         ],
     ],
     'processes' => [
-        'label' => 'Katalog proses',
         'title' => 'Semua kategori proses',
         'intro' => 'Seluruh kategori proses electroplating yang kami tangani.',
+        'view' => 'Lihat proses',
+        'count' => 'Kategori proses',
+        'organised' => [
+            'title' => 'Cara katalog disusun',
+            'intro' => 'Empat tingkat, dari kategori hingga bahan kimia yang dipakai di setiap langkah.',
+            'steps' => [
+                'category' => ['title' => 'Kategori', 'text' => 'Telusuri kategori proses seperti tipe alkali atau asam.'],
+                'process' => ['title' => 'Proses', 'text' => 'Buka kategori untuk melihat proses spesifiknya.'],
+                'diagram' => ['title' => 'Diagram', 'text' => 'Ikuti alur proses langkah demi langkah.'],
+                'materials' => ['title' => 'Bahan', 'text' => 'Periksa bahan kimia yang dipakai di setiap langkah.'],
+            ],
+        ],
         'list' => 'Proses',
         'others' => 'Kategori lain',
         'categories' => [

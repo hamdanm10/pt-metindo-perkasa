@@ -49,6 +49,15 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Pemilih bahasa: tombol menampilkan **kode singkat** bahasa yang dipilih (EN, ID, ZH, AR, JA; nama lengkapnya ada di `title`), sedangkan daftar turun putih dan panel ponsel memakai **nama lengkap** (English, Bahasa Indonesia, dan seterusnya), seperti footer. **Di bawah `lg` menu berupa hamburger** (bukan dropdown): kotak krimson 42 px (sudut 5 px) berisi tiga garis 16x3 px yang menjadi tanda silang saat terbuka (0,75 detik, kurva yang sama dengan header). Ia membuka **panel `ink` layar penuh** (`#mobile-menu`) seperti referensi: tiap menu satu baris selebar layar (huruf 24 px tebal, padding 16x12 px, garis tipis putih 20 persen di atas dan bawah, halaman aktif berwarna `brand-300`), diikuti pilihan bahasa dengan nama lengkap (bahasa aktif berlatar putih). Latar halaman meredup di belakangnya dan gulir halaman dikunci selama menu terbuka. Menutup lewat tombol, Escape, atau memilih tautan.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
+## Halaman Processes
+
+Isi mengikuti halaman Products prototipe (`http://103.125.180.65/~wwwmetin/en/products`: judul "All process categories", pengantar, daftar kategori, dan "How the catalogue is organised"), **tanpa label "Process catalogue"** di bagian pembuka. Empat kelompok tambahan di prototipe (Alkaline, Acid, Basic, Ferrous Metals Pre Treatment) tetap belum dimodelkan. Dari atas ke bawah:
+
+- **Pembuka** (`ink`): judul kapital besar (7,2vw, huruf tumbuh), pengantar, dan di kanan **jumlah kategori** (angka krimson muda 7vw yang berhitung naik dari 0, dengan label "Process categories").
+- **Kartu kategori** (lavender): kisi tiga kolom (dua di tablet, satu di ponsel). Tiap kartu putih bersudut 8 px berisi nomor, tombol panah bulat, nama kategori (berat 900), deskripsi, **dua proses pertama sebagai penanda**, dan tautan "View process". **Saat hover** kartu **berubah gelap** (`ink`, 0,5 detik), garis aksen di tepi atas membentang (warna bergantian `ink`, krimson, indigo, biru), panah memutar -45 derajat dan menjadi putih, dan **cahaya lembut krimson mengikuti pointer**.
+- **How the catalogue is organised** (putih): judul besar, pengantar, dan empat tingkat bernomor (Category, Process, Diagram, Materials) yang dihubungkan **garis yang tergambar mengikuti gulir**. Isinya dari prototipe; Diagram dan Materials belum ada di halaman kategori (lihat Ditunda di [`../pages/overview.md`](../pages/overview.md)).
+- **Ajakan:** kartu ajakan seperti di halaman lain.
+
 ## Halaman About
 
 Isi mengikuti halaman About prototipe (`http://103.125.180.65/~wwwmetin/en/about`: profil perusahaan, pendekatan, visi dan misi, fasilitas, anak perusahaan, ajakan); sertifikasi tetap tidak ditampilkan (belum dikonfirmasi). Tampilannya dirancang ulang dengan gaya landing. Dari atas ke bawah:

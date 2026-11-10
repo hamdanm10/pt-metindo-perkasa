@@ -39,9 +39,20 @@ return [
         ],
     ],
     'processes' => [
-        'label' => '工艺目录',
         'title' => '所有工艺类别',
         'intro' => '我们所涉及的全部电镀工艺类别。',
+        'view' => '查看工艺',
+        'count' => '工艺类别',
+        'organised' => [
+            'title' => '目录的组织方式',
+            'intro' => '共四个层级，从类别到每个步骤所用的化学品。',
+            'steps' => [
+                'category' => ['title' => '类别', 'text' => '浏览碱性或酸性等工艺类别。'],
+                'process' => ['title' => '工艺', 'text' => '打开类别查看具体工艺。'],
+                'diagram' => ['title' => '流程图', 'text' => '按步骤查看工艺流程。'],
+                'materials' => ['title' => '材料', 'text' => '查看每个步骤所用的化学品。'],
+            ],
+        ],
         'list' => '工艺',
         'others' => '其他类别',
         'categories' => [

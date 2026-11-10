@@ -7,6 +7,7 @@ import { cta } from './motion/cta.js';
 import { gallery } from './motion/gallery.js';
 import { smartHeader } from './motion/header.js';
 import { hero } from './motion/hero.js';
+import { processes } from './motion/processes.js';
 import { scrollReveals } from './motion/reveals.js';
 import { services } from './motion/services.js';
 import { root } from './motion/shared.js';
@@ -27,6 +28,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         about();
         cta();
         subsidiaries();
+        processes();
         gsap.matchMedia().add('(min-width: 1024px)', catalog);
         gsap.matchMedia().add('(min-width: 1024px)', services);
 

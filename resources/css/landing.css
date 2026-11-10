@@ -668,3 +668,32 @@ html.menu-open {
         opacity: 0.4;
     }
 }
+
+/* Process cards: a soft light under the pointer (set by spotlight.js). */
+.process-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), rgba(214, 40, 58, 0.14), transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.process-card:hover::after {
+    opacity: 1;
+}
+
+.process-card > * {
+    position: relative;
+}
+
+.process-card > span:first-child {
+    position: absolute;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .process-card::after {
+        transition: none;
+    }
+}
