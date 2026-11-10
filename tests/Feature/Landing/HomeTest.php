@@ -189,6 +189,7 @@ class HomeTest extends TestCase
             ->assertSee('data-anim="hero-title"', false)
             ->assertSee('data-anim="hero-item"', false)
             ->assertSee('data-hero-panel', false)
+            ->assertSee('min-h-svh', false)
             ->assertSee('data-anim="grow"', false)
             ->assertSee("classList.add('anim-hide')", false)
             ->assertSee('__introReady', false);
