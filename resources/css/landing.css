@@ -498,7 +498,7 @@ span.btn,
 
 /* Footer: the name across the page in a soft tone of the page colour, and a hexagon badge that returns to the top. */
 .footer-wordmark {
-    color: color-mix(in srgb, var(--color-lavender) 30%, var(--color-ink));
+    color: color-mix(in srgb, var(--color-accent-indigo) 38%, color-mix(in srgb, var(--color-lavender) 22%, var(--color-ink)));
 }
 
 .footer-top {

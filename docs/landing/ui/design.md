@@ -52,10 +52,11 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 
 Disamakan dengan footer referensi, **tanpa marquee logo mitra** dan **tanpa formulir newsletter** (belum ada layanan untuk menerimanya). Latar `ink`. Dari atas ke bawah:
 
-- **Nama di seluruh lebar:** "METINDO PERKASA" (berat 800, huruf kapital) direntangkan penuh selebar kontainer dengan `textLength` pada SVG, berwarna lembut (campuran lavender 30 persen dan `ink`), padding atas-bawah 6,67vw. Selalu Latin (`lang="en" dir="ltr"`).
+- **Nama di seluruh lebar:** "METINDO PERKASA" (berat 800, huruf kapital) direntangkan penuh selebar kontainer dengan `textLength` pada SVG, berwarna lembut keunguan (campuran indigo 38 persen, lavender 22 persen, dan `ink`), padding atas-bawah 6,67vw. Selalu Latin (`lang="en" dir="ltr"`).
 - **Garis penuh dengan lencana segi enam** di tengahnya (72x80 px di 1440 px, krimson, monogram putih). Lencana adalah tombol **kembali ke atas** (`data-to-top`, `aria-label` dari `landing.footer.top`) yang menggulir halus lewat Lenis (1,6 detik) atau langsung melompat bila gerak dimatikan; hover memperbesarnya 1,08.
-- **Baris teks:** teks perusahaan (`landing.footer.description`, 1,22vw, lebar maksimum 38,9vw) dan tombol "Let's talk" ke Contact di kolom kiri (53,57 persen). Kolom kanan, tempat newsletter di referensi, dikosongkan.
-- **Tiga kolom** (360:360:624 di 1440 px, judul kecil 0,78vw berat 800 berwarna `brand-300`, isi 0,833vw dengan garis bawah `.uline` saat hover): **Menu** (semua menu termasuk Home), kolom kosong (tempat "Let's social" di referensi; belum ada akun media sosial), dan **Contact** dengan email, telepon, alamat, jam buka, dan kantor (kantor hanya di mode contoh karena data anak perusahaan masih contoh). Bagian yang datanya kosong tidak tampil.
+- **Baris teks:** teks perusahaan (`landing.footer.description`, 1,22vw, lebar maksimum 38,9vw) dan tombol "Let's talk" ke Contact di kiri. Di kanan, tempat newsletter di referensi, ada **email dan telepon berukuran besar** (1,75vw, tebal, garis bawah `.uline` saat hover) sejajar dengan kolom ketiga di bawahnya. Baris ini memakai kisi yang sama dengan baris kolom (25:25:43,33).
+- **Garis tipis** memisahkan baris teks dari kolom, dan kolom dari baris hak cipta.
+- **Tiga kolom** (judul kecil 0,78vw berat 800 berwarna `brand-300`, isi 0,833vw dengan garis bawah `.uline` saat hover): **Menu** (semua menu termasuk Home), **Contact** (alamat dan jam buka), dan **Offices** (kantor dalam dua kolom, hanya di mode contoh karena data anak perusahaan masih contoh). Kolom yang datanya kosong tidak tampil; kolom "Let's social" milik referensi tidak ada karena belum ada akun media sosial.
 - **Baris paling bawah:** hak cipta dan tagline. Tautan Privacy, Cookie, dan Terms milik referensi tidak ada karena halamannya belum ada.
 
 
