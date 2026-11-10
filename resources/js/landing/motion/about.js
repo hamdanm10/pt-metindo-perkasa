@@ -39,6 +39,9 @@ const hoverArt = () => {
 
         art.addEventListener('mouseenter', () => to(true));
         art.addEventListener('mouseleave', () => to(false));
+        // Other sections (the call-to-action card) can open and close a graphic by themselves.
+        art.addEventListener('art:open', () => to(true));
+        art.addEventListener('art:close', () => to(false));
     });
 };
 
