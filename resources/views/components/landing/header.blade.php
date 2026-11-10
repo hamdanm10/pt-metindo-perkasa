@@ -13,7 +13,7 @@
     <div data-header-inner class="header-bar container-site flex items-center justify-between gap-4">
         <a href="{{ route('landing.home') }}" class="header-chip header-chip--logo pointer-events-auto inline-flex shrink-0 items-center">
             <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="header-mark w-auto">
-            <span class="header-brand">Metindo Perkasa</span>
+            <span class="header-brand"><span class="header-brand__first">Metindo</span> <span class="header-brand__second">Perkasa</span></span>
         </a>
 
         <div class="pointer-events-auto hidden items-center gap-3 lg:flex">
