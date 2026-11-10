@@ -34,7 +34,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | Services | `/{locale}/services` | Tiga layanan masing-masing dengan **ilustrasi** (sama dengan daftar layanan di beranda) dan tombol ke Contact, tautan loncat di pembuka, dan "How we work" empat langkah berurutan (Enquiry, Spec review, Process and supply, Delivery). Tanpa label "What we do"; lihat [`../ui/design.md`](../ui/design.md), bagian Services |
 | Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu: satu artikel terbaru besar, kartu untuk sisanya, dan filter jenis dengan jumlah. 404 bila bahasa itu belum punya artikel terbit (kecuali mode contoh, yang menampilkan lima artikel contoh) |
 | Artikel | `/{locale}/articles/{slug}` | **Halaman baca ala Medium** (kolom 680 px): judul, jenis, tanggal, waktu baca, gambar, isi, tombol bagikan, dan artikel terkait |
-| Contact | `/{locale}/contact` | Data kontak yang dikonfigurasi dan tombol WhatsApp bila ada |
+| Contact | `/{locale}/contact` | Kartu data kontak yang dikonfigurasi (telepon, email, alamat, jam) dengan tombol salin, tombol WhatsApp dan telepon, **formulir pesan yang membuka WhatsApp atau email dengan pesan sudah tertulis** (situs tidak menyimpan apa pun), dan peta lokasi di mode contoh. Lihat [`../ui/design.md`](../ui/design.md), bagian Contact |
 
 Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bila perlu) dan diakhiri ajakan menghubungi yang sama seperti beranda. Tautan kategori, layanan, dan artikel di beranda diaktifkan di fase ini.
 
@@ -86,3 +86,4 @@ Pemeriksaan manual di browser: semua halaman di ponsel dan desktop, Arab dalam R
 - Penjelasan empat tingkat di halaman Processes menyebut Diagram dan Materials seperti di prototipe, tetapi halaman kategori belum punya diagram alur maupun daftar bahan; keduanya ditunda sampai isinya ada.
 - Chat berbasis aturan dijawab dengan mengetuk bubble pilihan (tanpa kolom ketik) dan hanya menjawab dari isi situs; belum ada AI. Mode AI di prototipe ("Rule-based / AI") belum dikerjakan.
 - Nomor customer service untuk tombol WhatsApp harus diisi di `LANDING_WHATSAPP_AGENTS` sebelum rilis; tanpa itu tombolnya tidak tampil.
+- Formulir Contact belum menyimpan pesan di server: ia hanya menyusun pesan untuk WhatsApp atau email. Bila nanti perlu riwayat pesan, notifikasi, atau perlindungan spam, itu fitur terpisah (tabel pesan, halaman admin, batas laju, dan jebakan spam).

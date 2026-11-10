@@ -25,6 +25,7 @@ class PagesTest extends TestCase
             'landing.contact.address' => 'Test address',
             'landing.contact.hours' => 'Mon-Fri',
             'landing.contact.whatsapp' => '6281200000000',
+            'landing.contact.whatsapp_agents' => null,
         ]);
     }
 
