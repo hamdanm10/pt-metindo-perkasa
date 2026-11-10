@@ -146,7 +146,7 @@ class LoginTest extends TestCase
                 ->assertSee(__('auth.caps_lock'))
                 ->assertSee(__('auth.intro'))
                 ->assertSee(__('auth.panel_title'))
-                ->assertSee(__('auth.back_to_site'));
+                ->assertSee('aria-label="'.__('auth.back_to_site').'"', false);
         }
 
         $this->withSession(['locale' => 'id'])->get('/app/login')
