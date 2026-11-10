@@ -21,6 +21,7 @@ Gerak landing mengikuti situs referensi `newengen.com` (putaran kedua redesign, 
 | `data-anim="hero-title"` | Judul hero dan kepala halaman | Huruf tumbuh dari garis dasar (`scaleY` 0 ke 1, asal bawah) berurutan 0,035 detik, lalu `SplitText` dikembalikan | Judul "CREATIVE IS OUR EDGE." |
 | `data-anim="hero-item"` | Paragraf, tombol, dan panel hero | Naik dan muncul berurutan setelah judul | Teks `js-t-fade-up` |
 | `data-hero-panel` | Panel monogram hero | Mengecil ke 86 persen saat hero digulir keluar (`scrub`) | Kartu hero yang menyusut (`js-flip`) |
+| `data-cta-card`, `data-cta-art` | Kartu ajakan (di semua halaman) | Kartu **naik 70 px dan membesar dari 95 persen** saat terlihat (1,1 detik, `expo.out`); cahaya putih di sudut **melayang pelan** bolak-balik (7 detik); **tiga grafik membuka dan menutup bergantian** tiap 1,6 detik (gerakan sama dengan hover grafik About, lewat peristiwa `art:open` dan `art:close`), hanya saat kartu terlihat; dengan pointer, tumpukan grafik **bergeser mengikuti kursor** (hingga 22 x 16 px, berlawanan arah). Huruf judul tumbuh seperti judul lain | Tidak ada di referensi (kartu rancangan sendiri) |
 | `data-anim="grow"` | Judul besar (Services, Clients, ajakan) | Huruf meninggi dari 0 ke penuh mengikuti gulir (`scrub`) | Judul "CLIENTS SHINE" |
 | `data-anim="heading"`, `card` | Judul biasa dan blok | Naik dan muncul saat terlihat | `js-t-fade-up` |
 | `data-anim="rows"`, `steps` | Kartu katalog, klien, artikel, langkah | Muncul berurutan (batch) | Kartu karya |
@@ -48,7 +49,7 @@ Header, footer, menu, dan teks isi lain tidak dianimasikan GSAP. Peristiwa `intr
 ## Struktur kode
 
 - `resources/js/landing/motion.js`: perakit. Mendaftarkan gulir halus, lalu menjalankan modul-modul di `resources/js/landing/motion/` setelah font siap. Seluruh gerak GSAP dibungkus `gsap.matchMedia()`.
-- `resources/js/landing/motion/`: satu berkas per bagian, yaitu `shared.js` (plugin, pembantu, `growLetters`), `smooth-scroll.js` (Lenis), `hero.js`, `reveals.js`, `header.js` (header pintar), `catalog.js`, `deck.js` (tumpukan kartu bersama), `about.js`, `video.js`, `services.js`, `clients.js`, dan `gallery.js`.
+- `resources/js/landing/motion/`: satu berkas per bagian, yaitu `shared.js` (plugin, pembantu, `growLetters`), `smooth-scroll.js` (Lenis), `hero.js`, `reveals.js`, `header.js` (header pintar), `catalog.js`, `deck.js` (tumpukan kartu bersama), `about.js`, `cta.js`, `video.js`, `services.js`, `clients.js`, dan `gallery.js`.
 - `resources/js/landing/buttons.js`, `intro.js`, `header-state.js` (penanda `data-stuck`), `menus.js` (dropdown), dan `video-player.js` (pemutar video).
 - `resources/js/landing.js`: hanya mengimpor berkas-berkas di atas.
 - `resources/css/landing.css`: `anim-hide`, penyembunyian intro, panah, ikon plus, dan aturan Lenis (`html.lenis`, `.lenis-smooth`).
