@@ -12,7 +12,7 @@
     $label = 'text-[clamp(0.75rem,0.833vw,1.05rem)] text-white/55';
 @endphp
 
-{{-- Footer, as on the reference: a name across the full width, a line with a back-to-top badge on it, the company text with a button and the email and phone large, then the menu, the address and the offices in columns. The reference also has a newsletter form and a logo marquee; neither is here. --}}
+{{-- Footer, as on the reference: a name across the full width, a line, the logo above the company text with a button and the email and phone large, then the menu, the address and the offices in columns. The reference also has a newsletter form and a logo marquee; neither is here. --}}
 <footer class="bg-ink text-white" style="--focus-ring: #ffffff">
     <div class="container-site">
         <div class="py-[clamp(2.5rem,6.67vw,8rem)]" lang="en" dir="ltr">
@@ -22,21 +22,15 @@
         </div>
     </div>
 
-    <div class="relative flex items-center">
-        <hr class="w-full border-0 border-t border-white/20">
-        <button type="button" data-to-top aria-label="{{ __('landing.footer.top') }}" class="footer-top group absolute start-1/2 top-1/2 flex h-[clamp(3.5rem,5.55vw,7rem)] w-[clamp(3.1rem,5vw,6.3rem)] -translate-y-1/2 items-center justify-center text-brand-600 hover:text-brand-500 ltr:-translate-x-1/2 rtl:translate-x-1/2">
-            {{-- A hexagon with round corners (the stroke rounds the joins), then the monogram on top. --}}
-            <svg class="absolute inset-0 size-full" viewBox="0 0 72 80" aria-hidden="true" focusable="false">
-                <polygon points="36,7 65,23.5 65,56.5 36,73 7,56.5 7,23.5" fill="currentColor" stroke="currentColor" stroke-width="12" stroke-linejoin="round"/>
-            </svg>
-            <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="relative w-[64%] transition-transform duration-500 group-hover:-translate-y-0.5">
-        </button>
-    </div>
+    <hr class="border-0 border-t border-white/20">
 
     <div class="container-site">
         {{-- Text and button on the left; on the right the two contact lines that matter most, large, where the reference has its newsletter. --}}
         <div class="mt-[clamp(3rem,6.67vw,8rem)] grid gap-x-[2.5vw] gap-y-10 lg:grid-cols-[25fr_25fr_43.33fr]">
             <div class="lg:col-span-2">
+                <a href="{{ route('landing.home') }}" class="mb-[1.6vw] inline-flex max-lg:mb-5" aria-label="PT Metindo Perkasa">
+                    <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-[clamp(2.25rem,3.3vw,4rem)] w-auto">
+                </a>
                 <p class="max-w-[38.9vw] text-[clamp(1rem,1.22vw,1.5rem)] leading-[1.42] max-lg:max-w-xl">{{ __('landing.footer.description') }}</p>
                 <x-landing.button :href="route('landing.contact')" class="mt-[1.7vw] max-lg:mt-6">{{ __('landing.talk') }}</x-landing.button>
             </div>
@@ -89,9 +83,14 @@
             @endif
         </div>
 
-        <div class="mt-[clamp(2.5rem,4.5vw,5.5rem)] flex flex-col gap-2 border-t border-white/15 py-[clamp(1.25rem,1.9vw,2.5rem)] {{ $label }} sm:flex-row sm:justify-between">
+        <div class="mt-[clamp(2.5rem,4.5vw,5.5rem)] flex flex-col gap-2 border-t border-white/15 py-[clamp(1.25rem,1.9vw,2.5rem)] {{ $label }} sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {{ now()->year }} PT Metindo Perkasa. {{ __('landing.footer.rights') }}</p>
-            <p>{{ __('landing.footer.tagline') }}</p>
+            <div class="flex items-center gap-[1.4vw] max-sm:justify-between">
+                <p>{{ __('landing.footer.tagline') }}</p>
+                <button type="button" data-to-top aria-label="{{ __('landing.footer.top') }}" class="flex size-[clamp(2.5rem,3.06vw,3.5rem)] shrink-0 items-center justify-center rounded-lg border border-white/30 text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-ink">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="size-5" aria-hidden="true"><path d="M10 16.5V3.5M4.5 9 10 3.5 15.5 9"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 </footer>

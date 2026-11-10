@@ -496,22 +496,7 @@ span.btn,
     cursor: default;
 }
 
-/* Footer: the name across the page in a soft tone of the page colour, and a hexagon badge that returns to the top. */
+/* Footer: the name across the page in a soft tone of the page colour. */
 .footer-wordmark {
     color: color-mix(in srgb, var(--color-accent-indigo) 38%, color-mix(in srgb, var(--color-lavender) 22%, var(--color-ink)));
-}
-
-.footer-top {
-    transition: scale 0.75s var(--header-ease), color 0.35s ease;
-}
-
-.footer-top:hover {
-    scale: 1.08;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .footer-top,
-    .footer-top img {
-        transition: none;
-    }
 }
