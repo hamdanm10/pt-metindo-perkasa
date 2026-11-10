@@ -31,13 +31,13 @@
             </nav>
 
             <details class="relative" data-dismissible>
-                <summary class="header-link inline-flex cursor-pointer list-none items-center gap-2 font-bold text-white [&::-webkit-details-marker]:hidden"
+                <summary class="header-link lang-summary inline-flex cursor-pointer list-none items-center gap-2 font-bold text-white [&::-webkit-details-marker]:hidden"
                          aria-label="{{ __('landing.language') }}">
                     <span class="uline" lang="{{ $currentLocale['html_lang'] }}" title="{{ $currentLocale['name'] }}">{{ strtoupper(app()->getLocale()) }}</span>
                     <svg viewBox="0 0 20 20" class="size-4" fill="currentColor" aria-hidden="true"><path d="M5.25 7.5 10 12.25 14.75 7.5l1.06 1.06L10 14.37 4.19 8.56 5.25 7.5Z"/></svg>
                 </summary>
-                <div class="absolute end-0 top-full z-20 mt-3 w-56 rounded-lg bg-white p-2 text-ink shadow-xl ring-1 ring-ink/10" style="--focus-ring: #1f4fb5">
-                    <x-landing.language-links stacked :alternates="$alternates" />
+                <div class="lang-panel absolute end-0 top-full z-20 mt-4 w-[clamp(13rem,15vw,17rem)] rounded-lg bg-ink p-2 text-white shadow-[0_24px_60px_-12px_rgba(0,0,0,0.55)] ring-1 ring-white/15" style="--focus-ring: #ffffff">
+                    <x-landing.language-links dropdown :alternates="$alternates" />
                 </div>
             </details>
             </div>
