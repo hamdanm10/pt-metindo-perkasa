@@ -17,11 +17,7 @@
         </div>
 
         <div class="flex flex-col bg-lavender px-6 py-6 sm:px-12 lg:px-16">
-            <div class="flex items-center justify-between">
-                <a href="{{ route('landing.home', ['locale' => 'en']) }}" class="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink hover:text-brand-700">
-                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 rtl:rotate-180" aria-hidden="true"><path d="M16 10H4m0 0 5-5m-5 5 5 5"/></svg>
-                    {{ __('auth.back_to_site') }}
-                </a>
+            <div class="flex items-center justify-end">
                 <x-dashboard.locale-switcher :action="$localeAction" />
             </div>
 
