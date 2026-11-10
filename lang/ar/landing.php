@@ -20,6 +20,9 @@ return [
         'tagline' => 'Electroplating · Metal Finishing',
         'contact' => 'اتصل بنا',
         'rights' => 'جميع الحقوق محفوظة.',
+        'menu' => 'القائمة',
+        'top' => 'العودة إلى الأعلى',
+        'offices' => 'المكاتب',
     ],
     'cta' => [
         'title' => 'هل لديك مواصفات طلاء محددة؟',

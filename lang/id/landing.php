@@ -20,6 +20,9 @@ return [
         'tagline' => 'Electroplating · Metal Finishing',
         'contact' => 'Kontak',
         'rights' => 'Seluruh hak cipta dilindungi.',
+        'menu' => 'Menu',
+        'top' => 'Kembali ke atas',
+        'offices' => 'Kantor',
     ],
     'cta' => [
         'title' => 'Punya spesifikasi pelapisan tertentu?',

@@ -20,6 +20,9 @@ return [
         'tagline' => 'Electroplating · Metal Finishing',
         'contact' => 'お問い合わせ',
         'rights' => '無断転載を禁じます。',
+        'menu' => 'メニュー',
+        'top' => 'ページの先頭へ',
+        'offices' => '拠点',
     ],
     'cta' => [
         'title' => 'めっき仕様はお決まりですか？',

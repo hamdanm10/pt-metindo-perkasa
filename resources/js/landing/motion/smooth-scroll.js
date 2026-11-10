@@ -27,5 +27,11 @@ export const smoothScroll = () => {
         }
     });
 
+    // The back-to-top badge in the footer asks for this scroll, so it eases like the rest of the page.
+    document.addEventListener('landing:to-top', (event) => {
+        event.preventDefault();
+        lenis.scrollTo(0, { duration: 1.6 });
+    });
+
     return lenis;
 };

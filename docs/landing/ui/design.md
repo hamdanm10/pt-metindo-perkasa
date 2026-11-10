@@ -48,6 +48,18 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Pemilih bahasa: tombol menampilkan **kode singkat** bahasa yang dipilih (EN, ID, ZH, AR, JA; nama lengkapnya ada di `title`), sedangkan daftar turun putih dan panel ponsel memakai **nama lengkap** (English, Bahasa Indonesia, dan seterusnya), seperti footer. Di bawah `lg`, tombol "Menu" krimson membuka panel putih berisi menu dan bahasa.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
+## Footer
+
+Disamakan dengan footer referensi, **tanpa marquee logo mitra** dan **tanpa formulir newsletter** (belum ada layanan untuk menerimanya). Latar `ink`. Dari atas ke bawah:
+
+- **Tidak ada lagi nama besar selebar halaman** (dihapus atas permintaan). Nama perusahaan kini berada **di samping monogram** (lihat Baris teks).
+- Footer langsung dimulai dengan baris teks (padding atas 6,67vw).
+- **Baris teks:** **logo** (tinggi 3,3vw, tautan ke beranda) di atas teks perusahaan, berupa monogram dengan tulisan nama dua baris di sampingnya, dipisah garis tipis: "METINDO" (berat 800) di atas "PERKASA" (berat 400), huruf kapital 1,25vw berjarak 0,3em, sama dengan di navbar, (`landing.footer.description`, 1,22vw, lebar maksimum 38,9vw) dan tombol "Let's talk" ke Contact di kiri. Di kanan, tempat newsletter di referensi, ada **email dan telepon berukuran besar** (1,75vw, tebal, garis bawah `.uline` saat hover) sejajar dengan kolom ketiga di bawahnya. Baris ini memakai kisi yang sama dengan baris kolom (25:25:43,33).
+- **Garis tipis** memisahkan baris teks dari kolom, dan kolom dari baris hak cipta.
+- **Tiga kolom** (judul kecil 0,78vw berat 800 berwarna `brand-300`, isi 0,833vw dengan garis bawah `.uline` saat hover): **Menu** (semua menu termasuk Home), **Contact** (alamat dan jam buka), dan **Offices** (kantor dalam dua kolom, hanya di mode contoh karena data anak perusahaan masih contoh). Kolom yang datanya kosong tidak tampil; kolom "Let's social" milik referensi tidak ada karena belum ada akun media sosial.
+- **Baris paling bawah:** hak cipta di kiri; di kanan tagline dan **tombol kembali ke atas** (kotak 3,06vw bergaris tipis dengan panah ke atas, `data-to-top`, `aria-label` dari `landing.footer.top`) yang menggulir halus lewat Lenis (1,6 detik) atau langsung melompat bila gerak dimatikan. Tautan Privacy, Cookie, dan Terms milik referensi tidak ada karena halamannya belum ada.
+
+
 ## Bagian beranda
 
 | Bagian | Latar | Isi |

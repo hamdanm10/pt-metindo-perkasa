@@ -1,43 +1,87 @@
 @php
-    $menu = app(\App\Services\Landing\LandingContent::class)->menu();
-    $email = config('landing.contact.email');
-    $phone = config('landing.contact.phone');
+    $content = app(\App\Services\Landing\LandingContent::class);
+    $menu = $content->menu();
+    $offices = $content->subsidiaries();
+    $contact = config('landing.contact');
+    $email = $contact['email'] ?? null;
+    $phone = $contact['phone'] ?? null;
+    $address = $contact['address'] ?? null;
+    $hours = $contact['hours'] ?? null;
+    $heading = 'text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-300';
+    $link = 'text-[clamp(0.75rem,0.833vw,1.05rem)] leading-[1.35]';
+    $label = 'text-[clamp(0.75rem,0.833vw,1.05rem)] text-white/55';
 @endphp
 
+{{-- Footer: the logo with the company name beside it above the company text with a button and the email and phone large, then the menu, the address and the offices in columns. The reference also has a newsletter form and a logo marquee; neither is here. --}}
 <footer class="bg-ink text-white" style="--focus-ring: #ffffff">
-    <div class="container-site grid gap-10 py-16 lg:grid-cols-12">
-        <div class="lg:col-span-5">
-            <img src="{{ asset('images/brand/logo-white.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-14 w-auto">
-            <p class="mt-6 max-w-md text-white/80">{{ __('landing.footer.description') }}</p>
-        </div>
+    <div class="container-site">
+        {{-- Text and button on the left; on the right the two contact lines that matter most, large, where the reference has its newsletter. --}}
+        <div class="grid gap-x-[2.5vw] gap-y-10 pt-[clamp(3rem,6.67vw,8rem)] lg:grid-cols-[25fr_25fr_43.33fr]">
+            <div class="lg:col-span-2">
+                <a href="{{ route('landing.home') }}" class="footer-brand mb-[1.6vw] inline-flex items-center max-lg:mb-5">
+                    <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-[clamp(2.25rem,3.3vw,4rem)] w-auto">
+                    <span class="footer-brand__name"><span class="footer-brand__first">Metindo</span> <span class="footer-brand__second">Perkasa</span></span>
+                </a>
+                <p class="max-w-[38.9vw] text-[clamp(1rem,1.22vw,1.5rem)] leading-[1.42] max-lg:max-w-xl">{{ __('landing.footer.description') }}</p>
+                <x-landing.button :href="route('landing.contact')" class="mt-[1.7vw] max-lg:mt-6">{{ __('landing.talk') }}</x-landing.button>
+            </div>
 
-        <nav class="lg:col-span-3" aria-label="{{ __('landing.menu') }}">
-            <ul class="space-y-1">
-                @foreach ($menu as $item)
-                    <li><a href="{{ route($item['route']) }}" class="inline-flex min-h-11 items-center text-lg font-semibold underline-offset-4 hover:underline">{{ __($item['label']) }}</a></li>
-                @endforeach
-            </ul>
-        </nav>
-
-        @if ($email || $phone)
-            <div class="lg:col-span-4">
-                <h2 class="text-lg font-bold">{{ __('landing.footer.contact') }}</h2>
-                <ul class="mt-4 space-y-1">
+            @if ($email || $phone)
+                <ul class="space-y-[0.8vw] max-lg:space-y-3 lg:self-end">
                     @if ($email)
-                        <li><a href="mailto:{{ $email }}" class="inline-flex min-h-11 items-center underline underline-offset-4" dir="ltr">{{ $email }}</a></li>
+                        <li><a href="mailto:{{ $email }}" class="inline-flex text-[clamp(1.1rem,1.75vw,2.2rem)] font-bold leading-tight" dir="ltr"><span class="uline">{{ $email }}</span></a></li>
                     @endif
                     @if ($phone)
-                        <li><a href="tel:{{ preg_replace('/[^+\d]/', '', $phone) }}" class="inline-flex min-h-11 items-center underline underline-offset-4" dir="ltr">{{ $phone }}</a></li>
+                        <li><a href="tel:{{ preg_replace('/[^+\d]/', '', $phone) }}" class="inline-flex text-[clamp(1.1rem,1.75vw,2.2rem)] font-bold leading-tight" dir="ltr"><span class="uline">{{ $phone }}</span></a></li>
                     @endif
                 </ul>
-            </div>
-        @endif
-    </div>
+            @endif
+        </div>
 
-    <div class="border-t border-white/20">
-        <div class="container-site flex flex-col gap-2 py-6 text-sm text-white/80 sm:flex-row sm:justify-between">
+        <div class="mt-[clamp(2.5rem,4.45vw,5.5rem)] grid gap-x-[2.5vw] gap-y-10 border-t border-white/15 pt-[clamp(2rem,3vw,3.75rem)] sm:grid-cols-2 lg:grid-cols-[25fr_25fr_43.33fr]">
+            <nav aria-label="{{ __('landing.menu') }}">
+                <h2 class="{{ $heading }}">{{ __('landing.footer.menu') }}</h2>
+                <ul class="mt-[0.9vw] space-y-[0.35vw] max-lg:mt-3 max-lg:space-y-2">
+                    @foreach ($menu as $item)
+                        <li><a href="{{ route($item['route']) }}" class="{{ $link }} inline-flex"><span class="uline">{{ __($item['label']) }}</span></a></li>
+                    @endforeach
+                </ul>
+            </nav>
+
+            @if ($address || $hours)
+                <div>
+                    <h2 class="{{ $heading }}">{{ __('landing.footer.contact') }}</h2>
+                    <dl class="mt-[0.9vw] space-y-[1.2vw] max-lg:mt-3 max-lg:space-y-4">
+                        @if ($address)
+                            <div><dt class="{{ $label }}">{{ __('pages.contact.address') }}</dt><dd class="{{ $link }}">{{ $address }}</dd></div>
+                        @endif
+                        @if ($hours)
+                            <div><dt class="{{ $label }}">{{ __('pages.contact.hours') }}</dt><dd class="{{ $link }}">{{ $hours }}</dd></div>
+                        @endif
+                    </dl>
+                </div>
+            @endif
+
+            @if ($offices)
+                <div class="sm:col-span-2 lg:col-span-1 lg:col-start-3">
+                    <h2 class="{{ $heading }}">{{ __('landing.footer.offices') }}</h2>
+                    <dl class="mt-[0.9vw] grid gap-x-[1.5vw] gap-y-[1.2vw] max-lg:mt-3 max-lg:gap-y-4 sm:grid-cols-2" lang="en" dir="ltr">
+                        @foreach ($offices as $office)
+                            <div><dt class="{{ $label }}">{{ ucfirst($office['key']) }}</dt><dd class="{{ $link }}">{{ $office['name'] }}</dd></div>
+                        @endforeach
+                    </dl>
+                </div>
+            @endif
+        </div>
+
+        <div class="mt-[clamp(2.5rem,4.5vw,5.5rem)] flex flex-col gap-2 border-t border-white/15 py-[clamp(1.25rem,1.9vw,2.5rem)] {{ $label }} sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {{ now()->year }} PT Metindo Perkasa. {{ __('landing.footer.rights') }}</p>
-            <p>{{ __('landing.footer.tagline') }}</p>
+            <div class="flex items-center gap-[1.4vw] max-sm:justify-between">
+                <p>{{ __('landing.footer.tagline') }}</p>
+                <button type="button" data-to-top aria-label="{{ __('landing.footer.top') }}" class="flex size-[clamp(2.5rem,3.06vw,3.5rem)] shrink-0 items-center justify-center rounded-lg border border-white/30 text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-ink">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="size-5" aria-hidden="true"><path d="M10 16.5V3.5M4.5 9 10 3.5 15.5 9"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 </footer>

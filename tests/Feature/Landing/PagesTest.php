@@ -74,6 +74,37 @@ class PagesTest extends TestCase
         $this->assertMatchesRegularExpression('/>\s*English\s*</', $header);
     }
 
+    public function test_footer_has_the_logo_with_the_name_back_to_top_button_menu_and_no_marquee(): void
+    {
+        $html = (string) $this->get('/en/about')->getContent();
+        $start = (int) strpos($html, '<footer');
+        $footer = substr($html, $start, (int) strpos($html, '</footer>', $start) - $start);
+
+        $this->assertStringContainsString('footer-brand__first', $footer);
+        $this->assertStringContainsString('Metindo', $footer);
+        $this->assertStringNotContainsString('footer-wordmark', $footer);
+        $this->assertStringContainsString('data-to-top', $footer);
+        $this->assertStringContainsString('aria-label="'.__('landing.footer.top', [], 'en').'"', $footer);
+        $this->assertStringContainsString(__('landing.footer.description', [], 'en'), $footer);
+        $this->assertStringContainsString(__('landing.footer.menu', [], 'en'), $footer);
+        $this->assertStringContainsString('href="'.route('landing.home', ['locale' => 'en']).'"', $footer);
+        $this->assertStringNotContainsString('marquee', strtolower($footer));
+    }
+
+    public function test_footer_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $response = $this->get("/{$code}/about")->assertOk();
+
+            foreach (['menu', 'top', 'contact', 'description'] as $key) {
+                $text = __("landing.footer.{$key}", [], $code);
+
+                $this->assertNotSame("landing.footer.{$key}", $text);
+                $response->assertSee($text, false);
+            }
+        }
+    }
+
     public function test_page_titles_use_the_active_language(): void
     {
         $this->get('/id/about')->assertSee('<title>'.__('landing.nav.about', [], 'id').' | PT Metindo Perkasa</title>', false);
