@@ -139,6 +139,18 @@ class HomeTest extends TestCase
             ->assertSee('href="tel:+6281200000000"', false);
     }
 
+    public function test_hero_contact_button_opens_the_contact_page_even_without_an_email(): void
+    {
+        config(['landing.contact.email' => null]);
+
+        $html = (string) $this->get('/en')->assertOk()->getContent();
+        $start = (int) strpos($html, '<section data-hero');
+        $hero = substr($html, $start, (int) strpos($html, '</section>', $start) - $start);
+
+        $this->assertStringContainsString('href="'.route('landing.contact', ['locale' => 'en']).'"', $hero);
+        $this->assertStringNotContainsString('mailto:', $hero);
+    }
+
     public function test_cta_is_a_card_with_buttons_contact_line_and_three_graphics(): void
     {
         $response = $this->get('/en')->assertOk();
