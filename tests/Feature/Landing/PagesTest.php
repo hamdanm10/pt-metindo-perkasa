@@ -47,8 +47,8 @@ class PagesTest extends TestCase
     {
         $this->get('/en/about')->assertSee('data-anim="hero-title"', false)->assertSee('data-anim="heading"', false);
         $this->get('/en/services')
-            ->assertSee('data-anim="steps"', false)
-            ->assertSee('data-step-number', false);
+            ->assertSee('data-svc-steps', false)
+            ->assertSee('data-svc-art', false);
     }
 
     public function test_header_is_sticky_and_has_a_sentinel_to_detect_scrolling(): void
@@ -288,6 +288,44 @@ class PagesTest extends TestCase
             $count = count(config('landing.categories.0.processes'));
             $response->assertSeeText(__('pages.processes.view_all', ['count' => $count], $code), false)
                 ->assertSee(__('pages.processes.position', ['number' => '01', 'total' => count(config('landing.categories'))], $code), false);
+        }
+    }
+
+    public function test_services_page_has_a_block_with_an_illustration_per_service_and_a_jump_link(): void
+    {
+        $html = (string) $this->get('/en/services')->getContent();
+
+        foreach (['electroplating', 'chemical-supply', 'consultation'] as $slug) {
+            $this->assertStringContainsString('id="service-'.$slug.'"', $html);
+            $this->assertStringContainsString('href="#service-'.$slug.'"', $html);
+            // The same illustrations as the services list on the home page.
+            $this->assertStringContainsString('images/landing/photos/service-'.$slug.'.webp', $html);
+        }
+
+        $this->assertSame(3, substr_count($html, 'data-svc-art '));
+        $this->assertSame(4, substr_count($html, 'data-svc-step '));
+        $this->assertStringNotContainsString('What we do', $html);
+
+        foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
+            $this->assertStringContainsString(__("home.services.items.{$service}.title", [], 'en'), $html);
+            $this->assertStringContainsString(__("home.services.items.{$service}.text", [], 'en'), $html);
+        }
+
+        $this->assertStringContainsString('href="'.route('landing.contact', ['locale' => 'en']).'"', $html);
+        $this->assertSame(2, substr_count($html, __('pages.services.see_processes', [], 'en')));
+    }
+
+    public function test_services_page_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $response = $this->get("/{$code}/services")->assertOk();
+
+            foreach (['title', 'intro', 'jump', 'see_processes', 'how.title', 'how.intro', 'how.steps.delivery.text'] as $key) {
+                $text = __("pages.services.{$key}", [], $code);
+
+                $this->assertNotSame("pages.services.{$key}", $text);
+                $response->assertSee($text, false);
+            }
         }
     }
 

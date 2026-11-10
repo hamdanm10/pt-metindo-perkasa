@@ -9,6 +9,7 @@ import { smartHeader } from './motion/header.js';
 import { hero } from './motion/hero.js';
 import { processes } from './motion/processes.js';
 import { scrollReveals } from './motion/reveals.js';
+import { servicesPage } from './motion/services-page.js';
 import { services } from './motion/services.js';
 import { root } from './motion/shared.js';
 import { smoothScroll } from './motion/smooth-scroll.js';
@@ -29,6 +30,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         cta();
         subsidiaries();
         processes();
+        servicesPage();
         gsap.matchMedia().add('(min-width: 1024px)', catalog);
         gsap.matchMedia().add('(min-width: 1024px)', services);
 

@@ -49,6 +49,15 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Pemilih bahasa: tombol menampilkan **kode singkat** bahasa yang dipilih (EN, ID, ZH, AR, JA; nama lengkapnya ada di `title`), sedangkan daftar turun putih dan panel ponsel memakai **nama lengkap** (English, Bahasa Indonesia, dan seterusnya), seperti footer. **Di bawah `lg` menu berupa hamburger** (bukan dropdown): kotak krimson 42 px (sudut 5 px) berisi tiga garis 16x3 px yang menjadi tanda silang saat terbuka (0,75 detik, kurva yang sama dengan header). Ia membuka **panel `ink` layar penuh** (`#mobile-menu`) seperti referensi: tiap menu satu baris selebar layar (huruf 24 px tebal, padding 16x12 px, garis tipis putih 20 persen di atas dan bawah, halaman aktif berwarna `brand-300`), diikuti pilihan bahasa dengan nama lengkap (bahasa aktif berlatar putih). Latar halaman meredup di belakangnya dan gulir halaman dikunci selama menu terbuka. Menutup lewat tombol, Escape, atau memilih tautan.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
+## Halaman Services
+
+Isi mengikuti halaman Services prototipe (`http://103.125.180.65/~wwwmetin/en/services`: judul "Services", pengantar, tiga layanan, "How we work" empat langkah, ajakan), **tanpa label "What we do"**. Teks tiga layanan sama dengan daftar layanan di beranda (`home.services.items.*`). Dari atas ke bawah:
+
+- **Pembuka** (`ink`): judul kapital besar (7,2vw, huruf tumbuh), pengantar, dan **tautan loncat** berbentuk pil bernomor ke tiap layanan (garis putih, berubah putih saat hover; gulir halus lewat Lenis dengan `scroll-margin-top` setinggi header).
+- **Tiga blok layanan** (lavender, putih, lavender), tiap blok dua kolom yang **berganti sisi**: di satu sisi penanda "01 / 03", judul besar (4,6vw, huruf tumbuh), teks (1,4vw), tombol "Talk to our team" ke Contact, dan tautan "See process categories" ke Processes (tidak untuk Technical Consultation); di sisi lain **ilustrasi** 4:3 bersudut 8 px. **Ilustrasinya sama dengan yang ada di daftar layanan di beranda** (`service-electroplating`, `service-chemical-supply`, `service-consultation`, lewat `x-landing.photo`); selama gambar belum ada, tampil placeholder berlabel di mode contoh di atas warna krimson, indigo, dan biru bergantian. Angka raksasa transparan 01 sampai 03 di sudut bawah ilustrasi.
+- **How we work** (`ink`): judul, pengantar, dan empat langkah bernomor yang dihubungkan **garis yang tergambar mengikuti gulir**.
+- **Ajakan:** kartu ajakan seperti di halaman lain.
+
 ## Halaman Processes
 
 Isi mengikuti halaman Products prototipe (`http://103.125.180.65/~wwwmetin/en/products`: judul "All process categories", pengantar, daftar kategori, dan "How the catalogue is organised"), **tanpa label "Process catalogue"** di bagian pembuka. Empat kelompok tambahan di prototipe (Alkaline, Acid, Basic, Ferrous Metals Pre Treatment) tetap belum dimodelkan. Dari atas ke bawah:
