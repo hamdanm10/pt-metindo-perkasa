@@ -14,7 +14,7 @@ Tampilan landing page publik PT Metindo Perkasa (electroplating dan metal finish
 | 6 | **Tidak memakai ilustrasi Recraft yang lama.** Hero memakai monogram logo besar sebagai gambar. Bagian lain murni tipografi, angka, dan kartu. Ilustrasi atau foto baru diminta ke client bila memang dibutuhkan ([`direction.md`](direction.md)) | Permintaan client: jangan memaksakan ilustrasi lama |
 | 7 | Konten dirender di server dengan Blade | SEO |
 | 8 | Gerak mengikuti referensi (judul tumbuh per huruf, gulir halus Lenis, header yang menyingkir, layanan yang terbuka mengikuti gulir), dijelaskan di [`motion.md`](motion.md) | Permintaan client. Sebelumnya sempat disederhanakan, lalu diminta disamakan dengan referensi |
-| 9 | Layar intro dipertahankan dalam bentuk sederhana (logo dan tombol memudar masuk dan keluar) | Permintaan client |
+| 9 | Layar intro dipertahankan, kini dengan tampilan dan gerak yang lebih kaya (logo terbuka, nama naik dari topeng, cahaya melayang, pilihan bahasa, tirai naik saat keluar) | Permintaan client |
 | 10 | Fitur newengen yang tidak punya padanan (spanduk promo, testimoni, buletin, logo klien) **dilewati** | Belum ada data atau fitur |
 
 ## Logo dan favicon
@@ -30,7 +30,8 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Tampil **sekali per sesi browser** (`sessionStorage`) dan hanya di beranda.
 - Konten beranda **sudah ada di HTML** di belakang overlay, bukan dimuat setelah overlay ditutup.
 - Tersembunyi sampai JavaScript aktif, jadi tanpa JavaScript halaman langsung terlihat.
-- Bisa ditutup dengan klik, Enter, atau Escape. Fokus dipindahkan dengan benar. Latar `ink`, logo putih, dan tombol krimson.
+- Bisa ditutup dengan klik, Enter, atau Escape. Fokus dipindahkan ke dialog itu sendiri (bukan ke tombol, supaya tombol tidak menyala sendiri); Tab menuju tombol.
+- **Tampilan (dirancang ulang, tidak lagi polos):** latar `ink` dengan **cahaya krimson dan indigo yang melayang pelan** dan **monogram raksasa samar** (opasitas 4 persen) di belakang. Di tengah: logo putih, garis pemisah tipis, dan nama **METINDO / PERKASA** dua baris (sama dengan navbar), lalu tagline kecil `landing.footer.tagline` berwarna `brand-300` dengan huruf berjarak lebar, tombol putih "Click to begin" dengan **cincin berdenyut** di sekelilingnya, dan petunjuk "or press Enter" (`home.intro.hint`, disembunyikan di ponsel). Di bawah **pilihan bahasa** (semua lima bahasa, bahasa aktif berlatar putih) supaya pengunjung bisa memilih bahasa sebelum masuk; memilih bahasa membuka beranda bahasa itu, dan layar intro muncul lagi di sana karena sesi belum menandainya.
 - Dengan `prefers-reduced-motion`, overlay tidak beranimasi.
 - Setelah jadi, ukur LCP dan INP dengan Lighthouse, dengan dan tanpa overlay (di L6). Jika skornya turun jauh, bahas penggantinya dengan client.
 

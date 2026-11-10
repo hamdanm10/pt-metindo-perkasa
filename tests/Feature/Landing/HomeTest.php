@@ -181,7 +181,27 @@ class HomeTest extends TestCase
             ->assertSee('id="intro" role="dialog" aria-modal="true"', false)
             ->assertSee('data-intro-close', false)
             ->assertSee('data-intro-item', false)
-            ->assertSeeText(__('home.intro.begin', [], 'id'));
+            ->assertSeeText(__('home.intro.begin', [], 'id'))
+            ->assertSeeText(__('home.intro.hint', [], 'id'))
+            ->assertSee('data-intro-languages', false)
+            ->assertSee('data-intro-name', false);
+    }
+
+    public function test_intro_offers_every_language_and_its_texts_exist_in_all_of_them(): void
+    {
+        $html = (string) $this->get('/en')->getContent();
+        $start = (int) strpos($html, 'id="intro"');
+        $intro = substr($html, $start, (int) strpos($html, 'data-intro-languages', $start) + 2500 - $start);
+
+        foreach (config('locales.landing') as $code) {
+            $this->assertStringContainsString('hreflang="'.config("locales.locales.{$code}.html_lang").'"', $intro);
+
+            $this->assertNotSame('home.intro.hint', __('home.intro.hint', [], $code));
+            $this->assertNotSame('home.intro.begin', __('home.intro.begin', [], $code));
+        }
+
+        $this->assertStringContainsString('Metindo', $intro);
+        $this->assertStringContainsString(__('landing.footer.tagline'), $intro);
     }
 
     public function test_home_marks_the_elements_that_animate(): void
