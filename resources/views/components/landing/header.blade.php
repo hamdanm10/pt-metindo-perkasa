@@ -45,26 +45,30 @@
             <x-landing.button :href="route('landing.contact')">{{ __('landing.talk') }}</x-landing.button>
         </div>
 
-        <details class="pointer-events-auto relative lg:hidden" data-dismissible>
-            <x-landing.button as="summary" :arrow="false" class="list-none [&::-webkit-details-marker]:hidden">{{ __('landing.menu') }}</x-landing.button>
-            <div class="absolute end-0 top-full z-20 mt-3 w-72 max-w-[calc(100vw-2rem)] rounded-lg bg-white p-3 text-ink shadow-xl ring-1 ring-ink/10" style="--focus-ring: #1f4fb5">
-                <nav aria-label="{{ __('landing.menu') }}">
-                    <ul>
-                        @foreach ($menu as $item)
-                            <li>
-                                <a href="{{ route($item['route']) }}"
-                                   @if (request()->routeIs($item['active'])) aria-current="page" @endif
-                                   class="flex min-h-11 items-center rounded-lg px-3 text-base font-semibold text-ink hover:bg-lavender aria-[current=page]:bg-lavender aria-[current=page]:font-bold aria-[current=page]:text-brand-700">
-                                    {{ __($item['label']) }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </nav>
-                <div class="mt-2 border-t border-ink/10 pt-2">
-                    <x-landing.language-links :alternates="$alternates" />
-                </div>
-            </div>
-        </details>
+        {{-- Hamburger, as on the reference: a small crimson square whose three bars turn into a cross. It opens the full-screen menu below. --}}
+        <button type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="{{ __('landing.menu') }}" class="menu-toggle pointer-events-auto flex shrink-0 items-center justify-center bg-brand-600 text-white lg:hidden">
+            <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
     </div>
 </header>
+
+{{-- The full-screen menu of the reference: a dark sheet that swings down from the top right over a dimmed page. Opened and closed by mobile-menu.js. --}}
+<aside id="mobile-menu" data-menu hidden class="fixed inset-0 z-[45] lg:hidden" style="--focus-ring: #ffffff">
+    <div data-menu-backdrop class="absolute inset-0 bg-ink/60"></div>
+    <div data-menu-mask class="absolute inset-0 origin-top-left overflow-hidden">
+        <div data-menu-panel class="absolute inset-0 overflow-y-auto overflow-x-hidden bg-ink text-white">
+            <nav aria-label="{{ __('landing.menu') }}" class="pt-[calc(var(--header-h)+1.5rem)]">
+                <ul class="border-b border-white/20">
+                    @foreach ($menu as $item)
+                        <li data-menu-item class="border-t border-white/20">
+                            <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="menu-link block px-4 py-3 text-2xl font-bold aria-[current=page]:text-brand-300">{{ __($item['label']) }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </nav>
+            <div data-menu-item class="px-4 py-6">
+                <x-landing.language-links dark :alternates="$alternates" />
+            </div>
+        </div>
+    </div>
+</aside>

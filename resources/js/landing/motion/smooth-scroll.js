@@ -27,6 +27,10 @@ export const smoothScroll = () => {
         }
     });
 
+    // The mobile menu stops the page from scrolling while it is open.
+    document.addEventListener('landing:lock', () => lenis.stop());
+    document.addEventListener('landing:unlock', () => lenis.start());
+
     // The back-to-top badge in the footer asks for this scroll, so it eases like the rest of the page.
     document.addEventListener('landing:to-top', (event) => {
         event.preventDefault();
