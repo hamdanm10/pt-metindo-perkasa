@@ -12,4 +12,10 @@ return [
     'remember' => 'Biarkan saya tetap masuk',
     'submit' => 'Masuk',
     'logout' => 'Keluar',
+    'intro' => 'Masukkan email dan kata sandi untuk melanjutkan.',
+    'panel_title' => 'Selamat datang kembali.',
+    'panel_text' => 'Masuk untuk melanjutkan ke ruang kerja PT Metindo Perkasa Anda.',
+    'back_to_site' => 'Kembali ke situs',
+    'show_password' => 'Tampilkan kata sandi',
+    'hide_password' => 'Sembunyikan kata sandi',
 ];

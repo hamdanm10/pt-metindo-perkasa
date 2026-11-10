@@ -81,3 +81,17 @@ if (sidebar && toggle) {
 if (document.querySelector('[data-tiptap]')) {
     import('./dashboard/editor.js');
 }
+
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    const input = document.getElementById(button.dataset.passwordToggle);
+
+    button.addEventListener('click', () => {
+        const visible = input.type === 'password';
+
+        input.type = visible ? 'text' : 'password';
+        button.setAttribute('aria-pressed', String(visible));
+        button.setAttribute('aria-label', visible ? button.dataset.hide : button.dataset.show);
+        button.querySelector('[data-eye]').hidden = visible;
+        button.querySelector('[data-eye-off]').hidden = !visible;
+    });
+});

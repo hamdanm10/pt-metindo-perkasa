@@ -46,7 +46,7 @@ Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `
 - Route: `routes/app/auth.php` (prefix `/app`, nama `app.*`) dan `routes/customer/auth.php` (prefix `/customer`, nama `customer.*`), dimuat di `bootstrap/app.php`.
 - Middleware: `EnsureRole` (alias `role`, memeriksa peran dan keaktifan akun) dan `SetDashboardLocale`. Pengalihan tamu dan pengguna masuk diatur di `bootstrap/app.php`. Route `POST /{area}/login` juga dibatasi `throttle:30,1` per IP sebagai lapis kedua.
 - Perintah `app/Console/Commands/CreateAdmin.php` (interaktif, bisa juga lewat opsi, menolak email yang sudah ada).
-- View: `resources/views/layouts/auth.blade.php`, `resources/views/auth/login.blade.php` (satu formulir untuk kedua area, bergaya merek), dan `resources/views/auth/home.blade.php` (halaman rangka). CSS lewat entri `resources/css/dashboard.css` yang memakai token tema yang sama. Halaman memakai `noindex`.
+- View: `resources/views/layouts/auth.blade.php`, `resources/views/auth/login.blade.php` (satu formulir untuk kedua area: panel kiri datar berlatar `ink` dengan monogram samar dan garis krimson, formulir dengan tombol lihat/sembunyikan kata sandi, ikon pada pesan galat, tautan "Back to website" ke landing, dan pemilih bahasa; tombol lihat kata sandi memakai JS kecil di `resources/js/dashboard.js`), dan `resources/views/auth/home.blade.php` (halaman rangka). CSS lewat entri `resources/css/dashboard.css` yang memakai token tema yang sama. Halaman memakai `noindex`.
 - `lang/{en,id}/auth.php` dan `lang/id/validation.php` (isi yang dipakai saja, bertambah sesuai kebutuhan).
 
 ## Langkah dan test

@@ -135,6 +135,22 @@ class LoginTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_login_page_has_the_back_link_the_password_toggle_and_translated_texts(): void
+    {
+        foreach (['/app/login', '/customer/login'] as $path) {
+            $this->get($path)->assertOk()
+                ->assertSee('href="'.route('landing.home', ['locale' => 'en']).'"', false)
+                ->assertSee('data-password-toggle="password"', false)
+                ->assertSee(__('auth.intro'))
+                ->assertSee(__('auth.panel_title'))
+                ->assertSee(__('auth.back_to_site'));
+        }
+
+        $this->withSession(['locale' => 'id'])->get('/app/login')
+            ->assertSee(__('auth.show_password', [], 'id'))
+            ->assertSee(__('auth.back_to_site', [], 'id'));
+    }
+
     public function test_login_pages_render_with_a_title_and_a_csrf_token(): void
     {
         $this->get('/app/login')->assertOk()->assertSee(__('auth.staff_title'))->assertSee('name="_token"', false);
