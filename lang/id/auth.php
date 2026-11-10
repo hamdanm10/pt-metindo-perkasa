@@ -12,6 +12,8 @@ return [
     'remember' => 'Biarkan saya tetap masuk',
     'submit' => 'Masuk',
     'logout' => 'Keluar',
+    'caps_lock' => 'Caps Lock menyala.',
+    'submitting' => 'Sedang masuk…',
     'intro' => 'Masukkan email dan kata sandi untuk melanjutkan.',
     'panel_title' => 'Selamat datang kembali.',
     'panel_text' => 'Masuk untuk melanjutkan ke ruang kerja PT Metindo Perkasa Anda.',

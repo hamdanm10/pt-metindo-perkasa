@@ -50,15 +50,50 @@
     }
 }
 
+.login-font {
+    font-family: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+.login-font h1,
+.login-font h2 {
+    font-family: inherit;
+    letter-spacing: -0.03em;
+}
+
+/* Spec-sheet grid on the dark band: fine lines every 24px, stronger every 120px. */
+.login-grid {
+    background-image:
+        linear-gradient(to right, rgb(255 255 255 / 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(255 255 255 / 0.08) 1px, transparent 1px),
+        linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size:
+        120px 120px,
+        120px 120px,
+        24px 24px,
+        24px 24px;
+    mask-image: linear-gradient(to bottom, #000 30%, transparent);
+}
+
 @media (prefers-reduced-motion: no-preference) {
     .login-rise {
-        animation: login-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation: login-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .login-band-in {
+        animation: login-band 1s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     @keyframes login-rise {
         from {
             opacity: 0;
-            transform: translateY(1.25rem);
+            transform: translateY(2rem);
+        }
+    }
+
+    @keyframes login-band {
+        from {
+            transform: translateY(-100%);
         }
     }
 }
@@ -70,9 +105,14 @@
 }
 
 .login-field:focus {
-    border-color: var(--color-accent-blue);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-blue) 20%, transparent);
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent-indigo) 25%, transparent);
     outline: none;
+}
+
+.login-submit[data-busy] {
+    pointer-events: none;
+    opacity: 0.85;
 }
 
 @media (prefers-reduced-motion: reduce) {

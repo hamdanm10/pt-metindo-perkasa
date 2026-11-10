@@ -12,6 +12,8 @@ return [
     'remember' => 'Keep me signed in',
     'submit' => 'Sign in',
     'logout' => 'Sign out',
+    'caps_lock' => 'Caps Lock is on.',
+    'submitting' => 'Signing in…',
     'intro' => 'Enter your email and password to continue.',
     'panel_title' => 'Welcome back.',
     'panel_text' => 'Sign in to continue to your PT Metindo Perkasa workspace.',

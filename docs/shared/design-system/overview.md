@@ -48,7 +48,7 @@ Aturan: teks merah di atas latar terang memakai `brand-700`. Di atas latar `ink`
 
 ## Tipografi
 
-- Latin (`en`, `id`): **Figtree** untuk teks isi. Judul **landing** juga Figtree (bobot 900, huruf kapital untuk judul besar). Judul **dashboard** memakai **Bricolage Grotesque**.
+- Latin (`en`, `id`): **Figtree** untuk teks isi. Judul **landing** juga Figtree (bobot 900, huruf kapital untuk judul besar). Judul **dashboard** memakai **Bricolage Grotesque**. Halaman **login** (`/app/login`, `/customer/login`) memakai **Space Grotesk** untuk semua teksnya.
 - Mandarin (`zh`): Noto Sans SC. Arab (`ar`): Noto Sans Arabic. Jepang (`ja`): Noto Sans JP. Untuk ketiganya judul memakai font yang sama dengan teks isi.
 - Font dipasang sendiri (self-host), bukan dari CDN pihak ketiga, supaya cepat dan tidak mengirim data pengunjung ke luar.
 - Hanya font untuk locale aktif yang dimuat. Font CJK besar, jadi dipakai subset atau `unicode-range`, dengan `font-display: swap`.
