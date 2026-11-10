@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { about } from './motion/about.js';
 import { catalog } from './motion/catalog.js';
 import { clients } from './motion/clients.js';
+import { cta } from './motion/cta.js';
 import { gallery } from './motion/gallery.js';
 import { smartHeader } from './motion/header.js';
 import { hero } from './motion/hero.js';
@@ -23,6 +24,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         smartHeader();
         video();
         about();
+        cta();
         gsap.matchMedia().add('(min-width: 1024px)', catalog);
         gsap.matchMedia().add('(min-width: 1024px)', services);
 

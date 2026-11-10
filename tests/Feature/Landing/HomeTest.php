@@ -138,6 +138,31 @@ class HomeTest extends TestCase
             ->assertSee('href="tel:+6281200000000"', false);
     }
 
+    public function test_cta_is_a_card_with_buttons_contact_line_and_three_graphics(): void
+    {
+        $response = $this->get('/en')->assertOk();
+
+        $response->assertSee('data-cta-card', false)
+            ->assertSee(__('landing.cta.title'))
+            ->assertSee(__('landing.cta.text'))
+            ->assertSee('href="'.route('landing.contact', ['locale' => 'en']).'"', false)
+            ->assertSee('href="mailto:hello@example.test"', false)
+            ->assertSee('href="tel:+6281200000000"', false)
+            ->assertSee('data-cta-art', false);
+
+        // The three CTA graphics and the three of the About headline have different clip ids.
+        preg_match_all('/<clipPath id="(art-[a-z]+-[0-9a-f]{6})"/', (string) $response->getContent(), $found);
+        $this->assertSame(count($found[1]), count(array_unique($found[1])));
+        $this->assertCount(4, $found[1]);
+    }
+
+    public function test_cta_is_absent_without_an_email(): void
+    {
+        config(['landing.contact.email' => null]);
+
+        $this->get('/en')->assertOk()->assertDontSee('data-cta-card', false);
+    }
+
     public function test_contact_links_are_absent_without_configuration(): void
     {
         config(['landing.contact.email' => null, 'landing.contact.phone' => null]);
@@ -400,7 +425,8 @@ class HomeTest extends TestCase
             $response->assertSee($line);
         }
 
-        $this->assertSame(3, substr_count((string) $response->getContent(), 'data-about-art'));
+        // Three graphics in the About headline and three in the call-to-action card.
+        $this->assertSame(6, substr_count((string) $response->getContent(), 'data-about-art'));
 
         // Hooks the hover animation moves: the chart, the bands, and the hexagons.
         $response->assertSee('data-about-headline', false)
