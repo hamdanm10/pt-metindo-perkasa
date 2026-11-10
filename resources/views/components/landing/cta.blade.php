@@ -13,7 +13,7 @@
                 <div class="relative grid items-center gap-[clamp(2rem,4vw,5rem)] lg:grid-cols-[1.25fr_1fr]">
                     <div>
                         <p data-anim="heading" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase">{{ __('landing.nav.contact') }}</p>
-                        <h2 data-anim="grow" class="mt-[1.4vw] max-w-[42rem] text-balance text-[clamp(2rem,5.2vw,6.5rem)] font-black uppercase leading-[0.95] tracking-tight max-lg:mt-4">{{ __('landing.cta.title') }}</h2>
+                        <h2 data-anim="grow" class="mt-[1.4vw] max-w-[11em] text-balance text-[clamp(2rem,5.2vw,6.5rem)] font-black uppercase leading-[0.95] tracking-tight max-lg:mt-4">{{ __('landing.cta.title') }}</h2>
                         <p data-anim="heading" class="mt-[1.6vw] max-w-[34rem] text-[clamp(1rem,1.22vw,1.5rem)] leading-[1.42] max-lg:mt-5">{{ __('landing.cta.text') }}</p>
 
                         <div data-anim="heading" class="mt-[2.2vw] flex flex-wrap items-center gap-x-[1.2vw] gap-y-4 max-lg:mt-8">
