@@ -63,9 +63,9 @@ Gambar artikel yang dipasang: `public/images/landing/articles/sample-business.we
 **Halaman baca** (`/{locale}/articles/{slug}`), **mengikuti kenyamanan baca Medium**:
 - **Kolom teks sempit 680 px** (`max-w-[44.5rem]`) di tengah, putih bersih tanpa pembuka gelap (header tetap di atas), sehingga baris sekitar 65 sampai 75 karakter.
 - Dari atas: tautan "Back to all articles", penanda jenis, tanggal, waktu baca, judul besar (3,5rem, berat 900), ringkasan sebagai subjudul abu-abu, dan baris tipis berisi penulis ("PT Metindo Perkasa") dengan tombol **Copy link** (menyalin alamat, label berubah "Link copied" 2 detik) dan **Share on WhatsApp** (`wa.me`, tanpa skrip pihak ketiga).
-- **Gambar lebih lebar daripada teks** (960 px, 16:9, sudut 8 px).
+- **Gambar selebar kolom** (680 px, 16:9, sudut 8 px, di dalam kolom yang sama dengan teks, di bawah baris penulis dan tombol bagikan).
 - **Isi** (`.reading`): huruf 20 px (18 px di ponsel), tinggi baris 1,75, jarak antar blok 1,5em, subjudul 1,7em berat 900, daftar, dan kutipan bergaris di sisi (miring, 1,2em). Di akhir ulang tautan kembali dan tombol bagikan.
-- **Bilah kemajuan baca** setebal 4 px di tepi atas layar, krimson, terisi mengikuti gulir.
+- **Tanpa animasi pada konten**: judul, gambar, dan isi langsung tampil. **Bilah kemajuan baca** setebal 4 px di tepi atas layar, krimson, terisi mengikuti gulir.
 - **Artikel terkait** (lavender) dalam tiga kartu yang sama, lalu kartu ajakan.
 
 ## Halaman Services

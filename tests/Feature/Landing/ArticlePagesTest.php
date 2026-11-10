@@ -79,6 +79,11 @@ class ArticlePagesTest extends TestCase
         $this->assertStringContainsString('max-w-[44.5rem]', $html);
         $this->assertStringContainsString('class="article-body reading"', $html);
         $this->assertStringContainsString('data-read-progress', $html);
+        // Nothing in the content is animated, the picture included, and the picture sits in the same narrow column.
+        $this->assertStringNotContainsString('data-read-head', $html);
+        $this->assertStringNotContainsString('data-read-image', $html);
+        $this->assertStringNotContainsString('max-w-[60rem]', $html);
+        $this->assertSame(2, substr_count($html, 'max-w-[44.5rem]'));
         $this->assertStringContainsString('data-copy-link="'.url('/en/articles/'.$sample['slug']).'"', $html);
         $this->assertStringContainsString('https://wa.me/?text=', $html);
         $this->assertStringContainsString(__('landing.sample_note'), $html);
