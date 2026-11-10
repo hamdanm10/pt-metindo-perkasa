@@ -233,8 +233,9 @@ class HomeTest extends TestCase
                 ->assertSee(__("home.services.items.{$service}.text"));
         }
 
-        $response->assertDontSee('aria-expanded', false)
-            ->assertSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
+        // The only aria-expanded on the page is the mobile menu button; the services need none.
+        $this->assertSame(1, substr_count((string) $response->getContent(), 'aria-expanded'));
+        $response->assertSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
     }
 
     public function test_every_service_has_a_full_description_in_every_language(): void
