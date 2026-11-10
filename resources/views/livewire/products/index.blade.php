@@ -14,24 +14,24 @@
         <div class="mt-6">
             <x-dashboard.table>
                 <thead>
-                    <tr class="border-b border-ink/20 text-start text-sm text-muted">
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('products.fields.name') }}</th>
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('products.fields.description') }}</th>
-                        <th scope="col" class="py-3 text-start font-semibold"><span class="sr-only">{{ __('products.actions') }}</span></th>
+                    <tr>
+                        <th scope="col">{{ __('products.fields.name') }}</th>
+                        <th scope="col">{{ __('products.fields.description') }}</th>
+                        <th scope="col"><span class="sr-only">{{ __('products.actions') }}</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($products as $product)
-                        <tr wire:key="product-{{ $product->id }}" class="border-b border-ink/10 align-top">
-                            <td class="py-3 pe-4 font-semibold">{{ $product->name }}</td>
-                            <td class="py-3 pe-4 text-muted">{{ \Illuminate\Support\Str::limit((string) $product->description, 120) }}</td>
-                            <td class="py-3 text-end">
-                                <a href="{{ route('app.products.edit', $product) }}" class="inline-flex min-h-11 items-center font-bold text-brand-700 underline underline-offset-4">{{ __('products.edit') }}<span class="sr-only"> {{ $product->name }}</span></a>
+                        <tr wire:key="product-{{ $product->id }}" class="align-top">
+                            <td class="font-semibold">{{ $product->name }}</td>
+                            <td class="text-muted">{{ \Illuminate\Support\Str::limit((string) $product->description, 120) }}</td>
+                            <td class="text-end">
+                                <a href="{{ route('app.products.edit', $product) }}" class="row-action">{{ __('products.edit') }}<span class="sr-only"> {{ $product->name }}</span></a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="py-8 text-center text-muted">{{ __('products.empty') }}</td>
+                            <td colspan="3" class="py-12 text-center text-muted">{{ __('products.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

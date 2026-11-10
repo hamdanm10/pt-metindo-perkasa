@@ -4,10 +4,8 @@
     $user = auth()->user();
     $menu = app(\App\Services\Dashboard\DashboardMenu::class)->forUser($user);
     $area = $user->role->usesStaffArea() ? 'app' : 'customer';
-    $sidebarLink = 'relative flex min-h-12 items-center px-5 text-base font-bold text-white/70 transition-colors hover:text-white '
-        .'aria-[current=page]:text-white '
-        .'aria-[current=page]:before:absolute aria-[current=page]:before:inset-y-2.5 aria-[current=page]:before:start-0 aria-[current=page]:before:w-1.5 '
-        .'aria-[current=page]:before:-skew-x-[20deg] aria-[current=page]:before:rounded-sm aria-[current=page]:before:bg-brand-600';
+    $sidebarLink = 'flex min-h-12 items-center rounded-lg px-5 text-base font-bold text-white/70 transition-colors hover:bg-white/10 hover:text-white '
+        .'aria-[current=page]:bg-brand-600 aria-[current=page]:text-white';
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr">

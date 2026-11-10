@@ -50,8 +50,8 @@
     }
 }
 
-/* Login fields follow the landing form: small uppercase label, underline that turns crimson on focus. */
-.login-field {
+/* Form fields follow the landing form: small uppercase label, underline that turns crimson on focus. */
+.field-input {
     display: block;
     width: 100%;
     padding: 0.5rem 0 0.7rem;
@@ -66,15 +66,15 @@
     transition: border-color 0.3s ease;
 }
 
-.login-field:focus {
+.field-input:focus {
     border-bottom-color: var(--color-brand-600);
 }
 
-.login-field[aria-invalid='true'] {
+.field-input[aria-invalid='true'] {
     border-bottom-color: var(--color-brand-600);
 }
 
-.login-label {
+.field-label {
     display: block;
     font-size: 0.75rem;
     font-weight: 800;
@@ -83,7 +83,7 @@
     transition: color 0.3s ease;
 }
 
-.login-group:focus-within .login-label {
+.field-group:focus-within .field-label {
     color: var(--color-brand-600);
 }
 
@@ -146,4 +146,85 @@ details[open] > .dd-summary .dd-chevron {
             transform: translateY(-8px);
         }
     }
+}
+
+textarea.field-input {
+    min-height: 7rem;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.field-select {
+    padding-inline-end: 2rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%231b1f3b'%3E%3Cpath d='M5.25 7.5 10 12.25 14.75 7.5l1.06 1.06L10 14.37 4.19 8.56 5.25 7.5Z'/%3E%3C/svg%3E");
+    background-position: right 0.25rem center;
+    background-repeat: no-repeat;
+    background-size: 1.1rem;
+}
+
+html[dir='rtl'] .field-select {
+    background-position: left 0.25rem center;
+}
+
+/* Data tables: a strong line under small uppercase headings, airy rows, a soft row highlight. */
+.data-table th {
+    padding: 0 1rem 0.85rem 0;
+    border-bottom: 2px solid var(--color-ink);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-align: start;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+}
+
+.data-table td {
+    padding: 1.1rem 1rem 1.1rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+    padding-inline-end: 0;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+    background-color: color-mix(in srgb, var(--color-lavender) 70%, transparent);
+}
+
+/* Actions at the end of a row: small outlined buttons instead of underlined links. */
+.row-action {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    padding: 0 1rem;
+    border: 2px solid color-mix(in srgb, var(--color-ink) 20%, transparent);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.row-action:hover {
+    border-color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: #fff;
+}
+
+.row-action--danger {
+    margin-inline-start: 0.5rem;
+}
+
+.row-action--danger:hover {
+    border-color: var(--color-brand-600);
+    background-color: var(--color-brand-600);
 }

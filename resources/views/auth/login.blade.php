@@ -29,19 +29,19 @@
                     <form method="POST" action="{{ $action }}" class="mt-10 space-y-8" novalidate data-login-form>
                         @csrf
 
-                        <div class="login-group">
-                            <label for="email" class="login-label">{{ __('auth.email') }}</label>
-                            <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus autocomplete="username" inputmode="email" class="login-field"
+                        <div class="field-group">
+                            <label for="email" class="field-label">{{ __('auth.email') }}</label>
+                            <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus autocomplete="username" inputmode="email" class="field-input"
                                    @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
                             @error('email')
                                 <p id="email-error" class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="login-group">
-                            <label for="password" class="login-label">{{ __('auth.password') }}</label>
+                        <div class="field-group">
+                            <label for="password" class="field-label">{{ __('auth.password') }}</label>
                             <div class="relative">
-                                <input id="password" name="password" type="password" required autocomplete="current-password" class="login-field pe-12"
+                                <input id="password" name="password" type="password" required autocomplete="current-password" class="field-input pe-12"
                                        @error('password') aria-invalid="true" aria-describedby="password-error" @enderror>
                                 <button type="button" data-password-toggle="password" aria-pressed="false" aria-label="{{ __('auth.show_password') }}"
                                         data-show="{{ __('auth.show_password') }}" data-hide="{{ __('auth.hide_password') }}"

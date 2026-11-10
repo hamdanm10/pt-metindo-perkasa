@@ -21,13 +21,13 @@
                 </x-dashboard.select>
 
                 <div>
-                    <label for="form-thumbnail" class="block text-sm font-semibold">{{ __('article_manager.fields.thumbnail') }}</label>
+                    <label for="form-thumbnail" class="field-label">{{ __('article_manager.fields.thumbnail') }}</label>
                     <input id="form-thumbnail" type="file" wire:model="form.thumbnail" accept="image/jpeg,image/png,image/webp"
                            @error('form.thumbnail') aria-invalid="true" aria-describedby="form-thumbnail-error" @else aria-describedby="form-thumbnail-hint" @enderror
-                           class="mt-2 block w-full rounded-lg border border-ink/50 bg-white p-3 text-base file:me-4 file:min-h-10 file:rounded-md file:border-0 file:bg-ink file:px-4 file:font-bold file:text-white">
+                           class="mt-3 block w-full rounded-lg border-2 border-dashed border-ink/25 bg-white p-3 text-base file:me-4 file:min-h-10 file:cursor-pointer file:rounded-md file:border-0 file:bg-brand-600 file:px-4 file:font-bold file:text-white hover:file:bg-brand-700">
                     <p id="form-thumbnail-hint" class="mt-2 text-sm text-muted">{{ __('article_manager.hints.thumbnail') }}</p>
                     @error('form.thumbnail')
-                        <p id="form-thumbnail-error" class="mt-2 text-sm font-semibold text-brand-700" role="alert">{{ $message }}</p>
+                        <p id="form-thumbnail-error" class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                     @enderror
                     <div wire:loading wire:target="form.thumbnail" class="mt-2 text-sm text-muted">…</div>
 
@@ -47,7 +47,7 @@
             <h2 class="text-xl font-bold">{{ __('article_manager.fields.languages') }}</h2>
             <p class="mt-1 text-sm text-muted">{{ __('article_manager.hints.languages') }}</p>
             @error('form.translations')
-                <p class="mt-2 text-sm font-semibold text-brand-700" role="alert">{{ $message }}</p>
+                <p class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
             @enderror
 
             <nav aria-label="{{ __('article_manager.fields.languages') }}" class="mt-4">
@@ -78,16 +78,16 @@
                     <x-dashboard.field :name="'form.translations.'.$code.'.slug'" :label="__('article_manager.fields.slug')" :hint="__('article_manager.hints.slug')" wire:model="form.translations.{{ $code }}.slug" dir="ltr" autocapitalize="off" spellcheck="false" />
 
                     <div>
-                        <label for="form-translations-{{ $code }}-excerpt" class="block text-sm font-semibold">{{ __('article_manager.fields.excerpt') }}</label>
+                        <label for="form-translations-{{ $code }}-excerpt" class="field-label">{{ __('article_manager.fields.excerpt') }}</label>
                         <textarea id="form-translations-{{ $code }}-excerpt" rows="3" dir="{{ $dir }}" lang="{{ config('locales.locales.'.$code.'.html_lang') }}" wire:model="form.translations.{{ $code }}.excerpt"
-                                  class="mt-2 block w-full rounded-lg border border-ink/50 bg-white px-4 py-3 text-base text-ink"></textarea>
+                                  class="field-input"></textarea>
                         @error('form.translations.'.$code.'.excerpt')
-                            <p class="mt-2 text-sm font-semibold text-brand-700" role="alert">{{ $message }}</p>
+                            <p class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div>
-                        <span id="body-label-{{ $code }}" class="block text-sm font-semibold">{{ __('article_manager.fields.body') }}</span>
+                        <span id="body-label-{{ $code }}" class="field-label">{{ __('article_manager.fields.body') }}</span>
                         <div wire:ignore data-tiptap data-labelled-by="body-label-{{ $code }}" data-input="body-{{ $code }}"
                              data-dir="{{ $dir }}" data-lang="{{ config('locales.locales.'.$code.'.html_lang') }}"
                              data-labels="{{ json_encode($editorLabels) }}"
@@ -95,7 +95,7 @@
                              class="mt-2"></div>
                         <textarea id="body-{{ $code }}" wire:model="form.translations.{{ $code }}.body" class="sr-only" tabindex="-1" aria-hidden="true"></textarea>
                         @error('form.translations.'.$code.'.body')
-                            <p class="mt-2 text-sm font-semibold text-brand-700" role="alert">{{ $message }}</p>
+                            <p class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                         @enderror
                     </div>
 
