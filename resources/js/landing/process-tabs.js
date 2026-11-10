@@ -2,8 +2,8 @@ import gsap from 'gsap';
 
 /**
  * The process list: a list of categories on the left and the chosen one in a large panel on the
- * right (tabs with arrow keys, Home and End). On a pointer, resting on a row for a moment
- * chooses it; a click or tap chooses it at once. The white marker slides to the chosen row (0.6
+ * right (tabs with arrow keys, Home and End). Only a click or a tap chooses a category; hovering
+ * does nothing, so moving the pointer down the list never restarts the panel animation. The white marker slides to the chosen row (0.6
  * seconds, `expo.out`) and the panel changes: the picture opens upward from its bottom edge while
  * its photo settles from 115%, the big number, the heading, the text, and each process rise in
  * one after another, and the previous panel fades away. With reduced motion the panel just changes.
@@ -14,7 +14,6 @@ document.querySelectorAll('[data-ptabs]').forEach((root) => {
     const bar = root.querySelector('[data-ptabs-bar]');
     const list = root.querySelector('[data-ptabs-list]');
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hover = window.matchMedia('(hover: hover)').matches;
     const wide = window.matchMedia('(min-width: 1024px)');
 
     if (tabs.length < 2 || tabs.length !== panels.length) {
@@ -22,7 +21,6 @@ document.querySelectorAll('[data-ptabs]').forEach((root) => {
     }
 
     let current = 0;
-    let intent = null;
 
     const placeBar = (index, instant = false) => {
         if (!bar || !wide.matches) {
@@ -104,14 +102,6 @@ document.querySelectorAll('[data-ptabs]').forEach((root) => {
 
     tabs.forEach((tab, index) => {
         tab.addEventListener('click', () => select(index));
-
-        if (hover) {
-            tab.addEventListener('mouseenter', () => {
-                clearTimeout(intent);
-                intent = setTimeout(() => select(index), 120);
-            });
-            tab.addEventListener('mouseleave', () => clearTimeout(intent));
-        }
     });
 
     list.addEventListener('keydown', (event) => {
