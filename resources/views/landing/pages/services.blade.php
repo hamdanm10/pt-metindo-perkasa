@@ -53,7 +53,6 @@
                     <div data-svc-art-inner class="absolute -inset-y-[9%] inset-x-0">
                         <x-landing.photo :name="'service-'.$slug" ratio="aspect-[4/3]" bare class="absolute inset-0 size-full items-center! justify-center! bg-transparent! text-center! text-white/80!" />
                     </div>
-                    <span class="absolute bottom-0 start-[clamp(1rem,2vw,2.5rem)] block overflow-hidden text-[clamp(4rem,9vw,11rem)] font-black leading-[0.8] text-white/30"><span data-svc-number class="block">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span></span>
                 </div>
             </div>
         </section>
