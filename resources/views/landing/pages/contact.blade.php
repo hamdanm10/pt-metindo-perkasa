@@ -138,7 +138,7 @@
         </section>
     @endif
 
-    {{-- Where to find us: the pins of the group on the map of Indonesia (sample mode, while the locations are samples). --}}
+    {{-- Where to find us: the pins of the group on the map of Indonesia (sample locations from the config, shown in every mode). --}}
     @if ($subsidiaries)
         <section class="bg-ink text-white" style="--focus-ring: #ffffff">
             <div class="container-site section-y">
@@ -146,7 +146,9 @@
                     <h2 data-anim="grow" class="text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.contact.find') }}</h2>
                     <p data-anim="heading" class="max-w-[30em] text-[clamp(1rem,1.22vw,1.5rem)] leading-[1.45] text-white/80">{{ __('pages.about.subsidiaries.intro') }}</p>
                 </div>
+                @if ($sample)
                 <p class="mt-5 inline-block rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold">{{ __('landing.sample_note') }}</p>
+                @endif
 
                 <div data-map-stage class="mt-[3vw] max-lg:mt-8">
                     <x-landing.indonesia-map :label="__('pages.about.subsidiaries.map')">

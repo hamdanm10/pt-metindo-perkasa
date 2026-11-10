@@ -46,7 +46,17 @@ class LandingContent
      */
     public function subsidiaries(): array
     {
-        return $this->sampleContentEnabled() ? config('landing.subsidiaries') : [];
+        return $this->sampleContentEnabled() ? $this->locations() : [];
+    }
+
+    /**
+     * The configured group locations, whether or not sample mode is on.
+     *
+     * @return list<array{key: string, name: string, lat: float, lng: float, timezone: string}>
+     */
+    public function locations(): array
+    {
+        return config('landing.subsidiaries');
     }
 
     /**

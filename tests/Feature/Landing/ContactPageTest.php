@@ -94,7 +94,7 @@ class ContactPageTest extends TestCase
         $this->assertStringContainsString('Test address 1', $html);
     }
 
-    public function test_the_map_of_the_group_is_shown_only_in_sample_mode(): void
+    public function test_the_map_of_the_group_is_always_shown(): void
     {
         $html = $this->page();
 
@@ -104,7 +104,8 @@ class ContactPageTest extends TestCase
 
         config(['landing.sample_content' => false]);
 
-        $this->assertStringNotContainsString('data-map-stage', $this->page());
+        $this->assertStringContainsString('data-map-stage', $this->page());
+        $this->assertStringNotContainsString(__('landing.sample_note'), $this->page());
     }
 
     public function test_the_page_texts_exist_in_every_language(): void

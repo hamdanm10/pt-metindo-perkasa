@@ -21,7 +21,8 @@ class ContactController extends Controller
         return view('landing.pages.contact', [
             'contact' => $details + ($agents !== [] ? ['whatsapp' => $agents[0]['number']] : []),
             'agents' => $agents,
-            'subsidiaries' => $map->pins($content->subsidiaries()),
+            'subsidiaries' => $map->pins($content->locations()),
+            'sample' => $content->sampleContentEnabled(),
         ]);
     }
 }
