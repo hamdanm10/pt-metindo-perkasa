@@ -3,9 +3,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { all } from './shared.js';
 
 /**
- * The process catalogue page. The hero count runs up to its number, the category cards rise in
- * rows as they come into view, and the four steps are joined by a line that is drawn as the
- * page scrolls, each step appearing when the line reaches it.
+ * The process catalogue page. The hero count runs up to its number, and the four steps are
+ * joined by a line that is drawn as the page scrolls, each step appearing when the line reaches
+ * it. The category list has its own script, process-tabs.js.
  */
 export const processes = () => {
     const count = document.querySelector('[data-count]');
@@ -20,20 +20,6 @@ export const processes = () => {
             delay: 0.6,
             ease: 'power3.out',
             onUpdate: () => (count.textContent = String(Math.round(value.n))),
-        });
-    }
-
-    const grid = document.querySelector('[data-process-grid]');
-
-    if (grid) {
-        const cards = Array.from(grid.children);
-
-        gsap.set(cards, { autoAlpha: 0, y: 48 });
-
-        ScrollTrigger.batch(cards, {
-            start: 'top 92%',
-            once: true,
-            onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'expo.out', overwrite: true }),
         });
     }
 

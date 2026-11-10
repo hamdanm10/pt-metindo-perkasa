@@ -228,20 +228,35 @@ class PagesTest extends TestCase
         }
     }
 
-    public function test_process_index_shows_a_card_per_category_without_the_catalogue_label(): void
+    public function test_process_index_is_a_tab_list_with_a_panel_per_category_and_no_catalogue_label(): void
     {
         $categories = config('landing.categories');
         $html = (string) $this->get('/en/processes')->getContent();
 
-        $this->assertSame(count($categories), substr_count($html, 'data-spot'));
+        $this->assertSame(count($categories), preg_match_all('/data-ptab\s/', $html));
+        $this->assertSame(count($categories), preg_match_all('/<article role="tabpanel"/', $html));
+        $this->assertSame(1, substr_count($html, 'data-active'));
+        $this->assertStringContainsString('role="tablist"', $html);
         $this->assertStringContainsString('data-count="'.count($categories).'"', $html);
         $this->assertStringNotContainsString('Process catalogue', $html);
 
         foreach ($categories as $category) {
-            $this->assertStringContainsString('href="'.route('landing.processes.show', ['locale' => 'en', 'category' => $category['slug']]).'"', $html);
-            $this->assertStringContainsString($category['name'], $html);
-            $this->assertStringContainsString(__("pages.processes.categories.{$category['slug']}", [], 'en'), $html);
+            $slug = $category['slug'];
+
+            $this->assertStringContainsString('id="tab-'.$slug.'" aria-controls="panel-'.$slug.'"', $html);
+            $this->assertStringContainsString('id="panel-'.$slug.'" aria-labelledby="tab-'.$slug.'"', $html);
+            $this->assertStringContainsString('href="'.route('landing.processes.show', ['locale' => 'en', 'category' => $slug]).'"', $html);
+            $this->assertStringContainsString(__("pages.processes.categories.{$slug}", [], 'en'), $html);
+
+            foreach ($category['processes'] as $process) {
+                $this->assertStringContainsString(e($process), $html);
+            }
         }
+
+        // The button label is split into one span per word, so look at the text only.
+        $text = (string) preg_replace('/\s+/', ' ', strip_tags($html));
+
+        $this->assertStringContainsString(__('pages.processes.view_all', ['count' => count($categories[0]['processes'])], 'en'), $text);
     }
 
     public function test_process_index_explains_the_four_levels_of_the_catalogue(): void
@@ -262,12 +277,17 @@ class PagesTest extends TestCase
         foreach (config('locales.landing') as $code) {
             $response = $this->get("/{$code}/processes")->assertOk();
 
-            foreach (['title', 'intro', 'count', 'view', 'organised.title', 'organised.intro', 'organised.steps.diagram.text'] as $key) {
+            foreach (['title', 'intro', 'count', 'organised.title', 'organised.intro', 'organised.steps.diagram.text'] as $key) {
                 $text = __("pages.processes.{$key}", [], $code);
 
                 $this->assertNotSame("pages.processes.{$key}", $text);
                 $response->assertSee($text, false);
             }
+
+            // These two carry a number, so check them filled in.
+            $count = count(config('landing.categories.0.processes'));
+            $response->assertSeeText(__('pages.processes.view_all', ['count' => $count], $code), false)
+                ->assertSee(__('pages.processes.position', ['number' => '01', 'total' => count(config('landing.categories'))], $code), false);
         }
     }
 

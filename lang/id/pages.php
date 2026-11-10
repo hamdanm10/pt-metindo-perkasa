@@ -41,7 +41,8 @@ return [
     'processes' => [
         'title' => 'Semua kategori proses',
         'intro' => 'Seluruh kategori proses electroplating yang kami tangani.',
-        'view' => 'Lihat proses',
+        'position' => 'Kategori :number dari :total',
+        'view_all' => 'Lihat semua :count proses',
         'count' => 'Kategori proses',
         'organised' => [
             'title' => 'Cara katalog disusun',

@@ -41,7 +41,8 @@ return [
     'processes' => [
         'title' => '所有工艺类别',
         'intro' => '我们所涉及的全部电镀工艺类别。',
-        'view' => '查看工艺',
+        'position' => '第 :number 类，共 :total 类',
+        'view_all' => '查看全部 :count 项工艺',
         'count' => '工艺类别',
         'organised' => [
             'title' => '目录的组织方式',

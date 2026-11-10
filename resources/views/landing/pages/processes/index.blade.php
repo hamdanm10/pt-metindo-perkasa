@@ -4,7 +4,7 @@
 
 @section('content')
     @php
-        $tones = ['bg-ink', 'bg-brand-600', 'bg-accent-indigo', 'bg-accent-blue'];
+        $tones = ['bg-brand-600', 'bg-accent-indigo', 'bg-accent-blue'];
         $steps = array_keys(__('pages.processes.organised.steps'));
     @endphp
 
@@ -22,35 +22,61 @@
         </div>
     </section>
 
-    {{-- The categories as cards. A card turns dark on hover, and a soft light follows the pointer. --}}
+    {{-- The categories as a list with a large preview, as in the prototype: choose a category on the left, and its picture, text and processes appear on the right. --}}
     <section class="bg-lavender text-ink">
         <div class="container-site section-y">
-            <ul data-process-grid class="grid gap-[1.5vw] max-lg:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                @foreach ($categories as $category)
-                    <li>
-                        <a href="{{ route('landing.processes.show', ['category' => $category['slug']]) }}" data-spot
-                           class="process-card group relative flex h-full min-h-[clamp(15rem,17vw,22rem)] flex-col overflow-hidden rounded-lg border border-ink/15 bg-white p-[clamp(1.25rem,1.9vw,2.4rem)] transition-colors duration-500 hover:border-ink hover:bg-ink hover:text-white focus-visible:border-ink focus-visible:bg-ink focus-visible:text-white">
-                            <span class="{{ $tones[$loop->index % count($tones)] }} absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-700 [transition-timing-function:var(--header-ease)] group-hover:scale-x-100 group-focus-visible:scale-x-100" aria-hidden="true"></span>
-                            <span class="flex items-start justify-between">
-                                <span class="text-[clamp(0.75rem,0.833vw,1.05rem)] font-extrabold text-brand-600 transition-colors duration-500 group-hover:text-brand-300" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                                <span class="grid size-[clamp(2.25rem,2.6vw,3.25rem)] place-items-center rounded-full border border-current opacity-60 transition duration-500 group-hover:rotate-[-45deg] group-hover:bg-white group-hover:text-ink group-hover:opacity-100 rtl:-scale-x-100" aria-hidden="true">
-                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M3.5 10h12.5M11 4.5 16.5 10 11 15.5"/></svg>
-                                </span>
-                            </span>
-                            <span class="mt-auto block pt-[3vw] max-lg:pt-8">
-                                <span class="block text-[clamp(1.25rem,1.9vw,2.4rem)] font-black leading-[1.1] tracking-tight" lang="en" dir="ltr">{{ $category['name'] }}</span>
-                                <span class="mt-[0.6vw] block text-[clamp(0.9rem,1.05vw,1.3rem)] leading-snug opacity-70 max-lg:mt-2">{{ __("pages.processes.categories.{$category['slug']}") }}</span>
-                                <span class="mt-[1.1vw] flex flex-wrap gap-2 max-lg:mt-4" lang="en" dir="ltr">
-                                    @foreach (array_slice($category['processes'], 0, 2) as $process)
-                                        <span class="rounded-full border border-current/40 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-semibold">{{ $process }}</span>
+            <div data-ptabs class="grid gap-6 lg:grid-cols-[4fr_8fr] lg:gap-[2.5vw]">
+                <div class="min-w-0 lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:self-start">
+                    <div role="tablist" aria-orientation="vertical" aria-label="{{ __('pages.processes.title') }}" data-ptabs-list
+                         class="relative -mx-4 flex snap-x gap-2 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0 lg:pb-0">
+                        <span data-ptabs-bar class="pointer-events-none absolute start-0 top-0 hidden w-full rounded-lg border-s-4 border-brand-600 bg-white shadow-sm lg:block" aria-hidden="true"></span>
+                        @foreach ($categories as $category)
+                            <button type="button" role="tab" id="tab-{{ $category['slug'] }}" aria-controls="panel-{{ $category['slug'] }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}" tabindex="{{ $loop->first ? '0' : '-1' }}" data-ptab
+                                    class="ptab group relative flex shrink-0 snap-center items-center gap-[1vw] whitespace-nowrap rounded-full border border-ink/15 bg-white/70 px-4 py-2 text-start text-sm font-bold transition-colors duration-300 hover:bg-white focus-visible:outline-offset-2 max-lg:aria-selected:border-brand-600 max-lg:aria-selected:bg-white lg:w-full lg:whitespace-normal lg:rounded-lg lg:border-0 lg:bg-transparent lg:px-[1.1vw] lg:py-[0.95vw] lg:text-[clamp(0.95rem,1.15vw,1.5rem)] lg:hover:bg-transparent">
+                                <span class="hidden w-[1.6em] text-[0.7em] font-extrabold tabular-nums text-ink/40 transition-colors duration-300 group-aria-selected:text-brand-600 lg:inline" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                                <span class="flex-1 transition-transform duration-500 [transition-timing-function:var(--header-ease)] lg:group-hover:translate-x-1 lg:group-aria-selected:translate-x-1" lang="en" dir="ltr">{{ $category['name'] }}</span>
+                                <span class="hidden rounded-full bg-ink/10 px-2 py-0.5 text-[0.7em] font-bold transition-colors duration-300 group-aria-selected:bg-brand-600 group-aria-selected:text-white lg:inline">{{ count($category['processes']) }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="ptabs-panels grid min-w-0">
+                    @foreach ($categories as $category)
+                        @php($tone = $tones[$loop->index % count($tones)])
+                        <article role="tabpanel" id="panel-{{ $category['slug'] }}" aria-labelledby="tab-{{ $category['slug'] }}" data-ppanel @if ($loop->first) data-active @endif
+                                 class="ppanel col-start-1 row-start-1 overflow-hidden rounded-lg bg-ink text-white" style="--focus-ring: #ffffff">
+                            <div data-pmedia class="{{ $tone }} relative aspect-[16/8] overflow-hidden">
+                                <div data-pmedia-inner class="absolute inset-0">
+                                    <x-landing.photo :name="'product-'.$category['slug']" ratio="aspect-[16/8]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
+                                </div>
+                                <span data-pnumber class="absolute bottom-0 start-[clamp(1.25rem,2.2vw,2.75rem)] block overflow-hidden text-[clamp(4rem,9vw,11rem)] font-black leading-[0.8] text-white/35" aria-hidden="true"><span class="block">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span></span>
+                                <span class="absolute end-[clamp(1rem,1.6vw,2rem)] top-[clamp(1rem,1.6vw,2rem)] rounded-full bg-white px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-ink">{{ __('pages.processes.list') }} · {{ count($category['processes']) }}</span>
+                            </div>
+
+                            <div class="p-[clamp(1.25rem,2.4vw,3rem)]">
+                                <p data-pitem class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-300">{{ __('pages.processes.position', ['number' => str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT), 'total' => count($categories)]) }}</p>
+                                <h2 data-ptitle class="mt-[0.6vw] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black uppercase leading-[0.98] tracking-tight max-lg:mt-2" lang="en" dir="ltr">{{ $category['name'] }}</h2>
+                                <p data-pitem class="mt-[0.8vw] max-w-[34em] text-[clamp(1rem,1.15vw,1.45rem)] leading-snug text-white/75 max-lg:mt-3">{{ __("pages.processes.categories.{$category['slug']}") }}</p>
+
+                                <ul class="mt-[2vw] grid gap-x-[2vw] sm:grid-cols-2 xl:grid-cols-3 max-lg:mt-6" lang="en" dir="ltr">
+                                    @foreach ($category['processes'] as $process)
+                                        <li data-pitem class="flex items-baseline gap-3 border-t border-white/20 py-[0.75vw] text-[clamp(0.9rem,1vw,1.25rem)] font-semibold max-lg:py-3">
+                                            <span class="text-[0.7em] font-extrabold tabular-nums text-brand-300">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                                            <span>{{ $process }}</span>
+                                        </li>
                                     @endforeach
-                                </span>
-                                <span class="mt-[1.4vw] inline-flex text-[clamp(0.85rem,0.95vw,1.2rem)] font-bold max-lg:mt-5"><span class="uline">{{ __('pages.processes.view') }}</span></span>
-                            </span>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
+                                </ul>
+
+                                <div data-pitem class="mt-[2vw] max-lg:mt-6">
+                                    <x-landing.button :href="route('landing.processes.show', ['category' => $category['slug']])" variant="light">{{ __('pages.processes.view_all', ['count' => count($category['processes'])]) }}</x-landing.button>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+            <noscript><style>[data-ppanel]{visibility:visible!important}.ptabs-panels{display:block!important}[data-ppanel]+[data-ppanel]{margin-top:1.5rem}[data-ptabs-list]{display:none!important}</style></noscript>
         </div>
     </section>
 

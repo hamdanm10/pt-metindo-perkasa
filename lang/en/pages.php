@@ -41,7 +41,8 @@ return [
     'processes' => [
         'title' => 'All process categories',
         'intro' => 'Every electroplating process category we work with.',
-        'view' => 'View process',
+        'position' => 'Category :number of :total',
+        'view_all' => 'View all :count processes',
         'count' => 'Process categories',
         'organised' => [
             'title' => 'How the catalogue is organised',

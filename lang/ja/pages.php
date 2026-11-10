@@ -41,7 +41,8 @@ return [
     'processes' => [
         'title' => 'すべての工程カテゴリー',
         'intro' => '当社が扱うすべての電気めっき工程カテゴリー。',
-        'view' => '工程を見る',
+        'position' => 'カテゴリー :number / :total',
+        'view_all' => ':count 件の工程をすべて見る',
         'count' => '工程カテゴリー',
         'organised' => [
             'title' => 'カタログの構成',

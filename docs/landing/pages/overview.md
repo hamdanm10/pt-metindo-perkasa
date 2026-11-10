@@ -29,7 +29,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
 | About | `/{locale}/about` | Profil perusahaan, pendekatan, visi dan misi, fasilitas (teks), dan anak perusahaan sebagai **peta Indonesia** dengan pin (contoh). Isinya mengikuti halaman About prototipe `.../en/about`; tampilannya dirancang ulang ([`../ui/design.md`](../ui/design.md), bagian About) |
-| Processes | `/{locale}/processes` | Jumlah kategori, 13 kartu kategori bertautan ke halaman kategori (dengan dua proses pertama), dan penjelasan empat tingkat katalog. Tanpa label "Process catalogue"; lihat [`../ui/design.md`](../ui/design.md), bagian Processes |
+| Processes | `/{locale}/processes` | Jumlah kategori, **daftar tab 13 kategori dengan panel rinci** (proses lengkap dan tautan "View all N processes" ke halaman kategori; mengikuti `homepage-5`), dan penjelasan empat tingkat katalog. Tanpa label "Process catalogue"; lihat [`../ui/design.md`](../ui/design.md), bagian Processes |
 | Kategori | `/{locale}/processes/{category}` | Nama kategori, daftar proses (tanpa tautan), kategori lain |
 | Services | `/{locale}/services` | Tiga layanan, dan "How we work" empat langkah berurutan (Enquiry, Spec review, Process and supply, Delivery) |
 | Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu dengan filter jenis. 404 bila bahasa itu belum punya artikel terbit |
