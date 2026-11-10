@@ -745,3 +745,69 @@ html.menu-open {
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
 }
+
+/*
+ * The language dropdown, dressed like the menu chips: a dark panel that opens downward (clip and
+ * slide, 0.5 seconds, the header curve) with its rows following one after another, a chevron that
+ * turns over, and a row that slides a little on hover. Closing is instant, as a <details> does it.
+ */
+.lang-summary svg {
+    transition: rotate 0.5s var(--header-ease);
+}
+
+details[open] > .lang-summary svg {
+    rotate: 180deg;
+}
+
+details[open] > .lang-panel {
+    animation: lang-open 0.5s var(--header-ease) both;
+    transform-origin: top right;
+}
+
+details[open] .lang-list > li {
+    animation: lang-row 0.5s var(--header-ease) both;
+    animation-delay: calc(var(--i, 0) * 0.04s + 0.08s);
+}
+
+.lang-item:hover,
+.lang-item:focus-visible,
+.lang-item[aria-current='true'] {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes lang-open {
+    from {
+        clip-path: inset(0 0 100% 0 round 0.5rem);
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        clip-path: inset(0 0 0% 0 round 0.5rem);
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes lang-row {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lang-summary svg {
+        transition: none;
+    }
+
+    details[open] > .lang-panel,
+    details[open] .lang-list > li {
+        animation: none;
+    }
+}

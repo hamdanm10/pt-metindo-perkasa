@@ -127,6 +127,24 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('<details class="pointer-events-auto relative lg:hidden"', $html);
     }
 
+    public function test_the_language_dropdown_is_a_dark_panel_listing_codes_and_full_names(): void
+    {
+        $html = (string) $this->get('/en/about')->getContent();
+
+        $this->assertStringContainsString('lang-panel', $html);
+        $this->assertStringContainsString('lang-list', $html);
+        $this->assertStringNotContainsString('shadow-xl ring-1 ring-ink/10', substr($html, (int) strpos($html, '<header data-header'), 6000));
+
+        foreach (config('locales.landing') as $code) {
+            $locale = config("locales.locales.{$code}");
+
+            $this->assertStringContainsString('hreflang="'.$locale['html_lang'].'"', $html);
+            $this->assertMatchesRegularExpression('/>\s*'.preg_quote($locale['name'], '/').'\s*</', $html);
+        }
+
+        $this->assertStringContainsString('aria-current="true"', $html);
+    }
+
     public function test_page_titles_use_the_active_language(): void
     {
         $this->get('/id/about')->assertSee('<title>'.__('landing.nav.about', [], 'id').' | PT Metindo Perkasa</title>', false);
