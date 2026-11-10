@@ -105,6 +105,28 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_mobile_menu_is_a_full_screen_panel_opened_by_a_hamburger(): void
+    {
+        $html = (string) $this->get('/en/about')->getContent();
+
+        $this->assertStringContainsString('data-menu-toggle', $html);
+        $this->assertStringContainsString('aria-controls="mobile-menu"', $html);
+        $this->assertStringContainsString('aria-expanded="false"', $html);
+        $this->assertStringContainsString('id="mobile-menu" data-menu hidden', $html);
+
+        $start = (int) strpos($html, 'id="mobile-menu"');
+        $menu = substr($html, $start, (int) strpos($html, '</aside>', $start) - $start);
+
+        foreach (['landing.about', 'landing.processes.index', 'landing.services', 'landing.contact'] as $route) {
+            $this->assertStringContainsString('href="'.route($route, ['locale' => 'en']).'"', $menu);
+        }
+
+        $this->assertStringNotContainsString('href="'.route('landing.home', ['locale' => 'en']).'"', $menu);
+        $this->assertStringContainsString('aria-current="page"', $menu);
+        $this->assertMatchesRegularExpression('/>\s*Bahasa Indonesia\s*</', $menu);
+        $this->assertStringNotContainsString('<details class="pointer-events-auto relative lg:hidden"', $html);
+    }
+
     public function test_page_titles_use_the_active_language(): void
     {
         $this->get('/id/about')->assertSee('<title>'.__('landing.nav.about', [], 'id').' | PT Metindo Perkasa</title>', false);

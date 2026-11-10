@@ -19,7 +19,7 @@ export const smartHeader = () => {
         start: 0,
         end: 'max',
         onUpdate: (self) => {
-            const busy = header.querySelector('details[open]') || header.contains(document.activeElement);
+            const busy = header.querySelector('details[open]') || header.contains(document.activeElement) || document.documentElement.classList.contains('menu-open');
 
             if (self.direction === 1 && self.scroll() > limit() && !busy) {
                 hide();
