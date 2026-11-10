@@ -20,6 +20,9 @@ return [
         'tagline' => 'Electroplating · Metal Finishing',
         'contact' => '联系我们',
         'rights' => '版权所有。',
+        'menu' => '菜单',
+        'top' => '返回顶部',
+        'offices' => '办事处',
     ],
     'cta' => [
         'title' => '有电镀规格需求吗？',

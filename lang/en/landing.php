@@ -20,6 +20,9 @@ return [
         'tagline' => 'Electroplating · Metal Finishing',
         'contact' => 'Contact',
         'rights' => 'All rights reserved.',
+        'menu' => 'Menu',
+        'top' => 'Back to top',
+        'offices' => 'Offices',
     ],
     'cta' => [
         'title' => 'Have a plating specification in mind?',

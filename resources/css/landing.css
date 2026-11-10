@@ -495,3 +495,23 @@ span.btn,
 .btn:where(span) {
     cursor: default;
 }
+
+/* Footer: the name across the page in a soft tone of the page colour, and a hexagon badge that returns to the top. */
+.footer-wordmark {
+    color: color-mix(in srgb, var(--color-lavender) 30%, var(--color-ink));
+}
+
+.footer-top {
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    transition: scale 0.75s var(--header-ease), background-color 0.35s ease;
+}
+
+.footer-top:hover {
+    scale: 1.08;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-top {
+        transition: none;
+    }
+}

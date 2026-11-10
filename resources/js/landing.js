@@ -4,3 +4,4 @@ import './landing/motion.js';
 import './landing/header-state.js';
 import './landing/menus.js';
 import './landing/video-player.js';
+import './landing/to-top.js';

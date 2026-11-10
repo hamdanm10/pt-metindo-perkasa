@@ -48,6 +48,17 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Pemilih bahasa: tombol menampilkan **kode singkat** bahasa yang dipilih (EN, ID, ZH, AR, JA; nama lengkapnya ada di `title`), sedangkan daftar turun putih dan panel ponsel memakai **nama lengkap** (English, Bahasa Indonesia, dan seterusnya), seperti footer. Di bawah `lg`, tombol "Menu" krimson membuka panel putih berisi menu dan bahasa.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
+## Footer
+
+Disamakan dengan footer referensi, **tanpa marquee logo mitra** dan **tanpa formulir newsletter** (belum ada layanan untuk menerimanya). Latar `ink`. Dari atas ke bawah:
+
+- **Nama di seluruh lebar:** "METINDO PERKASA" (berat 800, huruf kapital) direntangkan penuh selebar kontainer dengan `textLength` pada SVG, berwarna lembut (campuran lavender 30 persen dan `ink`), padding atas-bawah 6,67vw. Selalu Latin (`lang="en" dir="ltr"`).
+- **Garis penuh dengan lencana segi enam** di tengahnya (72x80 px di 1440 px, krimson, monogram putih). Lencana adalah tombol **kembali ke atas** (`data-to-top`, `aria-label` dari `landing.footer.top`) yang menggulir halus lewat Lenis (1,6 detik) atau langsung melompat bila gerak dimatikan; hover memperbesarnya 1,08.
+- **Baris teks:** teks perusahaan (`landing.footer.description`, 1,22vw, lebar maksimum 38,9vw) dan tombol "Let's talk" ke Contact di kolom kiri (53,57 persen). Kolom kanan, tempat newsletter di referensi, dikosongkan.
+- **Tiga kolom** (360:360:624 di 1440 px, judul kecil 0,78vw berat 800 berwarna `brand-300`, isi 0,833vw dengan garis bawah `.uline` saat hover): **Menu** (semua menu termasuk Home), kolom kosong (tempat "Let's social" di referensi; belum ada akun media sosial), dan **Contact** dengan email, telepon, alamat, jam buka, dan kantor (kantor hanya di mode contoh karena data anak perusahaan masih contoh). Bagian yang datanya kosong tidak tampil.
+- **Baris paling bawah:** hak cipta dan tagline. Tautan Privacy, Cookie, dan Terms milik referensi tidak ada karena halamannya belum ada.
+
+
 ## Bagian beranda
 
 | Bagian | Latar | Isi |
