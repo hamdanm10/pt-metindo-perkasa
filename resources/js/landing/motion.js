@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { about } from './motion/about.js';
 import { articles } from './motion/articles.js';
 import { catalog } from './motion/catalog.js';
+import { contactPage } from './motion/contact-page.js';
 import { clients } from './motion/clients.js';
 import { cta } from './motion/cta.js';
 import { gallery } from './motion/gallery.js';
@@ -33,6 +34,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         processes();
         servicesPage();
         articles();
+        contactPage();
         gsap.matchMedia().add('(min-width: 1024px)', catalog);
         gsap.matchMedia().add('(min-width: 1024px)', services);
 

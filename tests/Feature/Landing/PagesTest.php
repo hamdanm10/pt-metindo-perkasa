@@ -25,6 +25,7 @@ class PagesTest extends TestCase
             'landing.contact.address' => 'Test address',
             'landing.contact.hours' => 'Mon-Fri',
             'landing.contact.whatsapp' => '6281200000000',
+            'landing.contact.whatsapp_agents' => null,
         ]);
     }
 
@@ -72,6 +73,16 @@ class PagesTest extends TestCase
         $this->assertMatchesRegularExpression('/>\s*EN\s*</', $header);
         $this->assertMatchesRegularExpression('/>\s*Bahasa Indonesia\s*</', $header);
         $this->assertMatchesRegularExpression('/>\s*English\s*</', $header);
+    }
+
+    public function test_desktop_header_menu_lists_contact_beside_the_lets_talk_button(): void
+    {
+        $html = (string) $this->get('/en/about')->getContent();
+        $start = (int) strpos($html, '<header data-header');
+        $header = substr($html, $start, (int) strpos($html, '</header>', $start) - $start);
+        $nav = substr($header, (int) strpos($header, 'header-links'));
+
+        $this->assertStringContainsString(route('landing.contact', ['locale' => 'en']), substr($nav, 0, (int) strpos($nav, '</nav>')));
     }
 
     public function test_footer_has_the_logo_with_the_name_back_to_top_button_menu_and_no_marquee(): void

@@ -10,3 +10,4 @@ import './landing/about-map.js';
 import './landing/process-tabs.js';
 import './landing/contact-widgets.js';
 import './landing/copy-link.js';
+import './landing/contact-form.js';

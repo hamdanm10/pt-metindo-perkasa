@@ -4,7 +4,6 @@
     $menu = app(\App\Services\Landing\LandingContent::class)->menu();
     // The logo already leads home, so the menu has no Home item.
     $menu = array_values(array_filter($menu, fn (array $item): bool => $item['route'] !== 'landing.home'));
-    $mainMenu = array_values(array_filter($menu, fn (array $item): bool => $item['route'] !== 'landing.contact'));
     $currentLocale = config('locales.locales.'.app()->getLocale());
     $link = 'header-link relative inline-flex items-center text-white';
 @endphp
@@ -20,7 +19,7 @@
             <div class="header-chip header-chip--nav flex items-center">
             <nav aria-label="{{ __('landing.menu') }}">
                 <ul class="header-links flex items-center">
-                    @foreach ($mainMenu as $item)
+                    @foreach ($menu as $item)
                         <li>
                             <a href="{{ route($item['route']) }}"
                                @if (request()->routeIs($item['active'])) aria-current="page" @endif

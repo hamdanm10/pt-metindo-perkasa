@@ -811,3 +811,85 @@ details[open] .lang-list > li {
         animation: none;
     }
 }
+
+/* Contact form fields: a large text with a line under it that sweeps in crimson when the field has the focus. */
+.field {
+    position: relative;
+}
+
+.field__control {
+    position: relative;
+}
+
+.field__label {
+    display: block;
+    font-size: clamp(0.7rem, 0.78vw, 1rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    transition: color 0.3s ease;
+}
+
+.field:focus-within .field__label {
+    color: var(--color-brand-600);
+}
+
+.field__input {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0 0.7rem;
+    border: 0;
+    border-bottom: 2px solid color-mix(in srgb, var(--color-ink) 25%, transparent);
+    border-radius: 0;
+    background: transparent;
+    font-size: clamp(1.1rem, 1.5vw, 1.9rem);
+    font-weight: 600;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.field__input::placeholder {
+    color: color-mix(in srgb, var(--color-ink) 35%, transparent);
+}
+
+.field__control::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--color-brand-600);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.6s var(--header-ease);
+    pointer-events: none;
+}
+
+html[dir='rtl'] .field__control::after {
+    transform-origin: right center;
+}
+
+.field:focus-within .field__control::after {
+    transform: scaleX(1);
+}
+
+.field__input[aria-invalid='true'] {
+    border-bottom-color: var(--color-brand-600);
+}
+
+.field__error {
+    min-height: 1.25rem;
+    margin-top: 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--color-brand-700);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .field__label,
+    .field__input,
+    .field__control::after {
+        transition: none;
+    }
+}
