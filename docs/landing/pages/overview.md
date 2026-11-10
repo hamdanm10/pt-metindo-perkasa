@@ -84,3 +84,5 @@ Pemeriksaan manual di browser: semua halaman di ponsel dan desktop, Arab dalam R
 - Artikel asli dan isi lengkapnya (L4).
 - Deskripsi meta, sitemap, dan pengukuran performa (L6).
 - Penjelasan empat tingkat di halaman Processes menyebut Diagram dan Materials seperti di prototipe, tetapi halaman kategori belum punya diagram alur maupun daftar bahan; keduanya ditunda sampai isinya ada.
+- Chat berbasis aturan dijawab dengan mengetuk bubble pilihan (tanpa kolom ketik) dan hanya menjawab dari isi situs; belum ada AI. Mode AI di prototipe ("Rule-based / AI") belum dikerjakan.
+- Nomor customer service untuk tombol WhatsApp harus diisi di `LANDING_WHATSAPP_AGENTS` sebelum rilis; tanpa itu tombolnya tidak tampil.

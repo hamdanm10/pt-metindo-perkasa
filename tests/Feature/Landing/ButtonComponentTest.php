@@ -53,7 +53,9 @@ class ButtonComponentTest extends TestCase
     {
         config(['landing.contact.email' => 'hello@example.test']);
 
+        // The round icon buttons of the floating chat and WhatsApp are not text buttons, so look at the page without them.
         $html = (string) $this->get('/en')->getContent();
+        $html = substr($html, 0, (int) strpos($html, 'data-widgets'));
 
         $this->assertGreaterThanOrEqual(8, substr_count($html, 'data-btn '));
         $this->assertStringNotContainsString('hover:bg-brand-700">', $html);

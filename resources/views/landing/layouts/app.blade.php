@@ -53,5 +53,7 @@
     </main>
 
     <x-landing.footer />
+
+    <x-landing.floating-contact />
 </body>
 </html>

@@ -74,7 +74,7 @@
             @endif
         </div>
 
-        <div class="mt-[clamp(2.5rem,4.5vw,5.5rem)] flex flex-col gap-2 border-t border-white/15 py-[clamp(1.25rem,1.9vw,2.5rem)] {{ $label }} sm:flex-row sm:items-center sm:justify-between">
+        <div class="mt-[clamp(2.5rem,4.5vw,5.5rem)] flex flex-col gap-2 border-t border-white/15 py-[clamp(1.25rem,1.9vw,2.5rem)] pe-20 {{ $label }} sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {{ now()->year }} PT Metindo Perkasa. {{ __('landing.footer.rights') }}</p>
             <div class="flex items-center gap-[1.4vw] max-sm:justify-between">
                 <p>{{ __('landing.footer.tagline') }}</p>

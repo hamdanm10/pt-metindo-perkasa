@@ -6,7 +6,7 @@ if (intro && getComputedStyle(intro).display !== 'none') {
     const root = document.documentElement;
     const button = intro.querySelector('[data-intro-close]');
     const items = intro.querySelectorAll('[data-intro-item]');
-    const rest = document.querySelectorAll('header, main > :not(#intro), footer');
+    const rest = document.querySelectorAll('header, main > :not(#intro), footer, [data-widgets]');
     const mm = gsap.matchMedia();
 
     window.__introReady = true;
