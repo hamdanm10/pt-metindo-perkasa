@@ -184,6 +184,26 @@ class HomeTest extends TestCase
             ->assertSeeText(__('home.intro.begin', [], 'id'));
     }
 
+    public function test_intro_shows_the_hero_headline_word_by_word_and_a_plain_language_list(): void
+    {
+        $html = (string) $this->get('/en')->getContent();
+        $start = (int) strpos($html, 'id="intro"');
+        $intro = substr($html, $start, (int) strpos($html, '</nav>', $start) + 3000 - $start);
+
+        $this->assertSame(count(explode(' ', __('home.hero.title'))), substr_count($intro, 'data-intro-word'));
+
+        foreach (config('locales.landing') as $code) {
+            $this->assertStringContainsString('hreflang="'.config("locales.locales.{$code}.html_lang").'"', $intro);
+            $this->assertStringContainsString('href="'.route('landing.home', ['locale' => $code]).'"', $intro);
+            $this->assertNotSame('home.intro.begin', __('home.intro.begin', [], $code));
+        }
+
+        // Plain text codes in a flat list: no chips, no glow, no ring.
+        $this->assertStringNotContainsString('data-intro-light', $intro);
+        $this->assertStringNotContainsString('data-intro-ring', $intro);
+        $this->assertStringContainsString('aria-current="true"', $intro);
+    }
+
     public function test_home_marks_the_elements_that_animate(): void
     {
         $this->get('/en')

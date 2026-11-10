@@ -26,7 +26,8 @@ export const hero = () => {
     const start = () => timeline.play();
 
     if (root.classList.contains('intro-pending')) {
-        document.addEventListener('intro:closed', start, { once: true });
+        // The hero starts as the opening screen lifts away, so the two flow into each other.
+        document.addEventListener('intro:closing', start, { once: true });
     } else {
         start();
     }
