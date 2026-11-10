@@ -73,7 +73,8 @@ return [
         ],
     ],
     'services' => [
-        'label' => 'ما نقوم به',
+        'jump' => 'انتقل إلى خدمة',
+        'see_processes' => 'عرض فئات العمليات',
         'title' => 'الخدمات',
         'intro' => 'كل ما تقدّمه PT Metindo Perkasa، من الطلاء إلى التوريد.',
         'how' => [

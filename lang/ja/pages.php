@@ -73,7 +73,8 @@ return [
         ],
     ],
     'services' => [
-        'label' => '事業内容',
+        'jump' => 'サービスへ移動',
+        'see_processes' => '工程カテゴリーを見る',
         'title' => 'サービス',
         'intro' => 'めっきから供給まで、PT Metindo Perkasa が提供するすべて。',
         'how' => [

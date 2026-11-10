@@ -73,7 +73,8 @@ return [
         ],
     ],
     'services' => [
-        'label' => 'What we do',
+        'jump' => 'Jump to a service',
+        'see_processes' => 'See process categories',
         'title' => 'Services',
         'intro' => 'Everything PT Metindo Perkasa offers, from plating to supply.',
         'how' => [
