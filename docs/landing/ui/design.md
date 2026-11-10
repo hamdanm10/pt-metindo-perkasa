@@ -36,6 +36,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 
 ## Hero
 
+- **Tingginya setinggi layar** (`min-h-svh`): hero dimulai di puncak halaman (di bawah header yang transparan, lihat Navbar) dan berakhir tepat di tepi bawah layar, dengan isinya di tengah secara vertikal. Panel monogram dibatasi tingginya (`100svh` dikurangi header dan 6rem) supaya muat di layar pendek; padding atas-bawah di `lg` 3rem. Di layar yang sangat pendek (di bawah sekitar 650 px) isi yang lebih tinggi dari layar menambah tinggi hero, tidak dipotong.
 - Latar `ink`, dua kolom di `lg`: judul besar (`font-black`, huruf kapital, `clamp(3rem, 8.2vw, 7rem)`), paragraf, dan dua tombol (krimson berpanah, dan garis putih). Di kanan, panel lavender berisi monogram logo besar yang terpotong tepinya, sebagai pengganti foto.
 
 ## Navbar

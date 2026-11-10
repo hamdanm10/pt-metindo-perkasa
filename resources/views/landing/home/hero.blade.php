@@ -1,7 +1,7 @@
 @php($email = config('landing.contact.email'))
 
-<section data-hero class="bg-ink text-white" style="--focus-ring: #ffffff">
-    <div class="container-site grid items-center gap-12 pb-16 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1.17fr)_minmax(0,1fr)] lg:gap-[3.4vw] lg:pb-24 lg:pt-16">
+<section data-hero class="flex min-h-svh flex-col justify-center bg-ink text-white" style="--focus-ring: #ffffff">
+    <div class="container-site grid w-full items-center gap-12 pb-16 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1.17fr)_minmax(0,1fr)] lg:gap-[3.4vw] lg:py-12">
         <div>
             <h1 data-anim="hero-title" class="text-balance text-[clamp(3rem,7.2vw,10rem)] font-black uppercase leading-[0.9] tracking-tight">
                 {{ __('home.hero.title') }}
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div data-anim="hero-item" data-hero-panel class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:aspect-square" aria-hidden="true">
+        <div data-anim="hero-item" data-hero-panel class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:aspect-square lg:max-h-[calc(100svh-var(--header-h)-6rem)] lg:w-full" aria-hidden="true">
             <img src="{{ asset('images/brand/logo.svg') }}" alt="" width="612" height="256" class="absolute start-1/2 top-1/2 w-[120%] max-w-none -translate-y-1/2 -translate-x-1/2 rtl:translate-x-1/2">
         </div>
     </div>
