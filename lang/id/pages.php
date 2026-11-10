@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => 'Profil perusahaan',
         'title' => 'Tentang PT Metindo Perkasa',
         'intro' => 'Perusahaan yang fokus pada proses electroplating dan bahan kimia pendukung yang membuatnya konsisten.',
         'approach' => [

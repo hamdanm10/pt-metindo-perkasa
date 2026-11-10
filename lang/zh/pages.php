@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => '公司简介',
         'title' => '关于 PT Metindo Perkasa',
         'intro' => '一家专注于电镀工艺及使其可重复的配套化学品的公司。',
         'approach' => [

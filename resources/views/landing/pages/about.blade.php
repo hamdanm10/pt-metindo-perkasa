@@ -3,11 +3,10 @@
 @section('title', __('landing.nav.about'))
 
 @section('content')
-    {{-- Opening: label, a large headline, the intro, and two ways on. --}}
+    {{-- Opening: a large headline, the intro, and two ways on. --}}
     <section class="bg-ink text-white" style="--focus-ring: #ffffff">
         <div class="container-site pb-[clamp(3rem,6.67vw,8rem)] pt-[clamp(2.5rem,6vw,7.5rem)]">
-            <p data-anim="hero-item" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-300">{{ __('pages.about.label') }}</p>
-            <h1 data-anim="hero-title" class="mt-[1.4vw] max-w-[14em] text-balance text-[clamp(2.75rem,7.2vw,9rem)] font-black uppercase leading-[0.92] tracking-tight max-lg:mt-4">{{ __('pages.about.title') }}</h1>
+            <h1 data-anim="hero-title" class="max-w-[14em] text-balance text-[clamp(2.75rem,7.2vw,9rem)] font-black uppercase leading-[0.92] tracking-tight">{{ __('pages.about.title') }}</h1>
             <div class="mt-[3vw] grid items-end gap-8 max-lg:mt-8 lg:grid-cols-[1fr_auto]">
                 <p data-anim="hero-item" class="max-w-[38.9vw] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.4] text-white/85 max-lg:max-w-2xl">{{ __('pages.about.intro') }}</p>
                 <div data-anim="hero-item" class="flex flex-wrap gap-4">

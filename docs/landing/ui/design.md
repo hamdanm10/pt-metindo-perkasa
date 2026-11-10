@@ -53,7 +53,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 
 Isi mengikuti halaman About prototipe (`http://103.125.180.65/~wwwmetin/en/about`: profil perusahaan, pendekatan, visi dan misi, fasilitas, anak perusahaan, ajakan); sertifikasi tetap tidak ditampilkan (belum dikonfirmasi). Tampilannya dirancang ulang dengan gaya landing. Dari atas ke bawah:
 
-- **Pembuka** (`ink`): label "Company profile" (`brand-300`), judul kapital besar (7,2vw, huruf tumbuh), pengantar, dan dua tombol ke Processes dan Services (seperti dua tautan di prototipe).
+- **Pembuka** (`ink`): judul kapital besar (7,2vw, huruf tumbuh), pengantar, dan dua tombol ke Processes dan Services (seperti dua tautan di prototipe).
 - **Pendekatan** (lavender): dua kolom 5:7. Judul besar di kiri **menempel** (`sticky`) sementara dua paragraf (1,5vw, yang kedua lebih redup) dan foto perusahaan di kanan dibaca.
 - **Visi dan misi:** dua kartu besar bernomor 01 dan 02 (krimson 3:2 dan `ink`), angka raksasa transparan yang menebal dan kartu naik sedikit saat hover.
 - **Fasilitas** (putih): foto di kiri dan judul serta teks di kanan.

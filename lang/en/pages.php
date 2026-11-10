@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => 'Company profile',
         'title' => 'About PT Metindo Perkasa',
         'intro' => 'A company focused on electroplating processes and the supporting chemicals that make them repeatable.',
         'approach' => [

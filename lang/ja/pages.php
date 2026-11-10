@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => '会社概要',
         'title' => 'PT Metindo Perkasa について',
         'intro' => '電気めっき工程と、それを再現可能にする関連薬品に注力する企業です。',
         'approach' => [

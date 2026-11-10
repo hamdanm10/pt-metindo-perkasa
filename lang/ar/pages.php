@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => 'نبذة عن الشركة',
         'title' => 'عن PT Metindo Perkasa',
         'intro' => 'شركة تركّز على عمليات الطلاء الكهربائي والمواد الكيميائية الداعمة التي تجعلها قابلة للتكرار.',
         'approach' => [
