@@ -25,30 +25,30 @@
         <div class="mt-6">
             <x-dashboard.table>
                 <thead>
-                    <tr class="border-b border-ink/20 text-start text-sm text-muted">
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('users.fields.name') }}</th>
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('users.fields.email') }}</th>
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('users.fields.role') }}</th>
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('users.fields.status') }}</th>
-                        <th scope="col" class="py-3 text-start font-semibold"><span class="sr-only">{{ __('users.actions') }}</span></th>
+                    <tr>
+                        <th scope="col">{{ __('users.fields.name') }}</th>
+                        <th scope="col">{{ __('users.fields.email') }}</th>
+                        <th scope="col">{{ __('users.fields.role') }}</th>
+                        <th scope="col">{{ __('users.fields.status') }}</th>
+                        <th scope="col"><span class="sr-only">{{ __('users.actions') }}</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($users as $user)
-                        <tr wire:key="user-{{ $user->id }}" class="border-b border-ink/10">
-                            <td class="py-3 pe-4 font-semibold">{{ $user->name }}</td>
-                            <td class="py-3 pe-4" dir="ltr">{{ $user->email }}</td>
-                            <td class="py-3 pe-4"><x-dashboard.badge tone="role">{{ __('dashboard.roles.'.$user->role->value) }}</x-dashboard.badge></td>
-                            <td class="py-3 pe-4">
+                        <tr wire:key="user-{{ $user->id }}">
+                            <td class="font-semibold">{{ $user->name }}</td>
+                            <td dir="ltr">{{ $user->email }}</td>
+                            <td><x-dashboard.badge tone="role">{{ __('dashboard.roles.'.$user->role->value) }}</x-dashboard.badge></td>
+                            <td>
                                 <x-dashboard.badge :tone="$user->is_active ? 'active' : 'muted'">{{ __('users.status.'.($user->is_active ? 'active' : 'inactive')) }}</x-dashboard.badge>
                             </td>
-                            <td class="py-3 text-end">
-                                <a href="{{ route('app.users.edit', $user) }}" class="inline-flex min-h-11 items-center font-bold text-brand-700 underline underline-offset-4">{{ __('users.edit') }}<span class="sr-only"> {{ $user->name }}</span></a>
+                            <td class="text-end">
+                                <a href="{{ route('app.users.edit', $user) }}" class="row-action">{{ __('users.edit') }}<span class="sr-only"> {{ $user->name }}</span></a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-8 text-center text-muted">{{ __('users.empty') }}</td>
+                            <td colspan="5" class="py-12 text-center text-muted">{{ __('users.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

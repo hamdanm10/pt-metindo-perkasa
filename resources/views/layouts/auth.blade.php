@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     @vite(['resources/css/dashboard.css', 'resources/css/fonts/latin.css'])
 </head>
-<body class="min-h-screen bg-white font-sans text-ink antialiased" style="--font-display: var(--font-sans)">
+<body class="min-h-screen bg-white font-sans text-ink antialiased">
     @yield('body')
 </body>
 </html>

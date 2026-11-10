@@ -38,12 +38,12 @@ const mount = (host) => {
     const labels = JSON.parse(host.dataset.labels || '{}');
 
     const toolbar = document.createElement('div');
-    toolbar.className = 'flex flex-wrap gap-1 rounded-t-lg border border-b-0 border-ink/50 bg-lavender p-2';
+    toolbar.className = 'flex flex-wrap gap-1 rounded-t-lg border-2 border-b-0 border-ink/20 bg-lavender p-2';
     toolbar.setAttribute('role', 'toolbar');
     toolbar.setAttribute('aria-labelledby', host.dataset.labelledBy);
 
     const surface = document.createElement('div');
-    surface.className = 'rounded-b-lg border border-ink/50 bg-white';
+    surface.className = 'rounded-b-lg border-2 border-ink/20 bg-white';
 
     host.append(toolbar, surface);
 

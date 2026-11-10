@@ -6,12 +6,12 @@
             <x-dashboard.field name="form.name" :label="__('products.fields.name')" wire:model="form.name" autocomplete="off" />
 
             <div>
-                <label for="form-description" class="block text-sm font-semibold">{{ __('products.fields.description') }}</label>
+                <label for="form-description" class="field-label">{{ __('products.fields.description') }}</label>
                 <textarea id="form-description" rows="6" wire:model="form.description"
                           @error('form.description') aria-invalid="true" aria-describedby="form-description-error" @enderror
-                          class="mt-2 block w-full rounded-lg border border-ink/50 bg-white px-4 py-3 text-base text-ink"></textarea>
+                          class="field-input"></textarea>
                 @error('form.description')
-                    <p id="form-description-error" class="mt-2 text-sm font-semibold text-brand-700" role="alert">{{ $message }}</p>
+                    <p id="form-description-error" class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                 @enderror
             </div>
 

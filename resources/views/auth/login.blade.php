@@ -3,9 +3,9 @@
 @section('body')
     <main class="grid min-h-screen lg:grid-cols-[5fr_6fr]">
         <div class="relative flex flex-col justify-between overflow-hidden bg-ink px-6 py-8 text-white sm:px-12 lg:p-14" style="--focus-ring: #ffffff">
-            <a href="{{ route('landing.home', ['locale' => 'en']) }}" class="login-brand inline-flex w-fit items-center" aria-label="{{ __('auth.back_to_site') }}">
+            <a href="{{ route('landing.home', ['locale' => 'en']) }}" class="brand-lockup inline-flex w-fit items-center" aria-label="{{ __('auth.back_to_site') }}">
                 <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-10 w-auto">
-                <span class="login-brand__name"><span class="font-extrabold">Metindo</span> <span>Perkasa</span></span>
+                <span class="brand-lockup__name"><span class="font-extrabold">Metindo</span> <span>Perkasa</span></span>
             </a>
 
             <div class="login-rise max-lg:mt-12 lg:pb-6">
@@ -29,19 +29,19 @@
                     <form method="POST" action="{{ $action }}" class="mt-10 space-y-8" novalidate data-login-form>
                         @csrf
 
-                        <div class="login-group">
-                            <label for="email" class="login-label">{{ __('auth.email') }}</label>
-                            <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus autocomplete="username" inputmode="email" class="login-field"
+                        <div class="field-group">
+                            <label for="email" class="field-label">{{ __('auth.email') }}</label>
+                            <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus autocomplete="username" inputmode="email" class="field-input"
                                    @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
                             @error('email')
                                 <p id="email-error" class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="login-group">
-                            <label for="password" class="login-label">{{ __('auth.password') }}</label>
+                        <div class="field-group">
+                            <label for="password" class="field-label">{{ __('auth.password') }}</label>
                             <div class="relative">
-                                <input id="password" name="password" type="password" required autocomplete="current-password" class="login-field pe-12"
+                                <input id="password" name="password" type="password" required autocomplete="current-password" class="field-input pe-12"
                                        @error('password') aria-invalid="true" aria-describedby="password-error" @enderror>
                                 <button type="button" data-password-toggle="password" aria-pressed="false" aria-label="{{ __('auth.show_password') }}"
                                         data-show="{{ __('auth.show_password') }}" data-hide="{{ __('auth.hide_password') }}"

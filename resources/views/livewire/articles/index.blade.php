@@ -26,11 +26,11 @@
         <div class="mt-6">
             <x-dashboard.table>
                 <thead>
-                    <tr class="border-b border-ink/20 text-start text-sm text-muted">
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('article_manager.fields.title') }}</th>
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('article_manager.fields.type') }}</th>
-                        <th scope="col" class="py-3 pe-4 text-start font-semibold">{{ __('article_manager.fields.languages') }}</th>
-                        <th scope="col" class="py-3 text-start font-semibold"><span class="sr-only">{{ __('article_manager.actions') }}</span></th>
+                    <tr>
+                        <th scope="col">{{ __('article_manager.fields.title') }}</th>
+                        <th scope="col">{{ __('article_manager.fields.type') }}</th>
+                        <th scope="col">{{ __('article_manager.fields.languages') }}</th>
+                        <th scope="col"><span class="sr-only">{{ __('article_manager.actions') }}</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,10 +39,10 @@
                             $translations = $article->translations->keyBy('locale');
                             $title = $article->displayTitle() ?? __('article_manager.untitled');
                         @endphp
-                        <tr wire:key="article-{{ $article->id }}" class="border-b border-ink/10 align-top">
-                            <td class="py-3 pe-4 font-semibold">{{ $title }}</td>
-                            <td class="py-3 pe-4"><x-dashboard.badge tone="role">{{ __('article_manager.types.'.$article->type->value) }}</x-dashboard.badge></td>
-                            <td class="py-3 pe-4">
+                        <tr wire:key="article-{{ $article->id }}" class="align-top">
+                            <td class="font-semibold">{{ $title }}</td>
+                            <td><x-dashboard.badge tone="role">{{ __('article_manager.types.'.$article->type->value) }}</x-dashboard.badge></td>
+                            <td>
                                 <ul class="flex flex-wrap gap-1.5">
                                     @foreach (config('locales.landing') as $code)
                                         @php($translation = $translations->get($code))
@@ -56,14 +56,14 @@
                                     @endforeach
                                 </ul>
                             </td>
-                            <td class="py-3 text-end whitespace-nowrap">
-                                <a href="{{ route('app.articles.edit', $article) }}" class="inline-flex min-h-11 items-center font-bold text-brand-700 underline underline-offset-4">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
-                                <button type="button" wire:click="delete({{ $article->id }})" wire:confirm="{{ __('article_manager.confirm_delete') }}" class="ms-4 inline-flex min-h-11 items-center font-bold text-ink underline underline-offset-4 hover:text-brand-700">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
+                            <td class="text-end whitespace-nowrap">
+                                <a href="{{ route('app.articles.edit', $article) }}" class="row-action">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
+                                <button type="button" wire:click="delete({{ $article->id }})" wire:confirm="{{ __('article_manager.confirm_delete') }}" class="row-action row-action--danger">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-8 text-center text-muted">{{ __('article_manager.empty') }}</td>
+                            <td colspan="4" class="py-12 text-center text-muted">{{ __('article_manager.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
