@@ -84,6 +84,8 @@ return [
         'address' => env('LANDING_CONTACT_ADDRESS'),
         'hours' => env('LANDING_CONTACT_HOURS'),
         'whatsapp' => env('LANDING_CONTACT_WHATSAPP'),
+        // Customer service numbers for the WhatsApp button: "Name|628123;Name 2|628456". Without it the single `whatsapp` number is used.
+        'whatsapp_agents' => env('LANDING_WHATSAPP_AGENTS'),
     ],
 
 ];
