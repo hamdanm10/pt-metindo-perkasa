@@ -17,45 +17,70 @@
 @endpush
 
 @section('content')
-    <x-landing.page-header :title="$article['title']">
-        <a href="{{ route('landing.articles.index') }}" class="mb-6 inline-flex min-h-11 items-center font-semibold text-white underline underline-offset-4">
-            {{ __('landing.back') }}
-        </a>
-        <p class="mb-4 text-sm font-semibold text-white/85">
-            {{ __("articles.tags.{$article['type']}") }}
-            <span class="mx-1" aria-hidden="true">/</span>
-            <time datetime="{{ $article['date'] }}">{{ $article['date'] }}</time>
-        </p>
-    </x-landing.page-header>
+    {{-- A thin bar under the top of the screen shows how far the article has been read (read-progress, set by articles.js). --}}
+    <div data-read-progress class="pointer-events-none fixed inset-x-0 top-0 z-[55] h-1 origin-left scale-x-0 bg-brand-600" aria-hidden="true"></div>
 
-    <article class="bg-white">
-        <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-24">
-            @if ($article['image'])
-                <img src="{{ $article['image'] }}" alt="{{ $article['alt'] }}" decoding="async" class="mb-8 aspect-video w-full rounded-2xl object-cover">
-            @endif
+    {{-- The reading page: a narrow column like Medium's (680 px), generous spacing, and a picture that is wider than the text. --}}
+    <section class="bg-white text-ink">
+        <div class="mx-auto max-w-[44.5rem] px-4 pb-8 pt-8 sm:px-6 lg:pb-10 lg:pt-14">
+            <a href="{{ route('landing.articles.index') }}" data-read-head class="group inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink/70 hover:text-ink">
+                <span aria-hidden="true" class="transition-transform duration-500 group-hover:-translate-x-1 rtl:-scale-x-100 rtl:group-hover:translate-x-1">←</span>
+                <span class="uline">{{ __('landing.back') }}</span>
+            </a>
+
+            <div data-read-head class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-ink/70">
+                <span class="rounded-full border border-ink/40 px-3 py-1 text-xs font-extrabold uppercase text-ink">{{ __("articles.tags.{$article['type']}") }}</span>
+                <time datetime="{{ $article['date'] }}">{{ \Illuminate\Support\Carbon::parse($article['date'])->isoFormat('LL') }}</time>
+                <span aria-hidden="true">·</span>
+                <span>{{ __('articles.minutes', ['count' => $article['minutes']]) }}</span>
+                @if ($article['sample'])
+                    <span class="rounded-full bg-ink px-3 py-1 text-xs font-bold text-white">{{ __('articles.sample') }}</span>
+                @endif
+            </div>
+
+            <h1 data-read-head class="mt-5 text-balance text-[clamp(2rem,4.4vw,3.5rem)] font-black leading-[1.08] tracking-tight" @if ($article['sample']) lang="en" dir="ltr" @endif>{{ $article['title'] }}</h1>
+
             @if ($article['excerpt'] !== '')
-                <p class="text-2xl font-semibold leading-snug text-ink">{{ $article['excerpt'] }}</p>
+                <p data-read-head class="mt-5 text-[clamp(1.15rem,1.6vw,1.5rem)] leading-snug text-ink/65" @if ($article['sample']) lang="en" dir="ltr" @endif>{{ $article['excerpt'] }}</p>
             @endif
-            <div class="article-body mt-8 text-lg text-ink">{!! $bodyHtml !!}</div>
+
+            <div data-read-head class="mt-8 flex flex-wrap items-center justify-between gap-4 border-y border-ink/10 py-3">
+                <p class="text-sm font-bold text-ink/70">PT Metindo Perkasa</p>
+                @include('landing.pages.articles.share', ['title' => $article['title']])
+            </div>
         </div>
-    </article>
+
+        @if ($article['image'])
+            <figure data-read-image class="mx-auto mt-4 max-w-[60rem] px-4 sm:px-6">
+                <div class="aspect-[16/9] overflow-hidden rounded-lg bg-lavender">
+                    <img src="{{ $article['image'] }}" alt="{{ $article['alt'] }}" decoding="async" class="size-full object-cover">
+                </div>
+            </figure>
+        @endif
+
+        <div class="mx-auto max-w-[44.5rem] px-4 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-14" @if ($article['sample']) lang="en" dir="ltr" @endif>
+            @if ($article['sample'])
+                <p class="mb-8 rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold" lang="{{ app()->getLocale() }}" dir="{{ config('locales.locales.'.app()->getLocale().'.dir') }}">{{ __('landing.sample_note') }}</p>
+            @endif
+            <div data-read-body class="article-body reading">{!! $bodyHtml !!}</div>
+
+            <div class="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 pt-6" lang="{{ app()->getLocale() }}" dir="{{ config('locales.locales.'.app()->getLocale().'.dir') }}">
+                <a href="{{ route('landing.articles.index') }}" class="group inline-flex min-h-11 items-center gap-2 text-sm font-bold">
+                    <span aria-hidden="true" class="transition-transform duration-500 group-hover:-translate-x-1 rtl:-scale-x-100 rtl:group-hover:translate-x-1">←</span>
+                    <span class="uline">{{ __('landing.back') }}</span>
+                </a>
+                @include('landing.pages.articles.share', ['title' => $article['title']])
+            </div>
+        </div>
+    </section>
 
     @if ($related)
-        <section class="bg-lavender">
-            <div class="container-site lg: section-y">
-                <h2 data-anim="heading" class="text-2xl font-black tracking-tight text-ink">{{ __('pages.articles.related') }}</h2>
-                <ul data-anim="rows" class="mt-8 grid gap-8 md:grid-cols-3">
+        <section class="bg-lavender text-ink">
+            <div class="container-site section-y">
+                <h2 data-anim="grow" class="text-[clamp(1.75rem,3.4vw,4.25rem)] font-black uppercase leading-[0.98] tracking-tight">{{ __('pages.articles.related') }}</h2>
+                <ul data-art-grid class="mt-[3vw] grid gap-x-[2.5vw] gap-y-10 max-lg:mt-8 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($related as $item)
-                        <li class="border-t-2 border-ink pt-5">
-                            <p class="text-sm font-semibold text-muted">
-                                {{ __("articles.tags.{$item['type']}") }}
-                                <span class="mx-1" aria-hidden="true">/</span>
-                                <time datetime="{{ $item['date'] }}">{{ $item['date'] }}</time>
-                            </p>
-                            <h3 class="mt-2 text-xl font-bold text-ink">
-                                <a href="{{ route('landing.articles.show', ['article' => $item['slug']]) }}" class="hover:text-brand-700">{{ $item['title'] }}</a>
-                            </h3>
-                        </li>
+                        <li><x-landing.article-card :article="$item" /></li>
                     @endforeach
                 </ul>
             </div>

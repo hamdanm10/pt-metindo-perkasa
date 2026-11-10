@@ -49,6 +49,25 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 - Pemilih bahasa: tombol menampilkan **kode singkat** bahasa yang dipilih (EN, ID, ZH, AR, JA; nama lengkapnya ada di `title`), sedangkan daftar turun putih dan panel ponsel memakai **nama lengkap** (English, Bahasa Indonesia, dan seterusnya), seperti footer. **Di bawah `lg` menu berupa hamburger** (bukan dropdown): kotak krimson 42 px (sudut 5 px) berisi tiga garis 16x3 px yang menjadi tanda silang saat terbuka (0,75 detik, kurva yang sama dengan header). Ia membuka **panel `ink` layar penuh** (`#mobile-menu`) seperti referensi: tiap menu satu baris selebar layar (huruf 24 px tebal, padding 16x12 px, garis tipis putih 20 persen di atas dan bawah, halaman aktif berwarna `brand-300`), diikuti pilihan bahasa dengan nama lengkap (bahasa aktif berlatar putih). Latar halaman meredup di belakangnya dan gulir halaman dikunci selama menu terbuka. Menutup lewat tombol, Escape, atau memilih tautan.
 - Jangkar (`#catalog`) tidak tertutup header: `scroll-padding-top` pada `html`. Layar intro (z 80) berada di atas header (z 50), dan header ikut `inert` selama intro.
 
+## Halaman Articles & News
+
+Gambar artikel yang dipasang: `public/images/landing/articles/sample-business.webp` (dari client), dipakai oleh semua artikel contoh. Artikel asli memakai gambar kecil yang diunggah di dasbor.
+
+**Artikel contoh.** Selama dasbor belum menerbitkan apa pun di suatu bahasa, **di mode contoh** (`LANDING_SAMPLE_CONTENT`) halaman memakai lima artikel contoh berbahasa Inggris dari `SampleArticles` (tiga artikel dan dua berita, terbaru lebih dulu, tanggal dihitung mundur dari hari ini) supaya daftar dan halaman bacanya bisa dinilai dan diklik. Isinya pengetahuan umum tentang pelapisan atau pernyataan tentang situs ini, bukan klaim tentang perusahaan, dan setiap halaman yang menampilkannya menyebut bahwa itu contoh (catatan contoh dan penanda "Sample"). Begitu bahasa itu punya artikel terbit, contoh hilang di bahasa itu. Di production tanpa mode contoh halaman tetap 404 dan menu Articles tidak muncul. Satu slug yang sama dipakai di semua bahasa (`hreflang` ke kelima bahasa).
+
+**Daftar** (`/{locale}/articles`):
+- **Pembuka** (`ink`): judul kapital besar (huruf tumbuh), pengantar, dan **filter** berbentuk pil (All, Article, News) dengan **jumlah** di tiap pil.
+- **Artikel terbaru besar** (lavender): gambar 16:10 di kiri (7 bagian) dan di kanan penanda "Latest", jenis, tanggal (diformat sesuai bahasa), waktu baca, judul besar (3,3vw, `title-hover`), ringkasan, dan "Read →". **Saat hover** gambar membesar 1,05 kali (1 detik) dan panah bergeser.
+- **Kartu sisanya** dalam kisi tiga kolom (dua di tablet, satu di ponsel): gambar 16:10 dengan penanda jenis (putih) dan "Sample", tanggal dan waktu baca, judul 900, ringkasan (maksimum tiga baris), dan "Read →". Hover: gambar membesar, judul bergaris sorot.
+
+**Halaman baca** (`/{locale}/articles/{slug}`), **mengikuti kenyamanan baca Medium**:
+- **Kolom teks sempit 680 px** (`max-w-[44.5rem]`) di tengah, putih bersih tanpa pembuka gelap (header tetap di atas), sehingga baris sekitar 65 sampai 75 karakter.
+- Dari atas: tautan "Back to all articles", penanda jenis, tanggal, waktu baca, judul besar (3,5rem, berat 900), ringkasan sebagai subjudul abu-abu, dan baris tipis berisi penulis ("PT Metindo Perkasa") dengan tombol **Copy link** (menyalin alamat, label berubah "Link copied" 2 detik) dan **Share on WhatsApp** (`wa.me`, tanpa skrip pihak ketiga).
+- **Gambar lebih lebar daripada teks** (960 px, 16:9, sudut 8 px).
+- **Isi** (`.reading`): huruf 20 px (18 px di ponsel), tinggi baris 1,75, jarak antar blok 1,5em, subjudul 1,7em berat 900, daftar, dan kutipan bergaris di sisi (miring, 1,2em). Di akhir ulang tautan kembali dan tombol bagikan.
+- **Bilah kemajuan baca** setebal 4 px di tepi atas layar, krimson, terisi mengikuti gulir.
+- **Artikel terkait** (lavender) dalam tiga kartu yang sama, lalu kartu ajakan.
+
 ## Halaman Services
 
 Isi mengikuti halaman Services prototipe (`http://103.125.180.65/~wwwmetin/en/services`: judul "Services", pengantar, tiga layanan, "How we work" empat langkah, ajakan), **tanpa label "What we do"**. Teks tiga layanan sama dengan daftar layanan di beranda (`home.services.items.*`). Dari atas ke bawah:

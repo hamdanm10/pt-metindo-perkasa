@@ -681,3 +681,67 @@ html.menu-open {
         display: none;
     }
 }
+
+/*
+ * The reading text of an article, in the manner of Medium: a 20 px body at a generous line
+ * height, headings that stand out, and a quote with a bar. The column is 680 px wide (set in the
+ * page), which keeps lines around 65 to 75 characters.
+ */
+.reading {
+    font-size: clamp(1.125rem, 1.15vw + 0.8rem, 1.3125rem);
+    line-height: 1.75;
+    color: var(--color-ink);
+}
+
+.reading > * + * {
+    margin-top: 1.5em;
+}
+
+.reading h2 {
+    margin-top: 2.2em;
+    font-size: 1.7em;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.reading h3 {
+    margin-top: 1.9em;
+    font-size: 1.3em;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.reading h2 + *,
+.reading h3 + * {
+    margin-top: 0.8em;
+}
+
+.reading ul,
+.reading ol {
+    padding-inline-start: 1.4em;
+}
+
+.reading li + li {
+    margin-top: 0.5em;
+}
+
+.reading blockquote {
+    margin-block: 2em;
+    border-inline-start: 3px solid var(--color-ink);
+    padding-inline-start: 1.2em;
+    font-size: 1.2em;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--color-ink);
+}
+
+.reading strong {
+    font-weight: 800;
+}
+
+.reading a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}

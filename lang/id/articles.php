@@ -7,4 +7,13 @@ return [
         'article' => 'Artikel',
         'news' => 'Berita',
     ],
+    'minutes' => ':count menit baca',
+    'sample' => 'Contoh',
+    'latest' => 'Terbaru',
+    'share' => [
+        'title' => 'Bagikan',
+        'copy' => 'Salin tautan',
+        'copied' => 'Tautan disalin',
+        'whatsapp' => 'Bagikan lewat WhatsApp',
+    ],
 ];

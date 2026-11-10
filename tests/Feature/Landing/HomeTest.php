@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
+use App\Services\Articles\SampleArticles;
 use App\Services\Landing\LandingGallery;
 use Tests\TestCase;
 
@@ -460,27 +461,33 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_home_shows_three_static_sample_article_cards_while_there_is_no_article(): void
+    public function test_home_shows_three_linked_sample_article_cards_while_there_is_no_article(): void
     {
         config(['landing.sample_content' => true]);
 
         $response = $this->get('/en')->assertOk();
+        $samples = array_slice(app(SampleArticles::class)->summaries(), 0, 3);
 
-        $this->assertSame(3, substr_count((string) $response->getContent(), '[SAMPLE] Article title'));
+        $this->assertCount(3, $samples);
+
+        foreach ($samples as $sample) {
+            $response->assertSee($sample['title'])
+                ->assertSee('href="'.route('landing.articles.show', ['locale' => 'en', 'article' => $sample['slug']]).'"', false);
+        }
+
         $response->assertSee(__('home.articles.title'))
-            ->assertSee('[PHOTO] article thumbnail')
+            ->assertSee('images/landing/articles/sample-business.webp', false)
             ->assertSee('class="title-hover"', false)
             ->assertSee(__('articles.tags.news'))
             ->assertSee('data-btn', false)
             ->assertSeeText(__('home.articles.all'))
-            ->assertDontSee('data-anim="rows"', false)
-            ->assertDontSee('href="'.url('/en/articles').'"', false);
+            ->assertSee('href="'.url('/en/articles').'"', false);
     }
 
     public function test_sample_article_cards_are_hidden_outside_sample_mode(): void
     {
         config(['landing.sample_content' => false]);
 
-        $this->get('/en')->assertOk()->assertDontSee('[SAMPLE] Article title');
+        $this->get('/en')->assertOk()->assertDontSee('sample-business.webp', false)->assertDontSee(__('home.articles.title'));
     }
 }
