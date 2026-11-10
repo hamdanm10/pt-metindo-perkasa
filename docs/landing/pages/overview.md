@@ -28,7 +28,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
-| About | `/{locale}/about` | Profil perusahaan, pendekatan, visi dan misi, fasilitas (teks), anak perusahaan (contoh) |
+| About | `/{locale}/about` | Profil perusahaan, pendekatan, visi dan misi, fasilitas (teks), dan anak perusahaan sebagai **peta Indonesia** dengan pin (contoh). Isinya mengikuti halaman About prototipe `.../en/about`; tampilannya dirancang ulang ([`../ui/design.md`](../ui/design.md), bagian About) |
 | Processes | `/{locale}/processes` | 13 kategori sebagai daftar bertautan ke halaman kategori |
 | Kategori | `/{locale}/processes/{category}` | Nama kategori, daftar proses (tanpa tautan), kategori lain |
 | Services | `/{locale}/services` | Tiga layanan, dan "How we work" empat langkah berurutan (Enquiry, Spec review, Process and supply, Delivery) |

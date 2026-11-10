@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => '会社概要',
         'title' => 'PT Metindo Perkasa について',
         'intro' => '電気めっき工程と、それを再現可能にする関連薬品に注力する企業です。',
         'approach' => [
@@ -28,6 +27,7 @@ return [
             'title' => '子会社',
             'intro' => '当グループはインドネシア各地の都市で事業を展開しています。ピンまたは社名を選ぶと Google マップで所在地が開きます。',
             'open_map' => 'Google マップで開く',
+            'map' => '子会社の所在地を示すインドネシアの地図',
             'items' => [
                 'medan' => 'Medan · 電気めっきサービス',
                 'jakarta' => 'Jakarta · めっき薬品の供給',

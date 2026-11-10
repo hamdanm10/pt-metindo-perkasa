@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => 'Company profile',
         'title' => 'About PT Metindo Perkasa',
         'intro' => 'A company focused on electroplating processes and the supporting chemicals that make them repeatable.',
         'approach' => [
@@ -28,6 +27,7 @@ return [
             'title' => 'Our subsidiaries',
             'intro' => 'Our group operates from several cities across Indonesia. Select a pin or a company to open its location in Google Maps.',
             'open_map' => 'Open in Google Maps',
+            'map' => 'Map of Indonesia with the locations of our subsidiaries',
             'items' => [
                 'medan' => 'Medan · Electroplating services',
                 'jakarta' => 'Jakarta · Plating chemical supply',

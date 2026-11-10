@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'about' => [
-        'label' => '公司简介',
         'title' => '关于 PT Metindo Perkasa',
         'intro' => '一家专注于电镀工艺及使其可重复的配套化学品的公司。',
         'approach' => [
@@ -28,6 +27,7 @@ return [
             'title' => '我们的子公司',
             'intro' => '我们的集团在印度尼西亚多个城市运营。点击地图标记或公司名称，即可在 Google 地图中查看位置。',
             'open_map' => '在 Google 地图中打开',
+            'map' => '标有各子公司位置的印度尼西亚地图',
             'items' => [
                 'medan' => 'Medan · 电镀服务',
                 'jakarta' => 'Jakarta · 电镀化学品供应',

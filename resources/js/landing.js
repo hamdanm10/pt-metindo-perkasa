@@ -6,3 +6,4 @@ import './landing/menus.js';
 import './landing/video-player.js';
 import './landing/to-top.js';
 import './landing/mobile-menu.js';
+import './landing/about-map.js';
