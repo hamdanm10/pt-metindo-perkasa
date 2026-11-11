@@ -75,6 +75,23 @@ class ShellTest extends TestCase
         $this->assertStringNotContainsString('Bricolage', $html);
     }
 
+    public function test_the_navbar_holds_the_logo_and_both_dropdowns_above_the_sidebar(): void
+    {
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->getContent();
+
+        $navbarEnd = (int) strpos($html, '</header>');
+        $this->assertGreaterThan(0, $navbarEnd);
+
+        $navbar = substr($html, (int) strpos($html, '<header'), $navbarEnd);
+        $this->assertStringContainsString('brand-lockup', $navbar);
+        $this->assertStringContainsString('aria-label="'.__('dashboard.language').'"', $navbar);
+        $this->assertStringContainsString('aria-label="'.__('dashboard.account_menu').'"', $navbar);
+        $this->assertStringContainsString('data-sidebar-toggle', $navbar);
+
+        $this->assertLessThan(strpos($html, 'id="sidebar"'), $navbarEnd);
+        $this->assertStringNotContainsString('brand-lockup', substr($html, (int) strpos($html, 'id="sidebar"')));
+    }
+
     public function test_the_content_sits_in_a_centered_container(): void
     {
         $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')

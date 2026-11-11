@@ -6,13 +6,13 @@
 @endphp
 
 <details class="relative" data-dismissible>
-    <summary class="dd-summary inline-flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg bg-ink px-4 text-sm font-bold text-white transition-colors hover:bg-ink/85 [&::-webkit-details-marker]:hidden"
+    <summary class="dd-summary inline-flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg bg-white/10 px-4 text-sm font-bold text-white transition-colors hover:bg-white/20 [&::-webkit-details-marker]:hidden"
              style="--focus-ring: #ffffff" aria-label="{{ __('dashboard.language') }}">
         <span class="hidden sm:inline" lang="{{ $currentLocale['html_lang'] }}">{{ $currentLocale['name'] }}</span>
         <span class="sm:hidden">{{ strtoupper($current) }}</span>
         <svg viewBox="0 0 20 20" class="dd-chevron size-4" fill="currentColor" aria-hidden="true"><path d="M5.25 7.5 10 12.25 14.75 7.5l1.06 1.06L10 14.37 4.19 8.56 5.25 7.5Z"/></svg>
     </summary>
-    <div class="dd-panel absolute end-0 top-full z-40 mt-2 w-52 rounded-lg bg-ink p-2 text-white shadow-lg" style="--focus-ring: #ffffff">
+    <div class="dd-panel absolute end-0 top-full z-40 mt-2 w-52 rounded-lg bg-ink p-2 text-white shadow-lg ring-1 ring-white/15" style="--focus-ring: #ffffff">
         <form method="POST" action="{{ $action }}" aria-label="{{ __('dashboard.language') }}">
             @csrf
             @foreach (config('locales.dashboard') as $code)
