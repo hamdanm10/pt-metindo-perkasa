@@ -3,23 +3,33 @@
 declare(strict_types=1);
 
 return [
-    'title' => 'Accounts',
-    'create' => 'Add account',
-    'create_title' => 'Add account',
-    'edit_title' => 'Account details',
+    'kinds' => [
+        'staff' => [
+            'title' => 'Staff',
+            'create' => 'Add staff',
+            'create_title' => 'Add staff',
+            'edit_title' => 'Staff details',
+            'empty' => 'No staff match.',
+            'back' => 'Back to staff',
+        ],
+        'customer' => [
+            'title' => 'Customers',
+            'create' => 'Add customer',
+            'create_title' => 'Add customer',
+            'edit_title' => 'Customer details',
+            'empty' => 'No customers match.',
+            'back' => 'Back to customers',
+        ],
+    ],
     'edit' => 'Edit',
     'search' => 'Search name or email',
-    'all_roles' => 'All roles',
     'all_statuses' => 'All statuses',
     'actions' => 'Actions',
-    'empty' => 'No accounts match.',
     'save' => 'Save',
     'cancel' => 'Cancel',
-    'back' => 'Back to accounts',
     'fields' => [
         'name' => 'Name',
         'email' => 'Email',
-        'role' => 'Role',
         'status' => 'Status',
         'initial_password' => 'Initial password',
         'new_password' => 'New password',
@@ -46,8 +56,7 @@ return [
         'deactivated' => 'Account deactivated.',
     ],
     'errors' => [
-        'self_role' => 'You cannot remove your own admin role.',
-        'last_admin' => 'The last active admin cannot lose the admin role.',
+        'admin_exists' => 'Only one admin is allowed, and it already exists.',
         'self_active' => 'You cannot deactivate your own account.',
         'last_admin_active' => 'The last active admin cannot be deactivated.',
     ],

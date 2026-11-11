@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Users;
 
+use App\Actions\Users\CreateUser;
 use App\Actions\Users\ResetUserPassword;
 use App\Actions\Users\SetUserActive;
 use App\Actions\Users\UpdateUser;
@@ -18,24 +19,32 @@ class UserActionsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_the_last_active_admin_cannot_lose_the_admin_role(): void
+    public function test_updating_changes_the_name_and_email_but_never_the_role(): void
     {
-        $lastAdmin = User::factory()->admin()->create();
-        $actor = User::factory()->admin()->inactive()->create();
+        $user = User::factory()->customer()->create(['email' => 'old@example.test']);
 
-        $this->expectException(ValidationException::class);
+        app(UpdateUser::class)->execute($user, 'New Name', 'New@Example.Test');
 
-        app(UpdateUser::class)->execute($actor, $lastAdmin, 'Name', 'x@example.test', Role::Staff);
+        $user->refresh();
+
+        $this->assertSame('New Name', $user->name);
+        $this->assertSame('new@example.test', $user->email);
+        $this->assertSame(Role::Customer, $user->role);
     }
 
-    public function test_an_inactive_admin_can_be_demoted_freely(): void
+    public function test_only_one_admin_can_be_created(): void
     {
-        $actor = User::factory()->admin()->create();
-        $inactive = User::factory()->admin()->inactive()->create();
+        $create = app(CreateUser::class);
 
-        app(UpdateUser::class)->execute($actor, $inactive, 'Name', 'x@example.test', Role::Staff);
+        $create->execute('First', 'first@example.test', 'Secret123', Role::Admin);
 
-        $this->assertSame(Role::Staff, $inactive->refresh()->role);
+        $this->assertThrows(
+            fn () => $create->execute('Second', 'second@example.test', 'Secret123', Role::Admin),
+            ValidationException::class,
+        );
+
+        $this->assertSame(1, User::query()->where('role', Role::Admin->value)->count());
+        $this->assertSame(Role::Staff, $create->execute('Staff', 'staff@example.test', 'Secret123', Role::Staff)->role);
     }
 
     public function test_the_last_active_admin_cannot_be_deactivated(): void

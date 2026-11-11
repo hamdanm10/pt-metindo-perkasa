@@ -51,7 +51,7 @@ class ErrorPagesTest extends TestCase
     {
         $staff = User::factory()->create(['role' => Role::Staff]);
 
-        $this->actingAs($staff)->get('/app/users')
+        $this->actingAs($staff)->get('/app/staff')
             ->assertForbidden()
             ->assertSee(__('errors.403.title'));
     }

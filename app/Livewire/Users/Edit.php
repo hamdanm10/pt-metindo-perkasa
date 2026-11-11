@@ -7,7 +7,7 @@ namespace App\Livewire\Users;
 use App\Actions\Users\ResetUserPassword;
 use App\Actions\Users\SetUserActive;
 use App\Actions\Users\UpdateUser;
-use App\Enums\Role;
+use App\Livewire\Concerns\ManagesAccountKind;
 use App\Livewire\Concerns\ResolvesActor;
 use App\Livewire\Forms\UserForm;
 use App\Models\User;
@@ -18,6 +18,7 @@ use Livewire\Component;
 
 class Edit extends Component
 {
+    use ManagesAccountKind;
     use ResolvesActor;
 
     #[Locked]
@@ -27,8 +28,10 @@ class Edit extends Component
 
     public string $newPassword = '';
 
-    public function mount(User $user): void
+    public function mount(User $user, string $kind): void
     {
+        $this->setKind($kind);
+        abort_unless($user->role === $this->role(), 404);
         $this->authorize('update', $user);
 
         $this->user = $user;
@@ -42,13 +45,7 @@ class Edit extends Component
         $this->form->normalize();
         $this->form->validate();
 
-        $updateUser->execute(
-            $this->actor(),
-            $this->user,
-            $this->form->name,
-            $this->form->email,
-            Role::from($this->form->role),
-        );
+        $updateUser->execute($this->user, $this->form->name, $this->form->email);
 
         $this->user->refresh();
 
@@ -88,7 +85,7 @@ class Edit extends Component
 
     public function render(): View
     {
-        return view('livewire.users.edit')
-            ->layout('components.dashboard.layout', ['title' => __('users.edit_title')]);
+        return view('livewire.users.edit', ['kind' => $this->kind, 'prefix' => $this->routePrefix()])
+            ->layout('components.dashboard.layout', ['title' => __("users.kinds.{$this->kind}.edit_title")]);
     }
 }

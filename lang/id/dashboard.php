@@ -9,9 +9,15 @@ return [
     'close_menu' => 'Tutup menu',
     'language' => 'Bahasa',
     'account_menu' => 'Menu akun',
+    'groups' => [
+        'menu' => 'Menu',
+        'content' => 'Konten',
+        'users' => 'Manajemen Pengguna',
+    ],
     'nav' => [
-        'home' => 'Beranda',
-        'users' => 'Akun',
+        'home' => 'Dasbor',
+        'staff' => 'Staf',
+        'customers' => 'Customer',
         'articles' => 'Artikel',
         'products' => 'Produk',
         'services' => 'Layanan',

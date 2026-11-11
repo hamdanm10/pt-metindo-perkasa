@@ -21,12 +21,12 @@ class UserPolicy
 
     public function update(User $actor, User $target): bool
     {
-        return $this->isAdmin($actor);
+        return $this->isAdmin($actor) && $this->isManaged($target);
     }
 
     public function resetPassword(User $actor, User $target): bool
     {
-        return $this->isAdmin($actor);
+        return $this->isAdmin($actor) && $this->isManaged($target);
     }
 
     /**
@@ -34,7 +34,15 @@ class UserPolicy
      */
     public function setActive(User $actor, User $target): bool
     {
-        return $this->isAdmin($actor) && $actor->isNot($target);
+        return $this->isAdmin($actor) && $actor->isNot($target) && $this->isManaged($target);
+    }
+
+    /**
+     * The only admin is not managed from the dashboard: only staff and customers are.
+     */
+    private function isManaged(User $target): bool
+    {
+        return $target->role !== Role::Admin;
     }
 
     private function isAdmin(User $actor): bool

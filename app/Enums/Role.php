@@ -30,6 +30,18 @@ enum Role: string
         return [self::Customer];
     }
 
+    /**
+     * Route name prefix of the account pages for this role, or null when its accounts are not managed in the dashboard (admin).
+     */
+    public function accountRoutePrefix(): ?string
+    {
+        return match ($this) {
+            self::Staff => 'app.staff',
+            self::Customer => 'app.customers',
+            self::Admin => null,
+        };
+    }
+
     public function usesStaffArea(): bool
     {
         return in_array($this, self::staffArea(), true);

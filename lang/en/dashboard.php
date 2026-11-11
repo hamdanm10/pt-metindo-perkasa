@@ -9,9 +9,15 @@ return [
     'close_menu' => 'Close menu',
     'language' => 'Language',
     'account_menu' => 'Account menu',
+    'groups' => [
+        'menu' => 'Menu',
+        'content' => 'Content',
+        'users' => 'User Management',
+    ],
     'nav' => [
-        'home' => 'Home',
-        'users' => 'Accounts',
+        'home' => 'Dashboard',
+        'staff' => 'Staff',
+        'customers' => 'Customers',
         'articles' => 'Articles',
         'products' => 'Products',
         'services' => 'Services',

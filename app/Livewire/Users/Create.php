@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Users;
 
 use App\Actions\Users\CreateUser;
-use App\Enums\Role;
+use App\Livewire\Concerns\ManagesAccountKind;
 use App\Livewire\Forms\UserForm;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -13,10 +13,13 @@ use Livewire\Component;
 
 class Create extends Component
 {
+    use ManagesAccountKind;
+
     public UserForm $form;
 
-    public function mount(): void
+    public function mount(string $kind): void
     {
+        $this->setKind($kind);
         $this->authorize('create', User::class);
     }
 
@@ -31,19 +34,19 @@ class Create extends Component
             $this->form->name,
             $this->form->email,
             $this->form->password,
-            Role::from($this->form->role),
+            $this->role(),
         );
 
         $this->form->password = '';
 
         session()->flash('status', __('users.messages.created'));
 
-        $this->redirectRoute('app.users.index');
+        $this->redirectRoute($this->routePrefix().'.index');
     }
 
     public function render(): View
     {
-        return view('livewire.users.create')
-            ->layout('components.dashboard.layout', ['title' => __('users.create_title')]);
+        return view('livewire.users.create', ['kind' => $this->kind, 'prefix' => $this->routePrefix()])
+            ->layout('components.dashboard.layout', ['title' => __("users.kinds.{$this->kind}.create_title")]);
     }
 }

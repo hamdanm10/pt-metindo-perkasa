@@ -75,6 +75,44 @@ class ShellTest extends TestCase
         $this->assertStringNotContainsString('Bricolage', $html);
     }
 
+    public function test_the_logo_is_in_the_full_height_sidebar_and_the_navbar_holds_both_dropdowns(): void
+    {
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->getContent();
+
+        $sidebarStart = (int) strpos($html, 'id="sidebar"');
+        $sidebarEnd = (int) strpos($html, '</aside>');
+        $sidebar = substr($html, $sidebarStart, $sidebarEnd - $sidebarStart);
+
+        $this->assertStringContainsString('brand-lockup', $sidebar);
+        $this->assertStringContainsString('inset-y-0', substr($html, $sidebarStart - 80, 120));
+
+        $navbar = substr($html, (int) strpos($html, '<header'), (int) strpos($html, '</header>') - (int) strpos($html, '<header'));
+        $this->assertStringNotContainsString('brand-lockup', $navbar);
+        $this->assertStringContainsString('aria-label="'.__('dashboard.language').'"', $navbar);
+        $this->assertStringContainsString('aria-label="'.__('dashboard.account_menu').'"', $navbar);
+        $this->assertStringContainsString('data-sidebar-toggle', $navbar);
+        $this->assertGreaterThan($sidebarEnd, (int) strpos($html, '<header'));
+    }
+
+    public function test_the_sidebar_groups_the_menu_under_labels_with_an_icon_on_each_item(): void
+    {
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->getContent();
+
+        $position = fn (string $text): int => (int) strpos($html, '>'.$text.'</p>');
+
+        $this->assertGreaterThan(0, $position(__('dashboard.groups.menu')));
+        $this->assertGreaterThan($position(__('dashboard.groups.menu')), $position(__('dashboard.groups.content')));
+        $this->assertGreaterThan($position(__('dashboard.groups.content')), $position(__('dashboard.groups.users')));
+        $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
+        $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
+        $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
+        $this->assertSame(6, substr_count($html, 'size-5 shrink-0'));
+
+        $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
+        $this->assertStringNotContainsString('>'.__('dashboard.groups.content').'</p>', $staff);
+        $this->assertStringNotContainsString('>'.__('dashboard.groups.users').'</p>', $staff);
+    }
+
     public function test_the_content_sits_in_a_centered_container(): void
     {
         $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')
