@@ -62,6 +62,17 @@ class ErrorPagesTest extends TestCase
             ->assertSee(__('errors.404.title', [], 'en'));
     }
 
+    public function test_error_pages_use_the_login_style_layout_and_the_site_font(): void
+    {
+        $html = (string) $this->get('/en/nothing-here')->getContent();
+
+        $this->assertStringContainsString('bg-ink', $html);
+        $this->assertStringContainsString('bg-brand-600', $html);
+        $this->assertStringContainsString('uppercase', $html);
+        $this->assertStringNotContainsString('hero-wedge', $html);
+        $this->assertStringNotContainsString('font-family:system-ui', $html);
+    }
+
     public function test_error_pages_are_not_indexable(): void
     {
         $this->get('/en/nothing-here')->assertSee('noindex', false);

@@ -158,6 +158,7 @@ Halaman galat 403, 404, 419, 429, 500, dan 503 memakai satu komponen (`component
 - URL lain: landing berbahasa `en`.
 - Galat 5xx tidak menyentuh sesi atau database, jadi memakai `en`. Pesan galat dan jejak tidak pernah ditampilkan. Halaman diberi `noindex`.
 - Teks di `lang/<locale>/errors.php` (lima bahasa). Tidak ada tombol "coba lagi" pada 503.
+- **Tampilan** sama dengan halaman login: dua kolom. Kiri panel `ink` datar dengan logo dan nama dua baris (menuju beranda), kode galat raksasa putih (Figtree 900, selalu `ltr`), dan garis krimson di dasar. Kanan latar `lavender` dengan judul huruf kapital tebal, penjelasan, dan tombol krimson berpanah (panah berbalik di Arab). Di ponsel kedua kolom bertumpuk. Tanpa baji, lingkaran, atau hiasan lain. Gaya cadangan di `<head>` tidak boleh menyetel `font-family` (gaya tak berlapis mengalahkan kelas `font-sans`).
 
 ## Tombol
 
