@@ -161,6 +161,11 @@ class LoginTest extends TestCase
         $this->assertStringContainsString('data-password-toggle="password"', $html);
     }
 
+    public function test_the_login_fields_are_marked_as_required(): void
+    {
+        $this->assertSame(2, substr_count((string) $this->get('/app/login')->getContent(), 'aria-hidden="true"> *</span>'));
+    }
+
     public function test_login_pages_render_with_a_title_and_a_csrf_token(): void
     {
         $this->get('/app/login')->assertOk()->assertSee(__('auth.staff_title'))->assertSee('name="_token"', false);

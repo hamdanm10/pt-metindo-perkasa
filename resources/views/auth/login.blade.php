@@ -30,7 +30,7 @@
                         @csrf
 
                         <div class="field-group">
-                            <label for="email" class="field-label">{{ __('auth.email') }}</label>
+                            <label for="email" class="field-label">{{ __('auth.email') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
                             <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus autocomplete="username" inputmode="email" class="field-input"
                                    @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
                             @error('email')
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="field-group">
-                            <label for="password" class="field-label">{{ __('auth.password') }}</label>
+                            <label for="password" class="field-label">{{ __('auth.password') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
                             <div class="relative">
                                 <input id="password" name="password" type="password" required autocomplete="current-password" class="field-input pe-12"
                                        @error('password') aria-invalid="true" aria-describedby="password-error" @enderror>

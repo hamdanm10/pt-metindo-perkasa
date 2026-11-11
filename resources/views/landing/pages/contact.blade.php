@@ -90,13 +90,13 @@
                               data-mail="{{ $email }}" data-required="{{ __('pages.contact.form.required') }}" data-invalid="{{ __('pages.contact.form.invalid_email') }}">
                             @foreach ([['name', 'text', 'name', 'name'], ['email', 'email', 'email', 'email']] as [$field, $type, $key, $auto])
                                 <div class="field">
-                                    <label for="contact-{{ $field }}" class="field__label">{{ __("pages.contact.form.{$key}") }}</label>
+                                    <label for="contact-{{ $field }}" class="field__label">{{ __("pages.contact.form.{$key}") }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
                                     <div class="field__control"><input id="contact-{{ $field }}" name="{{ $field }}" type="{{ $type }}" autocomplete="{{ $auto }}" required aria-describedby="contact-{{ $field }}-error" class="field__input" @if ($field === 'email') dir="ltr" @endif></div>
                                     <p id="contact-{{ $field }}-error" data-error class="field__error" role="alert"></p>
                                 </div>
                             @endforeach
                             <div class="field">
-                                <label for="contact-message" class="field__label">{{ __('pages.contact.form.message') }}</label>
+                                <label for="contact-message" class="field__label">{{ __('pages.contact.form.message') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
                                 <div class="field__control"><textarea id="contact-message" name="message" rows="5" required aria-describedby="contact-message-error" class="field__input resize-none"></textarea></div>
                                 <p id="contact-message-error" data-error class="field__error" role="alert"></p>
                             </div>
