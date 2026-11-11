@@ -56,7 +56,6 @@ return [
         'deactivated' => 'Account deactivated.',
     ],
     'errors' => [
-        'admin_exists' => 'Only one admin is allowed, and it already exists.',
         'self_active' => 'You cannot deactivate your own account.',
         'last_admin_active' => 'The last active admin cannot be deactivated.',
     ],

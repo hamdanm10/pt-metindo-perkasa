@@ -11,7 +11,7 @@ Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `
 | 3 | Login staf dan admin di `/app/login`, customer di `/customer/login`. Sesi (guard `web`) | Sesuai aturan di `CLAUDE.md` |
 | 4 | Login menolak akun yang perannya tidak termasuk area itu, atau yang tidak aktif, dengan **pesan yang sama** seperti kata sandi salah | Tidak membocorkan jenis atau status akun |
 | 5 | Tidak ada pendaftaran, verifikasi email, atau login Google. Admin membuat akun dan menetapkan kata sandi awal, dan admin yang mengatur ulang kata sandi | Keputusan client. Tanpa pengiriman email dulu |
-| 6 | Admin dibuat lewat `php artisan admin:create`, dan **hanya boleh ada satu admin** (perintah menolak bila sudah ada) | Tidak ada jalan masuk lain di awal, dan keputusan client |
+| 6 | Admin dibuat lewat `php artisan admin:create`, dan **tanpa batas jumlah admin** | Tidak ada jalan masuk lain di awal, dan keputusan client |
 | 7 | Kata sandi minimal 8 karakter dengan huruf besar, huruf kecil, dan angka | Standar dasar yang wajar |
 | 8 | Pengguna yang sudah masuk dan membuka halaman login diarahkan ke areanya. Pengguna yang masuk dengan peran salah ke area lain mendapat 403 | Jelas dan tidak ambigu |
 | 9 | Locale dashboard: `users.locale` bila masuk, lalu `session('locale')`, lalu `en`. Hanya `en` dan `id`. Pemilih bahasa dibuat di D2, dan bahasa yang dipilih di halaman login disimpan ke akun saat masuk | Mengikuti aturan locale di `CLAUDE.md` |

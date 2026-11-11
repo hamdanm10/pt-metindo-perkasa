@@ -56,7 +56,6 @@ return [
         'deactivated' => 'Akun dinonaktifkan.',
     ],
     'errors' => [
-        'admin_exists' => 'Hanya boleh ada satu admin, dan admin sudah ada.',
         'self_active' => 'Anda tidak bisa menonaktifkan akun Anda sendiri.',
         'last_admin_active' => 'Admin aktif terakhir tidak boleh dinonaktifkan.',
     ],
