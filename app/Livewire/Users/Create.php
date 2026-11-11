@@ -21,6 +21,8 @@ class Create extends Component
     {
         $this->setKind($kind);
         $this->authorize('create', User::class);
+
+        $this->form->password = config()->string('auth.default_account_password');
     }
 
     public function save(CreateUser $createUser): void

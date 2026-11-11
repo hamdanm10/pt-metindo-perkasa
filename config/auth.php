@@ -114,4 +114,17 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Password For New Accounts
+    |--------------------------------------------------------------------------
+    |
+    | Fills the "initial password" field when an admin adds a staff or customer
+    | account. It is only a suggestion shown in the form: the admin can change it
+    | before saving, and the server still validates whatever is submitted.
+    |
+    */
+
+    'default_account_password' => env('ACCOUNT_DEFAULT_PASSWORD', 'MetindoPerkasa2026'),
+
 ];

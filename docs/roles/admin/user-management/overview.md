@@ -23,7 +23,7 @@ Admin mengelola akun **staf** dan **customer** dari dua halaman terpisah di dash
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
 | Daftar | `/app/staff`, `/app/customers` | Tabel nama, email, status, dan tombol ubah untuk peran halaman itu. Pencarian nama atau email, penyaring status, dan tombol "Tambah staf" atau "Tambah customer" |
-| Tambah | `/app/staff/create`, `/app/customers/create` | Nama, email, dan kata sandi awal. Peran mengikuti halaman |
+| Tambah | `/app/staff/create`, `/app/customers/create` | Nama, email, dan kata sandi awal. Peran mengikuti halaman. **Kolom kata sandi sudah terisi `MetindoPerkasa2026`** (`config('auth.default_account_password')`, bisa diubah lewat `ACCOUNT_DEFAULT_PASSWORD` di `.env`), dan admin boleh menggantinya sebelum menyimpan |
 | Ubah | `/app/staff/{user}/edit`, `/app/customers/{user}/edit` | Nama dan email. Bahasa dan peran tidak diubah dari sini. Bagian terpisah untuk atur ulang kata sandi, dan tombol nonaktifkan atau aktifkan. Akun dengan peran lain (termasuk admin) memberi 404 |
 
 1. Admin membuka daftar, mencari atau menyaring, lalu memilih akun.
@@ -37,6 +37,7 @@ Admin mengelola akun **staf** dan **customer** dari dua halaman terpisah di dash
 - Id akun di komponen dikunci (`#[Locked]`), dan `role` serta kolom lain divalidasi di sisi server (`Rule::enum`). `locale` tidak ada di formulir sehingga tidak bisa diubah dari sini. Nilai dari browser tidak dipercaya.
 - Aturan satu admin diperiksa di Action `CreateUser` (juga dipakai `admin:create`), bukan di tampilan, dan menghasilkan pesan galat yang jelas. `SetUserActive` tetap menolak menonaktifkan diri sendiri dan admin aktif terakhir. Peran halaman (`kind`) dikunci (`#[Locked]`) dan hanya `staff` atau `customer` yang diterima; nilai lain 404.
 - Email unik tanpa membedakan huruf besar-kecil, kecuali akun yang sedang diubah. Kata sandi: minimal 8 karakter dengan huruf besar, huruf kecil, dan angka (aturan sama dengan `admin:create`).
+- Kata sandi awal bawaan itu sama untuk semua akun baru dan diketahui admin, jadi akun yang memakainya harus mengganti kata sandinya. Pengguna belum bisa mengganti kata sandinya sendiri (lihat "Ditunda"), sehingga untuk sementara admin yang mengatur ulang kata sandi lewat halaman ubah bila perlu. Server tetap memvalidasi apa pun yang ada di kolom.
 - Kata sandi tidak ditampilkan, tidak dicatat di log, dan kolom kata sandi dikosongkan setelah dikirim.
 - Pengakhiran sesi memakai tabel `sessions` (driver `database`). Bila driver sesi lain, akun nonaktif tetap ditolak pada permintaan berikutnya oleh middleware (perilaku D1).
 - Pesan validasi dan antarmuka lewat `lang/{en,id}`, dan kolom baru ditambahkan di `attributes`.
