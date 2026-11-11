@@ -55,7 +55,7 @@ class Index extends Component
 
         $deleteArticle->execute($article);
 
-        session()->flash('status', __('article_manager.messages.deleted'));
+        session()->now('status', __('article_manager.messages.deleted'));
     }
 
     public function render(ListArticles $listArticles): View

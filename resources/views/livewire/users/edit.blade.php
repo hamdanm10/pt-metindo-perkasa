@@ -31,9 +31,6 @@
         <x-dashboard.card class="max-w-2xl">
             <h2 class="text-xl font-bold">{{ __('users.status_title') }}</h2>
             <p class="mt-2 text-sm text-muted">{{ $user->is_active ? __('users.deactivate_text') : __('users.activate_text') }}</p>
-            @error('active')
-                <p class="mt-3 text-sm font-semibold text-brand-700" role="alert">{{ $message }}</p>
-            @enderror
             <div class="mt-6">
                 @if ($user->is_active)
                     <x-dashboard.button variant="danger" wire:click="toggleActive" wire:confirm="{{ __('users.confirm_deactivate') }}">{{ __('users.deactivate') }}</x-dashboard.button>

@@ -233,3 +233,50 @@ html[dir='rtl'] .field-select {
     border-color: var(--color-brand-600);
     background-color: var(--color-brand-600);
 }
+
+/* Toasts: slide in from the right, leave the same way, with a thin bar that runs down the time left. */
+.toast {
+    position: relative;
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .toast {
+        animation: toast-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .toast[data-closing] {
+        animation: toast-out 0.3s ease-in both;
+    }
+
+    .toast__bar {
+        animation-name: toast-bar;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+    }
+
+    .toast:hover .toast__bar,
+    .toast:focus-within .toast__bar {
+        animation-play-state: paused;
+    }
+
+    @keyframes toast-in {
+        from {
+            opacity: 0;
+            transform: translateX(1.5rem);
+        }
+    }
+
+    @keyframes toast-out {
+        to {
+            opacity: 0;
+            transform: translateX(1.5rem);
+        }
+    }
+
+    @keyframes toast-bar {
+        to {
+            transform: scaleX(0);
+        }
+    }
+}
