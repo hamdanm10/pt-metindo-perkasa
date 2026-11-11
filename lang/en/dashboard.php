@@ -25,6 +25,7 @@ return [
     'home' => [
         'title' => 'Home',
         'greeting' => 'Hello, :name',
+        'description' => 'Welcome to the PT Metindo Perkasa dashboard.',
         'empty_title' => 'Nothing here yet',
         'empty_text' => 'Features will appear here as they are added.',
     ],

@@ -24,6 +24,7 @@ return [
     ],
     'home' => [
         'title' => 'Beranda',
+        'description' => 'Selamat datang di dashboard PT Metindo Perkasa.',
         'greeting' => 'Halo, :name',
         'empty_title' => 'Belum ada isi',
         'empty_text' => 'Fitur akan muncul di sini seiring ditambahkan.',

@@ -1,5 +1,5 @@
 <div>
-    <x-dashboard.page-header :title="$product === null ? __('products.create_title') : __('products.edit_title')" />
+    <x-dashboard.page-header :title="$product === null ? __('products.create_title') : __('products.edit_title')" :description="$product === null ? __('products.create_description') : __('products.edit_description')" />
 
     <x-dashboard.card class="max-w-2xl">
         <form wire:submit="save" class="space-y-6" novalidate>

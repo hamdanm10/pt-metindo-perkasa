@@ -7,7 +7,7 @@
 @endphp
 
 <div class="space-y-8">
-    <x-dashboard.page-header :title="$article === null ? __('article_manager.create_title') : __('article_manager.edit_title')" />
+    <x-dashboard.page-header :title="$article === null ? __('article_manager.create_title') : __('article_manager.edit_title')" :description="$article === null ? __('article_manager.create_description') : __('article_manager.edit_description')" />
 
     <x-dashboard.flash />
 
