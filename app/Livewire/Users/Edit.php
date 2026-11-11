@@ -49,7 +49,7 @@ class Edit extends Component
 
         $this->user->refresh();
 
-        session()->flash('status', __('users.messages.updated'));
+        session()->now('status', __('users.messages.updated'));
     }
 
     public function resetPassword(ResetUserPassword $resetPassword): void
@@ -67,7 +67,7 @@ class Edit extends Component
 
         $this->newPassword = '';
 
-        session()->flash('status', __('users.messages.password_reset'));
+        session()->now('status', __('users.messages.password_reset'));
     }
 
     public function toggleActive(SetUserActive $setActive): void
@@ -80,7 +80,7 @@ class Edit extends Component
 
         $this->user->refresh();
 
-        session()->flash('status', $activate ? __('users.messages.activated') : __('users.messages.deactivated'));
+        session()->now('status', $activate ? __('users.messages.activated') : __('users.messages.deactivated'));
     }
 
     public function render(): View

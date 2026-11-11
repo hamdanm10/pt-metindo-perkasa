@@ -143,3 +143,79 @@ if (loginForm) {
         submit.querySelector('[data-submit-text]').textContent = submit.dataset.busyLabel;
     });
 }
+
+/*
+ * Toasts. Each one closes by itself after its timeout, unless the pointer or the keyboard focus is on it, and has a
+ * close button. They are also set up when Livewire adds one to the page after an update.
+ */
+const closeToast = (toast) => {
+    if (toast.hasAttribute('data-closing')) {
+        return;
+    }
+
+    toast.setAttribute('data-closing', '');
+
+    const remove = () => {
+        const stack = toast.parentElement;
+
+        toast.remove();
+
+        if (stack && stack.children.length === 0) {
+            stack.remove();
+        }
+    };
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        remove();
+    } else {
+        toast.addEventListener('animationend', remove, { once: true });
+        window.setTimeout(remove, 400);
+    }
+};
+
+const setUpToast = (toast) => {
+    if (toast.hasAttribute('data-toast-ready')) {
+        return;
+    }
+
+    toast.setAttribute('data-toast-ready', '');
+
+    const timeout = Number(toast.dataset.timeout) || 5000;
+    let timer = null;
+    let left = timeout;
+    let started = 0;
+
+    const start = () => {
+        started = Date.now();
+        timer = window.setTimeout(() => closeToast(toast), left);
+    };
+
+    const pause = () => {
+        window.clearTimeout(timer);
+        left -= Date.now() - started;
+    };
+
+    toast.addEventListener('mouseenter', pause);
+    toast.addEventListener('mouseleave', start);
+    toast.addEventListener('focusin', pause);
+    toast.addEventListener('focusout', start);
+    toast.querySelector('[data-toast-close]')?.addEventListener('click', () => closeToast(toast));
+
+    start();
+};
+
+document.querySelectorAll('[data-toast]').forEach(setUpToast);
+
+new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+            if (node instanceof Element) {
+                if (node.matches('[data-toast]')) {
+                    setUpToast(node);
+                }
+
+                node.querySelectorAll('[data-toast]').forEach(setUpToast);
+            }
+        });
+    });
+}).observe(document.body, { childList: true, subtree: true });

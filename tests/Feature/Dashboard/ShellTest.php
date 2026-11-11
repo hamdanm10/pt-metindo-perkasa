@@ -113,6 +113,32 @@ class ShellTest extends TestCase
         $this->assertStringNotContainsString('>'.__('dashboard.groups.users').'</p>', $staff);
     }
 
+    public function test_notifications_are_toasts_at_the_top_right_not_inline_alerts(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->assertStringNotContainsString('data-toast', (string) $this->actingAs($admin)->get('/app/staff')->getContent());
+
+        $html = (string) $this->withSession(['status' => 'Account created.'])->get('/app/staff')->getContent();
+
+        $this->assertStringContainsString('data-toast', $html);
+        $this->assertStringContainsString('fixed end-4 top-20', $html);
+        $this->assertStringContainsString('Account created.', $html);
+        $this->assertStringContainsString('data-toast-close', $html);
+        $this->assertStringContainsString('aria-label="'.__('dashboard.close_notification').'"', $html);
+        $this->assertStringNotContainsString('mb-6 flex items-center gap-3 rounded-lg bg-ink px-5 py-4', $html);
+    }
+
+    public function test_an_error_notification_is_an_alert_toast(): void
+    {
+        $html = (string) $this->withViewErrors(['active' => 'You cannot deactivate your own account.'])->blade('<x-dashboard.flash />');
+
+        $this->assertStringContainsString('data-toast', $html);
+        $this->assertStringContainsString('role="alert"', $html);
+        $this->assertStringContainsString('data-timeout="8000"', $html);
+        $this->assertStringContainsString('You cannot deactivate your own account.', $html);
+    }
+
     public function test_the_content_sits_in_a_centered_container(): void
     {
         $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')
