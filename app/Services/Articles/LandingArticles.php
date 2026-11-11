@@ -12,14 +12,18 @@ use Illuminate\Support\Facades\Cache;
  * Published articles for the landing, one language at a time. There is no fallback to
  * another language: a language without a published translation has no articles.
  *
- * @phpstan-type Summary array{slug: string, type: string, title: string, excerpt: string, date: string, image: string|null, alt: string, minutes: int, sample: bool}
+ * @phpstan-type Summary array{slug: string, type: string, title: string, excerpt: string, date: string, image: string|null, alt: string, minutes: int, views: int, sample: bool}
  */
 class LandingArticles
 {
     public function __construct(
         private readonly ThumbnailStore $thumbnails,
         private readonly SampleArticles $samples = new SampleArticles,
+        private readonly ArticleViews $views = new ArticleViews,
     ) {}
+
+    /** @var array<string, array<string, int>> */
+    private array $viewCounts = [];
 
     /**
      * Newest first. Cached per language and cleared whenever an article changes.
@@ -35,9 +39,24 @@ class LandingArticles
             $all = $this->samples->summaries();
         }
 
+        $all = $this->withViews($locale, $all);
+
         return $type === null
             ? $all
             : array_values(array_filter($all, fn (array $item): bool => $item['type'] === $type));
+    }
+
+    /**
+     * Views change on every visit, so they are not part of the cached summaries: they are added here.
+     *
+     * @param  list<Summary>  $summaries
+     * @return list<Summary>
+     */
+    private function withViews(string $locale, array $summaries): array
+    {
+        $counts = $this->viewCounts[$locale] ??= $this->views->forLocale($locale);
+
+        return array_map(fn (array $item): array => [...$item, 'views' => $counts[$item['slug']] ?? $item['views']], $summaries);
     }
 
     /** True while the sample articles stand in for real ones: sample mode, and nothing published in the language. */
@@ -73,7 +92,7 @@ class LandingArticles
         }
 
         return [
-            'summary' => $this->summary($article, $translation),
+            'summary' => [...$this->summary($article, $translation), 'views' => $translation->views_count],
             'body_html' => $translation->body_html ?? '',
             'meta_title' => $translation->meta_title ?: $translation->title,
             'meta_description' => (string) ($translation->meta_description ?: $translation->excerpt),
@@ -174,6 +193,7 @@ class LandingArticles
             'image' => $path === null ? null : $this->thumbnails->url($path),
             'alt' => (string) ($translation->image_alt ?: $translation->title),
             'minutes' => ArticleBody::readingMinutes($translation->body_html ?? ''),
+            'views' => 0,
             'sample' => false,
         ];
     }

@@ -21,6 +21,7 @@ return [
     'confirm_delete' => 'Hapus artikel ini di semua bahasa? Alamatnya tidak akan berfungsi lagi. Tindakan ini tidak bisa dibatalkan.',
     'save' => 'Simpan',
     'cancel' => 'Batal',
+    'no_views' => 'Belum ada view: belum terbit',
     'fields' => [
         'type' => 'Jenis',
         'thumbnail' => 'Thumbnail',
@@ -34,6 +35,7 @@ return [
         'image_alt' => 'Deskripsi gambar',
         'published' => 'Terbit di bahasa ini',
         'status' => 'Status',
+        'views' => 'Dibaca',
         'languages' => 'Bahasa',
     ],
     'types' => [

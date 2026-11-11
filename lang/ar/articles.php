@@ -8,6 +8,7 @@ return [
         'news' => 'خبر',
     ],
     'minutes' => 'قراءة :count دقيقة',
+    'views' => ':count مشاهدة',
     'sample' => 'عينة',
     'latest' => 'الأحدث',
     'share' => [

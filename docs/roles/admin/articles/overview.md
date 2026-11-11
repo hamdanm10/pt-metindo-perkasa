@@ -22,6 +22,7 @@ Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu
 
 - `articles`: `type`, `thumbnail_path`, `created_by` (relasi ke `users`), cap waktu.
 - `article_translations`: `article_id`, `locale`, `slug`, `title`, `excerpt`, `body` (JSON), `body_html`, `meta_title`, `meta_description`, `image_alt`, `status` (`draft` atau `published`), `published_at`, cap waktu.
+- `article_translations.views_count` (total, index) dan tabel `article_view_days` (`article_translation_id`, `day`, `views`, unik per pasangan pertama dan kedua) untuk hitungan view per bahasa dan per hari. `views_count` tidak boleh diisi massal.
 - Unik `(article_id, locale)` dan `(locale, slug)`. Index `(locale, status, published_at)` untuk daftar publik. `created_by` dan `article_id` diberi index.
 - Status dan locale memakai backed enum. Locale hanya dari `config('locales.landing')`.
 
@@ -45,6 +46,9 @@ Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu
 - `hreflang` di halaman artikel hanya untuk bahasa yang terbit. `canonical` ke URL bahasa itu sendiri. Sitemap memuat terjemahan terbit saja.
 - Judul dan deskripsi meta dari kolom meta (cadangan: judul dan ringkasan), serta gambar Open Graph dari thumbnail.
 - Artikel contoh (`config('landing.articles')` dan teks `items` di `lang/*/articles.php`) dihapus. Label jenis tetap di `lang/*/articles.php`. Artikel terkait: tiga terbaru lain di bahasa yang sama.
+- **View artikel.** Dihitung per terjemahan lewat JavaScript (`resources/js/landing/article-views.js`): setelah halaman terbuka dan terlihat 3 detik, mengirim `POST /{locale}/articles/{slug}/views` (`ArticleViewController@store`, `throttle:30,1`, token CSRF dari meta di halaman artikel). Respons selalu `204`. Server (`RecordArticleView`, `ArticleViews`) tidak menghitung: artikel yang bukan terbit atau artikel contoh, user agent kosong atau bot, admin dan staf yang login, serta pengunjung yang sudah menghitung artikel itu dalam 24 jam (cookie `viewed_articles` berisi id terjemahan dan batas waktunya, maksimal 100 entri; IP tidak disimpan). Penambahan atomik (`upsert` per hari dan `increment` pada total).
+- Landing menampilkan hitungan ("1,2K views") di daftar, artikel terbaru, kartu terkait, dan halaman artikel, **hanya dari 10 view** (`ArticleViews::MINIMUM_SHOWN`) supaya artikel baru tidak terlihat sepi. Angka tidak ikut cache `LandingArticles`: ditempel pada tiap permintaan dengan satu kueri per bahasa. Teks di `lang/*/articles.php` (`views`).
+- Dashboard: kolom "Views" sendiri di daftar artikel (terpisah dari kolom Languages): satu baris berisi total semua bahasa terbit (huruf tebal, didahului ikon mata di kiri angka), garis pemisah tipis, lalu rincian per bahasa terbit (mis. "EN 1.2K  ID 34"). Artikel tanpa bahasa terbit menampilkan tanda "—".
 - Daftar dan beranda di-cache per bahasa, dan cache dibersihkan saat artikel disimpan, diterbitkan, atau dihapus.
 
 ## Aturan keamanan dan kasus tepi
@@ -85,5 +89,6 @@ Pemeriksaan manual di browser: menulis di lima bahasa termasuk Arab (RTL di edit
 
 ## Ditunda
 
+- Grafik view per hari, "artikel terpopuler" di beranda dashboard, urutan berdasarkan view, dan rincian view per bahasa di halaman ubah (datanya sudah tersimpan di `article_view_days`).
 - Terjemahan mesin sebagai draf, gambar di dalam isi, kategori dan tag, penjadwalan terbit, pengalihan slug lama, arsip, riwayat revisi, dan hak staf.
 - Kelola konten landing lainnya (kalimat beranda, produk, layanan, klien, video). Dirancang terpisah.

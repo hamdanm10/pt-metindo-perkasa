@@ -21,6 +21,7 @@ return [
     'confirm_delete' => 'Delete this article in every language? Its addresses will stop working. This cannot be undone.',
     'save' => 'Save',
     'cancel' => 'Cancel',
+    'no_views' => 'No views yet: not published',
     'fields' => [
         'type' => 'Type',
         'thumbnail' => 'Thumbnail',
@@ -34,6 +35,7 @@ return [
         'image_alt' => 'Image description',
         'published' => 'Published in this language',
         'status' => 'Status',
+        'views' => 'Views',
         'languages' => 'Languages',
     ],
     'types' => [

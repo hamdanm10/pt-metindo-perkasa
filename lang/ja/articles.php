@@ -8,6 +8,7 @@ return [
         'news' => 'ニュース',
     ],
     'minutes' => '読了目安 :count 分',
+    'views' => ':count 回閲覧',
     'sample' => 'サンプル',
     'latest' => '最新',
     'share' => [

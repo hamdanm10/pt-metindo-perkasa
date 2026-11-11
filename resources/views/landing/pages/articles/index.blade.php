@@ -54,6 +54,10 @@
                             <time datetime="{{ $featured['date'] }}">{{ \Illuminate\Support\Carbon::parse($featured['date'])->isoFormat('LL') }}</time>
                             <span aria-hidden="true">·</span>
                             <span>{{ __('articles.minutes', ['count' => $featured['minutes']]) }}</span>
+                            @if ($viewsLabel = \App\Services\Articles\ArticleViews::label($featured['views']))
+                                <span aria-hidden="true">·</span>
+                                <span>{{ $viewsLabel }}</span>
+                            @endif
                         </span>
                         <span class="mt-[1.4vw] block text-balance text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
                         @if ($featured['excerpt'] !== '')

@@ -30,6 +30,7 @@
                         <th scope="col">{{ __('article_manager.fields.title') }}</th>
                         <th scope="col">{{ __('article_manager.fields.type') }}</th>
                         <th scope="col">{{ __('article_manager.fields.languages') }}</th>
+                        <th scope="col">{{ __('article_manager.fields.views') }}</th>
                         <th scope="col"><span class="sr-only">{{ __('article_manager.actions') }}</span></th>
                     </tr>
                 </thead>
@@ -56,6 +57,26 @@
                                     @endforeach
                                 </ul>
                             </td>
+                            <td>
+                                @php($published = $article->translations->filter(fn ($item) => $item->status === \App\Enums\PublicationStatus::Published))
+                                @if ($published->isEmpty())
+                                    <span class="text-muted" aria-label="{{ __('article_manager.no_views') }}">&mdash;</span>
+                                @else
+                                    <div class="flex items-center gap-3 whitespace-nowrap tabular-nums">
+                                        <span class="inline-flex items-center gap-1.5 text-base font-black">
+                                            <x-dashboard.icon name="eye" class="size-4 text-muted" />
+                                            {{ \Illuminate\Support\Number::format($published->sum('views_count')) }}
+                                            <span class="sr-only">{{ __('article_manager.fields.views') }}</span>
+                                        </span>
+                                        <span class="h-4 w-px bg-ink/20" aria-hidden="true"></span>
+                                        <ul class="flex flex-wrap gap-x-3 text-xs text-muted">
+                                            @foreach ($published as $item)
+                                                <li><span class="font-bold uppercase text-ink">{{ $item->locale }}</span> {{ \Illuminate\Support\Number::abbreviate($item->views_count, maxPrecision: 1) }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                            </td>
                             <td class="text-end whitespace-nowrap">
                                 <a href="{{ route('app.articles.edit', $article) }}" class="row-action">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
                                 <button type="button" wire:click="delete({{ $article->id }})" data-confirm="{{ __('article_manager.confirm_delete') }}" data-confirm-label="{{ __('article_manager.delete') }}" class="row-action row-action--danger">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
@@ -63,7 +84,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-12 text-center text-muted">{{ __('article_manager.empty') }}</td>
+                            <td colspan="5" class="py-12 text-center text-muted">{{ __('article_manager.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
