@@ -240,6 +240,36 @@ class UserManagementTest extends TestCase
         $this->assertTrue(Hash::check('Secret123', $user->password));
     }
 
+    #[DataProvider('kinds')]
+    public function test_the_password_field_starts_with_the_default_password_and_saving_uses_what_is_in_the_field(string $path, string $kind, Role $role): void
+    {
+        $component = Livewire::actingAs($this->admin())->test(Create::class, ['kind' => $kind])
+            ->assertSet('form.password', 'MetindoPerkasa2026');
+
+        $component->set('form.name', 'Default Person')->set('form.email', 'default@example.test')->call('save')->assertHasNoErrors();
+
+        $this->assertTrue(Hash::check('MetindoPerkasa2026', User::query()->where('email', 'default@example.test')->firstOrFail()->password));
+
+        Livewire::actingAs($this->admin())->test(Create::class, ['kind' => $kind])
+            ->set('form.name', 'Own Password')->set('form.email', 'own@example.test')->set('form.password', 'Another123')->call('save')->assertHasNoErrors();
+
+        $this->assertTrue(Hash::check('Another123', User::query()->where('email', 'own@example.test')->firstOrFail()->password));
+    }
+
+    public function test_the_edit_page_does_not_prefill_a_password(): void
+    {
+        $user = User::factory()->staff()->create();
+
+        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user, 'kind' => 'staff'])->assertSet('newPassword', '');
+    }
+
+    public function test_the_server_still_rejects_a_weak_password_in_the_field(): void
+    {
+        Livewire::actingAs($this->admin())->test(Create::class, ['kind' => 'staff'])
+            ->set('form.name', 'Weak')->set('form.email', 'weak@example.test')->set('form.password', 'weak')->call('save')
+            ->assertHasErrors(['form.password']);
+    }
+
     public function test_a_role_sent_from_the_browser_is_ignored_and_no_admin_can_be_created(): void
     {
         Livewire::actingAs($this->admin())->test(Create::class, ['kind' => 'staff'])
