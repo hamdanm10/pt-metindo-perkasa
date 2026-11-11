@@ -37,29 +37,34 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
-    <style>body{margin:0;font-family:system-ui,sans-serif;background:#f3f2ff;color:#1b1f3b}</style>
+    <style>body{margin:0;background:#f3f2ff;color:#1b1f3b}</style>
     {!! $assetTags !!}
 </head>
 <body class="min-h-screen bg-lavender font-sans text-ink antialiased">
-    <main class="relative flex min-h-screen items-center overflow-hidden">
-        @if ($landing)
-            <div class="hero-wedge absolute inset-y-0 end-0 hidden w-2/5 bg-accent-indigo lg:block" aria-hidden="true"></div>
-            <div class="absolute -bottom-16 end-1/4 hidden size-44 rounded-full bg-brand-600 lg:block" aria-hidden="true"></div>
-        @endif
-
-        <div class="relative mx-auto w-full max-w-5xl px-6 py-16 lg:px-8">
-            <a href="{{ $home }}" class="inline-flex rounded">
-                <img src="{{ asset('images/brand/logo.svg') }}" alt="PT Metindo Perkasa" width="612" height="256" class="h-8 w-auto">
+    <main class="grid min-h-screen lg:grid-cols-[5fr_6fr]">
+        <div class="relative flex flex-col justify-between overflow-hidden bg-ink px-6 py-8 text-white sm:px-12 lg:p-14" style="--focus-ring: #ffffff">
+            <a href="{{ $home }}" class="inline-flex w-fit items-center" aria-label="PT Metindo Perkasa">
+                <img src="{{ asset('images/brand/logo-white.svg') }}" alt="" width="612" height="256" class="h-10 w-auto">
+                <span class="ms-3.5 flex flex-col border-s border-white/35 ps-3.5 text-base uppercase leading-[1.18] tracking-[0.3em]"><span class="font-extrabold">Metindo</span><span>Perkasa</span></span>
             </a>
 
-            <p class="mt-12 text-[clamp(6rem,24vw,13rem)] font-extrabold leading-[0.85] tracking-tighter text-brand-600 rtl:text-right" aria-hidden="true" dir="ltr">{{ $code }}</p>
+            <p class="mt-12 text-[clamp(6rem,22vw,15rem)] font-black leading-[0.85] tracking-tight lg:pb-6" aria-hidden="true" dir="ltr">{{ $code }}</p>
 
-            <h1 class="mt-6 max-w-xl text-balance text-3xl font-extrabold leading-tight sm:text-5xl">{{ $title }}</h1>
-            <p class="mt-4 max-w-md text-lg text-muted">{{ $text }}</p>
+            <span class="absolute inset-x-0 bottom-0 h-1.5 bg-brand-600" aria-hidden="true"></span>
+        </div>
 
-            @if ((int) $code !== 503)
-                <a href="{{ $home }}" class="mt-10 inline-flex min-h-12 items-center rounded-lg bg-brand-600 px-7 text-base font-bold text-white hover:bg-brand-700">{{ __('errors.home') }}</a>
-            @endif
+        <div class="flex items-center px-6 py-14 sm:px-12 lg:px-16">
+            <div class="w-full max-w-md">
+                <h1 class="text-balance text-[clamp(2rem,4.2vw,3.5rem)] font-black uppercase leading-[0.98] tracking-tight">{{ $title }}</h1>
+                <p class="mt-5 text-lg leading-snug text-muted">{{ $text }}</p>
+
+                @if ((int) $code !== 503)
+                    <a href="{{ $home }}" class="group mt-10 inline-flex min-h-12 items-center gap-3 rounded-lg bg-brand-600 px-7 text-base font-bold text-white transition-colors hover:bg-brand-700">
+                        {{ __('errors.home') }}
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" aria-hidden="true"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
+                    </a>
+                @endif
+            </div>
         </div>
     </main>
 </body>
