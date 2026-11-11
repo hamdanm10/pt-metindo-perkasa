@@ -8,7 +8,7 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
-    @vite(['resources/css/dashboard.css', 'resources/css/fonts/latin.css'])
+    @vite(['resources/css/dashboard.css', 'resources/css/fonts/latin.css', 'resources/js/dashboard.js'])
 </head>
 <body class="min-h-screen bg-white font-sans text-ink antialiased">
     @yield('body')
