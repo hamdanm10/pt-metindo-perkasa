@@ -62,14 +62,19 @@
                                 @if ($published->isEmpty())
                                     <span class="text-muted" aria-label="{{ __('article_manager.no_views') }}">&mdash;</span>
                                 @else
-                                    <p class="text-base font-black tabular-nums">{{ \Illuminate\Support\Number::format($published->sum('views_count')) }}</p>
-                                    @if ($published->count() > 1)
-                                        <p class="mt-1 flex flex-wrap gap-x-3 text-xs text-muted tabular-nums">
+                                    <div class="flex items-center gap-3 whitespace-nowrap tabular-nums">
+                                        <span class="inline-flex items-center gap-1.5 text-base font-black">
+                                            {{ \Illuminate\Support\Number::format($published->sum('views_count')) }}
+                                            <x-dashboard.icon name="eye" class="size-4 text-muted" />
+                                            <span class="sr-only">{{ __('article_manager.fields.views') }}</span>
+                                        </span>
+                                        <span class="h-4 w-px bg-ink/20" aria-hidden="true"></span>
+                                        <ul class="flex flex-wrap gap-x-3 text-xs text-muted">
                                             @foreach ($published as $item)
-                                                <span><span class="font-bold uppercase text-ink">{{ $item->locale }}</span> {{ \Illuminate\Support\Number::abbreviate($item->views_count, maxPrecision: 1) }}</span>
+                                                <li><span class="font-bold uppercase text-ink">{{ $item->locale }}</span> {{ \Illuminate\Support\Number::abbreviate($item->views_count, maxPrecision: 1) }}</li>
                                             @endforeach
-                                        </p>
-                                    @endif
+                                        </ul>
+                                    </div>
                                 @endif
                             </td>
                             <td class="text-end whitespace-nowrap">

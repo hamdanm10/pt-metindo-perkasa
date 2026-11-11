@@ -188,7 +188,6 @@ class ArticleViewsTest extends TestCase
 
         ArticleTranslation::query()->whereKey($translation->id)->update(['views_count' => 40]);
         $this->get('/en/articles')->assertOk()->assertSee('40 views')->assertDontSee('25 views');
-        $this->get('/en/articles')->assertOk()->assertSee('40 views')->assertDontSee('25 views');
     }
 
     public function test_the_label_is_hidden_below_ten_and_follows_the_page_language(): void
