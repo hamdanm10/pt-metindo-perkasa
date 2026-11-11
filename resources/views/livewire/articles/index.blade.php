@@ -40,7 +40,7 @@
                             $translations = $article->translations->keyBy('locale');
                             $title = $article->displayTitle() ?? __('article_manager.untitled');
                         @endphp
-                        <tr wire:key="article-{{ $article->id }}" class="align-top">
+                        <tr wire:key="article-{{ $article->id }}" class="align-middle">
                             <td class="font-semibold">{{ $title }}</td>
                             <td><x-dashboard.badge tone="role">{{ __('article_manager.types.'.$article->type->value) }}</x-dashboard.badge></td>
                             <td>

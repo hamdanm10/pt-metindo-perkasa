@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     @forelse ($products as $product)
-                        <tr wire:key="product-{{ $product->id }}" class="align-top">
+                        <tr wire:key="product-{{ $product->id }}" class="align-middle">
                             <td class="font-semibold">{{ $product->name }}</td>
                             <td class="text-muted">{{ \Illuminate\Support\Str::limit((string) $product->description, 120) }}</td>
                             <td class="text-end">

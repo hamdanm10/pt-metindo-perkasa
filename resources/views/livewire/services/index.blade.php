@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     @forelse ($services as $service)
-                        <tr wire:key="service-{{ $service->id }}" class="align-top">
+                        <tr wire:key="service-{{ $service->id }}" class="align-middle">
                             <td class="font-semibold">{{ $service->name }}</td>
                             <td class="text-muted">{{ \Illuminate\Support\Str::limit((string) $service->description, 120) }}</td>
                             <td class="text-end">
