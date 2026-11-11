@@ -153,6 +153,14 @@ class LoginTest extends TestCase
             ->assertSee(__('auth.back_to_site', [], 'id'));
     }
 
+    public function test_the_login_page_loads_the_script_that_runs_the_password_toggle(): void
+    {
+        $html = (string) $this->get('/app/login')->getContent();
+
+        $this->assertMatchesRegularExpression('/<script[^>]+src="[^"]*dashboard[^"]*\.js"/', $html);
+        $this->assertStringContainsString('data-password-toggle="password"', $html);
+    }
+
     public function test_login_pages_render_with_a_title_and_a_csrf_token(): void
     {
         $this->get('/app/login')->assertOk()->assertSee(__('auth.staff_title'))->assertSee('name="_token"', false);

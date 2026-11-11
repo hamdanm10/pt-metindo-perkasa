@@ -82,17 +82,38 @@ if (document.querySelector('[data-tiptap]')) {
     import('./dashboard/editor.js');
 }
 
-document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+/*
+ * Show and hide a password. The state lives on the button (aria-pressed) and is applied to the input, so it can be
+ * applied again after Livewire re-renders the field and puts type="password" back.
+ */
+const applyPasswordToggle = (button) => {
     const input = document.getElementById(button.dataset.passwordToggle);
+    const visible = button.getAttribute('aria-pressed') === 'true';
 
-    button.addEventListener('click', () => {
-        const visible = input.type === 'password';
+    if (!input) {
+        return;
+    }
 
-        input.type = visible ? 'text' : 'password';
-        button.setAttribute('aria-pressed', String(visible));
-        button.setAttribute('aria-label', visible ? button.dataset.hide : button.dataset.show);
-        button.querySelector('[data-eye]').hidden = visible;
-        button.querySelector('[data-eye-off]').hidden = !visible;
+    input.type = visible ? 'text' : 'password';
+    button.setAttribute('aria-label', visible ? button.dataset.hide : button.dataset.show);
+    button.querySelector('[data-eye]').hidden = visible;
+    button.querySelector('[data-eye-off]').hidden = !visible;
+};
+
+document.addEventListener('click', (event) => {
+    const button = event.target instanceof Element ? event.target.closest('[data-password-toggle]') : null;
+
+    if (!button) {
+        return;
+    }
+
+    button.setAttribute('aria-pressed', String(button.getAttribute('aria-pressed') !== 'true'));
+    applyPasswordToggle(button);
+});
+
+document.addEventListener('livewire:init', () => {
+    window.Livewire.hook('morphed', () => {
+        document.querySelectorAll('[data-password-toggle]').forEach(applyPasswordToggle);
     });
 });
 

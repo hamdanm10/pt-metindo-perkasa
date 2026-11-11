@@ -169,6 +169,20 @@ class UserManagementTest extends TestCase
         $this->assertFalse($admin->can('setActive', $other));
     }
 
+    public function test_the_password_fields_have_a_show_and_hide_button_and_other_fields_do_not(): void
+    {
+        $user = User::factory()->staff()->create();
+
+        $create = $this->actingAs($this->admin())->get('/app/staff/create')
+            ->assertSee('data-password-toggle="form-password"', false)
+            ->assertSee(__('auth.show_password'))
+            ->assertSee(__('auth.hide_password'));
+
+        $this->assertSame(1, substr_count((string) $create->getContent(), 'data-password-toggle='));
+
+        $this->get("/app/staff/{$user->id}/edit")->assertSee('data-password-toggle="newPassword"', false);
+    }
+
     public function test_the_list_searches_and_filters_by_status(): void
     {
         User::factory()->customer()->create(['name' => 'Citra', 'email' => 'citra@example.test']);
