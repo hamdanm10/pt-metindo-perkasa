@@ -83,6 +83,30 @@ class ArticleAdminTest extends TestCase
         $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->assertDontSee(route('app.articles.index'), false);
     }
 
+    public function test_the_thumbnail_sits_under_the_type_and_the_plain_fields_have_example_placeholders_but_the_body_has_none(): void
+    {
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/articles/create')->getContent();
+
+        $this->assertGreaterThan((int) strpos($html, 'id="form-type"'), (int) strpos($html, 'id="form-thumbnail"'));
+        $this->assertStringNotContainsString('lg:grid-cols-2', substr($html, (int) strpos($html, 'id="form-type"') - 400, 400));
+
+        foreach (['title', 'slug', 'excerpt', 'meta_title', 'meta_description', 'image_alt'] as $key) {
+            $this->assertStringContainsString('placeholder="'.e(__("article_manager.placeholders.{$key}")).'"', $html);
+        }
+
+        $this->assertStringNotContainsString('data-tiptap placeholder', $html);
+        $this->assertDoesNotMatchRegularExpression('/id="body-en"[^>]*placeholder/', $html);
+    }
+
+    public function test_the_placeholders_exist_in_both_languages(): void
+    {
+        foreach (['en', 'id'] as $code) {
+            foreach (['title', 'slug', 'excerpt', 'meta_title', 'meta_description', 'image_alt'] as $key) {
+                $this->assertNotSame("article_manager.placeholders.{$key}", __("article_manager.placeholders.{$key}", [], $code));
+            }
+        }
+    }
+
     public function test_a_draft_is_saved_without_a_thumbnail(): void
     {
         $admin = User::factory()->admin()->create();
