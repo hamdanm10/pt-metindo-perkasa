@@ -33,7 +33,7 @@
             <p class="mt-2 text-sm text-muted">{{ $user->is_active ? __('users.deactivate_text') : __('users.activate_text') }}</p>
             <div class="mt-6">
                 @if ($user->is_active)
-                    <x-dashboard.button variant="danger" wire:click="toggleActive" wire:confirm="{{ __('users.confirm_deactivate') }}">{{ __('users.deactivate') }}</x-dashboard.button>
+                    <x-dashboard.button variant="danger" wire:click="toggleActive" data-confirm="{{ __('users.confirm_deactivate') }}" data-confirm-label="{{ __('users.deactivate') }}">{{ __('users.deactivate') }}</x-dashboard.button>
                 @else
                     <x-dashboard.button wire:click="toggleActive">{{ __('users.activate') }}</x-dashboard.button>
                 @endif

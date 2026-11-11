@@ -280,3 +280,41 @@ html[dir='rtl'] .field-select {
         }
     }
 }
+
+/* Confirmation dialog: replaces the browser confirm() so destructive actions look like the rest of the site. */
+.confirm {
+    margin: auto;
+    width: min(28rem, calc(100vw - 2rem));
+    border: 0;
+    border-radius: 0.5rem;
+    padding: 0;
+    background: #fff;
+    color: var(--color-ink);
+}
+
+.confirm::backdrop {
+    background: color-mix(in srgb, var(--color-ink) 60%, transparent);
+}
+
+.confirm__panel {
+    padding: 1.5rem;
+}
+
+.confirm__message {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.confirm__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .confirm[open] {
+        animation: toast-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+}

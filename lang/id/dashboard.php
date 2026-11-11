@@ -8,6 +8,7 @@ return [
     'open_menu' => 'Buka menu',
     'close_menu' => 'Tutup menu',
     'language' => 'Bahasa',
+    'cancel' => 'Batal',
     'close_notification' => 'Tutup notifikasi',
     'account_menu' => 'Menu akun',
     'groups' => [

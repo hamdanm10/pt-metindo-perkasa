@@ -86,5 +86,14 @@
             </main>
         </div>
     </div>
+    <dialog id="confirm-dialog" class="confirm" aria-labelledby="confirm-message">
+        <form method="dialog" class="confirm__panel">
+            <p id="confirm-message" class="confirm__message" data-confirm-message></p>
+            <div class="confirm__actions">
+                <button type="submit" value="cancel" class="row-action" autofocus>{{ __('dashboard.cancel') }}</button>
+                <button type="submit" value="ok" class="row-action row-action--danger" data-confirm-ok></button>
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>
