@@ -8,8 +8,8 @@
     <x-dashboard.card class="max-w-2xl">
         <h2 class="text-xl font-bold">{{ __('users.kinds.'.$kind.'.edit_title') }}</h2>
         <form wire:submit="save" class="mt-6 space-y-6" novalidate>
-            <x-dashboard.field name="form.name" :label="__('users.fields.name')" wire:model="form.name" autocomplete="off" />
-            <x-dashboard.field name="form.email" :label="__('users.fields.email')" type="email" wire:model="form.email" autocomplete="off" />
+            <x-dashboard.field name="form.name" :label="__('users.fields.name')" wire:model="form.name" autocomplete="off" required />
+            <x-dashboard.field name="form.email" :label="__('users.fields.email')" type="email" wire:model="form.email" autocomplete="off" required />
 
             <div class="flex flex-wrap gap-3">
                 <x-dashboard.button type="submit">{{ __('users.save') }}</x-dashboard.button>
@@ -22,7 +22,7 @@
         <h2 class="text-xl font-bold">{{ __('users.reset_title') }}</h2>
         <p class="mt-2 text-sm text-muted">{{ __('users.reset_text') }}</p>
         <form wire:submit="resetPassword" class="mt-6 space-y-6" novalidate>
-            <x-dashboard.field name="newPassword" :label="__('users.fields.new_password')" :hint="__('users.password_hint')" type="password" wire:model="newPassword" autocomplete="new-password" />
+            <x-dashboard.field name="newPassword" :label="__('users.fields.new_password')" :hint="__('users.password_hint')" type="password" wire:model="newPassword" autocomplete="new-password" required />
             <x-dashboard.button type="submit" variant="secondary">{{ __('users.reset_password') }}</x-dashboard.button>
         </form>
     </x-dashboard.card>

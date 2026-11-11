@@ -3,7 +3,7 @@
 @php($id = str_replace('.', '-', $name))
 
 <div class="field-group">
-    <label for="{{ $id }}" class="field-label">{{ $label }}</label>
+    <label for="{{ $id }}" class="field-label">{{ $label }}@if ($attributes->has('required'))<span class="text-brand-600" aria-hidden="true"> *</span>@endif</label>
     <select id="{{ $id }}"
             @error($name) aria-invalid="true" aria-describedby="{{ $id }}-error" @enderror
             {{ $attributes->class('field-input field-select') }}>

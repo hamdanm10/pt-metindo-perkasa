@@ -51,6 +51,11 @@ class ContactPageTest extends TestCase
         $this->assertStringContainsString('href="tel:+6281200000000"', $html);
     }
 
+    public function test_the_required_contact_fields_have_a_red_asterisk(): void
+    {
+        $this->assertSame(3, substr_count($this->page(), 'text-brand-600" aria-hidden="true"> *</span>'));
+    }
+
     public function test_the_form_writes_the_message_for_whatsapp_or_email_and_stores_nothing(): void
     {
         $html = $this->page();

@@ -14,7 +14,7 @@
     <form wire:submit="save" class="space-y-8" novalidate>
         <x-dashboard.card>
             <div class="grid gap-6 lg:grid-cols-2">
-                <x-dashboard.select name="form.type" :label="__('article_manager.fields.type')" wire:model="form.type">
+                <x-dashboard.select name="form.type" :label="__('article_manager.fields.type')" wire:model="form.type" required>
                     @foreach (\App\Enums\ArticleType::cases() as $case)
                         <option value="{{ $case->value }}">{{ __('article_manager.types.'.$case->value) }}</option>
                     @endforeach

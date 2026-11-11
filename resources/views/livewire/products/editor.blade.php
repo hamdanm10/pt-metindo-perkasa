@@ -3,7 +3,7 @@
 
     <x-dashboard.card class="max-w-2xl">
         <form wire:submit="save" class="space-y-6" novalidate>
-            <x-dashboard.field name="form.name" :label="__('products.fields.name')" wire:model="form.name" autocomplete="off" />
+            <x-dashboard.field name="form.name" :label="__('products.fields.name')" wire:model="form.name" autocomplete="off" required />
 
             <div>
                 <label for="form-description" class="field-label">{{ __('products.fields.description') }}</label>

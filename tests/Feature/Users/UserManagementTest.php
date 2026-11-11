@@ -183,6 +183,16 @@ class UserManagementTest extends TestCase
         $this->get("/app/staff/{$user->id}/edit")->assertSee('data-password-toggle="newPassword"', false);
     }
 
+    public function test_required_fields_get_a_red_asterisk_and_optional_ones_do_not(): void
+    {
+        $html = (string) $this->actingAs($this->admin())->get('/app/staff/create')->getContent();
+
+        $this->assertSame(3, substr_count($html, 'text-brand-600" aria-hidden="true"> *</span>'));
+
+        $filters = (string) $this->get('/app/staff')->getContent();
+        $this->assertStringNotContainsString('aria-hidden="true"> *</span>', $filters);
+    }
+
     public function test_the_list_searches_and_filters_by_status(): void
     {
         User::factory()->customer()->create(['name' => 'Citra', 'email' => 'citra@example.test']);
