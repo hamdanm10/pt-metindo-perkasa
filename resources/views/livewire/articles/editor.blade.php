@@ -13,7 +13,7 @@
 
     <form wire:submit="save" class="space-y-8" novalidate>
         <x-dashboard.card>
-            <div class="grid gap-6 lg:grid-cols-2">
+            <div class="space-y-6">
                 <x-dashboard.select name="form.type" :label="__('article_manager.fields.type')" wire:model="form.type" required>
                     @foreach (\App\Enums\ArticleType::cases() as $case)
                         <option value="{{ $case->value }}">{{ __('article_manager.types.'.$case->value) }}</option>
@@ -74,12 +74,12 @@
             @foreach ($languages as $code)
                 @php($dir = config("locales.locales.{$code}.dir"))
                 <div wire:key="panel-{{ $code }}" @class(['mt-6 space-y-6', 'hidden' => $activeLocale !== $code])>
-                    <x-dashboard.field :name="'form.translations.'.$code.'.title'" :label="__('article_manager.fields.title')" wire:model="form.translations.{{ $code }}.title" :dir="$dir" lang="{{ config('locales.locales.'.$code.'.html_lang') }}" />
-                    <x-dashboard.field :name="'form.translations.'.$code.'.slug'" :label="__('article_manager.fields.slug')" :hint="__('article_manager.hints.slug')" wire:model="form.translations.{{ $code }}.slug" dir="ltr" autocapitalize="off" spellcheck="false" />
+                    <x-dashboard.field :name="'form.translations.'.$code.'.title'" :label="__('article_manager.fields.title')" wire:model="form.translations.{{ $code }}.title" :placeholder="__('article_manager.placeholders.title')" :dir="$dir" lang="{{ config('locales.locales.'.$code.'.html_lang') }}" />
+                    <x-dashboard.field :name="'form.translations.'.$code.'.slug'" :label="__('article_manager.fields.slug')" :hint="__('article_manager.hints.slug')" wire:model="form.translations.{{ $code }}.slug" :placeholder="__('article_manager.placeholders.slug')" dir="ltr" autocapitalize="off" spellcheck="false" />
 
                     <div>
                         <label for="form-translations-{{ $code }}-excerpt" class="field-label">{{ __('article_manager.fields.excerpt') }}</label>
-                        <textarea id="form-translations-{{ $code }}-excerpt" rows="3" dir="{{ $dir }}" lang="{{ config('locales.locales.'.$code.'.html_lang') }}" wire:model="form.translations.{{ $code }}.excerpt"
+                        <textarea id="form-translations-{{ $code }}-excerpt" rows="3" dir="{{ $dir }}" lang="{{ config('locales.locales.'.$code.'.html_lang') }}" wire:model="form.translations.{{ $code }}.excerpt" placeholder="{{ __('article_manager.placeholders.excerpt') }}"
                                   class="field-input"></textarea>
                         @error('form.translations.'.$code.'.excerpt')
                             <p class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
@@ -99,9 +99,9 @@
                         @enderror
                     </div>
 
-                    <x-dashboard.field :name="'form.translations.'.$code.'.meta_title'" :label="__('article_manager.fields.meta_title')" wire:model="form.translations.{{ $code }}.meta_title" :dir="$dir" />
-                    <x-dashboard.field :name="'form.translations.'.$code.'.meta_description'" :label="__('article_manager.fields.meta_description')" :hint="__('article_manager.hints.meta_description')" wire:model="form.translations.{{ $code }}.meta_description" :dir="$dir" />
-                    <x-dashboard.field :name="'form.translations.'.$code.'.image_alt'" :label="__('article_manager.fields.image_alt')" wire:model="form.translations.{{ $code }}.image_alt" :dir="$dir" />
+                    <x-dashboard.field :name="'form.translations.'.$code.'.meta_title'" :label="__('article_manager.fields.meta_title')" wire:model="form.translations.{{ $code }}.meta_title" :placeholder="__('article_manager.placeholders.meta_title')" :dir="$dir" />
+                    <x-dashboard.field :name="'form.translations.'.$code.'.meta_description'" :label="__('article_manager.fields.meta_description')" :hint="__('article_manager.hints.meta_description')" wire:model="form.translations.{{ $code }}.meta_description" :placeholder="__('article_manager.placeholders.meta_description')" :dir="$dir" />
+                    <x-dashboard.field :name="'form.translations.'.$code.'.image_alt'" :label="__('article_manager.fields.image_alt')" wire:model="form.translations.{{ $code }}.image_alt" :placeholder="__('article_manager.placeholders.image_alt')" :dir="$dir" />
 
                     <div>
                         <label class="inline-flex min-h-11 items-center gap-3 font-semibold">

@@ -66,6 +66,11 @@
     transition: border-color 0.3s ease;
 }
 
+.field-input::placeholder {
+    font-weight: 500;
+    color: color-mix(in srgb, var(--color-ink) 35%, transparent);
+}
+
 .field-input:focus {
     border-bottom-color: var(--color-brand-600);
 }

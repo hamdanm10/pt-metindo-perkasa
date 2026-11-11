@@ -42,6 +42,14 @@ return [
         'published' => 'Terbit',
         'none' => 'Belum ditulis',
     ],
+    'placeholders' => [
+        'title' => 'Contoh: Cara pelapisan tembaga meningkatkan konduktivitas',
+        'slug' => 'Contoh: pelapisan-tembaga-konduktivitas',
+        'excerpt' => 'Contoh: Ringkasan singkat yang tampil di daftar artikel dan pratinjau tautan.',
+        'meta_title' => 'Contoh: Pelapisan Tembaga dan Konduktivitas | PT Metindo Perkasa',
+        'meta_description' => 'Contoh: Deskripsi singkat untuk hasil pencarian, sekitar 150 karakter.',
+        'image_alt' => 'Contoh: Komponen tembaga berlapis yang diangkat dari bak pelapisan',
+    ],
     'hints' => [
         'thumbnail' => 'Satu gambar untuk semua bahasa: JPG, PNG, atau WebP, maksimal 2 MB, minimal 1200x675. Wajib untuk menerbitkan.',
         'slug' => 'Huruf kecil, angka, dan tanda hubung, unik per bahasa. Dipakai pada alamat halaman.',

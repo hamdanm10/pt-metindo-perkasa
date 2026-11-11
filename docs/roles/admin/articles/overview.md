@@ -30,7 +30,7 @@ Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
 | Daftar | `/app/articles` | Judul (bahasa pertama yang ada), jenis, status tiap bahasa, tanggal. Penyaring jenis dan status, pencarian judul, 15 per halaman |
-| Tulis | `/app/articles/create` | Jenis dan thumbnail (bersama), lalu tab per bahasa |
+| Tulis | `/app/articles/create` | Jenis dan thumbnail (bersama, **thumbnail di bawah jenis**, satu kolom selebar penuh), lalu tab per bahasa. Kolom biasa (judul, alamat/slug, ringkasan, judul meta, deskripsi meta, deskripsi gambar) punya **placeholder contoh** (`article_manager.placeholders.*`, mengikuti bahasa dashboard); kolom isi (editor) tanpa placeholder |
 | Ubah | `/app/articles/{article}/edit` | Sama dengan Tulis |
 
 1. Admin memilih jenis dan mengunggah thumbnail.

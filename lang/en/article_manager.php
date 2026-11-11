@@ -42,6 +42,14 @@ return [
         'published' => 'Published',
         'none' => 'Not written',
     ],
+    'placeholders' => [
+        'title' => 'e.g. How copper plating improves conductivity',
+        'slug' => 'e.g. copper-plating-conductivity',
+        'excerpt' => 'e.g. A short summary shown on the article list and in link previews.',
+        'meta_title' => 'e.g. Copper Plating and Conductivity | PT Metindo Perkasa',
+        'meta_description' => 'e.g. A short description for search results, around 150 characters.',
+        'image_alt' => 'e.g. Plated copper parts lifted out of a plating tank',
+    ],
     'hints' => [
         'thumbnail' => 'One image shared by all languages: JPG, PNG or WebP, up to 2 MB, at least 1200x675. Required to publish.',
         'slug' => 'Lower case letters, numbers and hyphens, unique per language. Used in the page address.',
