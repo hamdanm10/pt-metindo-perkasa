@@ -64,8 +64,8 @@
                                 @else
                                     <div class="flex items-center gap-3 whitespace-nowrap tabular-nums">
                                         <span class="inline-flex items-center gap-1.5 text-base font-black">
-                                            {{ \Illuminate\Support\Number::format($published->sum('views_count')) }}
                                             <x-dashboard.icon name="eye" class="size-4 text-muted" />
+                                            {{ \Illuminate\Support\Number::format($published->sum('views_count')) }}
                                             <span class="sr-only">{{ __('article_manager.fields.views') }}</span>
                                         </span>
                                         <span class="h-4 w-px bg-ink/20" aria-hidden="true"></span>
