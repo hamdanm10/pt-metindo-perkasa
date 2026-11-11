@@ -30,4 +30,21 @@ class DashboardMenuTest extends TestCase
 
         $this->assertSame(['customer.dashboard'], array_column($menu, 'route'));
     }
+
+    public function test_admin_items_are_grouped_under_menu_and_master_with_icons(): void
+    {
+        $groups = (new DashboardMenu)->groupsForUser(User::factory()->admin()->make());
+
+        $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.master'], array_column($groups, 'label'));
+        $this->assertSame(['app.dashboard'], array_column($groups[0]['items'], 'route'));
+        $this->assertSame(['app.users.index', 'app.articles.index', 'app.products.index', 'app.services.index'], array_column($groups[1]['items'], 'route'));
+        $this->assertSame(['home', 'users', 'document', 'cube', 'wrench'], array_column(array_merge(...array_column($groups, 'items')), 'icon'));
+    }
+
+    public function test_a_group_without_items_is_left_out(): void
+    {
+        $groups = (new DashboardMenu)->groupsForUser(User::factory()->staff()->make());
+
+        $this->assertSame(['dashboard.groups.menu'], array_column($groups, 'label'));
+    }
 }

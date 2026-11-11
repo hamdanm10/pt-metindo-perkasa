@@ -15,22 +15,24 @@ use Illuminate\Support\Facades\Route;
 class DashboardMenu
 {
     /**
-     * @return list<array{route: string, label: string, active: string, roles: list<Role>}>
+     * @return list<array{route: string, label: string, active: string, icon: string, group: string, roles: list<Role>}>
      */
     private function items(): array
     {
         return [
-            ['route' => 'app.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'app.dashboard', 'roles' => Role::staffArea()],
-            ['route' => 'app.users.index', 'label' => 'dashboard.nav.users', 'active' => 'app.users.*', 'roles' => [Role::Admin]],
-            ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'roles' => [Role::Admin]],
-            ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'roles' => [Role::Admin]],
-            ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'roles' => [Role::Admin]],
-            ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'roles' => Role::customerArea()],
+            ['route' => 'app.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'app.dashboard', 'icon' => 'home', 'group' => 'menu', 'roles' => Role::staffArea()],
+            ['route' => 'app.users.index', 'label' => 'dashboard.nav.users', 'active' => 'app.users.*', 'icon' => 'users', 'group' => 'master', 'roles' => [Role::Admin]],
+            ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'icon' => 'document', 'group' => 'master', 'roles' => [Role::Admin]],
+            ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'icon' => 'cube', 'group' => 'master', 'roles' => [Role::Admin]],
+            ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'master', 'roles' => [Role::Admin]],
+            ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'icon' => 'home', 'group' => 'menu', 'roles' => Role::customerArea()],
         ];
     }
 
     /**
-     * @return list<array{route: string, label: string, active: string}>
+     * The items this user may open, in order.
+     *
+     * @return list<array{route: string, label: string, active: string, icon: string, group: string}>
      */
     public function forUser(User $user): array
     {
@@ -38,10 +40,27 @@ class DashboardMenu
 
         foreach ($this->items() as $item) {
             if (in_array($user->role, $item['roles'], true) && Route::has($item['route'])) {
-                $menu[] = ['route' => $item['route'], 'label' => $item['label'], 'active' => $item['active']];
+                $menu[] = ['route' => $item['route'], 'label' => $item['label'], 'active' => $item['active'], 'icon' => $item['icon'], 'group' => $item['group']];
             }
         }
 
         return $menu;
+    }
+
+    /**
+     * The same items under their group labels (Menu, Master, ...). A group with no item is left out.
+     *
+     * @return list<array{label: string, items: list<array{route: string, label: string, active: string, icon: string, group: string}>}>
+     */
+    public function groupsForUser(User $user): array
+    {
+        $groups = [];
+
+        foreach ($this->forUser($user) as $item) {
+            $groups[$item['group']]['label'] = 'dashboard.groups.'.$item['group'];
+            $groups[$item['group']]['items'][] = $item;
+        }
+
+        return array_values($groups);
     }
 }

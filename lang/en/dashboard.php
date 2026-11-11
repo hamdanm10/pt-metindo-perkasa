@@ -9,8 +9,12 @@ return [
     'close_menu' => 'Close menu',
     'language' => 'Language',
     'account_menu' => 'Account menu',
+    'groups' => [
+        'menu' => 'Menu',
+        'master' => 'Master',
+    ],
     'nav' => [
-        'home' => 'Home',
+        'home' => 'Dashboard',
         'users' => 'Accounts',
         'articles' => 'Articles',
         'products' => 'Products',

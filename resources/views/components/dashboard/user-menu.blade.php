@@ -6,7 +6,7 @@
 @endphp
 
 <details class="relative" data-dismissible>
-    <summary class="dd-summary inline-flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-lg bg-white/10 ps-1.5 pe-1.5 text-white transition-colors hover:bg-white/20 sm:pe-4 [&::-webkit-details-marker]:hidden"
+    <summary class="dd-summary inline-flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-lg bg-ink ps-1.5 pe-1.5 text-white transition-colors hover:bg-ink/85 sm:pe-4 [&::-webkit-details-marker]:hidden"
              style="--focus-ring: #ffffff" aria-label="{{ __('dashboard.account_menu') }}">
         <span class="flex size-8 items-center justify-center rounded-md bg-brand-600 text-sm font-extrabold text-white" aria-hidden="true">{{ $initials }}</span>
         <span class="hidden text-start leading-tight sm:block">
@@ -15,7 +15,7 @@
         </span>
         <svg viewBox="0 0 20 20" class="dd-chevron hidden size-4 sm:block" fill="currentColor" aria-hidden="true"><path d="M5.25 7.5 10 12.25 14.75 7.5l1.06 1.06L10 14.37 4.19 8.56 5.25 7.5Z"/></svg>
     </summary>
-    <div class="dd-panel absolute end-0 top-full z-40 mt-2 w-64 rounded-lg bg-ink p-2 text-white shadow-lg ring-1 ring-white/15" style="--focus-ring: #ffffff">
+    <div class="dd-panel absolute end-0 top-full z-40 mt-2 w-64 rounded-lg bg-ink p-2 text-white shadow-lg" style="--focus-ring: #ffffff">
         <div class="px-3 py-3">
             <p class="font-bold">{{ $user->name }}</p>
             <p class="mt-0.5 break-all text-sm text-white/70" dir="ltr">{{ $user->email }}</p>

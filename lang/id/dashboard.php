@@ -9,8 +9,12 @@ return [
     'close_menu' => 'Tutup menu',
     'language' => 'Bahasa',
     'account_menu' => 'Menu akun',
+    'groups' => [
+        'menu' => 'Menu',
+        'master' => 'Master',
+    ],
     'nav' => [
-        'home' => 'Beranda',
+        'home' => 'Dasbor',
         'users' => 'Akun',
         'articles' => 'Artikel',
         'products' => 'Produk',
