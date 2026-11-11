@@ -210,14 +210,14 @@ class ArticleViewsTest extends TestCase
         $this->assertArrayHasKey('views', (require lang_path('id/article_manager.php'))['fields']);
     }
 
-    public function test_the_dashboard_list_shows_the_views_of_each_published_language_without_extra_queries(): void
+    public function test_the_dashboard_list_shows_the_total_views_with_a_breakdown_per_language_without_extra_queries(): void
     {
         $admin = User::factory()->admin()->create();
         $article = Article::factory()->create();
         ArticleTranslation::factory()->published('en')->create(['article_id' => $article->id, 'views_count' => 1200]);
         ArticleTranslation::factory()->published('id')->create(['article_id' => $article->id, 'views_count' => 34]);
 
-        Livewire::actingAs($admin)->test(Index::class)->assertSee('1.2K')->assertSee('34');
+        Livewire::actingAs($admin)->test(Index::class)->assertSee('1,234')->assertSee('1.2K')->assertSee('34');
 
         DB::enableQueryLog();
         Livewire::actingAs($admin)->test(Index::class);

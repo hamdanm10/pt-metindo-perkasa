@@ -30,6 +30,7 @@
                         <th scope="col">{{ __('article_manager.fields.title') }}</th>
                         <th scope="col">{{ __('article_manager.fields.type') }}</th>
                         <th scope="col">{{ __('article_manager.fields.languages') }}</th>
+                        <th scope="col">{{ __('article_manager.fields.views') }}</th>
                         <th scope="col"><span class="sr-only">{{ __('article_manager.actions') }}</span></th>
                     </tr>
                 </thead>
@@ -51,15 +52,25 @@
                                                 <span class="uppercase" aria-hidden="true">{{ $code }}</span>
                                                 <span class="sr-only">{{ config("locales.locales.{$code}.name") }}:</span>
                                                 <span class="sr-only">{{ __('article_manager.status.'.($translation?->status->value ?? 'none')) }}</span>
-                                                @if ($translation?->status === \App\Enums\PublicationStatus::Published)
-                                                    <span class="ms-1.5 border-s border-white/40 ps-1.5 tabular-nums" title="{{ __('article_manager.fields.views') }}">
-                                                        <span class="sr-only">{{ __('article_manager.fields.views') }}:</span>{{ \Illuminate\Support\Number::abbreviate($translation->views_count, maxPrecision: 1) }}
-                                                    </span>
-                                                @endif
                                             </x-dashboard.badge>
                                         </li>
                                     @endforeach
                                 </ul>
+                            </td>
+                            <td>
+                                @php($published = $article->translations->filter(fn ($item) => $item->status === \App\Enums\PublicationStatus::Published))
+                                @if ($published->isEmpty())
+                                    <span class="text-muted" aria-label="{{ __('article_manager.no_views') }}">&mdash;</span>
+                                @else
+                                    <p class="text-base font-black tabular-nums">{{ \Illuminate\Support\Number::format($published->sum('views_count')) }}</p>
+                                    @if ($published->count() > 1)
+                                        <p class="mt-1 flex flex-wrap gap-x-3 text-xs text-muted tabular-nums">
+                                            @foreach ($published as $item)
+                                                <span><span class="font-bold uppercase text-ink">{{ $item->locale }}</span> {{ \Illuminate\Support\Number::abbreviate($item->views_count, maxPrecision: 1) }}</span>
+                                            @endforeach
+                                        </p>
+                                    @endif
+                                @endif
                             </td>
                             <td class="text-end whitespace-nowrap">
                                 <a href="{{ route('app.articles.edit', $article) }}" class="row-action">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
@@ -68,7 +79,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-12 text-center text-muted">{{ __('article_manager.empty') }}</td>
+                            <td colspan="5" class="py-12 text-center text-muted">{{ __('article_manager.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
