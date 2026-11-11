@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
-use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -19,8 +18,6 @@ class UserForm extends Form
 
     public string $email = '';
 
-    public string $role = 'customer';
-
     public string $password = '';
 
     public function setUser(User $user): void
@@ -28,7 +25,6 @@ class UserForm extends Form
         $this->user = $user;
         $this->name = $user->name;
         $this->email = $user->email;
-        $this->role = $user->role->value;
     }
 
     /**
@@ -39,7 +35,6 @@ class UserForm extends Form
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user?->id)],
-            'role' => ['required', Rule::enum(Role::class)],
         ];
 
         if ($this->user === null) {

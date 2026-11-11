@@ -16,7 +16,8 @@ return [
     ],
     'nav' => [
         'home' => 'Dasbor',
-        'users' => 'Akun',
+        'staff' => 'Staf',
+        'customers' => 'Customer',
         'articles' => 'Artikel',
         'products' => 'Produk',
         'services' => 'Layanan',

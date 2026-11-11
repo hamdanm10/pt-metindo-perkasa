@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class UserManagementTest extends TestCase
@@ -29,35 +30,59 @@ class UserManagementTest extends TestCase
         return User::factory()->admin()->create();
     }
 
-    public function test_only_admin_can_open_the_account_pages(): void
+    /**
+     * @return array<string, array{string, string, Role}>
+     */
+    public static function kinds(): array
     {
-        $target = User::factory()->customer()->create();
+        return [
+            'staff' => ['staff', 'staff', Role::Staff],
+            'customers' => ['customers', 'customer', Role::Customer],
+        ];
+    }
 
-        foreach (['/app/users', '/app/users/create', "/app/users/{$target->id}/edit"] as $url) {
+    #[DataProvider('kinds')]
+    public function test_only_admin_can_open_the_account_pages(string $path, string $kind, Role $role): void
+    {
+        $target = User::factory()->create(['role' => $role]);
+
+        foreach (["/app/{$path}", "/app/{$path}/create", "/app/{$path}/{$target->id}/edit"] as $url) {
             $this->actingAs($this->admin())->get($url)->assertOk();
             $this->actingAs(User::factory()->staff()->create())->get($url)->assertForbidden();
             $this->actingAs(User::factory()->customer()->create())->get($url)->assertForbidden();
         }
     }
 
-    public function test_guests_are_sent_to_the_login(): void
+    public function test_the_old_accounts_address_is_gone(): void
     {
-        $this->get('/app/users')->assertRedirect('/app/login');
+        $this->actingAs($this->admin())->get('/app/users')->assertNotFound();
     }
 
-    public function test_the_accounts_menu_item_is_only_for_admin(): void
+    public function test_guests_are_sent_to_the_login(): void
     {
-        $this->actingAs($this->admin())->get('/app/dashboard')->assertSee('href="'.url('/app/users').'"', false);
-        $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->assertDontSee('href="'.url('/app/users').'"', false);
+        $this->get('/app/staff')->assertRedirect('/app/login');
+        $this->get('/app/customers')->assertRedirect('/app/login');
+    }
+
+    public function test_the_menu_has_staff_and_customers_under_user_management_for_admin_only(): void
+    {
+        $this->actingAs($this->admin())->get('/app/dashboard')
+            ->assertSee('href="'.url('/app/staff').'"', false)
+            ->assertSee('href="'.url('/app/customers').'"', false)
+            ->assertDontSee('href="'.url('/app/users').'"', false);
+
+        $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')
+            ->assertDontSee('href="'.url('/app/staff').'"', false)
+            ->assertDontSee('href="'.url('/app/customers').'"', false);
     }
 
     public function test_livewire_actions_are_refused_for_other_roles(): void
     {
         $target = User::factory()->customer()->create();
 
-        Livewire::actingAs(User::factory()->staff()->create())->test(Index::class)->assertForbidden();
-        Livewire::actingAs(User::factory()->staff()->create())->test(Create::class)->assertForbidden();
-        Livewire::actingAs(User::factory()->staff()->create())->test(Edit::class, ['user' => $target])->assertForbidden();
+        Livewire::actingAs(User::factory()->staff()->create())->test(Index::class, ['kind' => 'customer'])->assertForbidden();
+        Livewire::actingAs(User::factory()->staff()->create())->test(Create::class, ['kind' => 'customer'])->assertForbidden();
+        Livewire::actingAs(User::factory()->staff()->create())->test(Edit::class, ['user' => $target, 'kind' => 'customer'])->assertForbidden();
     }
 
     public function test_the_role_and_locale_middleware_is_persistent_for_livewire_requests(): void
@@ -68,119 +93,180 @@ class UserManagementTest extends TestCase
         $this->assertContains(SetDashboardLocale::class, $persistent);
     }
 
-    public function test_the_forms_have_no_language_field_and_editing_keeps_the_language(): void
+    public function test_the_forms_have_no_role_or_language_field_and_editing_keeps_the_language(): void
     {
         $user = User::factory()->customer()->create(['locale' => 'id']);
 
-        $this->actingAs($this->admin())->get('/app/users/create')->assertDontSee('form-locale', false);
-        $this->get("/app/users/{$user->id}/edit")->assertDontSee('form-locale', false);
+        foreach (['/app/customers/create', "/app/customers/{$user->id}/edit"] as $url) {
+            $this->actingAs($this->admin())->get($url)
+                ->assertDontSee('form-locale', false)
+                ->assertDontSee('form-role', false);
+        }
 
-        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user])->set('form.name', 'Renamed')->call('save')->assertHasNoErrors();
+        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user, 'kind' => 'customer'])->set('form.name', 'Renamed')->call('save')->assertHasNoErrors();
 
         $this->assertSame('id', $user->refresh()->locale);
     }
 
-    public function test_the_list_searches_and_filters(): void
+    public function test_each_list_shows_only_its_own_role_and_never_the_admin(): void
     {
-        User::factory()->staff()->create(['name' => 'Budi Santoso', 'email' => 'budi@example.test']);
+        $admin = $this->admin();
+        User::factory()->staff()->create(['name' => 'Budi Santoso']);
+        User::factory()->customer()->create(['name' => 'Citra Lestari']);
+
+        Livewire::actingAs($admin)->test(Index::class, ['kind' => 'staff'])
+            ->assertSee('Budi Santoso')->assertDontSee('Citra Lestari')->assertDontSee($admin->email);
+
+        Livewire::actingAs($admin)->test(Index::class, ['kind' => 'customer'])
+            ->assertSee('Citra Lestari')->assertDontSee('Budi Santoso')->assertDontSee($admin->email);
+    }
+
+    public function test_the_pages_use_the_titles_of_their_kind(): void
+    {
+        $heading = fn (string $url): string => preg_match('/<h1[^>]*>\s*(.*?)\s*<\/h1>/s', (string) $this->get($url)->getContent(), $found) === 1 ? $found[1] : '';
+
+        $this->actingAs($this->admin());
+
+        $this->assertSame(__('users.kinds.staff.title'), $heading('/app/staff'));
+        $this->assertSame(__('users.kinds.customer.title'), $heading('/app/customers'));
+        $this->assertSame(__('users.kinds.staff.create_title'), $heading('/app/staff/create'));
+        $this->assertSame(__('users.kinds.customer.create_title'), $heading('/app/customers/create'));
+
+        $this->get('/app/staff')->assertSee(__('users.kinds.staff.create'));
+        $this->get('/app/customers')->assertSee(__('users.kinds.customer.create'));
+    }
+
+    public function test_an_unknown_kind_is_not_found(): void
+    {
+        Livewire::actingAs($this->admin())->test(Index::class, ['kind' => 'admin'])->assertNotFound();
+        Livewire::actingAs($this->admin())->test(Index::class, ['kind' => 'nobody'])->assertNotFound();
+    }
+
+    public function test_the_admin_account_cannot_be_opened_from_the_account_pages(): void
+    {
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->get("/app/staff/{$admin->id}/edit")->assertNotFound();
+        $this->get("/app/customers/{$admin->id}/edit")->assertNotFound();
+    }
+
+    public function test_a_user_of_the_other_kind_is_not_found_on_the_edit_page(): void
+    {
+        $customer = User::factory()->customer()->create();
+        $staff = User::factory()->staff()->create();
+
+        $this->actingAs($this->admin())->get("/app/staff/{$customer->id}/edit")->assertNotFound();
+        $this->get("/app/customers/{$staff->id}/edit")->assertNotFound();
+    }
+
+    public function test_the_policy_never_allows_changing_the_admin(): void
+    {
+        $admin = $this->admin();
+        $other = $this->admin();
+
+        $this->assertFalse($admin->can('update', $other));
+        $this->assertFalse($admin->can('resetPassword', $other));
+        $this->assertFalse($admin->can('setActive', $other));
+    }
+
+    public function test_the_list_searches_and_filters_by_status(): void
+    {
         User::factory()->customer()->create(['name' => 'Citra', 'email' => 'citra@example.test']);
+        User::factory()->customer()->create(['name' => 'Budi', 'email' => 'budi@example.test']);
         User::factory()->customer()->inactive()->create(['name' => 'Dewi', 'email' => 'dewi@example.test']);
 
-        Livewire::actingAs($this->admin())->test(Index::class)
-            ->set('search', 'BUDI')->assertSee('Budi Santoso')->assertDontSee('Citra')
-            ->set('search', 'citra@EXAMPLE')->assertSee('Citra')->assertDontSee('Budi Santoso')
-            ->set('search', '')->set('role', 'customer')->assertSee('Citra')->assertSee('Dewi')->assertDontSee('Budi Santoso')
-            ->set('status', 'inactive')->assertSee('Dewi')->assertDontSee('Citra')
-            ->set('role', '')->set('status', 'active')->assertDontSee('Dewi');
+        Livewire::actingAs($this->admin())->test(Index::class, ['kind' => 'customer'])
+            ->set('search', 'BUDI')->assertSee('Budi')->assertDontSee('Citra')
+            ->set('search', 'citra@EXAMPLE')->assertSee('Citra')->assertDontSee('Budi')
+            ->set('search', '')->set('status', 'inactive')->assertSee('Dewi')->assertDontSee('Citra')
+            ->set('status', 'active')->assertDontSee('Dewi')->assertSee('Citra');
     }
 
     public function test_the_list_is_paginated_and_does_not_add_queries_per_row(): void
     {
         $admin = $this->admin();
-        User::factory()->count(4)->create();
+        User::factory()->customer()->count(4)->create();
 
         DB::enableQueryLog();
-        Livewire::actingAs($admin)->test(Index::class);
+        Livewire::actingAs($admin)->test(Index::class, ['kind' => 'customer']);
         $few = count(DB::getQueryLog());
 
-        User::factory()->count(25)->create();
+        User::factory()->customer()->count(25)->create();
 
         DB::flushQueryLog();
-        $component = Livewire::actingAs($admin)->test(Index::class);
+        $component = Livewire::actingAs($admin)->test(Index::class, ['kind' => 'customer']);
         $many = count(DB::getQueryLog());
 
         $this->assertSame($few, $many);
         $this->assertCount(15, $component->viewData('users')->items());
-        $this->assertSame(30, $component->viewData('users')->total());
+        $this->assertSame(29, $component->viewData('users')->total());
     }
 
     public function test_the_table_scrolls_inside_its_own_wrapper(): void
     {
-        $this->actingAs($this->admin())->get('/app/users')->assertSee('relative overflow-x-auto', false);
+        $this->actingAs($this->admin())->get('/app/staff')->assertSee('relative overflow-x-auto', false);
     }
 
-    public function test_admin_creates_an_account(): void
+    #[DataProvider('kinds')]
+    public function test_admin_creates_an_account_with_the_role_of_the_page(string $path, string $kind, Role $role): void
     {
-        Livewire::actingAs($this->admin())->test(Create::class)
-            ->set('form.name', 'New Staff')
-            ->set('form.email', ' New.Staff@Example.Test ')
-            ->set('form.role', 'staff')
+        Livewire::actingAs($this->admin())->test(Create::class, ['kind' => $kind])
+            ->set('form.name', 'New Person')
+            ->set('form.email', ' New.Person@Example.Test ')
             ->set('form.password', 'Secret123')
             ->call('save')
             ->assertHasNoErrors()
-            ->assertRedirect('/app/users');
+            ->assertRedirect("/app/{$path}");
 
-        $user = User::query()->where('email', 'new.staff@example.test')->firstOrFail();
+        $user = User::query()->where('email', 'new.person@example.test')->firstOrFail();
 
-        $this->assertSame(Role::Staff, $user->role);
+        $this->assertSame($role, $user->role);
         $this->assertSame('en', $user->locale);
         $this->assertTrue($user->is_active);
         $this->assertTrue(Hash::check('Secret123', $user->password));
+    }
+
+    public function test_a_role_sent_from_the_browser_is_ignored_and_no_admin_can_be_created(): void
+    {
+        Livewire::actingAs($this->admin())->test(Create::class, ['kind' => 'staff'])
+            ->set('form.name', 'Sneaky')
+            ->set('form.email', 'sneaky@example.test')
+            ->set('form.password', 'Secret123')
+            ->set('form.role', 'admin')
+            ->call('save');
+
+        $this->assertSame(Role::Staff, User::query()->where('email', 'sneaky@example.test')->firstOrFail()->role);
+        $this->assertSame(1, User::query()->where('role', Role::Admin->value)->count());
     }
 
     public function test_creating_rejects_bad_input(): void
     {
         User::factory()->create(['email' => 'taken@example.test']);
 
-        Livewire::actingAs($this->admin())->test(Create::class)
+        Livewire::actingAs($this->admin())->test(Create::class, ['kind' => 'staff'])
             ->set('form.name', '')
             ->set('form.email', 'TAKEN@example.test')
-            ->set('form.role', 'superuser')
             ->set('form.password', 'weak')
             ->call('save')
-            ->assertHasErrors(['form.name', 'form.email', 'form.role', 'form.password']);
+            ->assertHasErrors(['form.name', 'form.email', 'form.password']);
 
-        $this->assertSame(1, User::query()->count() - 1);
+        $this->assertSame(0, User::query()->where('role', Role::Staff->value)->count());
     }
 
-    public function test_admin_edits_an_account_and_may_keep_its_own_email(): void
+    public function test_admin_edits_an_account_and_may_keep_its_own_email_and_the_role_stays(): void
     {
         $user = User::factory()->customer()->create(['email' => 'old@example.test']);
 
-        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user])
+        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user, 'kind' => 'customer'])
             ->set('form.name', 'Renamed')
-            ->set('form.role', 'staff')
             ->call('save')
             ->assertHasNoErrors();
 
         $user->refresh();
 
         $this->assertSame('Renamed', $user->name);
-        $this->assertSame(Role::Staff, $user->role);
+        $this->assertSame(Role::Customer, $user->role);
         $this->assertSame('old@example.test', $user->email);
-    }
-
-    public function test_an_admin_cannot_remove_their_own_admin_role(): void
-    {
-        $admin = $this->admin();
-        User::factory()->admin()->create();
-
-        Livewire::actingAs($admin)->test(Edit::class, ['user' => $admin])
-            ->set('form.role', 'staff')
-            ->call('save')
-            ->assertHasErrors(['form.role']);
-
-        $this->assertSame(Role::Admin, $admin->refresh()->role);
     }
 
     public function test_resetting_a_password_replaces_it_and_ends_other_sessions(): void
@@ -189,7 +275,7 @@ class UserManagementTest extends TestCase
         $user = User::factory()->staff()->create();
         DB::table('sessions')->insert(['id' => 'abc', 'user_id' => $user->id, 'payload' => '', 'last_activity' => time()]);
 
-        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user])
+        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user, 'kind' => 'staff'])
             ->set('newPassword', 'weak')->call('resetPassword')->assertHasErrors(['newPassword'])
             ->set('newPassword', 'Fresh1234')->call('resetPassword')->assertHasNoErrors()->assertSet('newPassword', '');
 
@@ -204,7 +290,7 @@ class UserManagementTest extends TestCase
         $user = User::factory()->customer()->create();
         DB::table('sessions')->insert(['id' => 'abc', 'user_id' => $user->id, 'payload' => '', 'last_activity' => time()]);
 
-        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user])
+        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user, 'kind' => 'customer'])
             ->call('toggleActive')->assertHasNoErrors();
 
         $this->assertFalse($user->refresh()->is_active);
@@ -214,25 +300,17 @@ class UserManagementTest extends TestCase
 
         $this->post('/customer/login', ['email' => $user->email, 'password' => 'password'])->assertSessionHasErrors('email');
 
-        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user])->call('toggleActive');
+        Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user, 'kind' => 'customer'])->call('toggleActive');
 
         $this->assertTrue($user->refresh()->is_active);
-    }
-
-    public function test_an_admin_cannot_deactivate_themselves(): void
-    {
-        $admin = $this->admin();
-
-        Livewire::actingAs($admin)->test(Edit::class, ['user' => $admin])->call('toggleActive')->assertForbidden();
-
-        $this->assertTrue($admin->refresh()->is_active);
     }
 
     public function test_pages_follow_the_dashboard_language(): void
     {
         $admin = User::factory()->admin()->create(['locale' => 'id']);
 
-        $this->actingAs($admin)->get('/app/users')->assertSee(__('users.title', [], 'id'))->assertSee(__('users.create', [], 'id'));
+        $this->actingAs($admin)->get('/app/staff')->assertSee(__('users.kinds.staff.title', [], 'id'))->assertSee(__('users.kinds.staff.create', [], 'id'));
+        $this->get('/app/customers')->assertSee(__('users.kinds.customer.title', [], 'id'));
     }
 
     public function test_translation_keys_match_in_both_locales(): void

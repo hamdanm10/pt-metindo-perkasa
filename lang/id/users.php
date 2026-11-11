@@ -3,23 +3,33 @@
 declare(strict_types=1);
 
 return [
-    'title' => 'Akun',
-    'create' => 'Tambah akun',
-    'create_title' => 'Tambah akun',
-    'edit_title' => 'Detail akun',
+    'kinds' => [
+        'staff' => [
+            'title' => 'Staf',
+            'create' => 'Tambah staf',
+            'create_title' => 'Tambah staf',
+            'edit_title' => 'Detail staf',
+            'empty' => 'Tidak ada staf yang cocok.',
+            'back' => 'Kembali ke staf',
+        ],
+        'customer' => [
+            'title' => 'Customer',
+            'create' => 'Tambah customer',
+            'create_title' => 'Tambah customer',
+            'edit_title' => 'Detail customer',
+            'empty' => 'Tidak ada customer yang cocok.',
+            'back' => 'Kembali ke customer',
+        ],
+    ],
     'edit' => 'Ubah',
     'search' => 'Cari nama atau email',
-    'all_roles' => 'Semua peran',
     'all_statuses' => 'Semua status',
     'actions' => 'Aksi',
-    'empty' => 'Tidak ada akun yang cocok.',
     'save' => 'Simpan',
     'cancel' => 'Batal',
-    'back' => 'Kembali ke akun',
     'fields' => [
         'name' => 'Nama',
         'email' => 'Email',
-        'role' => 'Peran',
         'status' => 'Status',
         'initial_password' => 'Kata sandi awal',
         'new_password' => 'Kata sandi baru',
@@ -46,8 +56,7 @@ return [
         'deactivated' => 'Akun dinonaktifkan.',
     ],
     'errors' => [
-        'self_role' => 'Anda tidak bisa mencabut peran admin Anda sendiri.',
-        'last_admin' => 'Admin aktif terakhir tidak boleh kehilangan peran admin.',
+        'admin_exists' => 'Hanya boleh ada satu admin, dan admin sudah ada.',
         'self_active' => 'Anda tidak bisa menonaktifkan akun Anda sendiri.',
         'last_admin_active' => 'Admin aktif terakhir tidak boleh dinonaktifkan.',
     ],

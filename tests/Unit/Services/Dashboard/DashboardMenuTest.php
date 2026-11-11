@@ -14,7 +14,7 @@ class DashboardMenuTest extends TestCase
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->admin()->make());
 
-        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.products.index', 'app.services.index', 'app.users.index'], array_column($menu, 'route'));
+        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.products.index', 'app.services.index', 'app.staff.index', 'app.customers.index'], array_column($menu, 'route'));
     }
 
     public function test_staff_gets_only_the_home(): void
@@ -38,8 +38,8 @@ class DashboardMenuTest extends TestCase
         $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.content', 'dashboard.groups.users'], array_column($groups, 'label'));
         $this->assertSame(['app.dashboard'], array_column($groups[0]['items'], 'route'));
         $this->assertSame(['app.articles.index', 'app.products.index', 'app.services.index'], array_column($groups[1]['items'], 'route'));
-        $this->assertSame(['app.users.index'], array_column($groups[2]['items'], 'route'));
-        $this->assertSame(['home', 'document', 'cube', 'wrench', 'users'], array_column(array_merge(...array_column($groups, 'items')), 'icon'));
+        $this->assertSame(['app.staff.index', 'app.customers.index'], array_column($groups[2]['items'], 'route'));
+        $this->assertSame(['home', 'document', 'cube', 'wrench', 'briefcase', 'users'], array_column(array_merge(...array_column($groups, 'items')), 'icon'));
     }
 
     public function test_a_group_without_items_is_left_out(): void

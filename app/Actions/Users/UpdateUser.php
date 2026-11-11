@@ -4,32 +4,19 @@ declare(strict_types=1);
 
 namespace App\Actions\Users;
 
-use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 
 class UpdateUser
 {
     /**
-     * @throws ValidationException
+     * Changes the name and email only. The role of an account never changes after it is created.
      */
-    public function execute(User $actor, User $target, string $name, string $email, Role $role): User
+    public function execute(User $target, string $name, string $email): User
     {
-        $losesAdminRole = $target->role === Role::Admin && $role !== Role::Admin;
-
-        if ($losesAdminRole && $actor->is($target)) {
-            throw ValidationException::withMessages(['form.role' => __('users.errors.self_role')]);
-        }
-
-        if ($losesAdminRole && $target->is_active && User::query()->activeAdmins()->count() <= 1) {
-            throw ValidationException::withMessages(['form.role' => __('users.errors.last_admin')]);
-        }
-
         $target->forceFill([
             'name' => $name,
             'email' => Str::lower($email),
-            'role' => $role,
         ])->save();
 
         return $target;

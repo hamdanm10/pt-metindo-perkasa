@@ -105,8 +105,8 @@ class ShellTest extends TestCase
         $this->assertGreaterThan($position(__('dashboard.groups.content')), $position(__('dashboard.groups.users')));
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
-        $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.users')));
-        $this->assertSame(5, substr_count($html, 'size-5 shrink-0'));
+        $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
+        $this->assertSame(6, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertStringNotContainsString('>'.__('dashboard.groups.content').'</p>', $staff);

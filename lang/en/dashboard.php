@@ -16,7 +16,8 @@ return [
     ],
     'nav' => [
         'home' => 'Dashboard',
-        'users' => 'Accounts',
+        'staff' => 'Staff',
+        'customers' => 'Customers',
         'articles' => 'Articles',
         'products' => 'Products',
         'services' => 'Services',
