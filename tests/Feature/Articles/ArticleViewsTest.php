@@ -199,16 +199,6 @@ class ArticleViewsTest extends TestCase
         $this->assertStringContainsString('kali dibaca', (string) ArticleViews::label(15));
     }
 
-    public function test_the_article_rows_are_centered_vertically(): void
-    {
-        $article = Article::factory()->create();
-        ArticleTranslation::factory()->published()->create(['article_id' => $article->id]);
-
-        Livewire::actingAs(User::factory()->admin()->create())->test(Index::class)
-            ->assertSeeHtml('class="align-middle"')
-            ->assertDontSeeHtml('class="align-top"');
-    }
-
     public function test_the_texts_exist_in_every_landing_language(): void
     {
         foreach (config()->array('locales.landing') as $locale) {

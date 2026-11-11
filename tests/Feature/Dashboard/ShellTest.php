@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Dashboard;
 
+use App\Models\Article;
+use App\Models\ArticleTranslation;
+use App\Models\Product;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -153,6 +157,20 @@ class ShellTest extends TestCase
             ->assertOk()
             ->assertSee('data-confirm="'.__('users.confirm_deactivate').'"', false)
             ->assertDontSee('wire:confirm', false);
+    }
+
+    public function test_list_rows_are_centered_vertically(): void
+    {
+        Product::factory()->create();
+        Service::factory()->create();
+        ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id]);
+
+        foreach (['/app/products', '/app/services', '/app/articles'] as $url) {
+            $this->actingAs(User::factory()->admin()->create())->get($url)
+                ->assertOk()
+                ->assertSee('class="align-middle"', false)
+                ->assertDontSee('align-top', false);
+        }
     }
 
     public function test_the_content_sits_in_a_centered_container(): void
