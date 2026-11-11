@@ -219,3 +219,42 @@ new MutationObserver((mutations) => {
         });
     });
 }).observe(document.body, { childList: true, subtree: true });
+
+// Confirmation dialog: a button with data-confirm asks first, then replays its click.
+const confirmDialog = document.getElementById('confirm-dialog');
+let confirmed = null;
+
+document.addEventListener(
+    'click',
+    (event) => {
+        const trigger = event.target instanceof Element ? event.target.closest('[data-confirm]') : null;
+
+        if (!trigger || !confirmDialog) {
+            return;
+        }
+
+        if (confirmed === trigger) {
+            confirmed = null;
+            return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        confirmDialog.querySelector('[data-confirm-message]').textContent = trigger.dataset.confirm;
+        confirmDialog.querySelector('[data-confirm-ok]').textContent = trigger.dataset.confirmLabel ?? 'OK';
+        confirmDialog.returnValue = '';
+        confirmDialog.addEventListener(
+            'close',
+            () => {
+                if (confirmDialog.returnValue === 'ok' && trigger.isConnected) {
+                    confirmed = trigger;
+                    trigger.click();
+                }
+            },
+            { once: true },
+        );
+        confirmDialog.showModal();
+    },
+    true,
+);

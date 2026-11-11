@@ -139,6 +139,22 @@ class ShellTest extends TestCase
         $this->assertStringContainsString('You cannot deactivate your own account.', $html);
     }
 
+    public function test_destructive_actions_ask_with_the_site_dialog_not_the_browser_confirm(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+
+        $this->actingAs($admin)->get('/app/dashboard')
+            ->assertSee('id="confirm-dialog"', false)
+            ->assertSee('data-confirm-ok', false)
+            ->assertSee(__('dashboard.cancel'));
+
+        $this->get("/app/staff/{$staff->id}/edit")
+            ->assertOk()
+            ->assertSee('data-confirm="'.__('users.confirm_deactivate').'"', false)
+            ->assertDontSee('wire:confirm', false);
+    }
+
     public function test_the_content_sits_in_a_centered_container(): void
     {
         $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')

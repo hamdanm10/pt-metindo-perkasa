@@ -9,6 +9,7 @@ return [
     'close_menu' => 'Close menu',
     'language' => 'Language',
     'account_menu' => 'Account menu',
+    'cancel' => 'Cancel',
     'close_notification' => 'Close notification',
     'groups' => [
         'menu' => 'Menu',

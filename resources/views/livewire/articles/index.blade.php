@@ -58,7 +58,7 @@
                             </td>
                             <td class="text-end whitespace-nowrap">
                                 <a href="{{ route('app.articles.edit', $article) }}" class="row-action">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
-                                <button type="button" wire:click="delete({{ $article->id }})" wire:confirm="{{ __('article_manager.confirm_delete') }}" class="row-action row-action--danger">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
+                                <button type="button" wire:click="delete({{ $article->id }})" data-confirm="{{ __('article_manager.confirm_delete') }}" data-confirm-label="{{ __('article_manager.delete') }}" class="row-action row-action--danger">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
                             </td>
                         </tr>
                     @empty
