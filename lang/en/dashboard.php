@@ -11,7 +11,8 @@ return [
     'account_menu' => 'Account menu',
     'groups' => [
         'menu' => 'Menu',
-        'master' => 'Master',
+        'content' => 'Content',
+        'users' => 'User Management',
     ],
     'nav' => [
         'home' => 'Dashboard',

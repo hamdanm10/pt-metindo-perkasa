@@ -11,7 +11,8 @@ return [
     'account_menu' => 'Menu akun',
     'groups' => [
         'menu' => 'Menu',
-        'master' => 'Master',
+        'content' => 'Konten',
+        'users' => 'Manajemen Pengguna',
     ],
     'nav' => [
         'home' => 'Dasbor',

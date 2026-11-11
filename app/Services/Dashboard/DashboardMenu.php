@@ -21,10 +21,10 @@ class DashboardMenu
     {
         return [
             ['route' => 'app.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'app.dashboard', 'icon' => 'home', 'group' => 'menu', 'roles' => Role::staffArea()],
-            ['route' => 'app.users.index', 'label' => 'dashboard.nav.users', 'active' => 'app.users.*', 'icon' => 'users', 'group' => 'master', 'roles' => [Role::Admin]],
-            ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'icon' => 'document', 'group' => 'master', 'roles' => [Role::Admin]],
-            ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'icon' => 'cube', 'group' => 'master', 'roles' => [Role::Admin]],
-            ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'master', 'roles' => [Role::Admin]],
+            ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'icon' => 'document', 'group' => 'content', 'roles' => [Role::Admin]],
+            ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'icon' => 'cube', 'group' => 'content', 'roles' => [Role::Admin]],
+            ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'content', 'roles' => [Role::Admin]],
+            ['route' => 'app.users.index', 'label' => 'dashboard.nav.users', 'active' => 'app.users.*', 'icon' => 'users', 'group' => 'users', 'roles' => [Role::Admin]],
             ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'icon' => 'home', 'group' => 'menu', 'roles' => Role::customerArea()],
         ];
     }
@@ -48,7 +48,7 @@ class DashboardMenu
     }
 
     /**
-     * The same items under their group labels (Menu, Master, ...). A group with no item is left out.
+     * The same items under their group labels (Menu, Content, User Management). A group with no item is left out.
      *
      * @return list<array{label: string, items: list<array{route: string, label: string, active: string, icon: string, group: string}>}>
      */

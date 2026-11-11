@@ -98,14 +98,19 @@ class ShellTest extends TestCase
     {
         $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->getContent();
 
-        $this->assertStringContainsString('>'.__('dashboard.groups.menu').'</p>', $html);
-        $this->assertStringContainsString('>'.__('dashboard.groups.master').'</p>', $html);
-        $this->assertLessThan(strpos($html, __('dashboard.groups.master')), strpos($html, __('dashboard.nav.home')));
-        $this->assertGreaterThan(strpos($html, __('dashboard.groups.master')), strpos($html, __('dashboard.nav.users')));
+        $position = fn (string $text): int => (int) strpos($html, '>'.$text.'</p>');
+
+        $this->assertGreaterThan(0, $position(__('dashboard.groups.menu')));
+        $this->assertGreaterThan($position(__('dashboard.groups.menu')), $position(__('dashboard.groups.content')));
+        $this->assertGreaterThan($position(__('dashboard.groups.content')), $position(__('dashboard.groups.users')));
+        $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
+        $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
+        $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.users')));
         $this->assertSame(5, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
-        $this->assertStringNotContainsString('>'.__('dashboard.groups.master').'</p>', $staff);
+        $this->assertStringNotContainsString('>'.__('dashboard.groups.content').'</p>', $staff);
+        $this->assertStringNotContainsString('>'.__('dashboard.groups.users').'</p>', $staff);
     }
 
     public function test_the_content_sits_in_a_centered_container(): void
