@@ -59,6 +59,7 @@ class SampleArticles
                     'image' => asset(self::IMAGE),
                     'alt' => $title,
                     'minutes' => ArticleBody::readingMinutes($body),
+                    'views' => 0,
                     'sample' => true,
                 ],
                 'body_html' => $body,

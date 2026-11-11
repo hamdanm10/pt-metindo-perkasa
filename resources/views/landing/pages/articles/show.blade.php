@@ -14,6 +14,7 @@
         <meta property="og:image" content="{{ $article['image'] }}">
     @endif
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 
 @section('content')
@@ -33,6 +34,10 @@
                 <time datetime="{{ $article['date'] }}">{{ \Illuminate\Support\Carbon::parse($article['date'])->isoFormat('LL') }}</time>
                 <span aria-hidden="true">·</span>
                 <span>{{ __('articles.minutes', ['count' => $article['minutes']]) }}</span>
+                @if ($viewsLabel = \App\Services\Articles\ArticleViews::label($article['views']))
+                    <span aria-hidden="true">·</span>
+                    <span>{{ $viewsLabel }}</span>
+                @endif
                 @if ($article['sample'])
                     <span class="rounded-full bg-ink px-3 py-1 text-xs font-bold text-white">{{ __('articles.sample') }}</span>
                 @endif
@@ -63,6 +68,9 @@
             @if ($article['sample'])
                 <p class="mb-8 rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold" lang="{{ app()->getLocale() }}" dir="{{ config('locales.locales.'.app()->getLocale().'.dir') }}">{{ __('landing.sample_note') }}</p>
             @endif
+            @unless ($article['sample'])
+                <div data-article-view data-url="{{ route('landing.articles.views.store', ['article' => $article['slug']]) }}" hidden></div>
+            @endunless
             <div data-read-body class="article-body reading">{!! $bodyHtml !!}</div>
 
             <div class="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 pt-6" lang="{{ app()->getLocale() }}" dir="{{ config('locales.locales.'.app()->getLocale().'.dir') }}">

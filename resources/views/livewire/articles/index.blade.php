@@ -30,6 +30,7 @@
                         <th scope="col">{{ __('article_manager.fields.title') }}</th>
                         <th scope="col">{{ __('article_manager.fields.type') }}</th>
                         <th scope="col">{{ __('article_manager.fields.languages') }}</th>
+                        <th scope="col" class="text-end">{{ __('article_manager.fields.views') }}</th>
                         <th scope="col"><span class="sr-only">{{ __('article_manager.actions') }}</span></th>
                     </tr>
                 </thead>
@@ -56,6 +57,7 @@
                                     @endforeach
                                 </ul>
                             </td>
+                            <td class="text-end tabular-nums">{{ number_format($article->translations->sum('views_count')) }}</td>
                             <td class="text-end whitespace-nowrap">
                                 <a href="{{ route('app.articles.edit', $article) }}" class="row-action">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
                                 <button type="button" wire:click="delete({{ $article->id }})" data-confirm="{{ __('article_manager.confirm_delete') }}" data-confirm-label="{{ __('article_manager.delete') }}" class="row-action row-action--danger">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
@@ -63,7 +65,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-12 text-center text-muted">{{ __('article_manager.empty') }}</td>
+                            <td colspan="5" class="py-12 text-center text-muted">{{ __('article_manager.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

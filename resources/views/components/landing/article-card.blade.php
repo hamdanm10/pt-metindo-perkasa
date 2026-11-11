@@ -15,6 +15,10 @@
         <time datetime="{{ $article['date'] }}">{{ \Illuminate\Support\Carbon::parse($article['date'])->isoFormat('LL') }}</time>
         <span aria-hidden="true">·</span>
         <span>{{ __('articles.minutes', ['count' => $article['minutes']]) }}</span>
+        @if ($viewsLabel = \App\Services\Articles\ArticleViews::label($article['views']))
+            <span aria-hidden="true">·</span>
+            <span>{{ $viewsLabel }}</span>
+        @endif
     </span>
     <span class="mt-3 block text-[clamp(1.15rem,1.5vw,1.9rem)] font-black leading-[1.15] tracking-tight text-ink" @if ($article['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $article['title'] }}</span></span>
     @if ($article['excerpt'] !== '')

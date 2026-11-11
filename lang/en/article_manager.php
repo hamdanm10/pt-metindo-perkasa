@@ -34,6 +34,7 @@ return [
         'image_alt' => 'Image description',
         'published' => 'Published in this language',
         'status' => 'Status',
+        'views' => 'Views',
         'languages' => 'Languages',
     ],
     'types' => [

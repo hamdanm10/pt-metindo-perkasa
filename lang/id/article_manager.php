@@ -34,6 +34,7 @@ return [
         'image_alt' => 'Deskripsi gambar',
         'published' => 'Terbit di bahasa ini',
         'status' => 'Status',
+        'views' => 'Dibaca',
         'languages' => 'Bahasa',
     ],
     'types' => [

@@ -8,6 +8,7 @@ return [
         'news' => 'Berita',
     ],
     'minutes' => ':count menit baca',
+    'views' => ':count kali dibaca',
     'sample' => 'Contoh',
     'latest' => 'Terbaru',
     'share' => [
