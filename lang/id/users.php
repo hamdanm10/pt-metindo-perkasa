@@ -56,7 +56,7 @@ return [
         'deactivated' => 'Akun dinonaktifkan.',
     ],
     'errors' => [
-        'admin_exists' => 'Hanya boleh ada satu admin, dan admin sudah ada.',
+        'admin_limit' => 'Aplikasi hanya mengizinkan paling banyak :max admin, dan jumlah itu sudah ada.',
         'self_active' => 'Anda tidak bisa menonaktifkan akun Anda sendiri.',
         'last_admin_active' => 'Admin aktif terakhir tidak boleh dinonaktifkan.',
     ],

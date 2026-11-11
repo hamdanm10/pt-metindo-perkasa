@@ -32,19 +32,23 @@ class UserActionsTest extends TestCase
         $this->assertSame(Role::Customer, $user->role);
     }
 
-    public function test_only_one_admin_can_be_created(): void
+    public function test_at_most_the_configured_number_of_admins_can_be_created(): void
     {
         $create = app(CreateUser::class);
 
         $create->execute('First', 'first@example.test', 'Secret123', Role::Admin);
+        $create->execute('Second', 'second@example.test', 'Secret123', Role::Admin);
 
         $this->assertThrows(
-            fn () => $create->execute('Second', 'second@example.test', 'Secret123', Role::Admin),
+            fn () => $create->execute('Third', 'third@example.test', 'Secret123', Role::Admin),
             ValidationException::class,
         );
 
-        $this->assertSame(1, User::query()->where('role', Role::Admin->value)->count());
+        $this->assertSame(2, User::query()->where('role', Role::Admin->value)->count());
         $this->assertSame(Role::Staff, $create->execute('Staff', 'staff@example.test', 'Secret123', Role::Staff)->role);
+
+        config(['auth.max_admins' => 3]);
+        $this->assertSame(Role::Admin, $create->execute('Third', 'third@example.test', 'Secret123', Role::Admin)->role);
     }
 
     public function test_the_last_active_admin_cannot_be_deactivated(): void

@@ -12,12 +12,12 @@ use Illuminate\Validation\ValidationException;
 class CreateUser
 {
     /**
-     * @throws ValidationException when an admin is asked for and one already exists (the app has a single admin)
+     * @throws ValidationException when an admin is asked for and the maximum number of admins already exists
      */
     public function execute(string $name, string $email, string $password, Role $role): User
     {
-        if ($role === Role::Admin && User::query()->where('role', Role::Admin->value)->exists()) {
-            throw ValidationException::withMessages(['role' => __('users.errors.admin_exists')]);
+        if ($role === Role::Admin && User::query()->where('role', Role::Admin->value)->count() >= config()->integer('auth.max_admins')) {
+            throw ValidationException::withMessages(['role' => __('users.errors.admin_limit', ['max' => config()->integer('auth.max_admins')])]);
         }
 
         $user = new User;

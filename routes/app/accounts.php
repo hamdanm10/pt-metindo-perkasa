@@ -8,7 +8,7 @@ use App\Livewire\Users\Index;
 use Illuminate\Support\Facades\Route;
 
 // Staff and customers share the same pages; the `kind` default picks the role. Admins are not listed here:
-// there is only one admin and it is created with `php artisan admin:create`.
+// admins (at most `auth.max_admins`) are created with `php artisan admin:create`.
 Route::middleware(['auth', 'role:admin'])->group(function (): void {
     foreach (['staff' => 'staff', 'customers' => 'customer'] as $path => $kind) {
         Route::prefix($path)->name($path.'.')->group(function () use ($kind): void {

@@ -38,7 +38,7 @@ class UserPolicy
     }
 
     /**
-     * The only admin is not managed from the dashboard: only staff and customers are.
+     * Admins are not managed from the dashboard: only staff and customers are.
      */
     private function isManaged(User $target): bool
     {

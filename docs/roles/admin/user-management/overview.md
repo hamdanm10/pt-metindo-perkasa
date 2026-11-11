@@ -1,6 +1,6 @@
 # Kelola Akun (A1)
 
-Admin mengelola akun **staf** dan **customer** dari dua halaman terpisah di dashboard: daftar dengan pencarian dan penyaring status, membuat akun, mengubah data, mengatur ulang kata sandi, dan menonaktifkan atau mengaktifkan akun. **Aplikasi hanya punya satu admin**: admin tidak dibuat dari dashboard, tidak muncul di daftar, dan tidak bisa dibuat lagi (lihat keputusan 5). Hanya admin yang bisa membuka halaman ini.
+Admin mengelola akun **staf** dan **customer** dari dua halaman terpisah di dashboard: daftar dengan pencarian dan penyaring status, membuat akun, mengubah data, mengatur ulang kata sandi, dan menonaktifkan atau mengaktifkan akun. **Aplikasi punya paling banyak dua admin** (`config('auth.max_admins')`): admin tidak dibuat dari dashboard, tidak muncul di daftar, dan tidak bisa dibuat melewati batas itu (lihat keputusan 5). Hanya admin yang bisa membuka halaman ini.
 
 ## Keputusan
 
@@ -10,7 +10,7 @@ Admin mengelola akun **staf** dan **customer** dari dua halaman terpisah di dash
 | 2 | Data akun: nama, email, peran, dan kata sandi awal yang ditetapkan admin. Tidak ada kolom lain. **Bahasa tidak diisi admin**: akun baru berbahasa Inggris (`en`) dan pengguna mengubahnya sendiri lewat pemilih bahasa (D2). Data khusus customer kelak masuk tabel profil terpisah | Sesuai aturan `users` di `CLAUDE.md` |
 | 3 | **Akun tidak dihapus**, hanya dinonaktifkan (`is_active`) dan bisa diaktifkan lagi | Riwayat tetap utuh, dan penghapusan tidak bisa dibatalkan |
 | 4 | Kata sandi awal dan atur ulang kata sandi ditetapkan admin. Tanpa email, tanpa tautan | Keputusan di D1 |
-| 5 | **Hanya ada satu admin.** Admin dibuat sekali lewat `php artisan admin:create`, yang menolak bila admin sudah ada. Dashboard tidak bisa membuat, mengubah, atau menonaktifkan admin: halaman Staff dan Customers hanya menampilkan perannya sendiri, dan halaman ubah untuk admin (atau peran lain) memberi 404 | Keputusan client. Aturan ada di Action `CreateUser` dan `UserPolicy`, bukan hanya di tampilan |
+| 5 | **Paling banyak dua admin** (`config('auth.max_admins')`, keputusan client). Admin dibuat lewat `php artisan admin:create`, yang menolak bila jumlah itu sudah tercapai. Dashboard tidak bisa membuat, mengubah, atau menonaktifkan admin: halaman Staff dan Customers hanya menampilkan perannya sendiri, dan halaman ubah untuk admin (atau peran lain) memberi 404 | Aturan ada di Action `CreateUser` dan `UserPolicy`, bukan hanya di tampilan |
 | 6 | Menonaktifkan akun atau mengatur ulang kata sandinya **mengakhiri semua sesi akun itu** saat itu juga | Akses cabut segera, bukan menunggu permintaan berikutnya |
 | 7 | **Peran tidak bisa diubah** setelah akun dibuat, dan formulir tidak punya pilihan peran: peran ditentukan halaman tempat akun dibuat (Staff atau Customers). Salah peran diperbaiki dengan membuat akun baru dan menonaktifkan yang lama | Menutup jalan menaikkan akun menjadi admin lewat formulir, dan menyederhanakan formulir |
 | 8 | Livewire v4 dipasang. Komponen halaman penuh tipis yang memanggil Action. Komponen tetap memeriksa izin lewat Policy | Aturan arsitektur di `CLAUDE.md` |
@@ -35,7 +35,7 @@ Admin mengelola akun **staf** dan **customer** dari dua halaman terpisah di dash
 
 - Semua halaman dan aksi dijaga `role:admin` dan `UserPolicy` (`viewAny`, `create`, `update`, `setActive`, `resetPassword`); `update`, `resetPassword`, dan `setActive` menolak akun admin. Setiap aksi Livewire memanggil `authorize`, termasuk setelah halaman terbuka lama.
 - Id akun di komponen dikunci (`#[Locked]`), dan `role` serta kolom lain divalidasi di sisi server (`Rule::enum`). `locale` tidak ada di formulir sehingga tidak bisa diubah dari sini. Nilai dari browser tidak dipercaya.
-- Aturan satu admin diperiksa di Action `CreateUser` (juga dipakai `admin:create`), bukan di tampilan, dan menghasilkan pesan galat yang jelas. `SetUserActive` tetap menolak menonaktifkan diri sendiri dan admin aktif terakhir. Peran halaman (`kind`) dikunci (`#[Locked]`) dan hanya `staff` atau `customer` yang diterima; nilai lain 404.
+- Batas jumlah admin diperiksa di Action `CreateUser` (juga dipakai `admin:create`), bukan di tampilan, dan menghasilkan pesan galat yang jelas. `SetUserActive` tetap menolak menonaktifkan diri sendiri dan admin aktif terakhir. Peran halaman (`kind`) dikunci (`#[Locked]`) dan hanya `staff` atau `customer` yang diterima; nilai lain 404.
 - Email unik tanpa membedakan huruf besar-kecil, kecuali akun yang sedang diubah. Kata sandi: minimal 8 karakter dengan huruf besar, huruf kecil, dan angka (aturan sama dengan `admin:create`).
 - Kata sandi awal bawaan itu sama untuk semua akun baru dan diketahui admin, jadi akun yang memakainya harus mengganti kata sandinya. Pengguna belum bisa mengganti kata sandinya sendiri (lihat "Ditunda"), sehingga untuk sementara admin yang mengatur ulang kata sandi lewat halaman ubah bila perlu. Server tetap memvalidasi apa pun yang ada di kolom.
 - Kata sandi tidak ditampilkan, tidak dicatat di log, dan kolom kata sandi dikosongkan setelah dikirim.
@@ -77,5 +77,5 @@ Pemeriksaan manual di browser: alur penuh di desktop dan ponsel, pencarian langs
 - Pengguna mengganti kata sandi atau profilnya sendiri.
 - Profil khusus customer (tabel terpisah), aksi massal, ekspor, dan log aktivitas (siapa mengubah apa).
 - Hak staf yang lebih rinci. Saat ini staf tidak punya akses ke fitur ini sama sekali.
-- Pengaman tingkat basis data untuk satu admin (indeks unik parsial pada `role = 'admin'`). Ditunda karena basis data lokal yang sudah ada punya lebih dari satu admin, sehingga migrasinya gagal sampai data dirapikan.
+- Mengelola admin dari dashboard (melihat, mengubah, atau menonaktifkan admin lain). Saat ini admin hanya dibuat lewat `admin:create` dan tidak muncul di daftar.
 - Halaman untuk admin mengganti kata sandi atau profilnya sendiri (admin tidak lagi bisa mengubah akunnya lewat halaman akun).
