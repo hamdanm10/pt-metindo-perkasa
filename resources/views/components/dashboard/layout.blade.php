@@ -42,7 +42,7 @@
             <nav aria-label="{{ __('dashboard.menu') }}" class="flex-1 space-y-6 overflow-y-auto px-4 pb-6 pt-2">
                 @foreach ($groups as $group)
                     <div>
-                        <p class="mb-2 px-4 text-xs font-extrabold uppercase tracking-[0.2em] text-brand-300" id="nav-group-{{ $loop->index }}">{{ __($group['label']) }}</p>
+                        <p class="mb-2 px-4 text-xs font-extrabold uppercase tracking-[0.2em] text-white" id="nav-group-{{ $loop->index }}">{{ __($group['label']) }}</p>
                         <ul class="space-y-0.5" aria-labelledby="nav-group-{{ $loop->index }}">
                             @foreach ($group['items'] as $item)
                                 <li>
