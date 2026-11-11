@@ -10,7 +10,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\ValidationException;
 
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\text;
@@ -44,17 +43,7 @@ class CreateAdmin extends Command
             return self::FAILURE;
         }
 
-        try {
-            $createUser->execute($name, $email, $password, Role::Admin);
-        } catch (ValidationException $exception) {
-            foreach ($exception->errors() as $messages) {
-                foreach ($messages as $message) {
-                    $this->components->error($message);
-                }
-            }
-
-            return self::FAILURE;
-        }
+        $createUser->execute($name, $email, $password, Role::Admin);
 
         $this->components->info("Admin {$email} created.");
 

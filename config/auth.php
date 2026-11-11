@@ -125,18 +125,6 @@ return [
     |
     */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Maximum Number Of Admins
-    |--------------------------------------------------------------------------
-    |
-    | The app allows at most this many admin accounts. Admins are created with
-    | `php artisan admin:create`, which refuses to go past this number.
-    |
-    */
-
-    'max_admins' => 2,
-
     'default_account_password' => env('ACCOUNT_DEFAULT_PASSWORD', 'MetindoPerkasa2026'),
 
 ];

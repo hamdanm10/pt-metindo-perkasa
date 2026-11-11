@@ -56,7 +56,6 @@ return [
         'deactivated' => 'Account deactivated.',
     ],
     'errors' => [
-        'admin_limit' => 'The app allows at most :max admins, and they already exist.',
         'self_active' => 'You cannot deactivate your own account.',
         'last_admin_active' => 'The last active admin cannot be deactivated.',
     ],

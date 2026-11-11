@@ -6,7 +6,7 @@ Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan
 
 | Fase | Fitur | Dokumen | Branch | Status |
 | --- | --- | --- | --- | --- |
-| A1 | Kelola akun staf dan customer (dua halaman, paling banyak dua admin): daftar, membuat, mengubah, atur ulang kata sandi, dan nonaktifkan akun | [`user-management/overview.md`](user-management/overview.md) | `feat/user-management` | Selesai, ter-merge ke `development` |
+| A1 | Kelola akun staf dan customer (dua halaman, admin dibuat lewat perintah): daftar, membuat, mengubah, atur ulang kata sandi, dan nonaktifkan akun | [`user-management/overview.md`](user-management/overview.md) | `feat/user-management` | Selesai, ter-merge ke `development` |
 | A2 | Kelola artikel dan berita landing dalam lima bahasa, terbit per bahasa | [`articles/overview.md`](articles/overview.md) | `feat/articles` | Selesai, ter-merge ke `development` |
 | A3 | Kelola produk: tambah dan ubah, hanya nama dan deskripsi | [`products/overview.md`](products/overview.md) | `feat/products` | Selesai, ter-merge ke `development` |
 | A4 | Kelola layanan: tambah dan ubah, hanya nama dan deskripsi | [`services/overview.md`](services/overview.md) | `feat/services` | Selesai di kode, menunggu tinjauan |

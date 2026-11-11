@@ -28,16 +28,12 @@ class CreateAdminTest extends TestCase
         $this->assertNotSame('Secret123', $user->password);
     }
 
-    public function test_it_creates_a_second_admin_but_refuses_a_third(): void
+    public function test_it_creates_more_than_one_admin(): void
     {
-        User::factory()->admin()->create();
+        User::factory()->admin()->count(2)->create();
 
         $this->assertSame(0, Artisan::call('admin:create', ['--name' => 'Ada', '--email' => 'ada@example.test', '--password' => 'Secret123']));
-        $this->assertSame(2, User::query()->where('role', Role::Admin->value)->count());
-
-        $this->assertSame(1, Artisan::call('admin:create', ['--name' => 'Eve', '--email' => 'eve@example.test', '--password' => 'Secret123']));
-        $this->assertStringContainsString(__('users.errors.admin_limit', ['max' => 2]), Artisan::output());
-        $this->assertSame(2, User::query()->where('role', Role::Admin->value)->count());
+        $this->assertSame(3, User::query()->where('role', Role::Admin->value)->count());
     }
 
     public function test_it_refuses_an_email_that_already_exists(): void
