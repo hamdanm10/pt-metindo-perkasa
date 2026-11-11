@@ -6,6 +6,9 @@ return [
     'kinds' => [
         'staff' => [
             'title' => 'Staff',
+            'description' => 'Add staff, update their details, set new passwords, and turn access on or off.',
+            'create_description' => 'Add a staff account with an initial password. The role follows this page.',
+            'edit_description' => 'Update the details, set a new password, or turn access on or off for this account.',
             'create' => 'Add staff',
             'create_title' => 'Add staff',
             'edit_title' => 'Staff details',
@@ -14,6 +17,9 @@ return [
         ],
         'customer' => [
             'title' => 'Customers',
+            'description' => 'Add customers, update their details, set new passwords, and turn access on or off.',
+            'create_description' => 'Add a customer account with an initial password. The role follows this page.',
+            'edit_description' => 'Update the details, set a new password, or turn access on or off for this account.',
             'create' => 'Add customer',
             'create_title' => 'Add customer',
             'edit_title' => 'Customer details',

@@ -1,6 +1,6 @@
 <div class="space-y-8">
-    <x-dashboard.page-header :title="$user->name">
-        <p class="mt-2 text-muted" dir="ltr">{{ $user->email }}</p>
+    <x-dashboard.page-header :title="$user->name" :description="__('users.kinds.'.$kind.'.edit_description')">
+        <p class="mt-3 text-sm font-bold" dir="ltr">{{ $user->email }}</p>
     </x-dashboard.page-header>
 
     <x-dashboard.flash />

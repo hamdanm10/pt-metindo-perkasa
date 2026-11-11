@@ -6,6 +6,9 @@ return [
     'kinds' => [
         'staff' => [
             'title' => 'Staf',
+            'description' => 'Tambah staf, ubah datanya, atur kata sandi baru, dan aktifkan atau nonaktifkan aksesnya.',
+            'create_description' => 'Tambah akun staf dengan kata sandi awal. Peran mengikuti halaman ini.',
+            'edit_description' => 'Ubah data, atur kata sandi baru, atau aktifkan dan nonaktifkan akses akun ini.',
             'create' => 'Tambah staf',
             'create_title' => 'Tambah staf',
             'edit_title' => 'Detail staf',
@@ -14,6 +17,9 @@ return [
         ],
         'customer' => [
             'title' => 'Customer',
+            'description' => 'Tambah customer, ubah datanya, atur kata sandi baru, dan aktifkan atau nonaktifkan aksesnya.',
+            'create_description' => 'Tambah akun customer dengan kata sandi awal. Peran mengikuti halaman ini.',
+            'edit_description' => 'Ubah data, atur kata sandi baru, atau aktifkan dan nonaktifkan akses akun ini.',
             'create' => 'Tambah customer',
             'create_title' => 'Tambah customer',
             'edit_title' => 'Detail customer',

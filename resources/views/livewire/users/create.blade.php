@@ -1,5 +1,5 @@
 <div>
-    <x-dashboard.page-header :title="__('users.kinds.'.$kind.'.create_title')" />
+    <x-dashboard.page-header :title="__('users.kinds.'.$kind.'.create_title')" :description="__('users.kinds.'.$kind.'.create_description')" />
 
     <x-dashboard.card class="max-w-2xl">
         <form wire:submit="save" class="space-y-6" novalidate>

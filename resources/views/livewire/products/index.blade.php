@@ -1,5 +1,5 @@
 <div>
-    <x-dashboard.page-header :title="__('products.title')" />
+    <x-dashboard.page-header :title="__('products.title')" :description="__('products.description')" />
 
     <x-dashboard.flash />
 
