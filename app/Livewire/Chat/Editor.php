@@ -22,6 +22,9 @@ class Editor extends Component
 
     public ChatEntryForm $form;
 
+    /** The language tab that is open. All tabs stay in the page, so what was typed in a hidden one is kept. */
+    public string $activeLocale = 'en';
+
     public function mount(?ChatEntry $entry = null): void
     {
         if ($entry?->exists) {
@@ -40,6 +43,14 @@ class Editor extends Component
         }
 
         $this->form->initialize($this->entry);
+        $this->activeLocale = config()->string('locales.default');
+    }
+
+    public function selectLocale(string $locale): void
+    {
+        if (in_array($locale, config()->array('locales.landing'), true)) {
+            $this->activeLocale = $locale;
+        }
     }
 
     public function save(SaveChatEntry $saveChatEntry): void

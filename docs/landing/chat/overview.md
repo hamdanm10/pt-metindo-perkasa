@@ -33,7 +33,7 @@ Menu "Chat assistant" / "Asisten chat" (ikon `question`) di grup Content, hanya 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
 | Daftar | `/app/chat` | Semua pertanyaan dalam urutan pohon, **menjorok** sesuai kedalaman (batas indentasi tampilan 8 tingkat) dan bernomor `1`, `1.1`, `1.1.1`, `2`. Kolom bahasa yang terisi, dan aksi: Tambah lanjutan, Ubah, Naik, Turun, Hapus. Tombol "Tambah pertanyaan" untuk tingkat teratas |
-| Tambah | `/app/chat/create`, `/app/chat/create?parent={id}` | Satu blok per bahasa: pertanyaan (maks 200 karakter), jawaban (maks 2000), teks tautan (maks 100), alamat tautan (maks 500). Dengan `?parent=` pertanyaan menjadi lanjutan dari induk itu (induk yang tidak ada: 404). Minimal satu bahasa harus diisi; bahasa yang diisi wajib punya pertanyaan dan jawaban |
+| Tambah | `/app/chat/create`, `/app/chat/create?parent={id}` | Bahasa berupa **tab** seperti form artikel (satu panel terbuka, tab bertanda titik bila sudah diisi dan tanda seru bila ada galat; isi tab yang tersembunyi tetap tersimpan di halaman): pertanyaan (maks 200 karakter), jawaban (maks 2000), teks tautan (maks 100), alamat tautan (maks 500). Dengan `?parent=` pertanyaan menjadi lanjutan dari induk itu (induk yang tidak ada: 404). Minimal satu bahasa harus diisi; bahasa yang diisi wajib punya pertanyaan dan jawaban |
 | Ubah | `/app/chat/{id}/edit` | Sama. Induk tidak berubah. Bahasa yang dikosongkan dihapus |
 
 ## Di landing

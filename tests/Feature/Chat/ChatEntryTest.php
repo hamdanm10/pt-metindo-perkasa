@@ -145,6 +145,23 @@ class ChatEntryTest extends TestCase
         $this->assertLessThan(strpos($html, 'Question two'), (int) strpos($html, 'Added from the page'));
     }
 
+    public function test_languages_are_tabs_with_one_panel_open_and_marks_for_filled_and_wrong_ones(): void
+    {
+        $component = Livewire::actingAs($this->admin())->test(Editor::class)
+            ->assertSet('activeLocale', 'en')
+            ->set('form.translations.id.question', 'Hanya pertanyaan')
+            ->assertSeeHtml('wire:click="selectLocale(\'ja\')"');
+
+        $this->assertSame(1, substr_count($component->html(), 'class="mt-6 space-y-6"'));
+        $this->assertSame(4, substr_count($component->html(), 'mt-6 space-y-6 hidden'));
+        $this->assertSame(1, substr_count($component->html(), __('chat_manager.filled')));
+
+        $component->call('selectLocale', 'ja')->assertSet('activeLocale', 'ja')
+            ->call('selectLocale', 'xx')->assertSet('activeLocale', 'ja');
+
+        $this->assertSame(1, substr_count($component->call('save')->html(), '<span class="font-bold" aria-hidden="true">!</span>'));
+    }
+
     public function test_a_follow_up_needs_an_existing_parent(): void
     {
         $this->actingAs($this->admin())->get('/app/chat/create?parent=999999')->assertNotFound();

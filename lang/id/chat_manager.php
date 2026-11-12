@@ -10,6 +10,7 @@ return [
     'create_description' => 'Tulis pertanyaan yang diketuk pengunjung dan jawabannya, di tiap bahasa yang ingin ditawarkan.',
     'edit_title' => 'Ubah pertanyaan',
     'edit_description' => 'Ubah pertanyaan, jawaban, atau tautan di bahasa mana pun.',
+    'filled' => 'Sudah diisi',
     'follows' => 'Lanjutan dari:',
     'add_follow_up' => 'Tambah lanjutan',
     'edit' => 'Ubah',

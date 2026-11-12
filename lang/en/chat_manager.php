@@ -10,6 +10,7 @@ return [
     'create_description' => 'Write the question visitors tap, and the answer they get, in each language you want to offer.',
     'edit_title' => 'Edit question',
     'edit_description' => 'Change the question, the answer or the link in any language.',
+    'filled' => 'Filled in',
     'follows' => 'Follow-up to:',
     'add_follow_up' => 'Add follow-up',
     'edit' => 'Edit',
