@@ -41,6 +41,7 @@
             </details>
             </div>
 
+            <x-landing.button :href="route('portal.login')" variant="dark" :arrow="false">{{ __('landing.login') }}</x-landing.button>
             <x-landing.button :href="route('landing.contact')">{{ __('landing.talk') }}</x-landing.button>
         </div>
 
@@ -65,6 +66,9 @@
                     @endforeach
                 </ul>
             </nav>
+            <div data-menu-item class="px-4 pt-6">
+                <x-landing.button :href="route('portal.login')" variant="outline" :arrow="false">{{ __('landing.login') }}</x-landing.button>
+            </div>
             <div data-menu-item class="px-4 py-6">
                 <x-landing.language-links dark :alternates="$alternates" />
             </div>
