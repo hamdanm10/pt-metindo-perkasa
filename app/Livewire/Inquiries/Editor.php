@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace App\Livewire\Inquiries;
 
 use App\Actions\Inquiries\SaveInquiry;
-use App\Enums\Role;
 use App\Livewire\Concerns\ResolvesActor;
 use App\Livewire\Forms\InquiryForm;
 use App\Models\Inquiry;
-use App\Models\Product;
-use App\Models\Service;
-use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
@@ -116,9 +112,6 @@ class Editor extends Component
     public function render(): View
     {
         return view('livewire.inquiries.editor', [
-            'customers' => User::query()->where('role', Role::Customer)->orderBy('name')->get(['id', 'name', 'email']),
-            'services' => Service::query()->orderBy('name')->get(['id', 'name']),
-            'products' => Product::query()->orderBy('name')->get(['id', 'name']),
             'max' => Inquiry::MAX_IMAGES,
         ])->layout('components.dashboard.layout', [
             'title' => __($this->inquiry === null ? 'inquiries.create_title' : 'inquiries.edit_title'),

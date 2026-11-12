@@ -11,6 +11,12 @@ return [
     'account_menu' => 'Account menu',
     'cancel' => 'Cancel',
     'close_notification' => 'Close notification',
+    'lookup' => [
+        'search' => 'Search…',
+        'no_results' => 'No results.',
+        'more' => 'Showing the first :count. Keep typing to narrow the results.',
+        'searching' => 'Searching…',
+    ],
     'groups' => [
         'menu' => 'Menu',
         'content' => 'Content',

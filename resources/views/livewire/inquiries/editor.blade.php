@@ -3,12 +3,9 @@
 
     <x-dashboard.card class="max-w-3xl">
         <form wire:submit="save" class="space-y-6" novalidate>
-            <x-dashboard.select name="form.customerId" :label="__('inquiries.fields.customer')" wire:model="form.customerId" required>
-                <option value="">{{ __('inquiries.choose_customer') }}</option>
-                @foreach ($customers as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->email }})</option>
-                @endforeach
-            </x-dashboard.select>
+            <x-dashboard.lookup-field name="form.customerId" :label="__('inquiries.fields.customer')" required>
+                <livewire:lookup source="customer" wire:model="form.customerId" input-id="form-customerId" :placeholder="__('inquiries.choose_customer')" :invalid="$errors->has('form.customerId')" />
+            </x-dashboard.lookup-field>
 
             <div>
                 <label for="form-question" class="field-label">{{ __('inquiries.fields.question') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
@@ -32,18 +29,12 @@
 
             <div class="grid gap-6 sm:grid-cols-3">
                 <x-dashboard.field name="form.askedAt" :label="__('inquiries.fields.asked_at')" type="date" wire:model="form.askedAt" :max="now()->toDateString()" />
-                <x-dashboard.select name="form.serviceId" :label="__('inquiries.fields.service')" wire:model="form.serviceId">
-                    <option value="">{{ __('inquiries.none') }}</option>
-                    @foreach ($services as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </x-dashboard.select>
-                <x-dashboard.select name="form.productId" :label="__('inquiries.fields.product')" wire:model="form.productId">
-                    <option value="">{{ __('inquiries.none') }}</option>
-                    @foreach ($products as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </x-dashboard.select>
+                <x-dashboard.lookup-field name="form.serviceId" :label="__('inquiries.fields.service')">
+                    <livewire:lookup source="service" wire:model="form.serviceId" input-id="form-serviceId" :placeholder="__('inquiries.none')" :empty-label="__('inquiries.none')" :invalid="$errors->has('form.serviceId')" />
+                </x-dashboard.lookup-field>
+                <x-dashboard.lookup-field name="form.productId" :label="__('inquiries.fields.product')">
+                    <livewire:lookup source="product" wire:model="form.productId" input-id="form-productId" :placeholder="__('inquiries.none')" :empty-label="__('inquiries.none')" :invalid="$errors->has('form.productId')" />
+                </x-dashboard.lookup-field>
             </div>
 
             <div>

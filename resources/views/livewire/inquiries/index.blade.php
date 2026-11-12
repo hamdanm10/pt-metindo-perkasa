@@ -8,25 +8,16 @@
             <div class="grid flex-1 gap-4 sm:grid-cols-2 {{ $area === 'app' ? 'xl:grid-cols-4' : 'lg:grid-cols-3' }}">
                 <x-dashboard.field name="search" :label="__('inquiries.search')" type="search" wire:model.live.debounce.300ms="search" />
                 @if ($area === 'app')
-                    <x-dashboard.select name="customer" :label="__('inquiries.fields.customer')" wire:model.live="customer">
-                        <option value="">{{ __('inquiries.all_customers') }}</option>
-                        @foreach ($customers as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->email }})</option>
-                        @endforeach
-                    </x-dashboard.select>
+                    <x-dashboard.lookup-field name="customer" :label="__('inquiries.fields.customer')">
+                        <livewire:lookup source="customer" wire:model.live="customer" input-id="customer" :placeholder="__('inquiries.all_customers')" :empty-label="__('inquiries.all_customers')" />
+                    </x-dashboard.lookup-field>
                 @endif
-                <x-dashboard.select name="service" :label="__('inquiries.fields.service')" wire:model.live="service">
-                    <option value="">{{ __('inquiries.all_services') }}</option>
-                    @foreach ($services as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </x-dashboard.select>
-                <x-dashboard.select name="product" :label="__('inquiries.fields.product')" wire:model.live="product">
-                    <option value="">{{ __('inquiries.all_products') }}</option>
-                    @foreach ($products as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </x-dashboard.select>
+                <x-dashboard.lookup-field name="service" :label="__('inquiries.fields.service')">
+                    <livewire:lookup source="service" wire:model.live="service" input-id="service" :placeholder="__('inquiries.all_services')" :empty-label="__('inquiries.all_services')" />
+                </x-dashboard.lookup-field>
+                <x-dashboard.lookup-field name="product" :label="__('inquiries.fields.product')">
+                    <livewire:lookup source="product" wire:model.live="product" input-id="product" :placeholder="__('inquiries.all_products')" :empty-label="__('inquiries.all_products')" />
+                </x-dashboard.lookup-field>
             </div>
             @if ($canCreate)
                 <x-dashboard.button :href="route('app.inquiries.create')">{{ __('inquiries.create') }}</x-dashboard.button>

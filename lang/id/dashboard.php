@@ -11,6 +11,12 @@ return [
     'cancel' => 'Batal',
     'close_notification' => 'Tutup notifikasi',
     'account_menu' => 'Menu akun',
+    'lookup' => [
+        'search' => 'Cari…',
+        'no_results' => 'Tidak ada hasil.',
+        'more' => 'Menampilkan :count teratas. Lanjutkan mengetik untuk mempersempit hasil.',
+        'searching' => 'Mencari…',
+    ],
     'groups' => [
         'menu' => 'Menu',
         'content' => 'Konten',

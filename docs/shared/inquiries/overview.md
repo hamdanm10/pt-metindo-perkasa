@@ -39,6 +39,7 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 
 - Model `Inquiry`, `InquiryImage`. `InquiryPolicy`. `Role::area()` (`app` atau `customer`) dipakai komponen yang dibagi dua area.
 - Action di `app/Actions/Inquiries/`: `ListInquiries`, `SaveInquiry` (menyimpan catatan, menambah dan menghapus gambar dalam satu transaksi; berkas baru dibersihkan bila gagal, berkas lama dihapus setelah berhasil), `DeleteInquiry`. Service `InquiryImageStore`.
+- Pilihan customer, layanan, dan produk (di form dan saringan daftar) memakai dropdown pencarian `Lookup` (lihat [`../dashboard/overview.md`](../dashboard/overview.md)), jadi daftar penuh tidak ikut dimuat.
 - Livewire di `app/Livewire/Inquiries/`: `Index` dan `Show` dipakai kedua area, `Editor` hanya area staf. Form `app/Livewire/Forms/InquiryForm.php`.
 - `InquiryImageController` (satu, dipakai kedua area; di luar folder per area karena dibagi). Route: `routes/app/inquiries.php` (`role:admin,staff`) dan `routes/customer/inquiries.php` (`role:customer`).
 - Daftar memuat relasi (`service`, `product`, `creator`) dan `withCount('images')` di Action, jadi jumlah query tidak naik bersama jumlah baris.
@@ -53,7 +54,7 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 
 ## Ditunda
 
-- Pencarian di pilihan customer (saat ini daftar penuh akun customer, nama dan email), dan membuat akun customer dari form ini.
+- Membuat akun customer dari form ini.
 - Urutan gambar yang bisa diatur, keterangan per gambar, kategori atau tag, lampiran selain gambar, pencarian teks penuh, penandaan "dibaca customer", dan tampil di landing (FAQ publik).
 
 ## Test
