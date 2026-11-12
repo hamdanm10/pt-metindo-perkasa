@@ -47,10 +47,6 @@ return [
         'created_by' => 'Ditambahkan oleh',
         'date' => 'Tanggal',
     ],
-    'placeholders' => [
-        'question' => 'mis. Berapa lama pelapisan listrik untuk 500 buah?',
-        'answer' => 'mis. Biasanya 3 sampai 5 hari kerja, tergantung ukuran dan jenis lapisan.',
-    ],
     'hints' => [
         'optional' => 'Opsional.',
         'images' => 'Maksimal :max gambar, JPG, PNG, atau WebP, masing-masing 2 MB.',

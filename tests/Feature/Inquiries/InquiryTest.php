@@ -126,7 +126,7 @@ class InquiryTest extends TestCase
 
         $inquiry = Inquiry::query()->firstOrFail();
         $this->assertSame('How long does it take?', $inquiry->question);
-        $this->assertSame('2026-10-01', $inquiry->asked_at->toDateString());
+        $this->assertSame('2026-10-01', $inquiry->asked_at?->toDateString());
         $this->assertSame($staff->id, $inquiry->created_by);
         $this->assertSame($customer->id, $inquiry->customer_id);
         $this->assertSame($service->id, $inquiry->service_id);
@@ -141,7 +141,7 @@ class InquiryTest extends TestCase
         $plain = Inquiry::query()->where('question', 'Plain question')->firstOrFail();
         $this->assertNull($plain->service_id);
         $this->assertNull($plain->product_id);
-        $this->assertSame(now()->toDateString(), $plain->asked_at->toDateString());
+        $this->assertNull($plain->asked_at);
     }
 
     public function test_the_fields_are_validated(): void
@@ -421,6 +421,42 @@ class InquiryTest extends TestCase
         Livewire::actingAs($staff)->test(Index::class);
 
         $this->assertSame($few, count(DB::getQueryLog()));
+    }
+
+    public function test_the_form_has_no_placeholders_and_the_date_starts_empty_and_optional(): void
+    {
+        $staff = User::factory()->staff()->create();
+
+        $this->actingAs($staff)->get('/app/inquiries/create')
+            ->assertOk()
+            ->assertDontSee('placeholder=', false);
+
+        Livewire::actingAs($staff)->test(Editor::class)
+            ->assertSet('form.askedAt', '')
+            ->set('form.customerId', $this->customerId())
+            ->set('form.question', 'Question')
+            ->set('form.answer', 'Answer')
+            ->call('save')->assertHasNoErrors();
+
+        $this->assertNull(Inquiry::query()->firstOrFail()->asked_at);
+    }
+
+    public function test_a_record_without_a_date_is_listed_last_and_shown_without_one(): void
+    {
+        $customer = User::factory()->customer()->create();
+        $dated = Inquiry::factory()->create(['customer_id' => $customer->id, 'question' => 'Dated question', 'asked_at' => '2026-01-01']);
+        $undated = Inquiry::factory()->create(['customer_id' => $customer->id, 'question' => 'Undated question', 'asked_at' => null]);
+
+        $this->actingAs($customer)->get('/customer/inquiries')
+            ->assertOk()
+            ->assertSeeInOrder(['Dated question', 'Undated question']);
+        $this->actingAs($customer)->get("/customer/inquiries/{$undated->id}")->assertOk()->assertDontSee('Asked on');
+        $this->actingAs($customer)->get("/customer/inquiries/{$dated->id}")->assertOk()->assertSee('Asked on');
+
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['inquiry' => $undated])
+            ->assertSet('form.askedAt', '')
+            ->call('save')->assertHasNoErrors();
+        $this->assertNull($undated->refresh()->asked_at);
     }
 
     public function test_a_customer_sees_only_their_own_records(): void

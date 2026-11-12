@@ -34,13 +34,12 @@ class InquiryForm extends Form
 
     public function initialize(?Inquiry $inquiry): void
     {
-        $this->askedAt = ($inquiry === null ? now() : $inquiry->asked_at)->toDateString();
-
         if ($inquiry === null) {
             return;
         }
 
         $this->customerId = (string) $inquiry->customer_id;
+        $this->askedAt = $inquiry->asked_at?->toDateString() ?? '';
         $this->question = $inquiry->question;
         $this->answer = $inquiry->answer;
         $this->serviceId = (string) $inquiry->service_id;
@@ -57,7 +56,7 @@ class InquiryForm extends Form
             'customerId' => ['required', 'integer', Rule::exists('users', 'id')->where('role', Role::Customer->value)],
             'question' => ['required', 'string', 'max:5000'],
             'answer' => ['required', 'string', 'max:10000'],
-            'askedAt' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'askedAt' => ['nullable', 'date_format:Y-m-d', 'before_or_equal:today'],
             'serviceId' => ['nullable', 'integer', Rule::exists('services', 'id')],
             'productId' => ['nullable', 'integer', Rule::exists('products', 'id')],
             'images' => ['array', function (string $attribute, mixed $value, \Closure $fail): void {

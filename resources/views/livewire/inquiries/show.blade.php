@@ -1,5 +1,5 @@
 <div>
-    <x-dashboard.page-header :title="__('inquiries.show_title')" :description="__('inquiries.asked_on', ['date' => $inquiry->asked_at->isoFormat('LL')])" />
+    <x-dashboard.page-header :title="__('inquiries.show_title')" :description="$inquiry->asked_at ? __('inquiries.asked_on', ['date' => $inquiry->asked_at->isoFormat('LL')]) : null" />
 
     <x-dashboard.flash />
 

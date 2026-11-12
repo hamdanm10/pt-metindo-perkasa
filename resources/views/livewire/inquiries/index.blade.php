@@ -74,7 +74,7 @@
                                     @endif
                                 </ul>
                             </td>
-                            <td class="whitespace-nowrap text-muted">{{ $inquiry->asked_at->isoFormat('LL') }}</td>
+                            <td class="whitespace-nowrap text-muted">{{ $inquiry->asked_at?->isoFormat('LL') ?? '—' }}</td>
                             @if ($area === 'app')
                                 <td class="text-muted">{{ $inquiry->creator?->name ?? __('inquiries.unknown_author') }}</td>
                             @endif

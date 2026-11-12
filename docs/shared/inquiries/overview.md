@@ -17,7 +17,7 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 
 ## Data
 
-- `inquiries`: `customer_id` (wajib, relasi ke `users` berperan customer, tanpa hapus berantai; index gabungan `customer_id, asked_at`), `question` (teks), `answer` (teks), `asked_at` (tanggal pertanyaan masuk, boleh mundur, tidak boleh di masa depan), `service_id` dan `product_id` (opsional, `nullOnDelete`), `created_by` (`nullOnDelete`), cap waktu. Index: `asked_at`, `service_id`, `product_id`, `created_by`.
+- `inquiries`: `customer_id` (wajib, relasi ke `users` berperan customer, tanpa hapus berantai; index gabungan `customer_id, asked_at`), `question` (teks), `answer` (teks), `asked_at` (tanggal pertanyaan masuk, **opsional**, tanpa nilai awal; bila diisi tidak boleh di masa depan; catatan tanpa tanggal tampil "—" dan diurutkan paling akhir), `service_id` dan `product_id` (opsional, `nullOnDelete`), `created_by` (`nullOnDelete`), cap waktu. Index: `asked_at`, `service_id`, `product_id`, `created_by`.
 - `inquiry_images`: `inquiry_id` (`cascadeOnDelete`, index), `path`, cap waktu. Urutan gambar mengikuti id.
 - `question` maks 5000 karakter, `answer` maks 10000. Keduanya dipangkas spasi.
 
@@ -27,13 +27,13 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 | --- | --- | --- |
 | Daftar | `/app/inquiries`, `/customer/inquiries` | Pertanyaan (cuplikan), layanan atau produk terkait, tanggal, jumlah gambar. Pencarian di pertanyaan dan jawaban (tanpa membedakan huruf), saringan layanan dan produk, urutan terbaru dulu, 15 per halaman. Customer hanya mendapat catatan miliknya. Staf mendapat kolom "Customer" dan "Added by", serta saringan per customer (customer tidak melihat keduanya). Tombol Edit dan Delete muncul sesuai Policy |
 | Baca | `/app/inquiries/{id}`, `/customer/inquiries/{id}` | Pertanyaan, jawaban (baris baru dipertahankan), tautan layanan dan produk, galeri gambar (klik membuka gambar penuh di tab baru). Nama customer dan nama penulis hanya untuk staf. Catatan customer lain: 404 |
-| Tambah | `/app/inquiries/create` | Customer\* (pilihan akun customer), pertanyaan\*, jawaban\*, tanggal\*, layanan, produk, unggah banyak gambar |
+| Tambah | `/app/inquiries/create` | Customer\* (pilihan akun customer), pertanyaan\*, jawaban\*, tanggal ditanyakan (opsional), layanan, produk, unggah banyak gambar |
 | Ubah | `/app/inquiries/{id}/edit` | Sama dengan Tambah. Gambar tersimpan bisa ditandai untuk dihapus (bisa dibatalkan sebelum simpan), gambar baru bisa ditarik sebelum simpan |
 | Gambar | `/app/inquiry-images/{id}`, `/customer/inquiry-images/{id}` | Mengirim gambar dari disk privat. Guest diarahkan ke login, peran yang salah mendapat 403, gambar milik customer lain 404 |
 
 - Hapus lewat dialog konfirmasi situs. Menghapus catatan ikut menghapus berkas gambarnya.
 - Menu: grup "Support" / "Bantuan", item "Questions & Answers" / "Tanya Jawab" (ikon `chat`) untuk admin, staf, dan customer.
-- Teks di `lang/{en,id}/inquiries.php`, `dashboard.nav.inquiries`, dan `dashboard.groups.support`. Contoh isian (placeholder) ada pada pertanyaan dan jawaban.
+- Teks di `lang/{en,id}/inquiries.php`, `dashboard.nav.inquiries`, dan `dashboard.groups.support`. Kolom pertanyaan dan jawaban tanpa placeholder.
 
 ## Struktur kode
 

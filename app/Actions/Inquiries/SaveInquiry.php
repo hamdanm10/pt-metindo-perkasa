@@ -15,7 +15,7 @@ class SaveInquiry
     public function __construct(private readonly InquiryImageStore $images) {}
 
     /**
-     * @param  array{customer_id: int, question: string, answer: string, asked_at: string, service_id: int|null, product_id: int|null}  $data
+     * @param  array{customer_id: int, question: string, answer: string, asked_at: string|null, service_id: int|null, product_id: int|null}  $data
      * @param  list<UploadedFile>  $newImages
      * @param  list<int>  $removeImageIds  Ids of pictures to remove; ids that are not this record's are ignored.
      */

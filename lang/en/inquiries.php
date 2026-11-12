@@ -47,10 +47,6 @@ return [
         'created_by' => 'Added by',
         'date' => 'Date',
     ],
-    'placeholders' => [
-        'question' => 'e.g. How long does electroplating take for 500 pieces?',
-        'answer' => 'e.g. Normally 3 to 5 working days, depending on the size and finish.',
-    ],
     'hints' => [
         'optional' => 'Optional.',
         'images' => 'Up to :max pictures, JPG, PNG or WebP, 2 MB each.',

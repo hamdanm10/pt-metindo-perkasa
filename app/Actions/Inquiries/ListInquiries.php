@@ -28,7 +28,7 @@ class ListInquiries
             ->when($viewer->role->usesStaffArea() && $customerId !== null, fn ($query) => $query->where('customer_id', $customerId))
             ->when($serviceId !== null, fn ($query) => $query->where('service_id', $serviceId))
             ->when($productId !== null, fn ($query) => $query->where('product_id', $productId))
-            ->orderByDesc('asked_at')
+            ->orderByRaw('asked_at desc nulls last')
             ->orderByDesc('id')
             ->paginate(15);
     }

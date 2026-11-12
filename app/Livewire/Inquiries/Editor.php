@@ -100,7 +100,7 @@ class Editor extends Component
                 'customer_id' => (int) $this->form->customerId,
                 'question' => $this->form->question,
                 'answer' => $this->form->answer,
-                'asked_at' => $this->form->askedAt,
+                'asked_at' => $this->form->askedAt === '' ? null : $this->form->askedAt,
                 'service_id' => $this->form->serviceId === '' ? null : (int) $this->form->serviceId,
                 'product_id' => $this->form->productId === '' ? null : (int) $this->form->productId,
             ],

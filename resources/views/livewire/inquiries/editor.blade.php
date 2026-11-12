@@ -12,7 +12,7 @@
 
             <div>
                 <label for="form-question" class="field-label">{{ __('inquiries.fields.question') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
-                <textarea id="form-question" rows="3" wire:model="form.question" required placeholder="{{ __('inquiries.placeholders.question') }}"
+                <textarea id="form-question" rows="3" wire:model="form.question" required
                           @error('form.question') aria-invalid="true" aria-describedby="form-question-error" @enderror
                           class="field-input"></textarea>
                 @error('form.question')
@@ -22,7 +22,7 @@
 
             <div>
                 <label for="form-answer" class="field-label">{{ __('inquiries.fields.answer') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
-                <textarea id="form-answer" rows="7" wire:model="form.answer" required placeholder="{{ __('inquiries.placeholders.answer') }}"
+                <textarea id="form-answer" rows="7" wire:model="form.answer" required
                           @error('form.answer') aria-invalid="true" aria-describedby="form-answer-error" @enderror
                           class="field-input"></textarea>
                 @error('form.answer')
@@ -31,7 +31,7 @@
             </div>
 
             <div class="grid gap-6 sm:grid-cols-3">
-                <x-dashboard.field name="form.askedAt" :label="__('inquiries.fields.asked_at')" type="date" wire:model="form.askedAt" :max="now()->toDateString()" required />
+                <x-dashboard.field name="form.askedAt" :label="__('inquiries.fields.asked_at')" type="date" wire:model="form.askedAt" :max="now()->toDateString()" />
                 <x-dashboard.select name="form.serviceId" :label="__('inquiries.fields.service')" wire:model="form.serviceId">
                     <option value="">{{ __('inquiries.none') }}</option>
                     @foreach ($services as $item)
