@@ -3,7 +3,7 @@
 @php
     $user = auth()->user();
     $groups = app(\App\Services\Dashboard\DashboardMenu::class)->groupsForUser($user);
-    $area = $user->role->usesStaffArea() ? 'app' : 'customer';
+    $area = $user->role->area();
     $sidebarLink = 'flex min-h-12 items-center gap-3 rounded-lg px-4 text-base font-bold text-white/70 transition-colors hover:bg-white/10 hover:text-white '
         .'aria-[current=page]:bg-brand-600 aria-[current=page]:text-white';
 @endphp

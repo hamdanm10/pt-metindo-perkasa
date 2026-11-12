@@ -1,6 +1,6 @@
 # Peta Dokumentasi
 
-Dokumen proyek dikelompokkan per **area** (landing, bersama, dan peran `admin`, `staff`, `customer`) dan per **fitur**, supaya mudah dibaca dan dirawat. Isi dokumen berbahasa Indonesia, nama folder dan berkas berbahasa Inggris.
+Dokumen proyek dikelompokkan per **area** (landing, bersama, dan peran `admin`, `staff`, `customer`, `distributor`) dan per **fitur**, supaya mudah dibaca dan dirawat. Isi dokumen berbahasa Indonesia, nama folder dan berkas berbahasa Inggris.
 
 ## Susunan
 
@@ -17,7 +17,8 @@ docs/
 └── roles/
     ├── admin/                    dashboard admin
     ├── staff/                    dashboard staf
-    └── customer/                 area customer
+    ├── customer/                 area customer
+    └── distributor/              area distributor
 ```
 
 Folder fitur dibuat saat fitur pertamanya ditulis, bukan lebih awal. Setiap area punya `implementation-plan.md` sebagai **indeks**: status, urutan fase, dan tautan ke dokumen fitur. Rancangan rinci ada di folder fitur di sampingnya (contoh: `docs/roles/admin/landing-content/overview.md`).
@@ -31,6 +32,7 @@ Folder fitur dibuat saat fitur pertamanya ditulis, bukan lebih awal. Setiap area
 | Admin | [`roles/admin/implementation-plan.md`](roles/admin/implementation-plan.md) | Kelola akun dan konten landing |
 | Staf | `roles/staff/implementation-plan.md` | Belum ada |
 | Customer | `roles/customer/implementation-plan.md` | Belum ada |
+| Distributor | `roles/distributor/implementation-plan.md` | Belum ada |
 
 Baris diubah menjadi tautan saat indeksnya dibuat.
 

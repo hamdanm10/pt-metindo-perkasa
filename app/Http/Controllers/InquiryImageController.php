@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Serves a picture of a record from the private disk to the signed-in roles allowed to read the record.
- * Used by both areas (`app.inquiry-images.show` and `customer.inquiry-images.show`).
+ * Used by both areas (`app.inquiry-images.show` and `portal.inquiry-images.show`).
  */
 class InquiryImageController extends Controller
 {

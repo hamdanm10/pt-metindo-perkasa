@@ -27,10 +27,13 @@ return [
         'home' => 'Dasbor',
         'staff' => 'Staf',
         'customers' => 'Customer',
+        'distributors' => 'Distributor',
         'articles' => 'Artikel',
         'products' => 'Produk',
         'services' => 'Layanan',
         'inquiries' => 'Tanya Jawab',
+        'customer_inquiries' => 'Tanya Jawab Customer',
+        'distributor_inquiries' => 'Tanya Jawab Distributor',
     ],
     'home' => [
         'title' => 'Beranda',
@@ -43,5 +46,6 @@ return [
         'admin' => 'Admin',
         'staff' => 'Staf',
         'customer' => 'Customer',
+        'distributor' => 'Distributor',
     ],
 ];

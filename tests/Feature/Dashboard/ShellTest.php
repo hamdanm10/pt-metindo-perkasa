@@ -19,7 +19,7 @@ class ShellTest extends TestCase
 
     public function test_home_greets_each_role_by_name_and_shows_the_role_and_an_empty_state(): void
     {
-        foreach (['admin' => '/app/dashboard', 'staff' => '/app/dashboard', 'customer' => '/customer/dashboard'] as $role => $url) {
+        foreach (['admin' => '/app/dashboard', 'staff' => '/app/dashboard', 'customer' => '/portal/dashboard', 'distributor' => '/portal/dashboard'] as $role => $url) {
             $user = User::factory()->{$role}()->create(['name' => "Tester {$role}"]);
 
             $this->actingAs($user)->get($url)
@@ -111,7 +111,7 @@ class ShellTest extends TestCase
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
         $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
-        $this->assertSame(7, substr_count($html, 'size-5 shrink-0'));
+        $this->assertSame(9, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertStringNotContainsString('>'.__('dashboard.groups.content').'</p>', $staff);
@@ -187,7 +187,7 @@ class ShellTest extends TestCase
         ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id, 'title' => $long]);
         User::factory()->staff()->create(['name' => $long]);
 
-        foreach (['/app/products', '/app/services', '/app/inquiries', '/app/articles', '/app/staff'] as $url) {
+        foreach (['/app/products', '/app/services', '/app/customer-inquiries', '/app/articles', '/app/staff'] as $url) {
             $html = (string) $this->actingAs(User::factory()->admin()->create())->get($url)->assertOk()->getContent();
             $table = substr($html, (int) strpos($html, '<table'), (int) strpos($html, '</table>') - (int) strpos($html, '<table'));
 
@@ -206,11 +206,11 @@ class ShellTest extends TestCase
     {
         $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')
             ->assertSee('href="'.url('/app/dashboard').'"', false)
-            ->assertDontSee('href="'.url('/customer/dashboard').'"', false)
+            ->assertDontSee('href="'.url('/portal/dashboard').'"', false)
             ->assertSee('aria-current="page"', false);
 
-        $this->actingAs(User::factory()->customer()->create())->get('/customer/dashboard')
-            ->assertSee('href="'.url('/customer/dashboard').'"', false)
+        $this->actingAs(User::factory()->customer()->create())->get('/portal/dashboard')
+            ->assertSee('href="'.url('/portal/dashboard').'"', false)
             ->assertDontSee('href="'.url('/app/dashboard').'"', false);
     }
 
@@ -269,7 +269,7 @@ class ShellTest extends TestCase
     public function test_login_pages_offer_the_language_switcher(): void
     {
         $this->get('/app/login')->assertSee('name="locale"', false)->assertSee('action="'.url('/app/locale').'"', false);
-        $this->get('/customer/login')->assertSee('action="'.url('/customer/locale').'"', false);
+        $this->get('/portal/login')->assertSee('action="'.url('/portal/locale').'"', false);
     }
 
     public function test_locales_outside_the_dashboard_list_are_rejected(): void
@@ -289,14 +289,14 @@ class ShellTest extends TestCase
     {
         $user = User::factory()->customer()->create();
 
-        $this->actingAs($user)->from('https://elsewhere.example/page')->post('/customer/locale', ['locale' => 'id'])
-            ->assertRedirect(route('customer.dashboard'));
+        $this->actingAs($user)->from('https://elsewhere.example/page')->post('/portal/locale', ['locale' => 'id'])
+            ->assertRedirect(route('portal.dashboard'));
 
         $this->post('/app/locale', ['locale' => 'id']);
 
         auth()->logout();
 
-        $this->from('https://elsewhere.example/page')->post('/customer/locale', ['locale' => 'id'])
-            ->assertRedirect(route('customer.login'));
+        $this->from('https://elsewhere.example/page')->post('/portal/locale', ['locale' => 'id'])
+            ->assertRedirect(route('portal.login'));
     }
 }

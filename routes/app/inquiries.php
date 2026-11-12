@@ -9,12 +9,15 @@ use App\Livewire\Inquiries\Show;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:admin,staff'])->group(function (): void {
-    Route::prefix('inquiries')->name('inquiries.')->group(function (): void {
-        Route::get('/', Index::class)->name('index');
-        Route::get('create', Editor::class)->name('create');
-        Route::get('{inquiry}', Show::class)->whereNumber('inquiry')->name('show');
-        Route::get('{inquiry}/edit', Editor::class)->whereNumber('inquiry')->name('edit');
-    });
+    // Customers' and distributors' records are on separate pages that share the same components; the `kind` default picks the owner role.
+    foreach (['customer', 'distributor'] as $kind) {
+        Route::prefix("{$kind}-inquiries")->name("{$kind}-inquiries.")->group(function () use ($kind): void {
+            Route::get('/', Index::class)->name('index')->defaults('kind', $kind);
+            Route::get('create', Editor::class)->name('create')->defaults('kind', $kind);
+            Route::get('{inquiry}', Show::class)->whereNumber('inquiry')->name('show')->defaults('kind', $kind);
+            Route::get('{inquiry}/edit', Editor::class)->whereNumber('inquiry')->name('edit')->defaults('kind', $kind);
+        });
+    }
 
     Route::get('inquiry-images/{image}', [InquiryImageController::class, 'show'])->whereNumber('image')->name('inquiry-images.show');
 });

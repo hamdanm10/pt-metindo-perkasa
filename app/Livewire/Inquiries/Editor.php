@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Inquiries;
 
 use App\Actions\Inquiries\SaveInquiry;
-use App\Livewire\Concerns\ResolvesActor;
+use App\Livewire\Concerns\ScopesInquiryKind;
 use App\Livewire\Forms\InquiryForm;
 use App\Models\Inquiry;
 use Illuminate\Contracts\View\View;
@@ -17,7 +17,7 @@ use Livewire\WithFileUploads;
 
 class Editor extends Component
 {
-    use ResolvesActor;
+    use ScopesInquiryKind;
     use WithFileUploads;
 
     #[Locked]
@@ -28,11 +28,14 @@ class Editor extends Component
     /** @var list<TemporaryUploadedFile> */
     public array $uploads = [];
 
-    public function mount(?Inquiry $inquiry = null): void
+    public function mount(?Inquiry $inquiry = null, string $kind = ''): void
     {
+        $this->setKind($kind);
+
         if ($inquiry?->exists) {
             $this->authorize('update', $inquiry);
-            $this->inquiry = $inquiry->load('images');
+            $this->inquiry = $inquiry->load(['images', 'customer:id,role']);
+            abort_unless($this->inquiry->customer?->role === $this->ownerRole(), 404);
         } else {
             $this->authorize('create', Inquiry::class);
         }
@@ -86,6 +89,7 @@ class Editor extends Component
             ? $this->authorize('create', Inquiry::class)
             : $this->authorize('update', $this->inquiry);
 
+        $this->form->kind = $this->kind;
         $this->form->normalize();
         $this->form->validate();
 
@@ -106,13 +110,15 @@ class Editor extends Component
 
         session()->flash('status', __($this->inquiry === null ? 'inquiries.messages.created' : 'inquiries.messages.updated'));
 
-        $this->redirectRoute('app.inquiries.index');
+        $this->redirectRoute($this->routePrefix().'.index');
     }
 
     public function render(): View
     {
         return view('livewire.inquiries.editor', [
             'max' => Inquiry::MAX_IMAGES,
+            'kind' => $this->kind,
+            'routes' => $this->routePrefix(),
         ])->layout('components.dashboard.layout', [
             'title' => __($this->inquiry === null ? 'inquiries.create_title' : 'inquiries.edit_title'),
         ]);

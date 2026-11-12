@@ -1,5 +1,5 @@
 <div>
-    <x-dashboard.page-header :title="__('inquiries.title')" :description="$canCreate ? __('inquiries.description_staff') : __('inquiries.description')" />
+    <x-dashboard.page-header :title="$kind === '' ? __('inquiries.title') : __('inquiries.kinds.'.$kind.'.title')" :description="$kind === '' ? __('inquiries.description') : __('inquiries.kinds.'.$kind.'.description')" />
 
     <x-dashboard.flash />
 
@@ -8,8 +8,8 @@
             <div class="grid flex-1 gap-4 sm:grid-cols-2 {{ $area === 'app' ? 'xl:grid-cols-4' : 'lg:grid-cols-3' }}">
                 <x-dashboard.field name="search" :label="__('inquiries.search')" type="search" wire:model.live.debounce.300ms="search" />
                 @if ($area === 'app')
-                    <x-dashboard.lookup-field name="customer" :label="__('inquiries.fields.customer')">
-                        <livewire:lookup source="customer" wire:model.live="customer" input-id="customer" :placeholder="__('inquiries.all_customers')" :empty-label="__('inquiries.all_customers')" :invalid="false" />
+                    <x-dashboard.lookup-field name="customer" :label="__('inquiries.kinds.'.$kind.'.owner')">
+                        <livewire:lookup :source="$kind" wire:model.live="customer" input-id="customer" :placeholder="__('inquiries.kinds.'.$kind.'.all_owners')" :empty-label="__('inquiries.kinds.'.$kind.'.all_owners')" :invalid="false" />
                     </x-dashboard.lookup-field>
                 @endif
                 <x-dashboard.lookup-field name="service" :label="__('inquiries.fields.service')">
@@ -20,7 +20,7 @@
                 </x-dashboard.lookup-field>
             </div>
             @if ($canCreate)
-                <x-dashboard.button :href="route('app.inquiries.create')">{{ __('inquiries.create') }}</x-dashboard.button>
+                <x-dashboard.button :href="route($routes.'.create')">{{ __('inquiries.create') }}</x-dashboard.button>
             @endif
         </div>
 
@@ -29,7 +29,7 @@
                 <thead>
                     <tr>
                         @if ($area === 'app')
-                            <th scope="col">{{ __('inquiries.fields.customer') }}</th>
+                            <th scope="col">{{ __('inquiries.kinds.'.$kind.'.owner') }}</th>
                         @endif
                         <th scope="col">{{ __('inquiries.fields.question') }}</th>
                         <th scope="col">{{ __('inquiries.related') }}</th>
@@ -47,7 +47,7 @@
                                 <td class="font-semibold"><span class="cell-truncate" title="{{ $inquiry->customer->name }}">{{ $inquiry->customer->name }}</span></td>
                             @endif
                             <td>
-                                <a href="{{ route($area.'.inquiries.show', $inquiry) }}" class="cell-truncate font-semibold hover:text-brand-700" title="{{ \Illuminate\Support\Str::limit($inquiry->question, 300) }}">{{ \Illuminate\Support\Str::limit($inquiry->question, 200) }}</a>
+                                <a href="{{ route($routes.'.show', $inquiry) }}" class="cell-truncate font-semibold hover:text-brand-700" title="{{ \Illuminate\Support\Str::limit($inquiry->question, 300) }}">{{ \Illuminate\Support\Str::limit($inquiry->question, 200) }}</a>
                                 @if ($inquiry->images_count > 0)
                                     <p class="mt-1 text-xs text-muted">{{ trans_choice('inquiries.pictures_count', $inquiry->images_count) }}</p>
                                 @endif
@@ -70,9 +70,9 @@
                                 <td class="text-muted"><span class="cell-truncate" title="{{ $inquiry->creator?->name ?? __('inquiries.unknown_author') }}">{{ $inquiry->creator?->name ?? __('inquiries.unknown_author') }}</span></td>
                             @endif
                             <td class="text-end whitespace-nowrap">
-                                <a href="{{ route($area.'.inquiries.show', $inquiry) }}" class="row-action">{{ __('inquiries.view') }}<span class="sr-only"> {{ \Illuminate\Support\Str::limit($inquiry->question, 60) }}</span></a>
+                                <a href="{{ route($routes.'.show', $inquiry) }}" class="row-action">{{ __('inquiries.view') }}<span class="sr-only"> {{ \Illuminate\Support\Str::limit($inquiry->question, 60) }}</span></a>
                                 @can('update', $inquiry)
-                                    <a href="{{ route('app.inquiries.edit', $inquiry) }}" class="row-action">{{ __('inquiries.edit') }}<span class="sr-only"> {{ \Illuminate\Support\Str::limit($inquiry->question, 60) }}</span></a>
+                                    <a href="{{ route($routes.'.edit', $inquiry) }}" class="row-action">{{ __('inquiries.edit') }}<span class="sr-only"> {{ \Illuminate\Support\Str::limit($inquiry->question, 60) }}</span></a>
                                 @endcan
                                 @can('delete', $inquiry)
                                     <button type="button" wire:click="delete({{ $inquiry->id }})" data-confirm="{{ __('inquiries.confirm_delete') }}" data-confirm-label="{{ __('inquiries.delete') }}" class="row-action row-action--danger">{{ __('inquiries.delete') }}<span class="sr-only"> {{ \Illuminate\Support\Str::limit($inquiry->question, 60) }}</span></button>

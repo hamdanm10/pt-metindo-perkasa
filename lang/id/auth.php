@@ -6,7 +6,7 @@ return [
     'failed' => 'Email atau kata sandi tidak cocok.',
     'throttle' => 'Terlalu banyak percobaan masuk. Coba lagi dalam :seconds detik.',
     'staff_title' => 'Masuk staf',
-    'customer_title' => 'Masuk customer',
+    'portal_title' => 'Masuk customer dan distributor',
     'email' => 'Email',
     'password' => 'Kata sandi',
     'remember' => 'Biarkan saya tetap masuk',

@@ -12,6 +12,9 @@ use Livewire\Form;
 
 class InquiryForm extends Form
 {
+    /** The kind of owner this form is for (`customer` or `distributor`); set by the page from its route, not by the user. */
+    public string $kind = 'customer';
+
     public string $customerId = '';
 
     public string $question = '';
@@ -53,7 +56,7 @@ class InquiryForm extends Form
     public function rules(): array
     {
         return [
-            'customerId' => ['required', 'integer', Rule::exists('users', 'id')->where('role', Role::Customer->value)],
+            'customerId' => ['required', 'integer', Rule::exists('users', 'id')->where('role', in_array($this->kind, [Role::Customer->value, Role::Distributor->value], true) ? $this->kind : Role::Customer->value)],
             'question' => ['required', 'string', 'max:5000'],
             'answer' => ['required', 'string', 'max:10000'],
             'askedAt' => ['nullable', 'date_format:Y-m-d', 'before_or_equal:today'],
@@ -90,7 +93,7 @@ class InquiryForm extends Form
     public function validationAttributes(): array
     {
         return [
-            'customerId' => __('inquiries.fields.customer'),
+            'customerId' => __('inquiries.kinds.'.$this->kind.'.owner'),
             'question' => __('inquiries.fields.question'),
             'answer' => __('inquiries.fields.answer'),
             'askedAt' => __('inquiries.fields.asked_at'),

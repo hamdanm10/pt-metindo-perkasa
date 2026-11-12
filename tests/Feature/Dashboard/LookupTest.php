@@ -115,14 +115,14 @@ class LookupTest extends TestCase
         User::factory()->customer()->count(30)->create();
         Service::factory()->create(['name' => 'Unchosen Service']);
 
-        $this->actingAs($staff)->get('/app/inquiries/create')
+        $this->actingAs($staff)->get('/app/customer-inquiries/create')
             ->assertOk()
             ->assertDontSee('Chosen Customer')
             ->assertDontSee('Unchosen Service');
 
-        $this->actingAs($staff)->get('/app/inquiries')->assertOk()->assertDontSee('Unchosen Service');
+        $this->actingAs($staff)->get('/app/customer-inquiries')->assertOk()->assertDontSee('Unchosen Service');
 
-        Livewire::actingAs($staff)->test(Editor::class)
+        Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', (string) $chosen->id)
             ->assertSee('Chosen Customer');
     }
@@ -134,7 +134,7 @@ class LookupTest extends TestCase
         Inquiry::factory()->create(['customer_id' => $alice->id, 'question' => 'Alice question']);
         Inquiry::factory()->create(['customer_id' => $bob->id, 'question' => 'Bob question']);
 
-        Livewire::withQueryParams(['customer' => (string) $bob->id])->actingAs(User::factory()->staff()->create())->test(Index::class)
+        Livewire::withQueryParams(['customer' => (string) $bob->id])->actingAs(User::factory()->staff()->create())->test(Index::class, ['kind' => 'customer'])
             ->assertSee('Bob question')->assertDontSee('Alice question');
     }
 

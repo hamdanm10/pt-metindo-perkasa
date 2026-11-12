@@ -57,6 +57,11 @@ class UserFactory extends Factory
         return $this->state(['role' => Role::Customer]);
     }
 
+    public function distributor(): static
+    {
+        return $this->state(['role' => Role::Distributor]);
+    }
+
     public function inactive(): static
     {
         return $this->state(['is_active' => false]);

@@ -20,7 +20,10 @@ class LookupSearch
 {
     public const LIMIT = 20;
 
-    public const SOURCES = ['customer', 'service', 'product'];
+    public const SOURCES = ['customer', 'distributor', 'service', 'product'];
+
+    /** Sources that list accounts: their names and emails are for the staff area only. */
+    public const ACCOUNT_SOURCES = ['customer', 'distributor'];
 
     /**
      * @return array{items: list<Item>, more: bool}
@@ -33,7 +36,7 @@ class LookupSearch
         if ($term !== '') {
             $like = '%'.addcslashes($term, '%_\\').'%';
 
-            $source === 'customer'
+            in_array($source, self::ACCOUNT_SOURCES, true)
                 ? $query->where(fn (Builder $match) => $match->where('name', 'ilike', $like)->orWhere('email', 'ilike', $like))
                 : $query->where('name', 'ilike', $like);
         }
@@ -63,6 +66,7 @@ class LookupSearch
     {
         return match ($source) {
             'customer' => User::query()->select(['id', 'name', 'email'])->where('role', Role::Customer),
+            'distributor' => User::query()->select(['id', 'name', 'email'])->where('role', Role::Distributor),
             'service' => Service::query()->select(['id', 'name']),
             'product' => Product::query()->select(['id', 'name']),
             default => throw new \InvalidArgumentException("Unknown lookup source [{$source}]."),

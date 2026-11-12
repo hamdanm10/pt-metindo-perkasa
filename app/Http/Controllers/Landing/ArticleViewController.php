@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Landing;
 
 use App\Actions\Articles\RecordArticleView;
-use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,7 +23,7 @@ class ArticleViewController extends Controller
             app()->getLocale(),
             $article,
             $request->userAgent(),
-            $user !== null && $user->role !== Role::Customer,
+            $user !== null && $user->role->usesStaffArea(),
             is_array($cookie) ? $cookie : [],
         );
 

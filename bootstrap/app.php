@@ -27,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     }
                 });
 
-            foreach (['app', 'customer'] as $area) {
+            foreach (['app', 'portal'] as $area) {
                 Route::middleware(['web', SetDashboardLocale::class])
                     ->prefix($area)
                     ->name("{$area}.")
@@ -43,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias(['role' => EnsureRole::class]);
 
         $middleware->redirectGuestsTo(
-            fn (Request $request): string => $request->is('customer', 'customer/*') ? route('customer.login') : route('app.login'),
+            fn (Request $request): string => $request->is('portal', 'portal/*') ? route('portal.login') : route('app.login'),
         );
 
         $middleware->redirectUsersTo(function (): string {

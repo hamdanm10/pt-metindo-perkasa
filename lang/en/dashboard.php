@@ -27,10 +27,13 @@ return [
         'home' => 'Dashboard',
         'staff' => 'Staff',
         'customers' => 'Customers',
+        'distributors' => 'Distributors',
         'articles' => 'Articles',
         'products' => 'Products',
         'services' => 'Services',
         'inquiries' => 'Questions & Answers',
+        'customer_inquiries' => 'Customer Q&A',
+        'distributor_inquiries' => 'Distributor Q&A',
     ],
     'home' => [
         'title' => 'Home',
@@ -43,5 +46,6 @@ return [
         'admin' => 'Admin',
         'staff' => 'Staff',
         'customer' => 'Customer',
+        'distributor' => 'Distributor',
     ],
 ];

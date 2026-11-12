@@ -16,7 +16,7 @@ use Throwable;
 class ErrorContext
 {
     /**
-     * @return array{area: 'landing'|'dashboard', locale: string, dashboardArea: 'app'|'customer'|null}
+     * @return array{area: 'landing'|'dashboard', locale: string, dashboardArea: 'app'|'portal'|null}
      */
     public function resolve(Request $request, int $status): array
     {
@@ -27,7 +27,7 @@ class ErrorContext
             return ['area' => 'landing', 'locale' => $first, 'dashboardArea' => null];
         }
 
-        if ($first === 'app' || $first === 'customer') {
+        if ($first === 'app' || $first === 'portal') {
             return [
                 'area' => 'dashboard',
                 'locale' => $status >= 500 ? $default : $this->dashboardLocale($request, $default),

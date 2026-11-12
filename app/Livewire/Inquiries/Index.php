@@ -6,7 +6,7 @@ namespace App\Livewire\Inquiries;
 
 use App\Actions\Inquiries\DeleteInquiry;
 use App\Actions\Inquiries\ListInquiries;
-use App\Livewire\Concerns\ResolvesActor;
+use App\Livewire\Concerns\ScopesInquiryKind;
 use App\Models\Inquiry;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
@@ -19,7 +19,7 @@ use Livewire\WithPagination;
  */
 class Index extends Component
 {
-    use ResolvesActor;
+    use ScopesInquiryKind;
     use WithPagination;
 
     #[Url(except: '')]
@@ -34,8 +34,9 @@ class Index extends Component
     #[Url(except: '')]
     public string $product = '';
 
-    public function mount(): void
+    public function mount(string $kind = ''): void
     {
+        $this->setKind($kind);
         $this->authorize('viewAny', Inquiry::class);
     }
 
@@ -79,13 +80,16 @@ class Index extends Component
         return view('livewire.inquiries.index', [
             'inquiries' => $listInquiries->execute(
                 $actor,
+                $this->ownerRole(),
                 $this->search,
                 ctype_digit($this->customer) ? (int) $this->customer : null,
                 ctype_digit($this->service) ? (int) $this->service : null,
                 ctype_digit($this->product) ? (int) $this->product : null,
             ),
             'area' => $actor->role->area(),
+            'kind' => $this->kind,
+            'routes' => $this->routePrefix(),
             'canCreate' => $actor->can('create', Inquiry::class),
-        ])->layout('components.dashboard.layout', ['title' => __('inquiries.title')]);
+        ])->layout('components.dashboard.layout', ['title' => $this->kind === '' ? __('inquiries.title') : __("inquiries.kinds.{$this->kind}.title")]);
     }
 }
