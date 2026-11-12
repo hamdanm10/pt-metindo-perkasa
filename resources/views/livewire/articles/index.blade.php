@@ -41,10 +41,10 @@
                             $title = $article->displayTitle() ?? __('article_manager.untitled');
                         @endphp
                         <tr wire:key="article-{{ $article->id }}" class="align-middle">
-                            <td class="font-semibold">{{ $title }}</td>
+                            <td class="font-semibold"><span class="cell-truncate" title="{{ $title }}">{{ $title }}</span></td>
                             <td><x-dashboard.badge tone="role">{{ __('article_manager.types.'.$article->type->value) }}</x-dashboard.badge></td>
                             <td>
-                                <ul class="flex flex-wrap gap-1.5">
+                                <ul class="flex gap-1.5">
                                     @foreach (config('locales.landing') as $code)
                                         @php($translation = $translations->get($code))
                                         <li>
@@ -69,7 +69,7 @@
                                             <span class="sr-only">{{ __('article_manager.fields.views') }}</span>
                                         </span>
                                         <span class="h-4 w-px bg-ink/20" aria-hidden="true"></span>
-                                        <ul class="flex flex-wrap gap-x-3 text-xs text-muted">
+                                        <ul class="flex gap-x-3 text-xs text-muted">
                                             @foreach ($published as $item)
                                                 <li><span class="font-bold uppercase text-ink">{{ $item->locale }}</span> {{ \Illuminate\Support\Number::abbreviate($item->views_count, maxPrecision: 1) }}</li>
                                             @endforeach

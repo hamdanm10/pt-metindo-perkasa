@@ -53,16 +53,16 @@
                     @forelse ($inquiries as $inquiry)
                         <tr wire:key="inquiry-{{ $inquiry->id }}" class="align-middle">
                             @if ($area === 'app')
-                                <td class="font-semibold">{{ $inquiry->customer->name }}</td>
+                                <td class="font-semibold"><span class="cell-truncate" title="{{ $inquiry->customer->name }}">{{ $inquiry->customer->name }}</span></td>
                             @endif
-                            <td class="max-w-md">
-                                <a href="{{ route($area.'.inquiries.show', $inquiry) }}" class="font-semibold hover:text-brand-700">{{ \Illuminate\Support\Str::limit($inquiry->question, 140) }}</a>
+                            <td>
+                                <a href="{{ route($area.'.inquiries.show', $inquiry) }}" class="cell-truncate font-semibold hover:text-brand-700" title="{{ \Illuminate\Support\Str::limit($inquiry->question, 300) }}">{{ \Illuminate\Support\Str::limit($inquiry->question, 200) }}</a>
                                 @if ($inquiry->images_count > 0)
                                     <p class="mt-1 text-xs text-muted">{{ trans_choice('inquiries.pictures_count', $inquiry->images_count) }}</p>
                                 @endif
                             </td>
                             <td>
-                                <ul class="flex flex-wrap gap-1.5">
+                                <ul class="flex gap-1.5">
                                     @if ($inquiry->service)
                                         <li><x-dashboard.badge tone="muted">{{ $inquiry->service->name }}</x-dashboard.badge></li>
                                     @endif
@@ -76,7 +76,7 @@
                             </td>
                             <td class="whitespace-nowrap text-muted">{{ $inquiry->asked_at?->isoFormat('LL') ?? '—' }}</td>
                             @if ($area === 'app')
-                                <td class="text-muted">{{ $inquiry->creator?->name ?? __('inquiries.unknown_author') }}</td>
+                                <td class="text-muted"><span class="cell-truncate" title="{{ $inquiry->creator?->name ?? __('inquiries.unknown_author') }}">{{ $inquiry->creator?->name ?? __('inquiries.unknown_author') }}</span></td>
                             @endif
                             <td class="text-end whitespace-nowrap">
                                 <a href="{{ route($area.'.inquiries.show', $inquiry) }}" class="row-action">{{ __('inquiries.view') }}<span class="sr-only"> {{ \Illuminate\Support\Str::limit($inquiry->question, 60) }}</span></a>
