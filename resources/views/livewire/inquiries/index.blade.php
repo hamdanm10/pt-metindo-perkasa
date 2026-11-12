@@ -9,14 +9,14 @@
                 <x-dashboard.field name="search" :label="__('inquiries.search')" type="search" wire:model.live.debounce.300ms="search" />
                 @if ($area === 'app')
                     <x-dashboard.lookup-field name="customer" :label="__('inquiries.fields.customer')">
-                        <livewire:lookup source="customer" wire:model.live="customer" input-id="customer" :placeholder="__('inquiries.all_customers')" :empty-label="__('inquiries.all_customers')" />
+                        <livewire:lookup source="customer" wire:model.live="customer" input-id="customer" :placeholder="__('inquiries.all_customers')" :empty-label="__('inquiries.all_customers')" :invalid="false" />
                     </x-dashboard.lookup-field>
                 @endif
                 <x-dashboard.lookup-field name="service" :label="__('inquiries.fields.service')">
-                    <livewire:lookup source="service" wire:model.live="service" input-id="service" :placeholder="__('inquiries.all_services')" :empty-label="__('inquiries.all_services')" />
+                    <livewire:lookup source="service" wire:model.live="service" input-id="service" :placeholder="__('inquiries.all_services')" :empty-label="__('inquiries.all_services')" :invalid="false" />
                 </x-dashboard.lookup-field>
                 <x-dashboard.lookup-field name="product" :label="__('inquiries.fields.product')">
-                    <livewire:lookup source="product" wire:model.live="product" input-id="product" :placeholder="__('inquiries.all_products')" :empty-label="__('inquiries.all_products')" />
+                    <livewire:lookup source="product" wire:model.live="product" input-id="product" :placeholder="__('inquiries.all_products')" :empty-label="__('inquiries.all_products')" :invalid="false" />
                 </x-dashboard.lookup-field>
             </div>
             @if ($canCreate)
