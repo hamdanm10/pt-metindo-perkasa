@@ -41,7 +41,7 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 ## Aturan keamanan dan kasus tepi
 
 - `{category}` dan `{slug}` dibatasi pada daftar di config. Nilai lain menghasilkan 404, dan nilainya tidak dipakai untuk membentuk jalur berkas atau query.
-- Judul artikel di bagian Articles beranda dipotong dengan "…" setelah dua baris (`line-clamp-2`).
+- Judul artikel di bagian Articles beranda dipotong dengan "…" setelah dua baris (`line-clamp-2`). Kartu artikel (daftar dan artikel terkait) memotong judul setelah dua baris dan ringkasan setelah tiga baris. Elemen dengan `line-clamp-*` tidak boleh diberi kelas `block` karena menimpa `display: -webkit-box` yang dibutuhkan pemotongan.
 - Judul, ringkasan, dan isi artikel tidak boleh melebarkan halaman: kata yang sangat panjang dipatahkan (`overflow-wrap: anywhere` pada judul, ringkasan, kartu, dan `.article-body`).
 - Parameter `?type=` hanya menerima `article` atau `news`, nilai lain diabaikan (menampilkan semua).
 - Konten contoh nonaktif: bagian anak perusahaan tidak dirender.

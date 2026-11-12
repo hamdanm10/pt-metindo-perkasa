@@ -175,4 +175,24 @@ class ArticlePagesTest extends TestCase
             ->assertSee('<h3 class="mt-4 line-clamp-2 ', false)
             ->assertSee('[overflow-wrap:anywhere]', false);
     }
+
+    public function test_the_card_cuts_a_long_title_after_two_lines_and_the_summary_after_three_without_a_block_class_that_would_undo_it(): void
+    {
+        config(['landing.sample_content' => false]);
+        foreach (['one', 'two'] as $slug) {
+            ArticleTranslation::factory()->published()->create([
+                'article_id' => Article::factory()->create()->id,
+                'slug' => $slug,
+                'title' => str_repeat('A very long article title ', 9),
+                'excerpt' => str_repeat('A long summary sentence. ', 20),
+            ]);
+        }
+        app(LandingArticles::class)->flush();
+
+        $html = (string) $this->get('/en/articles')->assertOk()->getContent();
+
+        $this->assertMatchesRegularExpression('/<span class="mt-3 line-clamp-2 [^"]*font-black[^"]*\[overflow-wrap:anywhere\]/', $html);
+        $this->assertMatchesRegularExpression('/<span class="mt-3 line-clamp-3 [^"]*\[overflow-wrap:anywhere\]/', $html);
+        $this->assertDoesNotMatchRegularExpression('/line-clamp-\d [^"]*\bblock\b/', $html);
+    }
 }
