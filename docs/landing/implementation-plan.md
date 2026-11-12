@@ -24,7 +24,7 @@ Halaman lain: About Us, Processes (di prototipe Products), Services, Articles (d
 | L4 | Konten dinamis di database dan pengelolaannya oleh admin di dashboard (kategori, produk, proses, layanan, klien, mitra, video), termasuk halaman detail proses. Artikel dikerjakan lebih dulu di A2 ([`../roles/admin/articles/overview.md`](../roles/admin/articles/overview.md)) | belum ditulis | `feat/landing-content` | Rencana. Butuh login dan dashboard admin lebih dulu |
 | L5 | Permintaan harga, unduhan TDS, dan formulir kontak | belum ditulis | belum ditentukan | Belum diputuskan |
 | L6 | SEO dan performa: `hreflang`, sitemap, meta per bahasa, ukur Lighthouse (termasuk dampak layar intro) | belum ditulis | `feat/landing-seo` | Rencana |
-| L7 | Widget chat | belum ditulis | belum ditentukan | Belum diputuskan |
+| L7 | Chat berbasis aturan yang dinamis: pertanyaan, jawaban, dan pertanyaan lanjutan bersarang ditulis admin per bahasa | [`chat/overview.md`](chat/overview.md) | `feat/dynamic-chat` | Selesai di kode, menunggu tinjauan |
 
 Dokumen fitur ditulis **sebelum** kodenya tiap fase, lalu baris tabel ini diubah menjadi tautan.
 
@@ -41,9 +41,8 @@ Dokumen fitur ditulis **sebelum** kodenya tiap fase, lalu baris tabel ini diubah
 
 - **Harga "Request to admin":** apakah harga memang tidak ditampilkan, dan lewat mana pengunjung mengirim permintaan (formulir, WhatsApp, atau email). Apakah permintaan disimpan di database dan dilihat admin.
 - **TDS:** berkas PDF yang diunduh langsung atau lewat permintaan.
-- **Widget chat:** chat sungguhan, tombol WhatsApp, atau tidak dipakai. Prototipe hanya punya balasan otomatis di sisi browser.
 
-Ketiganya menentukan isi L5 dan L7. L1 sampai L4 tidak bergantung padanya.
+Keduanya menentukan isi L5. L1 sampai L4 tidak bergantung padanya. Widget chat sudah diputuskan: chat berbasis aturan yang dinamis (L7) berdampingan dengan tombol WhatsApp.
 
 ## Di luar lingkup
 

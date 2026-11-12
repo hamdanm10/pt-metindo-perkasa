@@ -18,7 +18,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | 8 | Video: tidak ada permintaan ke YouTube sebelum diklik. Tampil poster lokal dan tombol putar, lalu iframe `youtube-nocookie.com` dibuat saat diklik. ID video di `config/landing.php` (env `LANDING_INTRO_VIDEO_ID`), bagian disembunyikan bila kosong | Kecepatan, privasi, dan SEO. ID di prototipe belum dipastikan video asli |
 | 9 | Kontak (email, telepon) dari `config/landing.php` (env). Bagian dan tombol kontak hanya muncul bila diisi. Tombol hero "Contact us" dan tombol ajakan menuju halaman Contact; `mailto:` dan `tel:` hanya di baris kontak ajakan | Tombol harus berfungsi. Nilai di prototipe tampak contoh, belum dikonfirmasi |
 | 10 | Ilustrasi Recraft lama tidak dipakai lagi sejak redesign (Nov 2026). Gambar hero adalah monogram logo | Tampilan jalan tanpa aset, dan aset tinggal diletakkan |
-| 11 | Widget chat tidak dibuat | Belum diputuskan (L7) |
+| 11 | Widget chat dikerjakan terpisah di L7 | Lihat [`../chat/overview.md`](../chat/overview.md) |
 | 12 | Tidak ada gambar buatan sendiri selain logo. Foto dan ilustrasi baru diminta ke client bila dibutuhkan ([`../ui/direction.md`](../ui/direction.md)) | Aturan: jangan karang aset |
 | 13 | Kata kunci `.env`: `LANDING_INTRO_VIDEO_ID`, `LANDING_CONTACT_EMAIL`, `LANDING_CONTACT_PHONE` (kosong di `.env.example`) | Data kontak dan video belum dikonfirmasi |
 
@@ -88,6 +88,6 @@ Pemeriksaan manual di browser: intro (klik, Enter, Escape, dan sekali per sesi),
 
 - Tautan kategori, layanan, dan artikel (L3), produk, proses, TDS, dan harga (L4 dan L5).
 - Artikel asli, logo klien dan mitra yang asli (yang terpasang sekarang adalah logo contoh), dan data kontak resmi.
-- Widget chat (L7). Di prototipe, tiap produk punya tombol "Ask on WhatsApp", jadi WhatsApp tampaknya jalur permintaan harga dan TDS. Itu dibahas di L5.
+- Widget chat: dikerjakan di L7 ([`../chat/overview.md`](../chat/overview.md)). Di prototipe, tiap produk punya tombol "Ask on WhatsApp", jadi WhatsApp tampaknya jalur permintaan harga dan TDS. Itu dibahas di L5.
 - Pengukuran Lighthouse dan dampak intro (L6).
 - Terjemahan perlu ditinjau penutur asli.

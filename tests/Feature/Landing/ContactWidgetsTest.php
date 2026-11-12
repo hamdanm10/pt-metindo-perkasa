@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
+use App\Models\ChatEntry;
 use App\Services\Landing\LandingContact;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ContactWidgetsTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_agents_are_read_from_the_list_and_bad_entries_are_skipped(): void
     {
         config(['landing.contact.whatsapp_agents' => 'Sales|+62 812-0000-0001; Support|6281200000002 ;Broken|abc;|;6281200000003']);
@@ -41,6 +45,7 @@ class ContactWidgetsTest extends TestCase
     public function test_both_buttons_and_the_agent_list_are_on_every_landing_page(): void
     {
         config(['landing.contact.whatsapp_agents' => 'Sales|6281200000001;Support|6281200000002']);
+        $this->addTopic();
 
         foreach (['/en', '/id/about', '/zh/processes', '/ar/services'] as $path) {
             $this->get($path)->assertOk()
@@ -56,6 +61,8 @@ class ContactWidgetsTest extends TestCase
 
     public function test_each_panel_sits_in_the_group_of_its_own_button_and_the_chat_has_no_text_box(): void
     {
+        config(['landing.contact.whatsapp_agents' => 'Sales|6281200000001']);
+        $this->addTopic();
         $html = (string) $this->get('/en')->getContent();
 
         // Chat button group, then WhatsApp button group, side by side; each panel comes right before its own button.
@@ -71,6 +78,7 @@ class ContactWidgetsTest extends TestCase
 
     public function test_the_talk_option_is_offered_only_with_numbers(): void
     {
+        $this->addTopic();
         config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null]);
 
         $this->assertNull($this->rules($this->page('/en'))['talk']);
@@ -82,6 +90,7 @@ class ContactWidgetsTest extends TestCase
 
     public function test_without_numbers_only_the_chat_button_is_shown(): void
     {
+        $this->addTopic();
         config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null]);
 
         $this->get('/en')->assertOk()
@@ -90,43 +99,15 @@ class ContactWidgetsTest extends TestCase
             ->assertDontSee('wa.me', false);
     }
 
-    public function test_the_chat_rules_come_from_the_site_content(): void
-    {
-        config(['landing.contact.email' => 'hello@example.test', 'landing.contact.phone' => '+62 800', 'landing.contact.hours' => 'Mon-Fri', 'landing.contact.address' => 'Test street']);
-
-        $rules = $this->rules($this->page('/en'));
-        $topics = array_column($rules['topics'], null, 'id');
-
-        $this->assertSame(['processes', 'services', 'quote', 'contact', 'hours', 'location', 'company'], array_keys($topics));
-        $this->assertStringContainsString((string) count(config('landing.categories')), $topics['processes']['answer']);
-        $this->assertStringContainsString('hello@example.test', $topics['contact']['answer']);
-        $this->assertStringContainsString('+62 800', $topics['contact']['answer']);
-        $this->assertStringContainsString('Mon-Fri', $topics['hours']['answer']);
-        $this->assertStringContainsString('Test street', $topics['location']['answer']);
-        $this->assertSame(route('landing.processes.index'), $topics['processes']['link']['url']);
-        $this->assertSame(route('landing.about'), $topics['company']['link']['url']);
-
-        $this->assertSame(__('chat.chat.welcome'), $rules['welcome']);
-        $this->assertSame(__('chat.chat.again'), $rules['again']);
-        $this->assertSame(__('chat.chat.talk'), $rules['talk']);
-    }
-
-    public function test_topics_without_data_are_left_out(): void
-    {
-        config(['landing.contact.email' => null, 'landing.contact.phone' => null, 'landing.contact.hours' => null, 'landing.contact.address' => null]);
-
-        $ids = array_column($this->rules($this->page('/en'))['topics'], 'id');
-
-        $this->assertSame(['processes', 'services', 'quote', 'company'], $ids);
-    }
-
     public function test_the_chat_speaks_every_landing_language(): void
     {
+        $this->addTopic();
+
         foreach (config('locales.landing') as $code) {
             $response = $this->get("/{$code}")->assertOk();
             $rules = $this->rules($this->page("/{$code}"));
 
-            foreach (['welcome', 'again', 'talk'] as $key) {
+            foreach (['welcome', 'again', 'talk', 'menu'] as $key) {
                 $this->assertNotSame("chat.chat.{$key}", $rules[$key]);
             }
 
@@ -142,6 +123,18 @@ class ContactWidgetsTest extends TestCase
         $this->assertNotSame($this->rules($this->page('/en'))['welcome'], $this->rules($this->page('/id'))['welcome']);
     }
 
+    /**
+     * One question with an answer in every landing language, so the chat has something to show.
+     */
+    private function addTopic(): void
+    {
+        $entry = ChatEntry::query()->create(['parent_id' => null, 'position' => 0]);
+
+        foreach (config('locales.landing') as $code) {
+            $entry->translations()->create(['locale' => $code, 'question' => "Question {$code}", 'answer' => "Answer {$code}"]);
+        }
+    }
+
     private function page(string $path): string
     {
         $content = $this->get($path)->getContent();
@@ -150,13 +143,13 @@ class ContactWidgetsTest extends TestCase
     }
 
     /**
-     * @return array{welcome: string, again: string, talk: string|null, topics: list<array{id: string, label: string, answer: string, link: array{label: string, url: string}}>}
+     * @return array{welcome: string, again: string, talk: string|null, menu: string, topics: list<array{id: int, label: string, answer: string, link: array{label: string, url: string}|null, children: list<mixed>}>}
      */
     private function rules(string $html): array
     {
         preg_match('/data-chat-rules="([^"]*)"/', $html, $found);
 
-        /** @var array{welcome: string, again: string, talk: string|null, topics: list<array{id: string, label: string, answer: string, link: array{label: string, url: string}}>} $rules */
+        /** @var array{welcome: string, again: string, talk: string|null, menu: string, topics: list<array{id: int, label: string, answer: string, link: array{label: string, url: string}|null, children: list<mixed>}>} $rules */
         $rules = json_decode(html_entity_decode($found[1] ?? '{}', ENT_QUOTES), true, 512, JSON_THROW_ON_ERROR);
 
         return $rules;
