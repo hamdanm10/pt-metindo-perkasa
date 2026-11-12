@@ -278,9 +278,9 @@ class HomeTest extends TestCase
     public function test_header_links_the_portal_login_in_every_language(): void
     {
         foreach (config('locales.landing') as $code) {
-            $html = (string) $this->get("/{$code}")->getContent();
+            $response = $this->get("/{$code}")->assertSeeText(__('landing.login', [], $code));
+            $html = (string) $response->getContent();
 
-            $this->assertStringContainsString(__('landing.login', [], $code), $html);
             $this->assertSame(2, substr_count($html, 'href="'.route('portal.login').'"'));
             $this->assertStringNotContainsString(route('app.login'), $html);
         }

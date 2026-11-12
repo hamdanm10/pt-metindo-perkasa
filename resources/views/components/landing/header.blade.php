@@ -26,9 +26,6 @@
                                class="{{ $link }}"><span class="uline">{{ __($item['label']) }}</span></a>
                         </li>
                     @endforeach
-                    <li>
-                        <a href="{{ route('portal.login') }}" class="{{ $link }}"><span class="uline">{{ __('landing.login') }}</span></a>
-                    </li>
                 </ul>
             </nav>
 
@@ -44,6 +41,7 @@
             </details>
             </div>
 
+            <x-landing.button :href="route('portal.login')" variant="dark" :arrow="false">{{ __('landing.login') }}</x-landing.button>
             <x-landing.button :href="route('landing.contact')">{{ __('landing.talk') }}</x-landing.button>
         </div>
 
@@ -66,11 +64,11 @@
                             <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="menu-link block px-4 py-3 text-2xl font-bold aria-[current=page]:text-brand-300">{{ __($item['label']) }}</a>
                         </li>
                     @endforeach
-                    <li data-menu-item class="border-t border-white/20">
-                        <a href="{{ route('portal.login') }}" class="menu-link block px-4 py-3 text-2xl font-bold">{{ __('landing.login') }}</a>
-                    </li>
                 </ul>
             </nav>
+            <div data-menu-item class="px-4 pt-6">
+                <x-landing.button :href="route('portal.login')" variant="outline" :arrow="false">{{ __('landing.login') }}</x-landing.button>
+            </div>
             <div data-menu-item class="px-4 py-6">
                 <x-landing.language-links dark :alternates="$alternates" />
             </div>
