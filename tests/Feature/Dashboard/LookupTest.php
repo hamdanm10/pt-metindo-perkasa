@@ -175,4 +175,18 @@ class LookupTest extends TestCase
         $this->assertStringContainsString('wire:model.live.debounce.300ms="search"', $html);
         $this->assertStringContainsString('aria-label="'.__('dashboard.lookup.search').'"', $html);
     }
+
+    public function test_while_searching_only_the_searching_text_shows_above_the_list(): void
+    {
+        $html = Livewire::actingAs(User::factory()->staff()->create())
+            ->test(Lookup::class, ['source' => 'service', 'inputId' => 'service'])
+            ->html();
+
+        $searching = strpos($html, __('dashboard.lookup.searching'));
+        $list = strpos($html, 'role="listbox"');
+
+        $this->assertNotFalse($searching);
+        $this->assertLessThan($list, $searching);
+        $this->assertMatchesRegularExpression('/<ul[^>]*role="listbox"[^>]*wire:loading\.remove[^>]*wire:target="search"|<ul[^>]*wire:loading\.remove[^>]*role="listbox"/', $html);
+    }
 }

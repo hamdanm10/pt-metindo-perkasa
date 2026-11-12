@@ -18,7 +18,9 @@
                x-on:keydown.arrow-down.prevent="$root.querySelector('[role=option]')?.focus()"
                class="field-input">
 
-        <ul id="{{ $inputId }}-list" role="listbox" class="mt-2 max-h-64 overflow-y-auto">
+        <p wire:loading wire:target="search" class="px-3 py-3 text-sm text-muted" role="status">{{ __('dashboard.lookup.searching') }}</p>
+
+        <ul id="{{ $inputId }}-list" role="listbox" wire:loading.remove wire:target="search" class="mt-2 max-h-64 overflow-y-auto">
             @if ($emptyLabel !== '' && $search === '')
                 <li role="presentation">
                     <button type="button" role="option" aria-selected="{{ $value === '' ? 'true' : 'false' }}"
@@ -45,11 +47,10 @@
         </ul>
 
         @if ($opened && $results['items'] === [])
-            <p class="px-3 py-2 text-sm text-muted" role="status">{{ __('dashboard.lookup.no_results') }}</p>
+            <p wire:loading.remove wire:target="search" class="px-3 py-2 text-sm text-muted" role="status">{{ __('dashboard.lookup.no_results') }}</p>
         @endif
         @if ($results['more'])
-            <p class="px-3 pt-2 text-xs text-muted" role="status">{{ __('dashboard.lookup.more', ['count' => $limit]) }}</p>
+            <p wire:loading.remove wire:target="search" class="px-3 pt-2 text-xs text-muted" role="status">{{ __('dashboard.lookup.more', ['count' => $limit]) }}</p>
         @endif
-        <p wire:loading wire:target="search" class="px-3 pt-2 text-xs text-muted" role="status">{{ __('dashboard.lookup.searching') }}</p>
     </div>
 </div>
