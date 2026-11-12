@@ -7,6 +7,7 @@ return [
     'menu' => 'Menu',
     'language' => 'Bahasa',
     'talk' => 'Mari bicara',
+    'login' => 'Masuk',
     'nav' => [
         'home' => 'Beranda',
         'about' => 'Tentang Kami',

@@ -7,6 +7,7 @@ return [
     'menu' => '菜单',
     'language' => '语言',
     'talk' => '联系我们',
+    'login' => '登录',
     'nav' => [
         'home' => '首页',
         'about' => '关于我们',

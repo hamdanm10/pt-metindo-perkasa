@@ -7,6 +7,7 @@ return [
     'menu' => 'Menu',
     'language' => 'Language',
     'talk' => 'Let\'s talk',
+    'login' => 'Sign in',
     'nav' => [
         'home' => 'Home',
         'about' => 'About Us',

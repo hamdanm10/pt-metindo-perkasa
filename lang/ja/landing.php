@@ -7,6 +7,7 @@ return [
     'menu' => 'メニュー',
     'language' => '言語',
     'talk' => 'お問い合わせ',
+    'login' => 'ログイン',
     'nav' => [
         'home' => 'ホーム',
         'about' => '会社概要',
