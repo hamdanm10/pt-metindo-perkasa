@@ -209,6 +209,7 @@ Dokumen rancangan ada di `docs/`, per area dan per fitur, dengan satu `implement
 | [`docs/shared/auth/overview.md`](docs/shared/auth/overview.md) | Rancangan akun, peran, dan login (D1) |
 | [`docs/shared/dashboard/overview.md`](docs/shared/dashboard/overview.md) | Rancangan kerangka dashboard: tata letak, menu, pemilih bahasa (D2) |
 | [`docs/landing/implementation-plan.md`](docs/landing/implementation-plan.md) | Indeks landing page: fase dan status |
+| [`docs/shared/inquiries/overview.md`](docs/shared/inquiries/overview.md) | Rancangan Tanya Jawab: arsip pertanyaan customer, ditulis admin dan staf, dibaca customer (D3) |
 | [`docs/roles/admin/implementation-plan.md`](docs/roles/admin/implementation-plan.md) | Indeks admin |
 | [`docs/roles/admin/user-management/overview.md`](docs/roles/admin/user-management/overview.md) | Rancangan kelola akun oleh admin (A1) |
 | `docs/roles/<peran>/implementation-plan.md` | Indeks staff dan customer (dibuat saat fitur pertama) |

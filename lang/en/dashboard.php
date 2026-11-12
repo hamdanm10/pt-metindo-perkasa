@@ -14,6 +14,7 @@ return [
     'groups' => [
         'menu' => 'Menu',
         'content' => 'Content',
+        'support' => 'Support',
         'users' => 'User Management',
     ],
     'nav' => [
@@ -23,6 +24,7 @@ return [
         'articles' => 'Articles',
         'products' => 'Products',
         'services' => 'Services',
+        'inquiries' => 'Questions & Answers',
     ],
     'home' => [
         'title' => 'Home',

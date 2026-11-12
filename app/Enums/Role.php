@@ -48,6 +48,14 @@ enum Role: string
     }
 
     /**
+     * Route name prefix of this role's area: `app` or `customer`.
+     */
+    public function area(): string
+    {
+        return $this->usesStaffArea() ? 'app' : 'customer';
+    }
+
+    /**
      * Name of the route that shows the home page of this role's area.
      */
     public function homeRoute(): string
