@@ -29,8 +29,8 @@
                 <tbody>
                     @forelse ($users as $user)
                         <tr wire:key="user-{{ $user->id }}">
-                            <td class="font-semibold">{{ $user->name }}</td>
-                            <td dir="ltr">{{ $user->email }}</td>
+                            <td class="font-semibold"><span class="cell-truncate" title="{{ $user->name }}">{{ $user->name }}</span></td>
+                            <td dir="ltr"><span class="cell-truncate" title="{{ $user->email }}">{{ $user->email }}</span></td>
                             <td>
                                 <x-dashboard.badge :tone="$user->is_active ? 'active' : 'muted'">{{ __('users.status.'.($user->is_active ? 'active' : 'inactive')) }}</x-dashboard.badge>
                             </td>

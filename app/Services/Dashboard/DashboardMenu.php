@@ -26,7 +26,9 @@ class DashboardMenu
             ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'content', 'roles' => [Role::Admin]],
             ['route' => 'app.staff.index', 'label' => 'dashboard.nav.staff', 'active' => 'app.staff.*', 'icon' => 'briefcase', 'group' => 'users', 'roles' => [Role::Admin]],
             ['route' => 'app.customers.index', 'label' => 'dashboard.nav.customers', 'active' => 'app.customers.*', 'icon' => 'users', 'group' => 'users', 'roles' => [Role::Admin]],
+            ['route' => 'app.inquiries.index', 'label' => 'dashboard.nav.inquiries', 'active' => 'app.inquiries.*', 'icon' => 'chat', 'group' => 'support', 'roles' => Role::staffArea()],
             ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'icon' => 'home', 'group' => 'menu', 'roles' => Role::customerArea()],
+            ['route' => 'customer.inquiries.index', 'label' => 'dashboard.nav.inquiries', 'active' => 'customer.inquiries.*', 'icon' => 'chat', 'group' => 'support', 'roles' => Role::customerArea()],
         ];
     }
 

@@ -14,6 +14,7 @@ return [
     'groups' => [
         'menu' => 'Menu',
         'content' => 'Konten',
+        'support' => 'Bantuan',
         'users' => 'Manajemen Pengguna',
     ],
     'nav' => [
@@ -23,6 +24,7 @@ return [
         'articles' => 'Artikel',
         'products' => 'Produk',
         'services' => 'Layanan',
+        'inquiries' => 'Tanya Jawab',
     ],
     'home' => [
         'title' => 'Beranda',

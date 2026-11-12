@@ -189,6 +189,20 @@ html[dir='rtl'] .field-select {
     border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
 }
 
+/* Nothing in a list wraps: long text is cut with an ellipsis, and a table that is still too wide scrolls sideways inside its card. */
+.data-table th,
+.data-table td {
+    white-space: nowrap;
+}
+
+.cell-truncate {
+    display: block;
+    max-width: 26rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .data-table th:last-child,
 .data-table td:last-child {
     padding-inline-end: 0;

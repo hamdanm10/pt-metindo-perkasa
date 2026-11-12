@@ -23,8 +23,8 @@
                 <tbody>
                     @forelse ($services as $service)
                         <tr wire:key="service-{{ $service->id }}" class="align-middle">
-                            <td class="font-semibold">{{ $service->name }}</td>
-                            <td class="text-muted">{{ \Illuminate\Support\Str::limit((string) $service->description, 120) }}</td>
+                            <td class="font-semibold"><span class="cell-truncate" title="{{ $service->name }}">{{ $service->name }}</span></td>
+                            <td class="text-muted"><span class="cell-truncate" title="{{ \Illuminate\Support\Str::limit((string) $service->description, 300) }}">{{ \Illuminate\Support\Str::limit((string) $service->description, 200) }}</span></td>
                             <td class="text-end">
                                 <a href="{{ route('app.services.edit', $service) }}" class="row-action">{{ __('services.edit') }}<span class="sr-only"> {{ $service->name }}</span></a>
                             </td>

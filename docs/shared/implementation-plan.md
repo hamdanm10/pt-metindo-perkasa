@@ -9,6 +9,7 @@ Fondasi yang dipakai admin, staf, dan customer: infrastruktur pemeriksaan kode, 
 | D0 | Infrastruktur: test di PostgreSQL, pengaman database, Larastan level 8, dan `composer check` | bagian Testing dan Tooling di [`../../CLAUDE.md`](../../CLAUDE.md) dan [`../setup.md`](../setup.md) | `build/postgres-testing` | Selesai, ter-merge ke `development` |
 | D1 | Fondasi akun: peran, login `/app/login` dan `/customer/login`, middleware per peran, perintah admin pertama | [`auth/overview.md`](auth/overview.md) | `feat/auth-foundation` | Selesai, ter-merge ke `development` |
 | D2 | Kerangka dashboard: tata letak, menu per peran, pemilih bahasa (`en` dan `id`), halaman beranda, dan desain dasar | [`dashboard/overview.md`](dashboard/overview.md) | `feat/dashboard-shell` | Selesai, ter-merge ke `development` |
+| D3 | Tanya Jawab: arsip pertanyaan customer dan jawabannya. Admin dan staf mencatat (staf hanya mengubah dan menghapus miliknya), customer hanya membaca; layanan atau produk terkait opsional, hingga 10 gambar | [`inquiries/overview.md`](inquiries/overview.md) | `feat/inquiries` | Selesai di kode, menunggu tinjauan |
 
 ## Keputusan
 

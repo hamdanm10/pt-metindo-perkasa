@@ -6,6 +6,7 @@ namespace Tests\Feature\Dashboard;
 
 use App\Models\Article;
 use App\Models\ArticleTranslation;
+use App\Models\Inquiry;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
@@ -110,7 +111,7 @@ class ShellTest extends TestCase
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
         $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
-        $this->assertSame(6, substr_count($html, 'size-5 shrink-0'));
+        $this->assertSame(7, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertStringNotContainsString('>'.__('dashboard.groups.content').'</p>', $staff);
@@ -170,6 +171,28 @@ class ShellTest extends TestCase
                 ->assertOk()
                 ->assertSee('class="align-middle"', false)
                 ->assertDontSee('align-top', false);
+        }
+    }
+
+    public function test_list_cells_are_cut_with_an_ellipsis_instead_of_wrapping(): void
+    {
+        $css = (string) file_get_contents(resource_path('css/dashboard.css'));
+        $this->assertMatchesRegularExpression('/\.data-table th,\s*\.data-table td\s*\{\s*white-space: nowrap;/', $css);
+        $this->assertMatchesRegularExpression('/\.cell-truncate\s*\{[^}]*text-overflow: ellipsis;[^}]*white-space: nowrap;/', $css);
+
+        $long = str_repeat('Very long text ', 15);
+        Product::factory()->create(['description' => $long]);
+        Service::factory()->create(['description' => $long]);
+        Inquiry::factory()->create(['question' => $long]);
+        ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id, 'title' => $long]);
+        User::factory()->staff()->create(['name' => $long]);
+
+        foreach (['/app/products', '/app/services', '/app/inquiries', '/app/articles', '/app/staff'] as $url) {
+            $html = (string) $this->actingAs(User::factory()->admin()->create())->get($url)->assertOk()->getContent();
+            $table = substr($html, (int) strpos($html, '<table'), (int) strpos($html, '</table>') - (int) strpos($html, '<table'));
+
+            $this->assertStringContainsString('cell-truncate', $table, $url);
+            $this->assertStringNotContainsString('flex-wrap', $table, $url);
         }
     }
 
