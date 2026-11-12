@@ -12,7 +12,7 @@ return [
     'create_description' => 'Tulis pertanyaan customer dan jawaban kita. Tautkan layanan atau produk dan tambahkan gambar bila membantu.',
     'edit_title' => 'Ubah pertanyaan',
     'edit_description' => 'Ubah pertanyaan, jawaban, tautan, atau gambarnya.',
-    'search' => 'Cari pertanyaan dan jawaban',
+    'search' => 'Cari',
     'all_customers' => 'Semua customer',
     'choose_customer' => 'Pilih customer',
     'all_services' => 'Semua layanan',

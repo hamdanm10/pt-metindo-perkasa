@@ -12,7 +12,7 @@ return [
     'create_description' => 'Write the question a customer asked and the answer we gave. Link a service or product and add pictures if they help.',
     'edit_title' => 'Edit question',
     'edit_description' => 'Change the question, the answer, the links or the pictures.',
-    'search' => 'Search questions and answers',
+    'search' => 'Search',
     'all_customers' => 'All customers',
     'choose_customer' => 'Choose a customer',
     'all_services' => 'All services',

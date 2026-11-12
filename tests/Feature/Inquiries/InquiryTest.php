@@ -528,6 +528,13 @@ class InquiryTest extends TestCase
         $this->assertSame($other->id, $inquiry->refresh()->customer_id);
     }
 
+    public function test_the_search_label_is_short(): void
+    {
+        $this->assertSame('Search', __('inquiries.search'));
+        app()->setLocale('id');
+        $this->assertSame('Cari', __('inquiries.search'));
+    }
+
     public function test_the_menu_links_the_page_for_every_role(): void
     {
         $menu = new DashboardMenu;
