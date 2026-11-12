@@ -160,4 +160,19 @@ class ArticlePagesTest extends TestCase
 
         $this->assertMatchesRegularExpression('/\.article-body\s*\{\s*overflow-wrap: anywhere;/', (string) file_get_contents(resource_path('css/article-body.css')));
     }
+
+    public function test_the_home_section_cuts_a_long_title_with_an_ellipsis_after_two_lines(): void
+    {
+        config(['landing.sample_content' => false]);
+        ArticleTranslation::factory()->published()->create([
+            'article_id' => Article::factory()->create()->id,
+            'slug' => 'long-title',
+            'title' => str_repeat('A very long article title ', 9),
+        ]);
+        app(LandingArticles::class)->flush();
+
+        $this->get('/en')->assertOk()
+            ->assertSee('<h3 class="mt-4 line-clamp-2 ', false)
+            ->assertSee('[overflow-wrap:anywhere]', false);
+    }
 }

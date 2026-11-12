@@ -19,7 +19,7 @@
                                 <span class="inline-flex h-[clamp(1.7rem,1.875vw,2.4rem)] items-center rounded-full border border-ink px-[clamp(0.6rem,0.67vw,0.9rem)] text-[clamp(0.7rem,0.78vw,1rem)]">{{ __("articles.tags.{$article['type']}") }}</span>
                                 <time datetime="{{ $article['date'] }}" class="text-[clamp(0.75rem,0.83vw,1.05rem)] text-ink" dir="ltr">{{ \Illuminate\Support\Carbon::parse($article['date'])->format('d.m.y') }}</time>
                             </div>
-                            <h3 class="mt-4 text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-ink sm:pe-12" @if ($article['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $article['title'] }}</span></h3>
+                            <h3 class="mt-4 line-clamp-2 text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-ink [overflow-wrap:anywhere] sm:pe-12" @if ($article['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $article['title'] }}</span></h3>
                         </a>
                     </article>
                 @endforeach
