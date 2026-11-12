@@ -138,6 +138,14 @@ class LookupTest extends TestCase
             ->assertSee('Bob question')->assertDontSee('Alice question');
     }
 
+    public function test_the_filters_pass_a_boolean_invalid_flag_so_choosing_never_sends_null(): void
+    {
+        $view = (string) file_get_contents(resource_path('views/livewire/inquiries/index.blade.php'));
+
+        $this->assertSame(3, substr_count($view, '<livewire:lookup'));
+        $this->assertSame(3, substr_count($view, ':invalid="false"'));
+    }
+
     public function test_the_query_count_does_not_depend_on_how_many_records_exist(): void
     {
         $staff = User::factory()->staff()->create();
