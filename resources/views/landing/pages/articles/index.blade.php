@@ -59,9 +59,9 @@
                                 <span>{{ $viewsLabel }}</span>
                             @endif
                         </span>
-                        <span class="mt-[1.4vw] block text-balance text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
+                        <span class="mt-[1.4vw] block text-balance [overflow-wrap:anywhere] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
                         @if ($featured['excerpt'] !== '')
-                            <span class="mt-[1.2vw] block max-w-[32em] text-[clamp(1rem,1.25vw,1.55rem)] leading-snug text-ink/75 max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif>{{ $featured['excerpt'] }}</span>
+                            <span class="mt-[1.2vw] block max-w-[32em] [overflow-wrap:anywhere] text-[clamp(1rem,1.25vw,1.55rem)] leading-snug text-ink/75 max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif>{{ $featured['excerpt'] }}</span>
                         @endif
                         <span class="mt-[2vw] inline-flex items-center gap-2 text-[clamp(0.9rem,1vw,1.25rem)] font-bold max-lg:mt-6"><span class="uline">{{ __('landing.read') }}</span><span aria-hidden="true" class="transition-transform duration-500 group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1">→</span></span>
                     </span>
