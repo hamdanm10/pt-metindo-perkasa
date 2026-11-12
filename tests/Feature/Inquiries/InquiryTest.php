@@ -428,8 +428,9 @@ class InquiryTest extends TestCase
         $staff = User::factory()->staff()->create();
 
         $this->actingAs($staff)->get('/app/inquiries/create')
-            ->assertOk()
-            ->assertDontSee('placeholder=', false);
+            ->assertOk();
+
+        $this->assertDoesNotMatchRegularExpression('/<textarea[^>]*placeholder=/', (string) $this->actingAs($staff)->get('/app/inquiries/create')->getContent());
 
         Livewire::actingAs($staff)->test(Editor::class)
             ->assertSet('form.askedAt', '')

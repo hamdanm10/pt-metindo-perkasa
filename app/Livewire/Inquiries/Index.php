@@ -6,12 +6,8 @@ namespace App\Livewire\Inquiries;
 
 use App\Actions\Inquiries\DeleteInquiry;
 use App\Actions\Inquiries\ListInquiries;
-use App\Enums\Role;
 use App\Livewire\Concerns\ResolvesActor;
 use App\Models\Inquiry;
-use App\Models\Product;
-use App\Models\Service;
-use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -88,11 +84,6 @@ class Index extends Component
                 ctype_digit($this->service) ? (int) $this->service : null,
                 ctype_digit($this->product) ? (int) $this->product : null,
             ),
-            'customers' => $actor->role->usesStaffArea()
-                ? User::query()->where('role', Role::Customer)->orderBy('name')->get(['id', 'name', 'email'])
-                : collect(),
-            'services' => Service::query()->orderBy('name')->get(['id', 'name']),
-            'products' => Product::query()->orderBy('name')->get(['id', 'name']),
             'area' => $actor->role->area(),
             'canCreate' => $actor->can('create', Inquiry::class),
         ])->layout('components.dashboard.layout', ['title' => __('inquiries.title')]);

@@ -172,6 +172,10 @@ html[dir='rtl'] .field-select {
     background-position: left 0.25rem center;
 }
 
+[x-cloak] {
+    display: none !important;
+}
+
 /* Data tables: a strong line under small uppercase headings, airy rows, a soft row highlight. */
 .data-table th {
     padding: 0 1rem 0.85rem 0;
