@@ -32,6 +32,8 @@ return [
         'products' => 'Produk',
         'services' => 'Layanan',
         'inquiries' => 'Tanya Jawab',
+        'customer_inquiries' => 'Tanya Jawab Customer',
+        'distributor_inquiries' => 'Tanya Jawab Distributor',
     ],
     'home' => [
         'title' => 'Beranda',

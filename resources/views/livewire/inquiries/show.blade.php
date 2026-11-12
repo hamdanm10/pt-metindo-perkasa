@@ -17,7 +17,7 @@
         @endif
 
         @if ($staffArea)
-            <p class="mb-3 text-sm font-bold text-muted">{{ __('inquiries.fields.customer') }}: <span class="text-ink">{{ $inquiry->customer->name }}</span></p>
+            <p class="mb-3 text-sm font-bold text-muted">{{ __('inquiries.kinds.'.$kind.'.owner') }}: <span class="text-ink">{{ $inquiry->customer->name }}</span></p>
         @endif
 
         <h2 class="text-xl font-black leading-snug">{{ $inquiry->question }}</h2>
@@ -48,9 +48,9 @@
         @endif
 
         <div class="mt-8 flex flex-wrap gap-3">
-            <x-dashboard.button variant="secondary" :href="route($area.'.inquiries.index')">{{ __('inquiries.back') }}</x-dashboard.button>
+            <x-dashboard.button variant="secondary" :href="route($routes.'.index')">{{ __('inquiries.back') }}</x-dashboard.button>
             @if ($canUpdate)
-                <x-dashboard.button :href="route('app.inquiries.edit', $inquiry)">{{ __('inquiries.edit') }}</x-dashboard.button>
+                <x-dashboard.button :href="route($routes.'.edit', $inquiry)">{{ __('inquiries.edit') }}</x-dashboard.button>
             @endif
         </div>
     </x-dashboard.card>

@@ -111,7 +111,7 @@ class ShellTest extends TestCase
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
         $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
-        $this->assertSame(8, substr_count($html, 'size-5 shrink-0'));
+        $this->assertSame(9, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertStringNotContainsString('>'.__('dashboard.groups.content').'</p>', $staff);
@@ -187,7 +187,7 @@ class ShellTest extends TestCase
         ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id, 'title' => $long]);
         User::factory()->staff()->create(['name' => $long]);
 
-        foreach (['/app/products', '/app/services', '/app/inquiries', '/app/articles', '/app/staff'] as $url) {
+        foreach (['/app/products', '/app/services', '/app/customer-inquiries', '/app/articles', '/app/staff'] as $url) {
             $html = (string) $this->actingAs(User::factory()->admin()->create())->get($url)->assertOk()->getContent();
             $table = substr($html, (int) strpos($html, '<table'), (int) strpos($html, '</table>') - (int) strpos($html, '<table'));
 

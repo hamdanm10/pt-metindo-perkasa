@@ -32,6 +32,8 @@ return [
         'products' => 'Products',
         'services' => 'Services',
         'inquiries' => 'Questions & Answers',
+        'customer_inquiries' => 'Customer Q&A',
+        'distributor_inquiries' => 'Distributor Q&A',
     ],
     'home' => [
         'title' => 'Home',

@@ -55,14 +55,14 @@ class InquiryTest extends TestCase
     {
         $inquiry = Inquiry::factory()->create();
 
-        $this->get('/app/inquiries')->assertRedirect(route('app.login'));
+        $this->get('/app/customer-inquiries')->assertRedirect(route('app.login'));
         $this->get('/portal/inquiries')->assertRedirect(route('portal.login'));
 
         foreach (['admin', 'staff'] as $role) {
             $user = User::factory()->{$role}()->create();
-            $this->actingAs($user)->get('/app/inquiries')->assertOk();
-            $this->actingAs($user)->get("/app/inquiries/{$inquiry->id}")->assertOk();
-            $this->actingAs($user)->get('/app/inquiries/create')->assertOk();
+            $this->actingAs($user)->get('/app/customer-inquiries')->assertOk();
+            $this->actingAs($user)->get("/app/customer-inquiries/{$inquiry->id}")->assertOk();
+            $this->actingAs($user)->get('/app/customer-inquiries/create')->assertOk();
             $this->actingAs($user)->get('/portal/inquiries')->assertForbidden();
         }
 
@@ -70,9 +70,9 @@ class InquiryTest extends TestCase
         $own = Inquiry::factory()->create(['customer_id' => $customer->id]);
         $this->actingAs($customer)->get('/portal/inquiries')->assertOk();
         $this->actingAs($customer)->get("/portal/inquiries/{$own->id}")->assertOk();
-        $this->actingAs($customer)->get('/app/inquiries')->assertForbidden();
-        $this->actingAs($customer)->get('/app/inquiries/create')->assertForbidden();
-        $this->actingAs($customer)->get("/app/inquiries/{$inquiry->id}/edit")->assertForbidden();
+        $this->actingAs($customer)->get('/app/customer-inquiries')->assertForbidden();
+        $this->actingAs($customer)->get('/app/customer-inquiries/create')->assertForbidden();
+        $this->actingAs($customer)->get("/app/customer-inquiries/{$inquiry->id}/edit")->assertForbidden();
     }
 
     public function test_a_distributor_reads_only_their_own_records_and_can_be_chosen_as_the_owner(): void
@@ -84,9 +84,51 @@ class InquiryTest extends TestCase
         $this->actingAs($distributor)->get('/portal/inquiries')->assertOk()->assertSee('Distributor question')->assertDontSee('Someone else question');
         $this->actingAs($distributor)->get("/portal/inquiries/{$mine->id}")->assertOk();
         $this->actingAs($distributor)->get("/portal/inquiries/{$theirs->id}")->assertNotFound();
-        $this->actingAs($distributor)->get('/app/inquiries')->assertForbidden();
+        $this->actingAs($distributor)->get('/app/customer-inquiries')->assertForbidden();
 
-        $this->assertSame([$distributor->id], array_column((new LookupSearch)->search('customer', $distributor->name)['items'], 'id'));
+        $lookup = new LookupSearch;
+        $this->assertSame([$distributor->id], array_column($lookup->search('distributor', $distributor->name)['items'], 'id'));
+        $this->assertSame([], $lookup->search('customer', $distributor->name)['items']);
+    }
+
+    public function test_customer_and_distributor_records_are_on_separate_pages(): void
+    {
+        $customer = User::factory()->customer()->create();
+        $distributor = User::factory()->distributor()->create();
+        $forCustomer = Inquiry::factory()->create(['customer_id' => $customer->id, 'question' => 'Customer question']);
+        $forDistributor = Inquiry::factory()->create(['customer_id' => $distributor->id, 'question' => 'Distributor question']);
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)->get('/app/customer-inquiries')->assertOk()->assertSee('Customer question')->assertDontSee('Distributor question');
+        $this->actingAs($admin)->get('/app/distributor-inquiries')->assertOk()->assertSee('Distributor question')->assertDontSee('Customer question');
+
+        $this->actingAs($admin)->get("/app/customer-inquiries/{$forCustomer->id}")->assertOk();
+        $this->actingAs($admin)->get("/app/customer-inquiries/{$forDistributor->id}")->assertNotFound();
+        $this->actingAs($admin)->get("/app/distributor-inquiries/{$forDistributor->id}/edit")->assertOk();
+        $this->actingAs($admin)->get("/app/distributor-inquiries/{$forCustomer->id}/edit")->assertNotFound();
+    }
+
+    public function test_a_page_only_accepts_owners_of_its_own_kind(): void
+    {
+        $customer = User::factory()->customer()->create();
+        $distributor = User::factory()->distributor()->create();
+
+        Livewire::actingAs(User::factory()->staff()->create())->test(Editor::class, ['kind' => 'distributor'])
+            ->set('form.customerId', (string) $customer->id)
+            ->set('form.question', 'Q')
+            ->set('form.answer', 'A')
+            ->call('save')
+            ->assertHasErrors('form.customerId');
+
+        Livewire::actingAs(User::factory()->staff()->create())->test(Editor::class, ['kind' => 'distributor'])
+            ->set('form.customerId', (string) $distributor->id)
+            ->set('form.question', 'Q')
+            ->set('form.answer', 'A')
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertRedirect(route('app.distributor-inquiries.index'));
+
+        Livewire::actingAs(User::factory()->staff()->create())->test(Index::class, ['kind' => 'portal'])->assertNotFound();
     }
 
     public function test_the_policy_lets_staff_read_all_a_customer_read_their_own_and_only_the_owner_or_admin_change(): void
@@ -128,7 +170,7 @@ class InquiryTest extends TestCase
         $product = Product::factory()->create();
         $customer = User::factory()->customer()->create();
 
-        Livewire::actingAs($staff)->test(Editor::class)
+        Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', (string) $customer->id)
             ->set('form.question', ' How long does it take? ')
             ->set('form.answer', 'Three working days.')
@@ -137,7 +179,7 @@ class InquiryTest extends TestCase
             ->set('form.productId', (string) $product->id)
             ->call('save')
             ->assertHasNoErrors()
-            ->assertRedirect(route('app.inquiries.index'));
+            ->assertRedirect(route('app.customer-inquiries.index'));
 
         $inquiry = Inquiry::query()->firstOrFail();
         $this->assertSame('How long does it take?', $inquiry->question);
@@ -147,7 +189,7 @@ class InquiryTest extends TestCase
         $this->assertSame($service->id, $inquiry->service_id);
         $this->assertSame($product->id, $inquiry->product_id);
 
-        Livewire::actingAs($staff)->test(Editor::class)
+        Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Plain question')
             ->set('form.answer', 'Plain answer')
@@ -161,7 +203,7 @@ class InquiryTest extends TestCase
 
     public function test_the_fields_are_validated(): void
     {
-        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.askedAt', now()->addDay()->toDateString())
             ->set('form.serviceId', '999999')
             ->set('form.productId', '999999')
@@ -173,7 +215,7 @@ class InquiryTest extends TestCase
 
     public function test_pictures_are_stored_privately_as_scaled_webp_with_random_names(): void
     {
-        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
             ->set('form.answer', 'Answer')
@@ -198,7 +240,7 @@ class InquiryTest extends TestCase
 
     public function test_picture_type_and_size_are_checked(): void
     {
-        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class);
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer']);
 
         $component->set('uploads', [UploadedFile::fake()->create('file.pdf', 10, 'application/pdf')])
             ->assertHasErrors(['uploads.0']);
@@ -210,7 +252,7 @@ class InquiryTest extends TestCase
 
     public function test_at_most_ten_pictures_per_record(): void
     {
-        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
             ->set('form.answer', 'Answer')
@@ -221,7 +263,7 @@ class InquiryTest extends TestCase
         $this->assertSame(1, Inquiry::query()->count());
         $this->assertSame(0, InquiryImage::query()->count());
 
-        $ok = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+        $ok = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
             ->set('form.answer', 'Answer')
@@ -238,7 +280,7 @@ class InquiryTest extends TestCase
         $inquiry = Inquiry::factory()->create(['created_by' => $admin->id]);
         $images = collect(range(1, 10))->map(fn (): InquiryImage => $this->withImage($inquiry));
 
-        $component = Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry])
+        $component = Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry, 'kind' => 'customer'])
             ->set('uploads', [$this->picture('extra.jpg', 200, 200)])
             ->assertHasErrors(['form.images']);
 
@@ -258,7 +300,7 @@ class InquiryTest extends TestCase
         $inquiry = Inquiry::factory()->create(['created_by' => $admin->id]);
         $saved = $this->withImage($inquiry);
 
-        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry])
+        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry, 'kind' => 'customer'])
             ->set('uploads', [$this->picture('a.jpg', 200, 200), $this->picture('b.jpg', 200, 200)])
             ->assertCount('form.images', 2)
             ->call('removePending', 0)
@@ -280,7 +322,7 @@ class InquiryTest extends TestCase
         $other = Inquiry::factory()->create();
         $foreign = $this->withImage($other);
 
-        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $mine])
+        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $mine, 'kind' => 'customer'])
             ->set('form.removedImageIds', [$foreign->id])
             ->call('save')->assertHasNoErrors();
 
@@ -294,16 +336,16 @@ class InquiryTest extends TestCase
         $mine = Inquiry::factory()->create(['created_by' => $staff->id, 'question' => 'Old']);
         $theirs = Inquiry::factory()->create(['created_by' => User::factory()->staff()->create()->id]);
 
-        Livewire::actingAs($staff)->test(Editor::class, ['inquiry' => $theirs])->assertForbidden();
-        $this->actingAs($staff)->get("/app/inquiries/{$theirs->id}/edit")->assertForbidden();
+        Livewire::actingAs($staff)->test(Editor::class, ['inquiry' => $theirs, 'kind' => 'customer'])->assertForbidden();
+        $this->actingAs($staff)->get("/app/customer-inquiries/{$theirs->id}/edit")->assertForbidden();
 
-        Livewire::actingAs($staff)->test(Editor::class, ['inquiry' => $mine])
+        Livewire::actingAs($staff)->test(Editor::class, ['inquiry' => $mine, 'kind' => 'customer'])
             ->set('form.question', 'New')
             ->call('save')->assertHasNoErrors();
         $this->assertSame('New', $mine->refresh()->question);
         $this->assertSame($staff->id, $mine->created_by);
 
-        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['inquiry' => $theirs])
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['inquiry' => $theirs, 'kind' => 'customer'])
             ->set('form.question', 'By admin')
             ->call('save')->assertHasNoErrors();
         $this->assertSame('By admin', $theirs->refresh()->question);
@@ -316,16 +358,16 @@ class InquiryTest extends TestCase
         $image = $this->withImage($mine);
         $theirs = Inquiry::factory()->create(['created_by' => User::factory()->staff()->create()->id]);
 
-        Livewire::actingAs($staff)->test(Index::class)
+        Livewire::actingAs($staff)->test(Index::class, ['kind' => 'customer'])
             ->call('delete', $theirs->id)->assertForbidden();
         $this->assertDatabaseHas('inquiries', ['id' => $theirs->id]);
 
-        Livewire::actingAs($staff)->test(Index::class)->call('delete', $mine->id);
+        Livewire::actingAs($staff)->test(Index::class, ['kind' => 'customer'])->call('delete', $mine->id);
         $this->assertDatabaseMissing('inquiries', ['id' => $mine->id]);
         $this->assertDatabaseMissing('inquiry_images', ['id' => $image->id]);
         Storage::disk('local')->assertMissing($image->path);
 
-        Livewire::actingAs(User::factory()->admin()->create())->test(Index::class)->call('delete', $theirs->id);
+        Livewire::actingAs(User::factory()->admin()->create())->test(Index::class, ['kind' => 'customer'])->call('delete', $theirs->id);
         $this->assertDatabaseMissing('inquiries', ['id' => $theirs->id]);
     }
 
@@ -339,9 +381,9 @@ class InquiryTest extends TestCase
 
         $this->actingAs($customer)->get('/portal/inquiries')
             ->assertOk()
-            ->assertDontSee(route('app.inquiries.create'), false)
+            ->assertDontSee(route('app.customer-inquiries.create'), false)
             ->assertDontSee('data-confirm="', false)
-            ->assertDontSee(route('app.inquiries.edit', $inquiry), false);
+            ->assertDontSee(route('app.customer-inquiries.edit', $inquiry), false);
     }
 
     public function test_the_author_is_shown_to_staff_but_not_to_customers(): void
@@ -350,8 +392,8 @@ class InquiryTest extends TestCase
         $customer = User::factory()->customer()->create();
         $inquiry = Inquiry::factory()->create(['created_by' => $author->id, 'customer_id' => $customer->id]);
 
-        $this->actingAs(User::factory()->admin()->create())->get('/app/inquiries')->assertSee('Sari Wulandari');
-        $this->actingAs(User::factory()->admin()->create())->get("/app/inquiries/{$inquiry->id}")->assertSee('Sari Wulandari');
+        $this->actingAs(User::factory()->admin()->create())->get('/app/customer-inquiries')->assertSee('Sari Wulandari');
+        $this->actingAs(User::factory()->admin()->create())->get("/app/customer-inquiries/{$inquiry->id}")->assertSee('Sari Wulandari');
 
         $this->actingAs($customer)->get('/portal/inquiries')->assertDontSee('Sari Wulandari');
         $this->actingAs($customer)->get("/portal/inquiries/{$inquiry->id}")->assertDontSee('Sari Wulandari');
@@ -400,7 +442,7 @@ class InquiryTest extends TestCase
 
         $staff = User::factory()->staff()->create();
 
-        $component = Livewire::actingAs($staff)->test(Index::class);
+        $component = Livewire::actingAs($staff)->test(Index::class, ['kind' => 'customer']);
         $component->assertSeeInOrder(['Beta question', 'Gamma question', 'Alpha question']);
         $component->set('search', 'zinc')->assertSee('Beta question')->assertDontSee('Alpha question')
             ->set('search', '100%')->assertDontSee('Beta question')->assertSee(__('inquiries.empty_filtered'))
@@ -428,12 +470,12 @@ class InquiryTest extends TestCase
 
         $make(2);
         DB::enableQueryLog();
-        Livewire::actingAs($staff)->test(Index::class);
+        Livewire::actingAs($staff)->test(Index::class, ['kind' => 'customer']);
         $few = count(DB::getQueryLog());
 
         $make(8);
         DB::flushQueryLog();
-        Livewire::actingAs($staff)->test(Index::class);
+        Livewire::actingAs($staff)->test(Index::class, ['kind' => 'customer']);
 
         $this->assertSame($few, count(DB::getQueryLog()));
     }
@@ -442,12 +484,12 @@ class InquiryTest extends TestCase
     {
         $staff = User::factory()->staff()->create();
 
-        $this->actingAs($staff)->get('/app/inquiries/create')
+        $this->actingAs($staff)->get('/app/customer-inquiries/create')
             ->assertOk();
 
-        $this->assertDoesNotMatchRegularExpression('/<textarea[^>]*placeholder=/', (string) $this->actingAs($staff)->get('/app/inquiries/create')->getContent());
+        $this->assertDoesNotMatchRegularExpression('/<textarea[^>]*placeholder=/', (string) $this->actingAs($staff)->get('/app/customer-inquiries/create')->getContent());
 
-        Livewire::actingAs($staff)->test(Editor::class)
+        Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
             ->assertSet('form.askedAt', '')
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
@@ -469,7 +511,7 @@ class InquiryTest extends TestCase
         $this->actingAs($customer)->get("/portal/inquiries/{$undated->id}")->assertOk()->assertDontSee('Asked on');
         $this->actingAs($customer)->get("/portal/inquiries/{$dated->id}")->assertOk()->assertSee('Asked on');
 
-        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['inquiry' => $undated])
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['inquiry' => $undated, 'kind' => 'customer'])
             ->assertSet('form.askedAt', '')
             ->call('save')->assertHasNoErrors();
         $this->assertNull($undated->refresh()->asked_at);
@@ -504,7 +546,7 @@ class InquiryTest extends TestCase
         Inquiry::factory()->create(['customer_id' => $alice->id, 'question' => 'Alice question']);
         Inquiry::factory()->create(['customer_id' => $bob->id, 'question' => 'Bob question']);
 
-        $component = Livewire::actingAs(User::factory()->staff()->create())->test(Index::class)
+        $component = Livewire::actingAs(User::factory()->staff()->create())->test(Index::class, ['kind' => 'customer'])
             ->assertSee('Alice question')->assertSee('Bob question')->assertSee('Alice Customer');
 
         $component->set('customer', (string) $bob->id)->assertSee('Bob question')->assertDontSee('Alice question');
@@ -515,7 +557,7 @@ class InquiryTest extends TestCase
         $staff = User::factory()->staff()->create();
 
         foreach (['999999', (string) $staff->id] as $invalid) {
-            Livewire::actingAs($staff)->test(Editor::class)
+            Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
                 ->set('form.customerId', $invalid)
                 ->set('form.question', 'Question')
                 ->set('form.answer', 'Answer')
@@ -532,12 +574,12 @@ class InquiryTest extends TestCase
         $original = $inquiry->customer_id;
         $other = User::factory()->customer()->create();
 
-        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry])
+        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry, 'kind' => 'customer'])
             ->assertSet('form.customerId', (string) $original)
             ->call('save')->assertHasNoErrors();
         $this->assertSame($original, $inquiry->refresh()->customer_id);
 
-        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry])
+        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry, 'kind' => 'customer'])
             ->set('form.customerId', (string) $other->id)
             ->call('save')->assertHasNoErrors();
         $this->assertSame($other->id, $inquiry->refresh()->customer_id);
@@ -554,10 +596,10 @@ class InquiryTest extends TestCase
     {
         $menu = new DashboardMenu;
 
-        $this->assertContains('app.inquiries.index', array_column($menu->forUser(User::factory()->admin()->create()), 'route'));
-        $this->assertContains('app.inquiries.index', array_column($menu->forUser(User::factory()->staff()->create()), 'route'));
+        $this->assertContains('app.customer-inquiries.index', array_column($menu->forUser(User::factory()->admin()->create()), 'route'));
+        $this->assertContains('app.customer-inquiries.index', array_column($menu->forUser(User::factory()->staff()->create()), 'route'));
         $this->assertContains('portal.inquiries.index', array_column($menu->forUser(User::factory()->customer()->create()), 'route'));
-        $this->assertNotContains('app.inquiries.index', array_column($menu->forUser(User::factory()->customer()->create()), 'route'));
+        $this->assertNotContains('app.customer-inquiries.index', array_column($menu->forUser(User::factory()->customer()->create()), 'route'));
     }
 
     public function test_the_texts_exist_in_both_dashboard_languages(): void

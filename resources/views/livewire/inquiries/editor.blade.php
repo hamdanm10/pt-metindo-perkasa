@@ -1,10 +1,10 @@
 <div>
-    <x-dashboard.page-header :title="$inquiry === null ? __('inquiries.create_title') : __('inquiries.edit_title')" :description="$inquiry === null ? __('inquiries.create_description') : __('inquiries.edit_description')" />
+    <x-dashboard.page-header :title="$inquiry === null ? __('inquiries.create_title') : __('inquiries.edit_title')" :description="$inquiry === null ? __('inquiries.kinds.'.$kind.'.create_description') : __('inquiries.edit_description')" />
 
     <x-dashboard.card class="max-w-3xl">
         <form wire:submit="save" class="space-y-6" novalidate>
-            <x-dashboard.lookup-field name="form.customerId" :label="__('inquiries.fields.customer')" required>
-                <livewire:lookup source="customer" wire:model="form.customerId" input-id="form-customerId" :placeholder="__('inquiries.choose_customer')" :invalid="$errors->has('form.customerId')" />
+            <x-dashboard.lookup-field name="form.customerId" :label="__('inquiries.kinds.'.$kind.'.owner')" required>
+                <livewire:lookup :source="$kind" wire:model="form.customerId" input-id="form-customerId" :placeholder="__('inquiries.kinds.'.$kind.'.choose_owner')" :invalid="$errors->has('form.customerId')" />
             </x-dashboard.lookup-field>
 
             <div>
@@ -92,7 +92,7 @@
 
             <div class="flex flex-wrap gap-3">
                 <x-dashboard.button type="submit" wire:loading.attr="disabled" wire:target="save,uploads">{{ __('inquiries.save') }}</x-dashboard.button>
-                <x-dashboard.button variant="secondary" :href="route('app.inquiries.index')">{{ __('inquiries.cancel') }}</x-dashboard.button>
+                <x-dashboard.button variant="secondary" :href="route($routes.'.index')">{{ __('inquiries.cancel') }}</x-dashboard.button>
             </div>
         </form>
     </x-dashboard.card>
