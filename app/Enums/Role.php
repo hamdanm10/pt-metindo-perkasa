@@ -9,6 +9,7 @@ enum Role: string
     case Admin = 'admin';
     case Staff = 'staff';
     case Customer = 'customer';
+    case Distributor = 'distributor';
 
     /**
      * Roles that sign in at /app.
@@ -21,13 +22,13 @@ enum Role: string
     }
 
     /**
-     * Roles that sign in at /customer.
+     * Roles that sign in at /portal (customers and distributors).
      *
      * @return list<self>
      */
-    public static function customerArea(): array
+    public static function portalArea(): array
     {
-        return [self::Customer];
+        return [self::Customer, self::Distributor];
     }
 
     /**
@@ -38,6 +39,7 @@ enum Role: string
         return match ($this) {
             self::Staff => 'app.staff',
             self::Customer => 'app.customers',
+            self::Distributor => 'app.distributors',
             self::Admin => null,
         };
     }
@@ -48,11 +50,11 @@ enum Role: string
     }
 
     /**
-     * Route name prefix of this role's area: `app` or `customer`.
+     * Route name prefix of this role's area: `app` or `portal`.
      */
     public function area(): string
     {
-        return $this->usesStaffArea() ? 'app' : 'customer';
+        return $this->usesStaffArea() ? 'app' : 'portal';
     }
 
     /**
@@ -60,6 +62,6 @@ enum Role: string
      */
     public function homeRoute(): string
     {
-        return $this->usesStaffArea() ? 'app.dashboard' : 'customer.dashboard';
+        return $this->usesStaffArea() ? 'app.dashboard' : 'portal.dashboard';
     }
 }

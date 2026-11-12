@@ -27,6 +27,7 @@ return [
         'home' => 'Dasbor',
         'staff' => 'Staf',
         'customers' => 'Customer',
+        'distributors' => 'Distributor',
         'articles' => 'Artikel',
         'products' => 'Produk',
         'services' => 'Layanan',
@@ -43,5 +44,6 @@ return [
         'admin' => 'Admin',
         'staff' => 'Staf',
         'customer' => 'Customer',
+        'distributor' => 'Distributor',
     ],
 ];

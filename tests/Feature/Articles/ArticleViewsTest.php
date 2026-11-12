@@ -142,6 +142,9 @@ class ArticleViewsTest extends TestCase
 
         $this->actingAs(User::factory()->customer()->create())->post('/en/articles/hello/views', [], ['HTTP_USER_AGENT' => self::BROWSER]);
         $this->assertSame(1, $translation->refresh()->views_count);
+
+        $this->actingAs(User::factory()->distributor()->create())->post('/en/articles/hello/views', [], ['HTTP_USER_AGENT' => self::BROWSER]);
+        $this->assertSame(2, $translation->refresh()->views_count);
     }
 
     public function test_the_endpoint_is_throttled(): void

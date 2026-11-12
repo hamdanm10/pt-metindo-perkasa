@@ -53,7 +53,7 @@ class InquiryForm extends Form
     public function rules(): array
     {
         return [
-            'customerId' => ['required', 'integer', Rule::exists('users', 'id')->where('role', Role::Customer->value)],
+            'customerId' => ['required', 'integer', Rule::exists('users', 'id')->whereIn('role', array_column(Role::portalArea(), 'value'))],
             'question' => ['required', 'string', 'max:5000'],
             'answer' => ['required', 'string', 'max:10000'],
             'askedAt' => ['nullable', 'date_format:Y-m-d', 'before_or_equal:today'],

@@ -1,6 +1,6 @@
 # Panduan Agent: pt-metindo-perkasa
 
-Aplikasi Laravel fullstack (Blade, tanpa API untuk saat ini) untuk PT Metindo Perkasa: landing page publik dalam 5 bahasa dan dashboard untuk admin, staf, dan customer. Sebelum mengerjakan fitur, baca indeks peran dan dokumen fiturnya lewat bagian **Referensi Dokumen** di bawah. Prasyarat mesin: [`docs/setup.md`](docs/setup.md).
+Aplikasi Laravel fullstack (Blade, tanpa API untuk saat ini) untuk PT Metindo Perkasa: landing page publik dalam 5 bahasa dan dashboard untuk admin, staf, customer, dan distributor. Sebelum mengerjakan fitur, baca indeks peran dan dokumen fiturnya lewat bagian **Referensi Dokumen** di bawah. Prasyarat mesin: [`docs/setup.md`](docs/setup.md).
 
 Repo: `github.com/hamdanm10/pt-metindo-perkasa`.
 
@@ -75,24 +75,25 @@ Saat memulai pekerjaan sebuah fitur, agent harus otomatis mengikuti langkah beri
 
 ## Peran dan Cakupan
 
-Tiga peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). Belum ada API.
+Empat peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). Belum ada API.
 
 | Peran | Halaman login | Area setelah masuk | Keterangan |
 | --- | --- | --- | --- |
 | `admin` | `/app/login` | `/app/*` | Mengelola seluruh sistem, termasuk konten landing |
 | `staff` | `/app/login` | `/app/*` | Hak akses lebih terbatas dari admin |
-| `customer` | `/customer/login` | `/customer/*` | Area customer |
+| `customer` | `/portal/login` | `/portal/*` | Area portal, dipakai bersama distributor |
+| `distributor` | `/portal/login` | `/portal/*` | Area portal yang sama dengan customer (halaman login disatukan) |
 
-- Tetap satu tabel `users` dan satu mekanisme sesi. `/app/login` menolak akun `customer`, dan `/customer/login` menolak `admin` dan `staff`, dengan pesan yang sama seperti kredensial salah supaya tidak membocorkan jenis akun.
-- Middleware memastikan `/app/*` hanya untuk `admin` dan `staff`, dan `/customer/*` hanya untuk `customer`.
+- Tetap satu tabel `users` dan satu mekanisme sesi. `/app/login` menolak akun `customer` dan `distributor`, dan `/portal/login` menolak `admin` dan `staff`, dengan pesan yang sama seperti kredensial salah supaya tidak membocorkan jenis akun.
+- Middleware memastikan `/app/*` hanya untuk `admin` dan `staff`, dan `/portal/*` hanya untuk `customer` dan `distributor`.
 - **Pengelolaan konten landing hanya untuk `admin`**, dijaga lewat Policy.
-- `app` dan `customer` dicadangkan di level root, sehingga tidak bentrok dengan awalan locale landing yang hanya menerima kode bahasa pada daftar.
+- `app` dan `portal` dicadangkan di level root, sehingga tidak bentrok dengan awalan locale landing yang hanya menerima kode bahasa pada daftar.
 - Logic bisnis (Action dan Service) dipakai bersama oleh semua peran. Yang berbeda hanya lapisan controller, Form Request, dan view.
 
 ### Data Pengguna dan Peran
 
 - **Satu tabel `users`** menyimpan identitas dan autentikasi semua peran: `name`, `email`, `password`, `role`, `locale`.
-- `role` bertipe backed enum `App\Enums\Role` dengan nilai `admin`, `staff`, `customer`. **Satu pengguna hanya memiliki satu peran.**
+- `role` bertipe backed enum `App\Enums\Role` dengan nilai `admin`, `staff`, `customer`, `distributor`. **Satu pengguna hanya memiliki satu peran.**
 - Data khusus per peran disimpan di **tabel profil terpisah** dengan relasi 1:1 ke `users`. Jangan menambah kolom khusus peran ke tabel `users`, dan jangan membuat tabel akun terpisah per peran.
 - Hak akses berdasarkan `role` dijaga lewat middleware dan Policy.
 
@@ -110,11 +111,11 @@ Tiga peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). Be
 
 ### Lokasi Berkas
 
-| Lapisan | Landing | Dashboard (`/app`) | Customer (`/customer`) |
+| Lapisan | Landing | Dashboard (`/app`) | Portal (`/portal`) |
 | --- | --- | --- | --- |
-| Controller | `app/Http/Controllers/Landing` | `app/Http/Controllers/App` | `app/Http/Controllers/Customer` |
-| Form Request | `app/Http/Requests/Landing` | `app/Http/Requests/App` | `app/Http/Requests/Customer` |
-| View | `resources/views/landing` | `resources/views/app` | `resources/views/customer` |
+| Controller | `app/Http/Controllers/Landing` | `app/Http/Controllers/App` | `app/Http/Controllers/Portal` |
+| Form Request | `app/Http/Requests/Landing` | `app/Http/Requests/App` | `app/Http/Requests/Portal` |
+| View | `resources/views/landing` | `resources/views/app` | `resources/views/portal` |
 | Action / Service | `app/Actions`, `app/Services` (dipakai bersama) | sama | sama |
 
 - View tidak berisi logika bisnis dan query. Data disiapkan oleh controller melalui Action atau Service.
@@ -137,7 +138,7 @@ Tiga peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). Be
 | --- | --- | --- | --- | --- |
 | `routes/landing/*` | Landing publik | `/{locale}` | `landing.*` | `web`, middleware locale landing |
 | `routes/app/*` | Dashboard admin dan staf | `/app` | `app.*` | `web`, `auth`, peran admin atau staf |
-| `routes/customer/*` | Area customer | `/customer` | `customer.*` | `web`, `auth`, peran customer |
+| `routes/portal/*` | Area portal (customer dan distributor) | `/portal` | `portal.*` | `web`, `auth`, peran customer atau distributor |
 
 - Satu file per **fitur** di dalam subfolder (contoh: `routes/app/landing-content.php`), bukan satu file besar.
 - Route dari area yang berbeda tidak boleh bercampur dalam satu file.
@@ -212,4 +213,4 @@ Dokumen rancangan ada di `docs/`, per area dan per fitur, dengan satu `implement
 | [`docs/shared/inquiries/overview.md`](docs/shared/inquiries/overview.md) | Rancangan Tanya Jawab: arsip pertanyaan customer, ditulis admin dan staf, dibaca customer (D3) |
 | [`docs/roles/admin/implementation-plan.md`](docs/roles/admin/implementation-plan.md) | Indeks admin |
 | [`docs/roles/admin/user-management/overview.md`](docs/roles/admin/user-management/overview.md) | Rancangan kelola akun oleh admin (A1) |
-| `docs/roles/<peran>/implementation-plan.md` | Indeks staff dan customer (dibuat saat fitur pertama) |
+| `docs/roles/<peran>/implementation-plan.md` | Indeks staff, customer, dan distributor (dibuat saat fitur pertama) |

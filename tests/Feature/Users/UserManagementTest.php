@@ -38,6 +38,7 @@ class UserManagementTest extends TestCase
         return [
             'staff' => ['staff', 'staff', Role::Staff],
             'customers' => ['customers', 'customer', Role::Customer],
+            'distributors' => ['distributors', 'distributor', Role::Distributor],
         ];
     }
 
@@ -352,7 +353,7 @@ class UserManagementTest extends TestCase
 
         Auth::logout();
 
-        $this->post('/customer/login', ['email' => $user->email, 'password' => 'password'])->assertSessionHasErrors('email');
+        $this->post('/portal/login', ['email' => $user->email, 'password' => 'password'])->assertSessionHasErrors('email');
 
         Livewire::actingAs($this->admin())->test(Edit::class, ['user' => $user, 'kind' => 'customer'])->call('toggleActive');
 

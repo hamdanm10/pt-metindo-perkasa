@@ -1,14 +1,14 @@
 # Fondasi Akun (D1)
 
-Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `staff`, `customer`), halaman login terpisah untuk staf dan customer, pembatasan akses per peran, dan perintah untuk membuat admin pertama. Akun dibuat oleh admin, tidak ada pendaftaran mandiri. Dashboard dan fitur tiap peran dikerjakan di fase lain. Fase dan statusnya di [`../implementation-plan.md`](../implementation-plan.md). Aturan peran dan arsitektur ada di `CLAUDE.md`.
+Akun dan login untuk dashboard: satu tabel `users` dengan empat peran (`admin`, `staff`, `customer`, `distributor`), dua halaman login (satu untuk admin dan staf, satu untuk customer dan distributor), pembatasan akses per peran, dan perintah untuk membuat admin pertama. Akun dibuat oleh admin, tidak ada pendaftaran mandiri. Dashboard dan fitur tiap peran dikerjakan di fase lain. Fase dan statusnya di [`../implementation-plan.md`](../implementation-plan.md). Aturan peran dan arsitektur ada di `CLAUDE.md`.
 
 ## Keputusan
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | Satu tabel `users`. Tambah kolom `role` (enum `App\Enums\Role`: `admin`, `staff`, `customer`), `locale` (`en` atau `id`, bawaan `en`), dan `is_active` (bawaan `true`) | Satu pengguna satu peran. `is_active` memungkinkan akun dimatikan tanpa dihapus |
+| 1 | Satu tabel `users`. Tambah kolom `role` (enum `App\Enums\Role`: `admin`, `staff`, `customer`, `distributor`), `locale` (`en` atau `id`, bawaan `en`), dan `is_active` (bawaan `true`) | Satu pengguna satu peran. `is_active` memungkinkan akun dimatikan tanpa dihapus |
 | 2 | Data khusus peran (misalnya profil customer) tidak dibuat di D1. Tabel profil 1:1 dibuat saat fitur peran itu dirancang | Tidak membangun yang belum jelas |
-| 3 | Login staf dan admin di `/app/login`, customer di `/customer/login`. Sesi (guard `web`) | Sesuai aturan di `CLAUDE.md` |
+| 3 | Login staf dan admin di `/app/login`, customer dan distributor di satu halaman `/portal/login`. Area customer dan distributor bernama `portal` (bukan `customer`) karena dipakai dua peran. Sesi (guard `web`) | Sesuai aturan di `CLAUDE.md` |
 | 4 | Login menolak akun yang perannya tidak termasuk area itu, atau yang tidak aktif, dengan **pesan yang sama** seperti kata sandi salah | Tidak membocorkan jenis atau status akun |
 | 5 | Tidak ada pendaftaran, verifikasi email, atau login Google. Admin membuat akun dan menetapkan kata sandi awal, dan admin yang mengatur ulang kata sandi | Keputusan client. Tanpa pengiriman email dulu |
 | 6 | Admin dibuat lewat `php artisan admin:create`, dan **tanpa batas jumlah admin** | Tidak ada jalan masuk lain di awal, dan keputusan client |
@@ -16,12 +16,13 @@ Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `
 | 8 | Pengguna yang sudah masuk dan membuka halaman login diarahkan ke areanya. Pengguna yang masuk dengan peran salah ke area lain mendapat 403 | Jelas dan tidak ambigu |
 | 9 | Locale dashboard: `users.locale` bila masuk, lalu `session('locale')`, lalu `en`. Hanya `en` dan `id`. Pemilih bahasa dibuat di D2, dan bahasa yang dipilih di halaman login disimpan ke akun saat masuk | Mengikuti aturan locale di `CLAUDE.md` |
 | 10 | Halaman login memakai Blade, bukan Livewire | Satu formulir sederhana. Livewire dimulai di D2 |
-| 11 | Halaman setelah login di D1 hanya halaman rangka `/app/dashboard` dan `/customer/dashboard` berisi nama dan tombol keluar, digantikan di D2. `/app` dan `/customer` dialihkan ke sana | Agar login bisa diuji ujung ke ujung |
+| 11 | Halaman setelah login di D1 hanya halaman rangka `/app/dashboard` dan `/portal/dashboard` berisi nama dan tombol keluar, digantikan di D2. `/app` dan `/portal` dialihkan ke sana | Agar login bisa diuji ujung ke ujung |
 | 12 | Setelah masuk, pengguna dikembalikan ke halaman yang tadi dituju hanya bila halaman itu termasuk areanya. Halaman area lain diabaikan dan pengguna ke beranda areanya | Tanpa ini customer yang tadi menuju `/app` berakhir di halaman 403 |
+| 13 | **Distributor** adalah peran keempat. Customer dan distributor berbagi satu area `/portal` dan satu halaman login `/portal/login`, seperti admin dan staf di `/app`. Untuk saat ini hak aksesnya sama dengan customer (dashboard dan Tanya Jawab milik akunnya, hanya baca). Nilai kolom `role` berupa string, jadi tanpa migrasi. Perbedaan hak akses atau fitur khusus distributor dirancang kemudian | Keputusan client: distributor ada, login disatukan dengan customer; nama area bukan `customer` supaya tidak identik dengan satu peran |
 
 ## Alur
 
-1. Pengunjung membuka `/app/dashboard` tanpa login, lalu diarahkan ke `/app/login` (area customer ke `/customer/login`).
+1. Pengunjung membuka `/app/dashboard` tanpa login, lalu diarahkan ke `/app/login` (area portal ke `/portal/login`).
 2. Formulir login (email, kata sandi, ingat saya) dikirim ke Form Request, lalu ke Action `AuthenticateUser`.
 3. Action memeriksa batas percobaan, lalu mencocokkan kredensial dengan syarat peran termasuk area itu dan `is_active` benar. Sukses: controller meregenerasi sesi dan mengarahkan pengguna (lihat keputusan 12).
 4. Gagal: pesan umum yang sama. Terlalu banyak percobaan: pesan dengan sisa detik.
@@ -39,11 +40,11 @@ Akun dan login untuk dashboard: satu tabel `users` dengan tiga peran (`admin`, `
 
 ## Struktur kode
 
-- `app/Enums/Role.php`, `app/Models/User.php` (cast `role`, helper peran), migrasi untuk kolom baru, dan factory dengan state `admin()`, `staff()`, `customer()`.
+- `app/Enums/Role.php`, `app/Models/User.php` (cast `role`, helper peran), migrasi untuk kolom baru, dan factory dengan state `admin()`, `staff()`, `customer()`, `distributor()`.
 - `app/Actions/Auth/AuthenticateUser.php`: tidak memakai `request()` maupun sesi. Menerima email, kata sandi, ingat saya, daftar peran yang diizinkan, dan kunci pembatasan. `app/Actions/Users/CreateUser.php` membuat akun (dipakai perintah `admin:create` dan kelak fitur kelola akun).
 - `app/Http/Requests/Auth/LoginRequest.php` (dipakai kedua area).
-- Controller: kelas dasar `app/Http/Controllers/Auth/AuthenticatedSessionController.php` memuat alur masuk dan keluar. `app/Http/Controllers/App/Auth/LoginController.php` dan `app/Http/Controllers/Customer/Auth/LoginController.php` hanya mengisi peran, nama route, dan judulnya. `HomeController` di tiap area menampilkan halaman rangka.
-- Route: `routes/app/auth.php` (prefix `/app`, nama `app.*`) dan `routes/customer/auth.php` (prefix `/customer`, nama `customer.*`), dimuat di `bootstrap/app.php`.
+- Controller: kelas dasar `app/Http/Controllers/Auth/AuthenticatedSessionController.php` memuat alur masuk dan keluar. `app/Http/Controllers/App/Auth/LoginController.php` dan `app/Http/Controllers/Portal/Auth/LoginController.php` hanya mengisi peran, nama route, dan judulnya. `HomeController` di tiap area menampilkan halaman rangka.
+- Route: `routes/app/auth.php` (prefix `/app`, nama `app.*`) dan `routes/portal/auth.php` (prefix `/portal`, nama `portal.*`), dimuat di `bootstrap/app.php`.
 - Middleware: `EnsureRole` (alias `role`, memeriksa peran dan keaktifan akun) dan `SetDashboardLocale`. Pengalihan tamu dan pengguna masuk diatur di `bootstrap/app.php`. Route `POST /{area}/login` juga dibatasi `throttle:30,1` per IP sebagai lapis kedua.
 - Perintah `app/Console/Commands/CreateAdmin.php` (interaktif, bisa juga lewat opsi, menolak email yang sudah ada).
 - View: `resources/views/layouts/auth.blade.php`, `resources/views/auth/login.blade.php` (satu formulir untuk kedua area, bergaya landing: dua kolom, kiri panel `ink` datar dengan logo dan nama dua baris, judul raksasa huruf kapital Figtree 900, dan garis krimson di bawah; kanan latar `lavender` dengan isian bergaris bawah yang memerah saat fokus seperti formulir Contact, tombol krimson, dan pemilih bahasa. Tidak ada tautan "Back to website": logo di panel kiri menuju beranda landing. Font sama dengan landing (Figtree, termasuk judul). UX: tombol lihat/sembunyikan kata sandi, peringatan Caps Lock, dan tombol masuk yang dikunci dengan teks "Signing in…" saat dikirim supaya tidak terkirim dua kali. JS kecil di `resources/js/dashboard.js`, yang dimuat layout login), `resources/views/auth/home.blade.php` (halaman rangka). CSS lewat entri `resources/css/dashboard.css` yang memakai token tema yang sama. Halaman memakai `noindex`.
@@ -55,8 +56,8 @@ Langkah: enum dan migrasi, model dan factory, Action, Form Request, controller d
 
 Test yang harus ada:
 
-- Admin dan staf bisa masuk di `/app/login`, customer di `/customer/login`, dan masing-masing diarahkan ke areanya.
-- Customer ditolak di `/app/login`, admin dan staf ditolak di `/customer/login`, dengan pesan yang sama dengan kata sandi salah.
+- Admin dan staf bisa masuk di `/app/login`, customer dan distributor di `/portal/login`, dan masing-masing diarahkan ke areanya.
+- Customer dan distributor ditolak di `/app/login`, admin dan staf ditolak di `/portal/login`, dengan pesan yang sama dengan kata sandi salah.
 - Akun tidak aktif ditolak. Sesi akun yang dinonaktifkan ditolak pada permintaan berikutnya.
 - Kata sandi salah, email tidak ada, dan input kosong: kesalahan validasi dan pesan sesuai locale.
 - Batas percobaan: percobaan ke-6 ditolak, dan berhasil masuk mereset hitungan.
@@ -71,7 +72,8 @@ Pemeriksaan manual: alur login di browser (kedua area, `en` dan `id`) dan tampil
 
 ## Ditunda
 
-- Kelola akun oleh admin (membuat staf dan customer, atur ulang kata sandi, nonaktifkan): fase D4 dan seterusnya.
+- Kelola akun oleh admin (membuat staf, customer, dan distributor, atur ulang kata sandi, nonaktifkan): fase D4 dan seterusnya.
 - Pengguna mengganti kata sandinya sendiri, dan atur ulang lewat email: belum diputuskan.
 - Pemilih bahasa dashboard dan tampilan dashboard (D2).
+- Fitur dan izin khusus distributor (sementara sama dengan customer).
 - Profil khusus peran, izin yang lebih rinci antara admin dan staf, dan 2FA.

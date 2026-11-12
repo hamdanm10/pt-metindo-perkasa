@@ -1,12 +1,12 @@
 # Kerangka Dashboard (D2)
 
-Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, menu per peran, pemilih bahasa (`en` dan `id`), halaman beranda, dan desain dasar. Belum ada fitur khusus peran. Fitur ditambahkan satu per satu dan menunya ikut muncul saat fiturnya jadi. Fase dan statusnya di [`../implementation-plan.md`](../implementation-plan.md). Akun dan login: [`../auth/overview.md`](../auth/overview.md). Fondasi visual: [`../design-system/overview.md`](../design-system/overview.md).
+Tata letak dashboard untuk admin, staf, customer, dan distributor: sidebar dan bilah atas, menu per peran, pemilih bahasa (`en` dan `id`), halaman beranda, dan desain dasar. Belum ada fitur khusus peran. Fitur ditambahkan satu per satu dan menunya ikut muncul saat fiturnya jadi. Fase dan statusnya di [`../implementation-plan.md`](../implementation-plan.md). Akun dan login: [`../auth/overview.md`](../auth/overview.md). Fondasi visual: [`../design-system/overview.md`](../design-system/overview.md).
 
 ## Keputusan
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | Satu tata letak dipakai kedua area (`/app` dan `/customer`). Isi menu berbeda per peran | Satu desain, satu perawatan |
+| 1 | Satu tata letak dipakai kedua area (`/app` dan `/portal`). Isi menu berbeda per peran | Satu desain, satu perawatan |
 | 2 | **Livewire tidak dipasang di D2.** Kerangka memakai Blade biasa dan dibuat sebagai komponen tata letak yang bisa dipakai halaman Livewire. Livewire dipasang saat fitur interaktif pertama (A1, kelola akun) | D2 tidak punya interaksi yang membutuhkannya. Tidak memasang dependensi yang belum dipakai |
 | 3 | Pemilih bahasa memakai formulir `POST` biasa ke `/{area}/locale`, bukan komponen Livewire. Di dashboard tampil sebagai **dropdown bahasa**, di halaman login sebagai tombol berdampingan | Berfungsi juga di halaman login (tamu), tanpa JavaScript, dan mudah diuji |
 | 4 | Pilihan bahasa disimpan di `users.locale` bila sudah masuk, dan di sesi bila tamu. Bahasa yang dipilih di halaman login (sesi) menjadi bahasa akun saat pengguna masuk | Mengikuti aturan locale di `CLAUDE.md`. Pilihan terbaru yang eksplisit tidak boleh dikalahkan oleh nilai tersimpan |
@@ -20,7 +20,7 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 
 ## Tampilan
 
-- **Desktop:** **sidebar `ink` setinggi layar** (lebar 18 rem, tetap saat gulir) di kiri, berisi logo dengan nama "Metindo Perkasa" dua baris di atas, lalu menu **dikelompokkan per label** ("Menu": Dashboard; "Content": Articles, Products, Services; "User Management": Staff dan Customers; label kecil huruf kapital putih), tiap item dengan **ikon** garis 20 px di kirinya. Item aktif berupa blok krimson penuh, dan garis krimson ada di dasar sidebar. Di sebelah kanannya **navbar putih** setinggi 4 rem (tetap saat gulir, garis tipis di bawahnya) memuat dropdown bahasa dan dropdown pengguna di kanan (chip lavender berbingkai tipis berteks `ink`, panel putih berbingkai tipis). Area konten berlatar `lavender` dengan kartu putih di dalam kontainer.
+- **Desktop:** **sidebar `ink` setinggi layar** (lebar 18 rem, tetap saat gulir) di kiri, berisi logo dengan nama "Metindo Perkasa" dua baris di atas, lalu menu **dikelompokkan per label** ("Menu": Dashboard; "Content": Articles, Products, Services; "User Management": Staff, Customers, dan Distributors; label kecil huruf kapital putih), tiap item dengan **ikon** garis 20 px di kirinya. Item aktif berupa blok krimson penuh, dan garis krimson ada di dasar sidebar. Di sebelah kanannya **navbar putih** setinggi 4 rem (tetap saat gulir, garis tipis di bawahnya) memuat dropdown bahasa dan dropdown pengguna di kanan (chip lavender berbingkai tipis berteks `ink`, panel putih berbingkai tipis). Area konten berlatar `lavender` dengan kartu putih di dalam kontainer.
 - **Ponsel:** navbar berisi tombol tiga garis merah di kiri (diikuti monogram logo), serta dropdown bahasa (kode `EN` atau `ID`) dan avatar pengguna di kanan. Tombol tiga garis membuka sidebar setinggi layar sebagai laci (tombol tutup di barisnya sendiri di atas logo): latar gelap di belakangnya meredup, gulir halaman dikunci, fokus pindah ke laci dan terkurung di dalamnya, dan Escape atau klik latar menutupnya lalu mengembalikan fokus ke tombol. Laci yang tertutup tidak bisa difokuskan. Dengan `prefers-reduced-motion`, laci muncul tanpa animasi. Bila layar melebar ke `lg`, laci otomatis menutup dan sidebar menjadi tetap.
 - **Font Figtree** untuk semua teks, sama dengan landing (Bricolage Grotesque dihapus). **Judul halaman** (`x-dashboard.page-header`) huruf kapital, bobot 900, rapat (`tracking-tight`), berukuran sedang (24 sampai 32 px) supaya tidak menyaingi isi, tanpa hiasan. **Setiap halaman punya deskripsi singkat** satu kalimat di bawah judul (props `description`, teks di `lang/{en,id}` dengan kunci `description`, `create_description`, dan `edit_description`); halaman baru wajib mengisinya. Token warna sama dengan landing.
 - **Perombakan gaya landing**: item menu aktif berupa blok krimson penuh bersudut 0,5 rem (tanpa penanda `::before`) dan item lain `white/70` yang menyala saat disorot. Dropdown bahasa dan pengguna membuka panel putih dengan animasi singkat (mati bila reduced motion). Kartu berbingkai tipis `ink/10`, sudut 0,5 rem, tanpa bayangan.
@@ -50,7 +50,7 @@ Tata letak dashboard untuk admin, staf, dan customer: sidebar dan bilah atas, me
 - `resources/views/components/dashboard/`: `layout.blade.php` (sidebar yang menjadi laci di ponsel, bilah atas, kontainer isi, tautan lewati-ke-konten), `page-header.blade.php`, `card.blade.php`, `language-dropdown.blade.php`, `user-menu.blade.php`, dan `locale-switcher.blade.php` (tombol berdampingan, dipakai di halaman login).
 - `app/Services/Dashboard/DashboardMenu.php`: daftar item menu dan penyaringan per peran, satu-satunya tempat yang bertambah saat fitur baru jadi.
 - `app/Http/Controllers/Dashboard/LocaleController.php` (invokable), `app/Http/Requests/Dashboard/UpdateLocaleRequest.php`, dan Action `app/Actions/Users/UpdateLocale.php`.
-- Route `routes/app/locale.php` dan `routes/customer/locale.php` (dapat diakses tamu).
+- Route `routes/app/locale.php` dan `routes/portal/locale.php` (dapat diakses tamu).
 - `resources/views/dashboard/home.blade.php` menggantikan `auth/home.blade.php`. `HomeController` kedua area tetap, hanya mengganti view dan menyerahkan area.
 - `resources/js/dashboard.js` (menutup dropdown dengan Escape dan klik di luar, serta membuka dan menutup laci sidebar dengan pengurungan fokus) didaftarkan di `vite.config.js`, dan `resources/css/dashboard.css` diperluas.
 - `lang/{en,id}/dashboard.php`.
@@ -63,7 +63,7 @@ Test (feature) yang harus ada:
 
 - Beranda tiap peran menampilkan sapaan dengan nama, peran dalam bahasa aktif, dan keadaan kosong.
 - Bilah atas memuat dropdown pengguna (inisial, email, peran, dan formulir Keluar), dropdown bahasa dengan kedua bahasa dan penanda aktif, dan isi berada dalam kontainer.
-- Menu admin, staf, dan customer memuat hanya item yang diizinkan dan route yang ada. Item aktif bertanda `aria-current="page"`.
+- Menu admin, staf, customer, dan distributor memuat hanya item yang diizinkan dan route yang ada. Item aktif bertanda `aria-current="page"`.
 - Pemilih bahasa: mengganti ke `id` menyimpan `users.locale` dan sesi untuk pengguna masuk, hanya sesi untuk tamu, menolak `zh` dan nilai tak dikenal, dan mengarahkan kembali.
 - Halaman dashboard memakai `<html lang>` sesuai locale, dan teks berganti setelah bahasa diubah.
 - Halaman login menampilkan pemilih bahasa dan teksnya ikut berubah untuk tamu. Bahasa yang dipilih sebelum masuk disimpan ke akun, dan masuk tanpa pilihan mempertahankan bahasa tersimpan.
@@ -74,7 +74,7 @@ Pemeriksaan manual di browser: sidebar dan bilah atas di desktop, laci sidebar d
 
 ## Halaman galat
 
-Galat di `/app/*` dan `/customer/*` memakai halaman galat bersama dalam `en` atau `id`. Rancangannya di bagian "Halaman galat" pada [`../../landing/ui/design.md`](../../landing/ui/design.md).
+Galat di `/app/*` dan `/portal/*` memakai halaman galat bersama dalam `en` atau `id`. Rancangannya di bagian "Halaman galat" pada [`../../landing/ui/design.md`](../../landing/ui/design.md).
 
 ## Ditunda
 

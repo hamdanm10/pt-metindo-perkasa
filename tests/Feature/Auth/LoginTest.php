@@ -34,12 +34,16 @@ class LoginTest extends TestCase
         }
     }
 
-    public function test_customer_signs_in_at_the_customer_login(): void
+    public function test_customer_and_distributor_sign_in_at_the_same_portal_login(): void
     {
-        $user = User::factory()->customer()->create();
+        foreach (['customer', 'distributor'] as $role) {
+            $user = User::factory()->{$role}()->create();
 
-        $this->attempt('customer', $user->email)->assertRedirect('/customer/dashboard');
-        $this->assertAuthenticatedAs($user);
+            $this->attempt('portal', $user->email)->assertRedirect('/portal/dashboard');
+            $this->assertAuthenticatedAs($user);
+
+            $this->post('/portal/logout');
+        }
     }
 
     public function test_a_role_from_another_area_fails_like_a_wrong_password(): void
@@ -50,7 +54,7 @@ class LoginTest extends TestCase
         $this->attempt('app', $customer->email)->assertSessionHasErrors(['email' => __('auth.failed')]);
         $this->assertGuest();
 
-        $this->attempt('customer', $staff->email)->assertSessionHasErrors(['email' => __('auth.failed')]);
+        $this->attempt('portal', $staff->email)->assertSessionHasErrors(['email' => __('auth.failed')]);
         $this->assertGuest();
     }
 
@@ -130,14 +134,14 @@ class LoginTest extends TestCase
         $this->assertGuest();
 
         $this->actingAs(User::factory()->customer()->create())
-            ->post('/customer/logout')
-            ->assertRedirect('/customer/login');
+            ->post('/portal/logout')
+            ->assertRedirect('/portal/login');
         $this->assertGuest();
     }
 
     public function test_login_page_has_the_back_link_the_password_toggle_and_translated_texts(): void
     {
-        foreach (['/app/login', '/customer/login'] as $path) {
+        foreach (['/app/login', '/portal/login'] as $path) {
             $this->get($path)->assertOk()
                 ->assertSee('href="'.route('landing.home', ['locale' => 'en']).'"', false)
                 ->assertSee('data-password-toggle="password"', false)
@@ -169,6 +173,6 @@ class LoginTest extends TestCase
     public function test_login_pages_render_with_a_title_and_a_csrf_token(): void
     {
         $this->get('/app/login')->assertOk()->assertSee(__('auth.staff_title'))->assertSee('name="_token"', false);
-        $this->get('/customer/login')->assertOk()->assertSee(__('auth.customer_title'));
+        $this->get('/portal/login')->assertOk()->assertSee(__('auth.portal_title'));
     }
 }

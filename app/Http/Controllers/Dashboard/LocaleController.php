@@ -27,8 +27,8 @@ class LocaleController extends Controller
             return redirect()->to($previous);
         }
 
-        $customerArea = $request->is('customer', 'customer/*');
+        $portalArea = $request->is('portal', 'portal/*');
 
-        return redirect()->route($user instanceof User ? $user->role->homeRoute() : ($customerArea ? 'customer.login' : 'app.login'));
+        return redirect()->route($user instanceof User ? $user->role->homeRoute() : ($portalArea ? 'portal.login' : 'app.login'));
     }
 }

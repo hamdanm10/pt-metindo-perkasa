@@ -62,7 +62,7 @@ class LookupSearch
     private function query(string $source): Builder
     {
         return match ($source) {
-            'customer' => User::query()->select(['id', 'name', 'email'])->where('role', Role::Customer),
+            'customer' => User::query()->select(['id', 'name', 'email'])->whereIn('role', Role::portalArea()),
             'service' => Service::query()->select(['id', 'name']),
             'product' => Product::query()->select(['id', 'name']),
             default => throw new \InvalidArgumentException("Unknown lookup source [{$source}]."),
