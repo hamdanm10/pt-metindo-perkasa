@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * A question a customer asked the company, with the answer, kept so others do not have to ask it again.
+ * A question a customer asked the company, with the answer, kept for that customer so they do not have to ask it again.
  */
 class Inquiry extends Model
 {
@@ -20,7 +20,7 @@ class Inquiry extends Model
 
     public const MAX_IMAGES = 10;
 
-    protected $fillable = ['question', 'answer', 'asked_at', 'service_id', 'product_id', 'created_by'];
+    protected $fillable = ['customer_id', 'question', 'answer', 'asked_at', 'service_id', 'product_id', 'created_by'];
 
     /** @var array<string, string> */
     protected $casts = ['asked_at' => 'date'];
@@ -47,6 +47,16 @@ class Inquiry extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * The customer the record belongs to: only this customer reads it in their own dashboard.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     /**

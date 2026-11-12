@@ -6,10 +6,12 @@ namespace App\Livewire\Inquiries;
 
 use App\Actions\Inquiries\DeleteInquiry;
 use App\Actions\Inquiries\ListInquiries;
+use App\Enums\Role;
 use App\Livewire\Concerns\ResolvesActor;
 use App\Models\Inquiry;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -28,6 +30,9 @@ class Index extends Component
     public string $search = '';
 
     #[Url(except: '')]
+    public string $customer = '';
+
+    #[Url(except: '')]
     public string $service = '';
 
     #[Url(except: '')]
@@ -39,6 +44,11 @@ class Index extends Component
     }
 
     public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedCustomer(): void
     {
         $this->resetPage();
     }
@@ -72,10 +82,15 @@ class Index extends Component
 
         return view('livewire.inquiries.index', [
             'inquiries' => $listInquiries->execute(
+                $actor,
                 $this->search,
+                ctype_digit($this->customer) ? (int) $this->customer : null,
                 ctype_digit($this->service) ? (int) $this->service : null,
                 ctype_digit($this->product) ? (int) $this->product : null,
             ),
+            'customers' => $actor->role->usesStaffArea()
+                ? User::query()->where('role', Role::Customer)->orderBy('name')->get(['id', 'name', 'email'])
+                : collect(),
             'services' => Service::query()->orderBy('name')->get(['id', 'name']),
             'products' => Product::query()->orderBy('name')->get(['id', 'name']),
             'area' => $actor->role->area(),

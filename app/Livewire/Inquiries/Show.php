@@ -19,9 +19,9 @@ class Show extends Component
 
     public function mount(Inquiry $inquiry): void
     {
-        $this->authorize('view', $inquiry);
+        abort_unless($this->actor()->can('view', $inquiry), 404);
 
-        $this->inquiry = $inquiry->load(['service:id,name', 'product:id,name', 'creator:id,name', 'images']);
+        $this->inquiry = $inquiry->load(['customer:id,name', 'service:id,name', 'product:id,name', 'creator:id,name', 'images']);
     }
 
     public function render(): View

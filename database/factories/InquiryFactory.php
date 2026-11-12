@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Inquiry;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +19,7 @@ class InquiryFactory extends Factory
     public function definition(): array
     {
         return [
+            'customer_id' => User::factory()->customer(),
             'question' => fake()->sentence().'?',
             'answer' => fake()->paragraph(),
             'asked_at' => fake()->dateTimeBetween('-1 year')->format('Y-m-d'),

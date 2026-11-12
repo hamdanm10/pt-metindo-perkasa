@@ -9,8 +9,8 @@ use App\Models\Inquiry;
 use App\Models\User;
 
 /**
- * Everyone signed in may read. Admin and staff write; the admin changes any record,
- * a staff member only the ones they created.
+ * Admin and staff read every record. A customer reads only the records of their own account.
+ * Admin and staff write; the admin changes any record, a staff member only the ones they created.
  */
 class InquiryPolicy
 {
@@ -21,7 +21,7 @@ class InquiryPolicy
 
     public function view(User $actor, Inquiry $inquiry): bool
     {
-        return true;
+        return $actor->role->usesStaffArea() || $inquiry->customer_id === $actor->id;
     }
 
     public function create(User $actor): bool

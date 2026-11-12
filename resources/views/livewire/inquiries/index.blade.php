@@ -5,8 +5,16 @@
 
     <x-dashboard.card>
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div class="grid flex-1 gap-4 sm:grid-cols-3">
+            <div class="grid flex-1 gap-4 sm:grid-cols-2 {{ $area === 'app' ? 'xl:grid-cols-4' : 'lg:grid-cols-3' }}">
                 <x-dashboard.field name="search" :label="__('inquiries.search')" type="search" wire:model.live.debounce.300ms="search" />
+                @if ($area === 'app')
+                    <x-dashboard.select name="customer" :label="__('inquiries.fields.customer')" wire:model.live="customer">
+                        <option value="">{{ __('inquiries.all_customers') }}</option>
+                        @foreach ($customers as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->email }})</option>
+                        @endforeach
+                    </x-dashboard.select>
+                @endif
                 <x-dashboard.select name="service" :label="__('inquiries.fields.service')" wire:model.live="service">
                     <option value="">{{ __('inquiries.all_services') }}</option>
                     @foreach ($services as $item)
@@ -29,6 +37,9 @@
             <x-dashboard.table>
                 <thead>
                     <tr>
+                        @if ($area === 'app')
+                            <th scope="col">{{ __('inquiries.fields.customer') }}</th>
+                        @endif
                         <th scope="col">{{ __('inquiries.fields.question') }}</th>
                         <th scope="col">{{ __('inquiries.related') }}</th>
                         <th scope="col">{{ __('inquiries.fields.date') }}</th>
@@ -41,6 +52,9 @@
                 <tbody>
                     @forelse ($inquiries as $inquiry)
                         <tr wire:key="inquiry-{{ $inquiry->id }}" class="align-middle">
+                            @if ($area === 'app')
+                                <td class="font-semibold">{{ $inquiry->customer->name }}</td>
+                            @endif
                             <td class="max-w-md">
                                 <a href="{{ route($area.'.inquiries.show', $inquiry) }}" class="font-semibold hover:text-brand-700">{{ \Illuminate\Support\Str::limit($inquiry->question, 140) }}</a>
                                 @if ($inquiry->images_count > 0)
@@ -76,7 +90,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $area === 'app' ? 5 : 4 }}" class="py-12 text-center text-muted">{{ $search !== '' || $service !== '' || $product !== '' ? __('inquiries.empty_filtered') : __('inquiries.empty') }}</td>
+                            <td colspan="{{ $area === 'app' ? 6 : 4 }}" class="py-12 text-center text-muted">{{ $search !== '' || $customer !== '' || $service !== '' || $product !== '' ? __('inquiries.empty_filtered') : __('inquiries.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

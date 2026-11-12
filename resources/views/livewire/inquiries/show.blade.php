@@ -16,6 +16,10 @@
             </ul>
         @endif
 
+        @if ($staffArea)
+            <p class="mb-3 text-sm font-bold text-muted">{{ __('inquiries.fields.customer') }}: <span class="text-ink">{{ $inquiry->customer->name }}</span></p>
+        @endif
+
         <h2 class="text-xl font-black leading-snug">{{ $inquiry->question }}</h2>
 
         <div class="mt-6 border-t border-ink/10 pt-6">

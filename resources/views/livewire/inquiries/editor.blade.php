@@ -3,6 +3,13 @@
 
     <x-dashboard.card class="max-w-3xl">
         <form wire:submit="save" class="space-y-6" novalidate>
+            <x-dashboard.select name="form.customerId" :label="__('inquiries.fields.customer')" wire:model="form.customerId" required>
+                <option value="">{{ __('inquiries.choose_customer') }}</option>
+                @foreach ($customers as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->email }})</option>
+                @endforeach
+            </x-dashboard.select>
+
             <div>
                 <label for="form-question" class="field-label">{{ __('inquiries.fields.question') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
                 <textarea id="form-question" rows="3" wire:model="form.question" required placeholder="{{ __('inquiries.placeholders.question') }}"

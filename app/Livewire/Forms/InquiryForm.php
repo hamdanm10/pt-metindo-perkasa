@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
+use App\Enums\Role;
 use App\Models\Inquiry;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -11,6 +12,8 @@ use Livewire\Form;
 
 class InquiryForm extends Form
 {
+    public string $customerId = '';
+
     public string $question = '';
 
     public string $answer = '';
@@ -37,6 +40,7 @@ class InquiryForm extends Form
             return;
         }
 
+        $this->customerId = (string) $inquiry->customer_id;
         $this->question = $inquiry->question;
         $this->answer = $inquiry->answer;
         $this->serviceId = (string) $inquiry->service_id;
@@ -50,6 +54,7 @@ class InquiryForm extends Form
     public function rules(): array
     {
         return [
+            'customerId' => ['required', 'integer', Rule::exists('users', 'id')->where('role', Role::Customer->value)],
             'question' => ['required', 'string', 'max:5000'],
             'answer' => ['required', 'string', 'max:10000'],
             'askedAt' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
@@ -86,6 +91,7 @@ class InquiryForm extends Form
     public function validationAttributes(): array
     {
         return [
+            'customerId' => __('inquiries.fields.customer'),
             'question' => __('inquiries.fields.question'),
             'answer' => __('inquiries.fields.answer'),
             'askedAt' => __('inquiries.fields.asked_at'),

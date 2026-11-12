@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'title' => 'Questions & Answers',
-    'description' => 'Questions customers have asked us, with the answers. Look here first before asking again.',
+    'description' => 'Questions you have asked us, with our answers. Look here first before asking again.',
     'description_staff' => 'Keep a record of questions customers have asked and the answers given, so everyone can find them again.',
     'show_title' => 'Question',
     'create' => 'Add question',
@@ -13,6 +13,8 @@ return [
     'edit_title' => 'Edit question',
     'edit_description' => 'Change the question, the answer, the links or the pictures.',
     'search' => 'Search questions and answers',
+    'all_customers' => 'All customers',
+    'choose_customer' => 'Choose a customer',
     'all_services' => 'All services',
     'all_products' => 'All products',
     'view' => 'Read',
@@ -34,6 +36,7 @@ return [
     'unknown_author' => 'Unknown',
     'open_picture' => 'Open picture :number in a new tab',
     'fields' => [
+        'customer' => 'Customer',
         'question' => 'Question',
         'answer' => 'Answer',
         'asked_at' => 'Date asked',

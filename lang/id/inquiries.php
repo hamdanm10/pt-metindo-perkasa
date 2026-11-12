@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'title' => 'Tanya Jawab',
-    'description' => 'Pertanyaan yang pernah diajukan customer beserta jawabannya. Cari di sini dulu sebelum bertanya lagi.',
+    'description' => 'Pertanyaan yang pernah Anda ajukan beserta jawabannya. Cari di sini dulu sebelum bertanya lagi.',
     'description_staff' => 'Catat pertanyaan customer dan jawaban yang diberikan supaya semua orang bisa menemukannya lagi.',
     'show_title' => 'Pertanyaan',
     'create' => 'Tambah pertanyaan',
@@ -13,6 +13,8 @@ return [
     'edit_title' => 'Ubah pertanyaan',
     'edit_description' => 'Ubah pertanyaan, jawaban, tautan, atau gambarnya.',
     'search' => 'Cari pertanyaan dan jawaban',
+    'all_customers' => 'Semua customer',
+    'choose_customer' => 'Pilih customer',
     'all_services' => 'Semua layanan',
     'all_products' => 'Semua produk',
     'view' => 'Baca',
@@ -34,6 +36,7 @@ return [
     'unknown_author' => 'Tidak diketahui',
     'open_picture' => 'Buka gambar :number di tab baru',
     'fields' => [
+        'customer' => 'Customer',
         'question' => 'Pertanyaan',
         'answer' => 'Jawaban',
         'asked_at' => 'Tanggal ditanyakan',

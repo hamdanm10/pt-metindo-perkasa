@@ -18,7 +18,7 @@ class InquiryImageController extends Controller
 {
     public function show(InquiryImage $image): StreamedResponse
     {
-        Gate::authorize('view', $image->inquiry);
+        abort_unless(Gate::allows('view', $image->inquiry), 404);
 
         return Storage::disk(InquiryImageStore::DISK)->response($image->path, null, [
             'Cache-Control' => 'private, max-age=86400',

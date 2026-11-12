@@ -32,6 +32,11 @@ class InquiryTest extends TestCase
         Storage::fake('public');
     }
 
+    private function customerId(): string
+    {
+        return (string) User::factory()->customer()->create()->id;
+    }
+
     private function picture(string $name = 'photo.jpg', int $width = 2400, int $height = 1800): UploadedFile
     {
         return UploadedFile::fake()->image($name, $width, $height);
@@ -61,14 +66,15 @@ class InquiryTest extends TestCase
         }
 
         $customer = User::factory()->customer()->create();
+        $own = Inquiry::factory()->create(['customer_id' => $customer->id]);
         $this->actingAs($customer)->get('/customer/inquiries')->assertOk();
-        $this->actingAs($customer)->get("/customer/inquiries/{$inquiry->id}")->assertOk();
+        $this->actingAs($customer)->get("/customer/inquiries/{$own->id}")->assertOk();
         $this->actingAs($customer)->get('/app/inquiries')->assertForbidden();
         $this->actingAs($customer)->get('/app/inquiries/create')->assertForbidden();
         $this->actingAs($customer)->get("/app/inquiries/{$inquiry->id}/edit")->assertForbidden();
     }
 
-    public function test_the_policy_lets_everyone_read_and_only_the_owner_or_admin_change(): void
+    public function test_the_policy_lets_staff_read_all_a_customer_read_their_own_and_only_the_owner_or_admin_change(): void
     {
         $admin = User::factory()->admin()->create();
         $staff = User::factory()->staff()->create();
@@ -79,8 +85,12 @@ class InquiryTest extends TestCase
 
         foreach ([$admin, $staff, $customer] as $user) {
             $this->assertTrue(Gate::forUser($user)->allows('viewAny', Inquiry::class));
-            $this->assertTrue(Gate::forUser($user)->allows('view', $mine));
         }
+
+        $this->assertTrue(Gate::forUser($admin)->allows('view', $mine));
+        $this->assertTrue(Gate::forUser($otherStaff)->allows('view', $mine));
+        $this->assertFalse(Gate::forUser($customer)->allows('view', $mine));
+        $this->assertTrue(Gate::forUser($customer)->allows('view', Inquiry::factory()->create(['customer_id' => $customer->id])));
 
         $this->assertTrue(Gate::forUser($admin)->allows('create', Inquiry::class));
         $this->assertTrue(Gate::forUser($staff)->allows('create', Inquiry::class));
@@ -101,8 +111,10 @@ class InquiryTest extends TestCase
         $staff = User::factory()->staff()->create();
         $service = Service::factory()->create();
         $product = Product::factory()->create();
+        $customer = User::factory()->customer()->create();
 
         Livewire::actingAs($staff)->test(Editor::class)
+            ->set('form.customerId', (string) $customer->id)
             ->set('form.question', ' How long does it take? ')
             ->set('form.answer', 'Three working days.')
             ->set('form.askedAt', '2026-10-01')
@@ -116,10 +128,12 @@ class InquiryTest extends TestCase
         $this->assertSame('How long does it take?', $inquiry->question);
         $this->assertSame('2026-10-01', $inquiry->asked_at->toDateString());
         $this->assertSame($staff->id, $inquiry->created_by);
+        $this->assertSame($customer->id, $inquiry->customer_id);
         $this->assertSame($service->id, $inquiry->service_id);
         $this->assertSame($product->id, $inquiry->product_id);
 
         Livewire::actingAs($staff)->test(Editor::class)
+            ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Plain question')
             ->set('form.answer', 'Plain answer')
             ->call('save')->assertHasNoErrors();
@@ -138,13 +152,14 @@ class InquiryTest extends TestCase
             ->set('form.productId', '999999')
             ->call('save');
 
-        $component->assertHasErrors(['form.question', 'form.answer', 'form.askedAt', 'form.serviceId', 'form.productId']);
+        $component->assertHasErrors(['form.customerId', 'form.question', 'form.answer', 'form.askedAt', 'form.serviceId', 'form.productId']);
         $this->assertSame(0, Inquiry::query()->count());
     }
 
     public function test_pictures_are_stored_privately_as_scaled_webp_with_random_names(): void
     {
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+            ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
             ->set('form.answer', 'Answer')
             ->set('uploads', [$this->picture('secret-name.jpg'), $this->picture('other.png')]);
@@ -181,6 +196,7 @@ class InquiryTest extends TestCase
     public function test_at_most_ten_pictures_per_record(): void
     {
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+            ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
             ->set('form.answer', 'Answer')
             ->set('uploads', array_map(fn (int $i): UploadedFile => $this->picture("p{$i}.jpg", 200, 200), range(1, 11)))
@@ -191,6 +207,7 @@ class InquiryTest extends TestCase
         $this->assertSame(0, InquiryImage::query()->count());
 
         $ok = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+            ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
             ->set('form.answer', 'Answer')
             ->set('uploads', array_map(fn (int $i): UploadedFile => $this->picture("p{$i}.jpg", 200, 200), range(1, 10)))
@@ -300,7 +317,7 @@ class InquiryTest extends TestCase
     public function test_a_customer_only_reads(): void
     {
         $customer = User::factory()->customer()->create();
-        $inquiry = Inquiry::factory()->create();
+        $inquiry = Inquiry::factory()->create(['customer_id' => $customer->id]);
 
         Livewire::actingAs($customer)->test(Index::class)->call('delete', $inquiry->id)->assertForbidden();
         $this->assertDatabaseHas('inquiries', ['id' => $inquiry->id]);
@@ -315,12 +332,12 @@ class InquiryTest extends TestCase
     public function test_the_author_is_shown_to_staff_but_not_to_customers(): void
     {
         $author = User::factory()->staff()->create(['name' => 'Sari Wulandari']);
-        $inquiry = Inquiry::factory()->create(['created_by' => $author->id]);
+        $customer = User::factory()->customer()->create();
+        $inquiry = Inquiry::factory()->create(['created_by' => $author->id, 'customer_id' => $customer->id]);
 
         $this->actingAs(User::factory()->admin()->create())->get('/app/inquiries')->assertSee('Sari Wulandari');
         $this->actingAs(User::factory()->admin()->create())->get("/app/inquiries/{$inquiry->id}")->assertSee('Sari Wulandari');
 
-        $customer = User::factory()->customer()->create();
         $this->actingAs($customer)->get('/customer/inquiries')->assertDontSee('Sari Wulandari');
         $this->actingAs($customer)->get("/customer/inquiries/{$inquiry->id}")->assertDontSee('Sari Wulandari');
     }
@@ -328,10 +345,11 @@ class InquiryTest extends TestCase
     public function test_the_show_page_has_the_question_answer_links_and_pictures(): void
     {
         $service = Service::factory()->create(['name' => 'Electroplating']);
-        $inquiry = Inquiry::factory()->create(['question' => 'Does it rust?', 'answer' => "Line one\nLine two", 'service_id' => $service->id]);
+        $customer = User::factory()->customer()->create();
+        $inquiry = Inquiry::factory()->create(['question' => 'Does it rust?', 'answer' => "Line one\nLine two", 'service_id' => $service->id, 'customer_id' => $customer->id]);
         $image = $this->withImage($inquiry);
 
-        $this->actingAs(User::factory()->customer()->create())->get("/customer/inquiries/{$inquiry->id}")
+        $this->actingAs($customer)->get("/customer/inquiries/{$inquiry->id}")
             ->assertOk()
             ->assertSee('Does it rust?')
             ->assertSee('Line one')
@@ -341,12 +359,12 @@ class InquiryTest extends TestCase
 
     public function test_pictures_are_served_only_to_signed_in_users_in_their_own_area(): void
     {
-        $image = $this->withImage(Inquiry::factory()->create());
+        $customer = User::factory()->customer()->create();
+        $image = $this->withImage(Inquiry::factory()->create(['customer_id' => $customer->id]));
 
         $this->get(route('app.inquiry-images.show', $image))->assertRedirect(route('app.login'));
         $this->get(route('customer.inquiry-images.show', $image))->assertRedirect(route('customer.login'));
 
-        $customer = User::factory()->customer()->create();
         $this->actingAs($customer)->get(route('customer.inquiry-images.show', $image))
             ->assertOk()
             ->assertHeader('Content-Type', 'image/webp');
@@ -403,6 +421,74 @@ class InquiryTest extends TestCase
         Livewire::actingAs($staff)->test(Index::class);
 
         $this->assertSame($few, count(DB::getQueryLog()));
+    }
+
+    public function test_a_customer_sees_only_their_own_records(): void
+    {
+        $alice = User::factory()->customer()->create(['name' => 'Alice Customer']);
+        $bob = User::factory()->customer()->create(['name' => 'Bob Customer']);
+        $mine = Inquiry::factory()->create(['customer_id' => $alice->id, 'question' => 'Alice question']);
+        $theirs = Inquiry::factory()->create(['customer_id' => $bob->id, 'question' => 'Bob question']);
+        $theirImage = $this->withImage($theirs);
+
+        $this->actingAs($alice)->get('/customer/inquiries')
+            ->assertOk()
+            ->assertSee('Alice question')
+            ->assertDontSee('Bob question');
+
+        $this->actingAs($alice)->get("/customer/inquiries/{$mine->id}")->assertOk();
+        $this->actingAs($alice)->get("/customer/inquiries/{$theirs->id}")->assertNotFound();
+        $this->actingAs($alice)->get(route('customer.inquiry-images.show', $theirImage))->assertNotFound();
+
+        Livewire::actingAs($alice)->test(Index::class)->assertSee('Alice question')->assertDontSee('Bob question');
+        Livewire::actingAs($alice)->test(Index::class)->set('customer', (string) $bob->id)->assertSee('Alice question')->assertDontSee('Bob question');
+        $this->assertDatabaseHas('inquiries', ['id' => $theirs->id]);
+    }
+
+    public function test_staff_see_every_customer_and_can_filter_by_one(): void
+    {
+        $alice = User::factory()->customer()->create(['name' => 'Alice Customer']);
+        $bob = User::factory()->customer()->create(['name' => 'Bob Customer']);
+        Inquiry::factory()->create(['customer_id' => $alice->id, 'question' => 'Alice question']);
+        Inquiry::factory()->create(['customer_id' => $bob->id, 'question' => 'Bob question']);
+
+        $component = Livewire::actingAs(User::factory()->staff()->create())->test(Index::class)
+            ->assertSee('Alice question')->assertSee('Bob question')->assertSee('Alice Customer');
+
+        $component->set('customer', (string) $bob->id)->assertSee('Bob question')->assertDontSee('Alice question');
+    }
+
+    public function test_the_record_must_belong_to_an_existing_customer_account(): void
+    {
+        $staff = User::factory()->staff()->create();
+
+        foreach (['999999', (string) $staff->id] as $invalid) {
+            Livewire::actingAs($staff)->test(Editor::class)
+                ->set('form.customerId', $invalid)
+                ->set('form.question', 'Question')
+                ->set('form.answer', 'Answer')
+                ->call('save')->assertHasErrors(['form.customerId']);
+        }
+
+        $this->assertSame(0, Inquiry::query()->count());
+    }
+
+    public function test_changing_a_record_keeps_or_moves_its_customer(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $inquiry = Inquiry::factory()->create();
+        $original = $inquiry->customer_id;
+        $other = User::factory()->customer()->create();
+
+        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry])
+            ->assertSet('form.customerId', (string) $original)
+            ->call('save')->assertHasNoErrors();
+        $this->assertSame($original, $inquiry->refresh()->customer_id);
+
+        Livewire::actingAs($admin)->test(Editor::class, ['inquiry' => $inquiry])
+            ->set('form.customerId', (string) $other->id)
+            ->call('save')->assertHasNoErrors();
+        $this->assertSame($other->id, $inquiry->refresh()->customer_id);
     }
 
     public function test_the_menu_links_the_page_for_every_role(): void
