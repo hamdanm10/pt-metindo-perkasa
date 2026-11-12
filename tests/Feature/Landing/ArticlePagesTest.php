@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
+use App\Models\Article;
 use App\Models\ArticleTranslation;
 use App\Services\Articles\ArticleBody;
 use App\Services\Articles\LandingArticles;
@@ -136,5 +137,27 @@ class ArticlePagesTest extends TestCase
             $this->assertNotSame('articles.minutes', __('articles.minutes', ['count' => 3], $code));
             $response->assertSee(__('articles.latest', [], $code), false);
         }
+    }
+
+    public function test_a_title_with_a_very_long_word_wraps_instead_of_overflowing(): void
+    {
+        config(['landing.sample_content' => false]);
+        $long = str_repeat('Tedst', 24);
+        ArticleTranslation::factory()->published()->create([
+            'article_id' => Article::factory()->create()->id,
+            'slug' => 'long-word',
+            'title' => $long,
+            'excerpt' => $long,
+        ]);
+        app(LandingArticles::class)->flush();
+
+        $this->get('/en/articles/long-word')->assertOk()
+            ->assertSee('<h1 class="mt-5 text-balance [overflow-wrap:anywhere]', false)
+            ->assertSee('text-ink/65 [overflow-wrap:anywhere]', false);
+
+        $list = (string) $this->get('/en/articles')->assertOk()->getContent();
+        $this->assertStringContainsString('block text-balance [overflow-wrap:anywhere]', $list);
+
+        $this->assertMatchesRegularExpression('/\.article-body\s*\{\s*overflow-wrap: anywhere;/', (string) file_get_contents(resource_path('css/article-body.css')));
     }
 }

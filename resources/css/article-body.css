@@ -1,3 +1,8 @@
+/* A very long word or address must wrap instead of pushing the page wider. */
+.article-body {
+    overflow-wrap: anywhere;
+}
+
 .article-body > * + * {
     margin-top: 1rem;
 }
