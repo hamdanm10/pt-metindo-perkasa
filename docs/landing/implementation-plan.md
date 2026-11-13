@@ -25,6 +25,7 @@ Halaman lain: About Us, Processes (di prototipe Products), Services, Articles (d
 | L5 | Permintaan harga, unduhan TDS, dan formulir kontak | belum ditulis | belum ditentukan | Belum diputuskan |
 | L6 | SEO dan performa: `hreflang`, sitemap, meta per bahasa, ukur Lighthouse (termasuk dampak layar intro) | belum ditulis | `feat/landing-seo` | Rencana |
 | L7 | Chat berbasis aturan yang dinamis: pertanyaan, jawaban, dan pertanyaan lanjutan bersarang ditulis admin per bahasa | [`chat/overview.md`](chat/overview.md) | `feat/dynamic-chat` | Selesai di kode, menunggu tinjauan |
+| L8 | Nomor WhatsApp yang dinamis: dikelola admin (nama, nomor, urutan, aktif atau nonaktif), menggantikan `.env` | [`whatsapp/overview.md`](whatsapp/overview.md) | `feat/dynamic-whatsapp` | Selesai di kode, menunggu tinjauan |
 
 Dokumen fitur ditulis **sebelum** kodenya tiap fase, lalu baris tabel ini diubah menjadi tautan.
 

@@ -32,6 +32,7 @@ return [
         'products' => 'Produk',
         'services' => 'Layanan',
         'chat' => 'Asisten chat',
+        'whatsapp' => 'Nomor WhatsApp',
         'inquiries' => 'Tanya Jawab',
         'customer_inquiries' => 'Tanya Jawab Customer',
         'distributor_inquiries' => 'Tanya Jawab Distributor',

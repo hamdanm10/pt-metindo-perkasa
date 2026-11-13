@@ -16,7 +16,6 @@ return [
         'title' => 'Layanan pelanggan WhatsApp',
         'hint' => 'Pilih nomor untuk memulai obrolan.',
         'chat' => 'Chat',
-        'default_name' => 'Layanan pelanggan',
         'message' => 'Halo PT Metindo Perkasa, saya ingin bertanya tentang layanan Anda.',
     ],
 ];

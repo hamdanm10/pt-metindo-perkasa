@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Landing;
 
 use App\Models\ArticleTranslation;
+use App\Models\WhatsappAgent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,9 +25,8 @@ class PagesTest extends TestCase
             'landing.contact.phone' => '+62 812 0000 0000',
             'landing.contact.address' => 'Test address',
             'landing.contact.hours' => 'Mon-Fri',
-            'landing.contact.whatsapp' => '6281200000000',
-            'landing.contact.whatsapp_agents' => null,
         ]);
+        WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000000']);
     }
 
     public function test_every_inner_page_renders_in_every_locale(): void
@@ -216,7 +216,8 @@ class PagesTest extends TestCase
             ->assertSee('href="mailto:hello@example.test"', false)
             ->assertSee('href="https://wa.me/6281200000000"', false);
 
-        config(['landing.contact' => ['email' => null, 'phone' => null, 'address' => null, 'hours' => null, 'whatsapp' => null]]);
+        config(['landing.contact' => ['email' => null, 'phone' => null, 'address' => null, 'hours' => null]]);
+        WhatsappAgent::query()->get()->each->delete();
 
         $this->get('/en/contact')
             ->assertSee(__('pages.contact.empty', [], 'en'))

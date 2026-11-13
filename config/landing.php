@@ -72,7 +72,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Sections that depend on these values are not rendered when they are empty.
-    | `whatsapp` is digits only, with country code and no plus sign.
+    | The WhatsApp customer service numbers are not here: the admin manages them in the dashboard.
     |
     */
 
@@ -83,9 +83,6 @@ return [
         'phone' => env('LANDING_CONTACT_PHONE'),
         'address' => env('LANDING_CONTACT_ADDRESS'),
         'hours' => env('LANDING_CONTACT_HOURS'),
-        'whatsapp' => env('LANDING_CONTACT_WHATSAPP'),
-        // Customer service numbers for the WhatsApp button: "Name|628123;Name 2|628456". Without it the single `whatsapp` number is used.
-        'whatsapp_agents' => env('LANDING_WHATSAPP_AGENTS'),
     ],
 
 ];

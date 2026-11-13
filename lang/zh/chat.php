@@ -16,7 +16,6 @@ return [
         'title' => 'WhatsApp 客服',
         'hint' => '请选择一个号码开始聊天。',
         'chat' => '聊天',
-        'default_name' => '客服',
         'message' => '您好 PT Metindo Perkasa，我想咨询贵公司的服务。',
     ],
 ];

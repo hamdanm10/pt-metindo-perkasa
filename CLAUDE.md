@@ -212,6 +212,7 @@ Dokumen rancangan ada di `docs/`, per area dan per fitur, dengan satu `implement
 | [`docs/landing/implementation-plan.md`](docs/landing/implementation-plan.md) | Indeks landing page: fase dan status |
 | [`docs/shared/inquiries/overview.md`](docs/shared/inquiries/overview.md) | Rancangan Tanya Jawab: arsip pertanyaan customer, ditulis admin dan staf, dibaca customer (D3) |
 | [`docs/landing/chat/overview.md`](docs/landing/chat/overview.md) | Rancangan chat berbasis aturan yang dinamis: pohon pertanyaan per bahasa, dikelola admin (L7) |
+| [`docs/landing/whatsapp/overview.md`](docs/landing/whatsapp/overview.md) | Rancangan nomor WhatsApp yang dinamis: dikelola admin, tombol di landing (L8) |
 | [`docs/roles/admin/implementation-plan.md`](docs/roles/admin/implementation-plan.md) | Indeks admin |
 | [`docs/roles/admin/user-management/overview.md`](docs/roles/admin/user-management/overview.md) | Rancangan kelola akun oleh admin (A1) |
 | `docs/roles/<peran>/implementation-plan.md` | Indeks staff, customer, dan distributor (dibuat saat fitur pertama) |

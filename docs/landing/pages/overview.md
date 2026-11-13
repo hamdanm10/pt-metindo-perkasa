@@ -55,7 +55,7 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 
 - Controller invokable atau resource di `app/Http/Controllers/Landing`: `AboutController`, `ProductController` (`index`, `show`), `ServiceController`, `ArticleController` (`index`, `show`), `ContactController`.
 - Route di `routes/landing/{about,processes,services,articles,contact}.php`. Resource dipakai untuk processes dan articles. Controller kategori: `ProcessController`.
-- `config/landing.php` ditambah: `sample_content`, `categories[].processes`, `subsidiaries`, `contact.address`, `contact.hours`, `contact.whatsapp` (env `LANDING_SAMPLE_CONTENT`, `LANDING_CONTACT_ADDRESS`, `LANDING_CONTACT_HOURS`, `LANDING_CONTACT_WHATSAPP`).
+- `config/landing.php` ditambah: `sample_content`, `categories[].processes`, `subsidiaries`, `contact.address`, `contact.hours` (env `LANDING_SAMPLE_CONTENT`, `LANDING_CONTACT_ADDRESS`, `LANDING_CONTACT_HOURS`). Nomor WhatsApp tidak lagi di konfigurasi: dikelola admin ([`../whatsapp/overview.md`](../whatsapp/overview.md)).
 - `app/Services/Landing/LandingContent.php`: akses kategori, artikel, anak perusahaan, dan daftar menu. `SetLandingLocale` kini melepas parameter `locale` dari route setelah dipakai, supaya controller hanya menerima parameternya sendiri.
 - `lang/{en,id,zh,ar,ja}/pages.php` dan `articles.php`. Kunci `lang/*/landing.php` untuk menu ditambah.
 - View di `resources/views/landing/pages/` (satu berkas per halaman) dan komponen `x-landing.page-header` serta `x-landing.cta` (ajakan, dipakai juga beranda).
@@ -87,5 +87,5 @@ Pemeriksaan manual di browser: semua halaman di ponsel dan desktop, Arab dalam R
 - Deskripsi meta, sitemap, dan pengukuran performa (L6).
 - Penjelasan empat tingkat di halaman Processes menyebut Diagram dan Materials seperti di prototipe, tetapi halaman kategori belum punya diagram alur maupun daftar bahan; keduanya ditunda sampai isinya ada.
 - Chat berbasis aturan dijawab dengan mengetuk bubble pilihan (tanpa kolom ketik) dan hanya menjawab dari isi situs; belum ada AI. Mode AI di prototipe ("Rule-based / AI") belum dikerjakan.
-- Nomor customer service untuk tombol WhatsApp harus diisi di `LANDING_WHATSAPP_AGENTS` sebelum rilis; tanpa itu tombolnya tidak tampil.
+- Nomor customer service untuk tombol WhatsApp harus ditambahkan admin di dashboard (`/app/whatsapp`) sebelum rilis; tanpa nomor aktif tombolnya tidak tampil.
 - Formulir Contact belum menyimpan pesan di server: ia hanya menyusun pesan untuk WhatsApp atau email. Bila nanti perlu riwayat pesan, notifikasi, atau perlindungan spam, itu fitur terpisah (tabel pesan, halaman admin, batas laju, dan jebakan spam).

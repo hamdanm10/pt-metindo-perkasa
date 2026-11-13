@@ -16,7 +16,6 @@ return [
         'title' => 'WhatsApp customer service',
         'hint' => 'Choose a number to start a chat.',
         'chat' => 'Chat',
-        'default_name' => 'Customer service',
         'message' => 'Hello PT Metindo Perkasa, I would like to ask about your services.',
     ],
 ];

@@ -9,6 +9,7 @@ use App\Livewire\Chat\Index;
 use App\Livewire\Forms\ChatEntryForm;
 use App\Models\ChatEntry;
 use App\Models\User;
+use App\Models\WhatsappAgent;
 use App\Services\Landing\LandingChat;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -285,8 +286,6 @@ class ChatEntryTest extends TestCase
 
     public function test_the_chat_button_is_hidden_while_the_language_has_no_questions(): void
     {
-        config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null]);
-
         $this->get('/en')->assertOk()->assertDontSee('data-widgets', false)->assertDontSee('data-widget-toggle="chat"', false);
 
         $this->entry(['id' => ['question' => 'Halo?', 'answer' => 'Hai']]);
@@ -294,7 +293,7 @@ class ChatEntryTest extends TestCase
         $this->get('/en')->assertDontSee('data-widget-toggle="chat"', false);
         $this->get('/id')->assertSee('data-widget-toggle="chat"', false)->assertSee('Halo?');
 
-        config(['landing.contact.whatsapp' => '6281200000001']);
+        WhatsappAgent::factory()->create(['number' => '6281200000001']);
 
         $this->get('/en')->assertSee('data-widget-toggle="whatsapp"', false)->assertDontSee('data-widget-toggle="chat"', false);
     }
