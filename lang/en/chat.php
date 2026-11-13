@@ -11,8 +11,6 @@ return [
         'subtitle' => 'Quick answers about PT Metindo Perkasa',
         'welcome' => 'Hi! Choose a topic below and I will answer right away.',
         'again' => 'Anything else I can help with?',
-        'talk' => 'Talk to customer service',
-        'menu' => 'Back to the main menu',
     ],
     'whatsapp' => [
         'title' => 'WhatsApp customer service',

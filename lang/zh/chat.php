@@ -11,8 +11,6 @@ return [
         'subtitle' => '快速了解 PT Metindo Perkasa',
         'welcome' => '您好！请选择下面的话题，我会马上回答。',
         'again' => '还有其他我可以帮忙的吗？',
-        'talk' => '联系客服',
-        'menu' => '返回主菜单',
     ],
     'whatsapp' => [
         'title' => 'WhatsApp 客服',

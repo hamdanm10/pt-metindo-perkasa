@@ -8,9 +8,8 @@ import gsap from 'gsap';
  * The chat is rule-based and has no text box. The server sends the questions for the active language
  * as a tree: each has a label, an answer, an optional link and follow-up questions (`children`, to any
  * depth). The assistant greets, then shows the top-level questions as option bubbles; tapping one adds
- * it as the visitor's message and the assistant answers. Under the answer come its follow-up questions
- * and a way back to the main menu, or, when there are none, the top-level questions again. An option to
- * talk to customer service is always there when there are numbers.
+ * it as the visitor's message and the assistant answers. Under the answer come its follow-up questions, or,
+ * when there are none, the top-level questions again.
  * All text is put in with `textContent`.
  */
 const root = document.querySelector('[data-widgets]');
@@ -162,52 +161,30 @@ function initChat() {
 
         button.type = 'button';
         button.textContent = label;
-        button.className = 'rounded-2xl rounded-es-sm border border-brand-600 bg-white px-3.5 py-2 text-start text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-600 hover:text-white focus-visible:outline-offset-2';
+        button.className = 'rounded-2xl rounded-ee-sm border border-brand-600 bg-white px-3.5 py-2 text-start text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-600 hover:text-white focus-visible:outline-offset-2';
         button.addEventListener('click', onChoose);
 
         return button;
     };
 
     /**
-     * The option bubbles, left aligned like the assistant's. Taking them away once one is chosen keeps the
-     * log short. `list` is the questions to offer: the top level, or the follow-ups of the last answer.
-     * Below a follow-up list there is a way back to the top level.
+     * The option bubbles, right aligned like the visitor's own messages (they are what the visitor says
+     * next). Taking them away once one is chosen keeps the log short. `list` is the questions to offer:
+     * the top level, or the follow-ups of the last answer.
      */
-    const showOptions = (list = topics, withMenu = false) => {
+    const showOptions = (list = topics) => {
         options?.remove();
         options = document.createElement('div');
-        options.className = 'flex flex-col items-start gap-2 self-start';
+        options.className = 'flex max-w-[88%] flex-col items-end gap-2 self-end';
         options.setAttribute('role', 'group');
 
         list.forEach((topic) => {
             options.append(option(topic.label, () => choose(topic)));
         });
 
-        if (withMenu && rules.menu) {
-            options.append(option(rules.menu, backToMenu));
-        }
-
-        if (rules.talk) {
-            const talk = option(rules.talk, () => {
-                options?.remove();
-                root.querySelector('[data-widget-toggle="whatsapp"]')?.click();
-            });
-
-            talk.className = talk.className.replace('border-brand-600 bg-white text-brand-700', 'border-[#128c4a] bg-white text-[#128c4a]').replace('hover:bg-brand-600', 'hover:bg-[#128c4a]');
-            options.append(talk);
-        }
-
         log.append(options);
         enter(options);
         scroll();
-    };
-
-    const backToMenu = () => {
-        options?.remove();
-        options = null;
-        say('user', rules.menu ?? '');
-        say('bot', rules.again ?? '');
-        showOptions();
     };
 
     const choose = (topic) => {
@@ -231,7 +208,7 @@ function initChat() {
                 say('bot', rules.again ?? '');
             }
 
-            showOptions(followUps.length > 0 ? followUps : topics, followUps.length > 0);
+            showOptions(followUps.length > 0 ? followUps : topics);
             // Keep the question and its answer in view; the options sit below and can be reached by scrolling.
             log.scrollTo({ top: Math.max(asked.offsetTop - 12, 0), behavior: calm ? 'auto' : 'smooth' });
         }, calm ? 0 : 550);

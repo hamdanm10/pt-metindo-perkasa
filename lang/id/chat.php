@@ -11,8 +11,6 @@ return [
         'subtitle' => 'Jawaban cepat tentang PT Metindo Perkasa',
         'welcome' => 'Halo! Pilih topik di bawah dan saya akan langsung menjawab.',
         'again' => 'Ada lagi yang bisa saya bantu?',
-        'talk' => 'Bicara dengan layanan pelanggan',
-        'menu' => 'Kembali ke menu utama',
     ],
     'whatsapp' => [
         'title' => 'Layanan pelanggan WhatsApp',

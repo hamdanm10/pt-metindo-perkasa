@@ -4,8 +4,6 @@
     $rules = [
         'welcome' => __('chat.chat.welcome'),
         'again' => __('chat.chat.again'),
-        'talk' => $agents ? __('chat.chat.talk') : null,
-        'menu' => __('chat.chat.menu'),
         'topics' => $topics,
     ];
     // Each panel opens right above its own button: its right edge lines up with the button's. On small screens it spans above both.
@@ -31,7 +29,7 @@
             </button>
         </div>
 
-        <div data-chat-log class="relative flex flex-1 flex-col gap-2.5 overflow-y-auto bg-lavender p-4 pb-5" role="log" aria-live="polite"></div>
+        <div data-chat-log data-lenis-prevent class="relative flex flex-1 flex-col gap-2.5 overflow-y-auto overscroll-contain bg-lavender p-4 pb-5" role="log" aria-live="polite"></div>
 
     </section>
     <button type="button" data-widget-toggle="chat" aria-expanded="false" aria-controls="chat-panel" aria-label="{{ __('chat.open_chat') }}" class="{{ $round }} bg-brand-600 hover:bg-brand-700">
@@ -53,7 +51,7 @@
                     <svg viewBox="0 0 20 20" class="size-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg>
                 </button>
             </div>
-            <ul class="max-h-[min(24rem,calc(100dvh-14rem))] divide-y divide-ink/10 overflow-y-auto">
+            <ul data-lenis-prevent class="max-h-[min(24rem,calc(100dvh-14rem))] divide-y divide-ink/10 overflow-y-auto overscroll-contain">
                 @foreach ($agents as $agent)
                     <li data-agent>
                         <a href="{{ app(\App\Services\Landing\LandingContact::class)->url($agent['number']) }}" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-3 px-4 py-3 hover:bg-lavender focus-visible:outline-offset-[-3px]">

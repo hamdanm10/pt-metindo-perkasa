@@ -11,8 +11,6 @@ return [
         'subtitle' => 'PT Metindo Perkasa についてすぐにお答えします',
         'welcome' => 'こんにちは！下のトピックを選ぶと、すぐにお答えします。',
         'again' => 'ほかにお手伝いできることはありますか？',
-        'talk' => 'カスタマーサービスに相談',
-        'menu' => 'メインメニューに戻る',
     ],
     'whatsapp' => [
         'title' => 'WhatsApp カスタマーサービス',
