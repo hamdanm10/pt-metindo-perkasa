@@ -19,7 +19,7 @@ class ListArticles
         $search = trim($search);
 
         return Article::query()
-            ->with('translations')
+            ->with(['translations', 'creator:id,name'])
             ->when($type, fn ($query) => $query->where('type', $type))
             ->when($status, fn ($query) => $query->whereHas(
                 'translations',

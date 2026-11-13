@@ -300,6 +300,30 @@ class ArticleAdminTest extends TestCase
         $this->assertSame($few, count(DB::getQueryLog()));
     }
 
+    public function test_the_list_shows_who_created_each_article_without_extra_queries(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $author = User::factory()->staff()->create(['name' => 'Rina Writer']);
+        Article::factory()->create(['created_by' => $author->id]);
+        Article::factory()->create(['created_by' => null]);
+
+        Livewire::actingAs($admin)->test(Index::class)
+            ->assertSee(__('article_manager.fields.created_by'))
+            ->assertSee('Rina Writer')
+            ->assertSee(__('article_manager.unknown_author'));
+
+        DB::enableQueryLog();
+        Livewire::actingAs($admin)->test(Index::class);
+        $few = count(DB::getQueryLog());
+
+        Article::factory()->count(5)->create()->each(fn (Article $article) => $article->update(['created_by' => User::factory()->staff()->create()->id]));
+
+        DB::flushQueryLog();
+        Livewire::actingAs($admin)->test(Index::class);
+
+        $this->assertSame($few, count(DB::getQueryLog()));
+    }
+
     public function test_dashboard_texts_exist_in_both_dashboard_languages(): void
     {
         $en = require lang_path('en/article_manager.php');
