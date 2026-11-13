@@ -52,7 +52,7 @@
                                             <summary class="{{ $sidebarLink }} cursor-pointer list-none text-white/70 [&::-webkit-details-marker]:hidden">
                                                 <x-dashboard.icon :name="$entry['icon']" />
                                                 <span class="flex-1">{{ __($entry['label']) }}</span>
-                                                <svg viewBox="0 0 24 24" class="size-4 transition-transform group-open/nav:rotate-180" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                                                <svg viewBox="0 0 24 24" class="size-4 transition-transform group-open/nav:not-group-data-closing/nav:rotate-180" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
                                             </summary>
                                             <ul class="mt-0.5 space-y-0.5">
                                                 @foreach ($entry['items'] as $item)
