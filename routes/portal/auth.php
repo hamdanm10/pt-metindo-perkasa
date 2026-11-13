@@ -3,16 +3,14 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Portal\Auth\LoginController;
-use App\Http\Controllers\Portal\HomeController;
 use Illuminate\Support\Facades\Route;
+
+/**
+ * The one sign-in page shared by customers and distributors. After signing in each goes to their own area.
+ */
+Route::redirect('/', '/portal/login')->name('home');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('login', [LoginController::class, 'create'])->name('login');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:30,1');
-});
-
-Route::middleware(['auth', 'role:customer,distributor'])->group(function (): void {
-    Route::redirect('/', '/portal/dashboard')->name('home');
-    Route::get('dashboard', HomeController::class)->name('dashboard');
-    Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 });

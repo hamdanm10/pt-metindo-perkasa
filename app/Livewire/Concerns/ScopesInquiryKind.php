@@ -9,7 +9,7 @@ use Livewire\Attributes\Locked;
 
 /**
  * The staff area has one set of question pages per kind of owner (customers, distributors), taken from the route.
- * In the portal there is no kind: a portal user only ever sees their own records.
+ * In the customer and distributor areas there is no kind: a portal user only ever sees their own records.
  */
 trait ScopesInquiryKind
 {
@@ -43,6 +43,6 @@ trait ScopesInquiryKind
      */
     protected function routePrefix(): string
     {
-        return $this->kind === '' ? 'portal.inquiries' : "app.{$this->kind}-inquiries";
+        return $this->kind === '' ? $this->actor()->role->area().'.inquiries' : "app.{$this->kind}-inquiries";
     }
 }

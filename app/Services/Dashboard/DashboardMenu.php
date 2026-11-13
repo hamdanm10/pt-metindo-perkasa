@@ -41,8 +41,10 @@ class DashboardMenu
             ['route' => 'app.distributors.index', 'label' => 'dashboard.nav.distributors', 'active' => 'app.distributors.*', 'icon' => 'truck', 'group' => 'users', 'parent' => 'clients', 'roles' => [Role::Admin]],
             ['route' => 'app.customer-inquiries.index', 'label' => 'dashboard.nav.customer_inquiries', 'active' => 'app.customer-inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => 'qa', 'roles' => Role::staffArea()],
             ['route' => 'app.distributor-inquiries.index', 'label' => 'dashboard.nav.distributor_inquiries', 'active' => 'app.distributor-inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => 'qa', 'roles' => Role::staffArea()],
-            ['route' => 'portal.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'portal.dashboard', 'icon' => 'home', 'group' => 'menu', 'parent' => null, 'roles' => Role::portalArea()],
-            ['route' => 'portal.inquiries.index', 'label' => 'dashboard.nav.inquiries', 'active' => 'portal.inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => null, 'roles' => Role::portalArea()],
+            ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'icon' => 'home', 'group' => 'menu', 'parent' => null, 'roles' => [Role::Customer]],
+            ['route' => 'customer.inquiries.index', 'label' => 'dashboard.nav.inquiries', 'active' => 'customer.inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => null, 'roles' => [Role::Customer]],
+            ['route' => 'distributor.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'distributor.dashboard', 'icon' => 'home', 'group' => 'menu', 'parent' => null, 'roles' => [Role::Distributor]],
+            ['route' => 'distributor.inquiries.index', 'label' => 'dashboard.nav.inquiries', 'active' => 'distributor.inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => null, 'roles' => [Role::Distributor]],
         ];
     }
 

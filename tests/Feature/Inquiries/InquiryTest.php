@@ -56,20 +56,20 @@ class InquiryTest extends TestCase
         $inquiry = Inquiry::factory()->create();
 
         $this->get('/app/customer-inquiries')->assertRedirect(route('app.login'));
-        $this->get('/portal/inquiries')->assertRedirect(route('portal.login'));
+        $this->get('/customer/inquiries')->assertRedirect(route('portal.login'));
 
         foreach (['admin', 'staff'] as $role) {
             $user = User::factory()->{$role}()->create();
             $this->actingAs($user)->get('/app/customer-inquiries')->assertOk();
             $this->actingAs($user)->get("/app/customer-inquiries/{$inquiry->id}")->assertOk();
             $this->actingAs($user)->get('/app/customer-inquiries/create')->assertOk();
-            $this->actingAs($user)->get('/portal/inquiries')->assertForbidden();
+            $this->actingAs($user)->get('/customer/inquiries')->assertForbidden();
         }
 
         $customer = User::factory()->customer()->create();
         $own = Inquiry::factory()->create(['customer_id' => $customer->id]);
-        $this->actingAs($customer)->get('/portal/inquiries')->assertOk();
-        $this->actingAs($customer)->get("/portal/inquiries/{$own->id}")->assertOk();
+        $this->actingAs($customer)->get('/customer/inquiries')->assertOk();
+        $this->actingAs($customer)->get("/customer/inquiries/{$own->id}")->assertOk();
         $this->actingAs($customer)->get('/app/customer-inquiries')->assertForbidden();
         $this->actingAs($customer)->get('/app/customer-inquiries/create')->assertForbidden();
         $this->actingAs($customer)->get("/app/customer-inquiries/{$inquiry->id}/edit")->assertForbidden();
@@ -81,9 +81,9 @@ class InquiryTest extends TestCase
         $mine = Inquiry::factory()->create(['customer_id' => $distributor->id, 'question' => 'Distributor question']);
         $theirs = Inquiry::factory()->create(['question' => 'Someone else question']);
 
-        $this->actingAs($distributor)->get('/portal/inquiries')->assertOk()->assertSee('Distributor question')->assertDontSee('Someone else question');
-        $this->actingAs($distributor)->get("/portal/inquiries/{$mine->id}")->assertOk();
-        $this->actingAs($distributor)->get("/portal/inquiries/{$theirs->id}")->assertNotFound();
+        $this->actingAs($distributor)->get('/distributor/inquiries')->assertOk()->assertSee('Distributor question')->assertDontSee('Someone else question');
+        $this->actingAs($distributor)->get("/distributor/inquiries/{$mine->id}")->assertOk();
+        $this->actingAs($distributor)->get("/distributor/inquiries/{$theirs->id}")->assertNotFound();
         $this->actingAs($distributor)->get('/app/customer-inquiries')->assertForbidden();
 
         $lookup = new LookupSearch;
@@ -379,7 +379,7 @@ class InquiryTest extends TestCase
         Livewire::actingAs($customer)->test(Index::class)->call('delete', $inquiry->id)->assertForbidden();
         $this->assertDatabaseHas('inquiries', ['id' => $inquiry->id]);
 
-        $this->actingAs($customer)->get('/portal/inquiries')
+        $this->actingAs($customer)->get('/customer/inquiries')
             ->assertOk()
             ->assertDontSee(route('app.customer-inquiries.create'), false)
             ->assertDontSee('data-confirm="', false)
@@ -395,8 +395,8 @@ class InquiryTest extends TestCase
         $this->actingAs(User::factory()->admin()->create())->get('/app/customer-inquiries')->assertSee('Sari Wulandari');
         $this->actingAs(User::factory()->admin()->create())->get("/app/customer-inquiries/{$inquiry->id}")->assertSee('Sari Wulandari');
 
-        $this->actingAs($customer)->get('/portal/inquiries')->assertDontSee('Sari Wulandari');
-        $this->actingAs($customer)->get("/portal/inquiries/{$inquiry->id}")->assertDontSee('Sari Wulandari');
+        $this->actingAs($customer)->get('/customer/inquiries')->assertDontSee('Sari Wulandari');
+        $this->actingAs($customer)->get("/customer/inquiries/{$inquiry->id}")->assertDontSee('Sari Wulandari');
     }
 
     public function test_the_show_page_has_the_question_answer_links_and_pictures(): void
@@ -406,12 +406,12 @@ class InquiryTest extends TestCase
         $inquiry = Inquiry::factory()->create(['question' => 'Does it rust?', 'answer' => "Line one\nLine two", 'service_id' => $service->id, 'customer_id' => $customer->id]);
         $image = $this->withImage($inquiry);
 
-        $this->actingAs($customer)->get("/portal/inquiries/{$inquiry->id}")
+        $this->actingAs($customer)->get("/customer/inquiries/{$inquiry->id}")
             ->assertOk()
             ->assertSee('Does it rust?')
             ->assertSee('Line one')
             ->assertSee('Electroplating')
-            ->assertSee(route('portal.inquiry-images.show', $image), false);
+            ->assertSee(route('customer.inquiry-images.show', $image), false);
     }
 
     public function test_pictures_are_served_only_to_signed_in_users_in_their_own_area(): void
@@ -420,16 +420,16 @@ class InquiryTest extends TestCase
         $image = $this->withImage(Inquiry::factory()->create(['customer_id' => $customer->id]));
 
         $this->get(route('app.inquiry-images.show', $image))->assertRedirect(route('app.login'));
-        $this->get(route('portal.inquiry-images.show', $image))->assertRedirect(route('portal.login'));
+        $this->get(route('customer.inquiry-images.show', $image))->assertRedirect(route('portal.login'));
 
-        $this->actingAs($customer)->get(route('portal.inquiry-images.show', $image))
+        $this->actingAs($customer)->get(route('customer.inquiry-images.show', $image))
             ->assertOk()
             ->assertHeader('Content-Type', 'image/webp');
         $this->actingAs($customer)->get(route('app.inquiry-images.show', $image))->assertForbidden();
 
         $this->actingAs(User::factory()->staff()->create())->get(route('app.inquiry-images.show', $image))->assertOk();
-        $this->actingAs(User::factory()->staff()->create())->get(route('portal.inquiry-images.show', $image))->assertForbidden();
-        $this->actingAs($customer)->get('/portal/inquiry-images/999999')->assertNotFound();
+        $this->actingAs(User::factory()->staff()->create())->get(route('customer.inquiry-images.show', $image))->assertForbidden();
+        $this->actingAs($customer)->get('/customer/inquiry-images/999999')->assertNotFound();
     }
 
     public function test_search_filters_and_order(): void
@@ -505,11 +505,11 @@ class InquiryTest extends TestCase
         $dated = Inquiry::factory()->create(['customer_id' => $customer->id, 'question' => 'Dated question', 'asked_at' => '2026-01-01']);
         $undated = Inquiry::factory()->create(['customer_id' => $customer->id, 'question' => 'Undated question', 'asked_at' => null]);
 
-        $this->actingAs($customer)->get('/portal/inquiries')
+        $this->actingAs($customer)->get('/customer/inquiries')
             ->assertOk()
             ->assertSeeInOrder(['Dated question', 'Undated question']);
-        $this->actingAs($customer)->get("/portal/inquiries/{$undated->id}")->assertOk()->assertDontSee('Asked on');
-        $this->actingAs($customer)->get("/portal/inquiries/{$dated->id}")->assertOk()->assertSee('Asked on');
+        $this->actingAs($customer)->get("/customer/inquiries/{$undated->id}")->assertOk()->assertDontSee('Asked on');
+        $this->actingAs($customer)->get("/customer/inquiries/{$dated->id}")->assertOk()->assertSee('Asked on');
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['inquiry' => $undated, 'kind' => 'customer'])
             ->assertSet('form.askedAt', '')
@@ -525,14 +525,14 @@ class InquiryTest extends TestCase
         $theirs = Inquiry::factory()->create(['customer_id' => $bob->id, 'question' => 'Bob question']);
         $theirImage = $this->withImage($theirs);
 
-        $this->actingAs($alice)->get('/portal/inquiries')
+        $this->actingAs($alice)->get('/customer/inquiries')
             ->assertOk()
             ->assertSee('Alice question')
             ->assertDontSee('Bob question');
 
-        $this->actingAs($alice)->get("/portal/inquiries/{$mine->id}")->assertOk();
-        $this->actingAs($alice)->get("/portal/inquiries/{$theirs->id}")->assertNotFound();
-        $this->actingAs($alice)->get(route('portal.inquiry-images.show', $theirImage))->assertNotFound();
+        $this->actingAs($alice)->get("/customer/inquiries/{$mine->id}")->assertOk();
+        $this->actingAs($alice)->get("/customer/inquiries/{$theirs->id}")->assertNotFound();
+        $this->actingAs($alice)->get(route('customer.inquiry-images.show', $theirImage))->assertNotFound();
 
         Livewire::actingAs($alice)->test(Index::class)->assertSee('Alice question')->assertDontSee('Bob question');
         Livewire::actingAs($alice)->test(Index::class)->set('customer', (string) $bob->id)->assertSee('Alice question')->assertDontSee('Bob question');
@@ -598,7 +598,8 @@ class InquiryTest extends TestCase
 
         $this->assertContains('app.customer-inquiries.index', array_column($menu->forUser(User::factory()->admin()->create()), 'route'));
         $this->assertContains('app.customer-inquiries.index', array_column($menu->forUser(User::factory()->staff()->create()), 'route'));
-        $this->assertContains('portal.inquiries.index', array_column($menu->forUser(User::factory()->customer()->create()), 'route'));
+        $this->assertContains('customer.inquiries.index', array_column($menu->forUser(User::factory()->customer()->create()), 'route'));
+        $this->assertContains('distributor.inquiries.index', array_column($menu->forUser(User::factory()->distributor()->create()), 'route'));
         $this->assertNotContains('app.customer-inquiries.index', array_column($menu->forUser(User::factory()->customer()->create()), 'route'));
     }
 

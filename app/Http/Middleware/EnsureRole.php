@@ -30,7 +30,7 @@ class EnsureRole
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect()->guest($user->role->usesStaffArea() ? route('app.login') : route('portal.login'));
+            return redirect()->guest(route($user->role->loginRoute()));
         }
 
         abort_unless(in_array($user->role, array_map(fn (string $role): Role => Role::from($role), $roles), true), 403);

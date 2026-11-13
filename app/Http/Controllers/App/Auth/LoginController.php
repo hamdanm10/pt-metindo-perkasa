@@ -19,11 +19,6 @@ class LoginController extends AuthenticatedSessionController
         return 'app.login';
     }
 
-    protected function homeRoute(): string
-    {
-        return 'app.dashboard';
-    }
-
     protected function titleKey(): string
     {
         return 'auth.staff_title';

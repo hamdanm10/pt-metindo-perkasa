@@ -34,15 +34,15 @@ class LoginTest extends TestCase
         }
     }
 
-    public function test_customer_and_distributor_sign_in_at_the_same_portal_login(): void
+    public function test_customer_and_distributor_sign_in_at_the_same_portal_login_and_land_in_their_own_area(): void
     {
         foreach (['customer', 'distributor'] as $role) {
             $user = User::factory()->{$role}()->create();
 
-            $this->attempt('portal', $user->email)->assertRedirect('/portal/dashboard');
+            $this->attempt('portal', $user->email)->assertRedirect("/{$role}/dashboard");
             $this->assertAuthenticatedAs($user);
 
-            $this->post('/portal/logout');
+            $this->post("/{$role}/logout")->assertRedirect('/portal/login');
         }
     }
 
@@ -134,7 +134,7 @@ class LoginTest extends TestCase
         $this->assertGuest();
 
         $this->actingAs(User::factory()->customer()->create())
-            ->post('/portal/logout')
+            ->post('/customer/logout')
             ->assertRedirect('/portal/login');
         $this->assertGuest();
     }

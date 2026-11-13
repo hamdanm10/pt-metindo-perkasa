@@ -19,7 +19,7 @@ class ShellTest extends TestCase
 
     public function test_home_greets_each_role_by_name_and_shows_the_role_and_an_empty_state(): void
     {
-        foreach (['admin' => '/app/dashboard', 'staff' => '/app/dashboard', 'customer' => '/portal/dashboard', 'distributor' => '/portal/dashboard'] as $role => $url) {
+        foreach (['admin' => '/app/dashboard', 'staff' => '/app/dashboard', 'customer' => '/customer/dashboard', 'distributor' => '/distributor/dashboard'] as $role => $url) {
             $user = User::factory()->{$role}()->create(['name' => "Tester {$role}"]);
 
             $this->actingAs($user)->get($url)
@@ -218,11 +218,11 @@ class ShellTest extends TestCase
     {
         $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')
             ->assertSee('href="'.url('/app/dashboard').'"', false)
-            ->assertDontSee('href="'.url('/portal/dashboard').'"', false)
+            ->assertDontSee('href="'.url('/customer/dashboard').'"', false)
             ->assertSee('aria-current="page"', false);
 
-        $this->actingAs(User::factory()->customer()->create())->get('/portal/dashboard')
-            ->assertSee('href="'.url('/portal/dashboard').'"', false)
+        $this->actingAs(User::factory()->customer()->create())->get('/customer/dashboard')
+            ->assertSee('href="'.url('/customer/dashboard').'"', false)
             ->assertDontSee('href="'.url('/app/dashboard').'"', false);
     }
 
@@ -301,8 +301,8 @@ class ShellTest extends TestCase
     {
         $user = User::factory()->customer()->create();
 
-        $this->actingAs($user)->from('https://elsewhere.example/page')->post('/portal/locale', ['locale' => 'id'])
-            ->assertRedirect(route('portal.dashboard'));
+        $this->actingAs($user)->from('https://elsewhere.example/page')->post('/customer/locale', ['locale' => 'id'])
+            ->assertRedirect(route('customer.dashboard'));
 
         $this->post('/app/locale', ['locale' => 'id']);
 

@@ -81,13 +81,13 @@ Empat peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). B
 | --- | --- | --- | --- |
 | `admin` | `/app/login` | `/app/*` | Mengelola seluruh sistem, termasuk konten landing |
 | `staff` | `/app/login` | `/app/*` | Hak akses lebih terbatas dari admin |
-| `customer` | `/portal/login` | `/portal/*` | Area portal, dipakai bersama distributor |
-| `distributor` | `/portal/login` | `/portal/*` | Area portal yang sama dengan customer (halaman login disatukan) |
+| `customer` | `/portal/login` | `/customer/*` | Area customer sendiri (dashboard terpisah dari distributor) |
+| `distributor` | `/portal/login` | `/distributor/*` | Area distributor sendiri. Halaman login disatukan dengan customer |
 
-- Tetap satu tabel `users` dan satu mekanisme sesi. `/app/login` menolak akun `customer` dan `distributor`, dan `/portal/login` menolak `admin` dan `staff`, dengan pesan yang sama seperti kredensial salah supaya tidak membocorkan jenis akun.
-- Middleware memastikan `/app/*` hanya untuk `admin` dan `staff`, dan `/portal/*` hanya untuk `customer` dan `distributor`.
+- Tetap satu tabel `users` dan satu mekanisme sesi. `/app/login` menolak akun `customer` dan `distributor`, dan `/portal/login` (login bersama customer dan distributor, lalu masing-masing diarahkan ke areanya) menolak `admin` dan `staff`, dengan pesan yang sama seperti kredensial salah supaya tidak membocorkan jenis akun.
+- Middleware memastikan `/app/*` hanya untuk `admin` dan `staff`, dan `/customer/*` hanya untuk `customer` dan `/distributor/*` hanya untuk `distributor`.
 - **Pengelolaan konten landing hanya untuk `admin`**, dijaga lewat Policy.
-- `app` dan `portal` dicadangkan di level root, sehingga tidak bentrok dengan awalan locale landing yang hanya menerima kode bahasa pada daftar.
+- `app`, `portal`, `customer`, dan `distributor` dicadangkan di level root, sehingga tidak bentrok dengan awalan locale landing yang hanya menerima kode bahasa pada daftar.
 - Logic bisnis (Action dan Service) dipakai bersama oleh semua peran. Yang berbeda hanya lapisan controller, Form Request, dan view.
 
 ### Data Pengguna dan Peran
@@ -138,7 +138,8 @@ Empat peran dengan antarmuka Blade (dashboard nanti mungkin memakai Livewire). B
 | --- | --- | --- | --- | --- |
 | `routes/landing/*` | Landing publik | `/{locale}` | `landing.*` | `web`, middleware locale landing |
 | `routes/app/*` | Dashboard admin dan staf | `/app` | `app.*` | `web`, `auth`, peran admin atau staf |
-| `routes/portal/*` | Area portal (customer dan distributor) | `/portal` | `portal.*` | `web`, `auth`, peran customer atau distributor |
+| `routes/portal/*` | Halaman login bersama customer dan distributor | `/portal` | `portal.*` | `web`, `guest` |
+| `routes/client/*` | Area customer dan distributor (satu definisi, dimuat dua kali; tiap file mengembalikan closure berparameter nama area) | `/customer`, `/distributor` | `customer.*`, `distributor.*` | `web`, `auth`, peran sesuai areanya |
 
 - Satu file per **fitur** di dalam subfolder (contoh: `routes/app/landing-content.php`), bukan satu file besar.
 - Route dari area yang berbeda tidak boleh bercampur dalam satu file.

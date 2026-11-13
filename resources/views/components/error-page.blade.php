@@ -10,7 +10,7 @@
 
     $home = $landing
         ? url("/{$locale}")
-        : url('/'.$context['dashboardArea'].'/dashboard');
+        : ($context['dashboardArea'] === 'portal' ? url('/portal/login') : url('/'.$context['dashboardArea'].'/dashboard'));
 
     $assets = ['resources/css/'.($landing ? 'landing' : 'dashboard').'.css', 'resources/css/fonts/latin.css'];
 

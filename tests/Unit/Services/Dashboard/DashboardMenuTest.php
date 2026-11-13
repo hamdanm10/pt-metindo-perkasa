@@ -28,14 +28,14 @@ class DashboardMenuTest extends TestCase
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->customer()->make());
 
-        $this->assertSame(['portal.dashboard', 'portal.inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['customer.dashboard', 'customer.inquiries.index'], array_column($menu, 'route'));
     }
 
-    public function test_distributors_get_the_same_portal_menu_as_customers(): void
+    public function test_distributors_get_their_own_home_and_questions(): void
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->distributor()->make());
 
-        $this->assertSame(['portal.dashboard', 'portal.inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['distributor.dashboard', 'distributor.inquiries.index'], array_column($menu, 'route'));
     }
 
     public function test_admin_items_are_grouped_under_menu_content_and_user_management_with_icons(): void
@@ -62,7 +62,7 @@ class DashboardMenuTest extends TestCase
         $this->assertSame('dashboard.nav.parents.qa', $staff[2]['entries'][0]['label']);
 
         $portal = (new DashboardMenu)->groupsForUser(User::factory()->customer()->make());
-        $this->assertSame(['portal.inquiries.index'], array_column($portal[1]['entries'], 'route'));
+        $this->assertSame(['customer.inquiries.index'], array_column($portal[1]['entries'], 'route'));
     }
 
     public function test_a_group_without_items_is_left_out(): void
