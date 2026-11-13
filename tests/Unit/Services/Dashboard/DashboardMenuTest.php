@@ -50,6 +50,21 @@ class DashboardMenuTest extends TestCase
         $this->assertSame(['home', 'document', 'cube', 'wrench', 'question', 'phone', 'briefcase', 'users', 'truck', 'chat', 'chat'], array_column(array_merge(...array_column($groups, 'items')), 'icon'));
     }
 
+    public function test_related_items_are_gathered_into_dropdown_entries_and_a_lone_item_stays_a_plain_item(): void
+    {
+        $groups = (new DashboardMenu)->groupsForUser(User::factory()->admin()->make());
+
+        $this->assertSame(['app.articles.index', 'dashboard.nav.parents.catalog', 'dashboard.nav.parents.contact'], array_map(fn (array $entry): string => $entry['route'] ?? $entry['label'], $groups[1]['entries']));
+        $this->assertSame(['app.staff.index', 'dashboard.nav.parents.clients'], array_map(fn (array $entry): string => $entry['route'] ?? $entry['label'], $groups[2]['entries']));
+        $this->assertSame(['dashboard.nav.parents.qa'], array_column($groups[3]['entries'], 'label'));
+
+        $staff = (new DashboardMenu)->groupsForUser(User::factory()->staff()->make());
+        $this->assertSame('dashboard.nav.parents.qa', $staff[1]['entries'][0]['label']);
+
+        $portal = (new DashboardMenu)->groupsForUser(User::factory()->customer()->make());
+        $this->assertSame(['portal.inquiries.index'], array_column($portal[1]['entries'], 'route'));
+    }
+
     public function test_a_group_without_items_is_left_out(): void
     {
         $groups = (new DashboardMenu)->groupsForUser(User::factory()->staff()->make());

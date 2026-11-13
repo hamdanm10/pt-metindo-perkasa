@@ -24,6 +24,12 @@ return [
         'users' => 'User Management',
     ],
     'nav' => [
+        'parents' => [
+            'catalog' => 'Catalog',
+            'contact' => 'Contact tools',
+            'clients' => 'Clients',
+            'qa' => 'Q&A',
+        ],
         'home' => 'Dashboard',
         'staff' => 'Staff',
         'customers' => 'Customers',

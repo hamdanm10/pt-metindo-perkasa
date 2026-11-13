@@ -99,13 +99,17 @@ class ShellTest extends TestCase
         $this->assertGreaterThan($sidebarEnd, (int) strpos($html, '<header'));
     }
 
-    public function test_the_sidebar_collapses_groups_with_several_items_into_dropdowns_and_opens_the_active_one(): void
+    public function test_the_sidebar_gathers_related_items_into_icon_dropdowns_and_opens_the_active_one(): void
     {
-        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/articles')->getContent();
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/products')->getContent();
 
-        $this->assertSame(3, substr_count($html, 'data-nav-group'));
-        $this->assertMatchesRegularExpression('/<details[^>]*data-nav-group[^>]* open\s*>\s*<summary[^>]*>\s*'.preg_quote(__('dashboard.groups.content'), '/').'/', $html);
-        $this->assertDoesNotMatchRegularExpression('/<details[^>]*data-nav-group[^>]* open\s*>\s*<summary[^>]*>\s*'.preg_quote(__('dashboard.groups.users'), '/').'/', $html);
+        $this->assertSame(4, substr_count($html, 'data-nav-group'));
+
+        $opens = fn (string $label): bool => preg_match('/<details[^>]*data-nav-group[^>]* open\s*>\s*<summary[^>]*>\s*<svg[^>]*>(?:(?!<\/svg>).)*<\/svg>\s*<span[^>]*>'.preg_quote($label, '/').'<\/span>/s', $html) === 1;
+
+        $this->assertTrue($opens(__('dashboard.nav.parents.catalog')));
+        $this->assertFalse($opens(__('dashboard.nav.parents.clients')));
+        $this->assertFalse($opens(__('dashboard.nav.parents.qa')));
     }
 
     public function test_the_sidebar_groups_the_menu_under_labels_with_an_icon_on_each_item(): void
@@ -120,7 +124,7 @@ class ShellTest extends TestCase
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
         $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
-        $this->assertSame(11, substr_count($html, 'size-5 shrink-0'));
+        $this->assertSame(7, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.content'), '/').'\s*(<\/p>|<svg)/', $staff);
