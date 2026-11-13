@@ -4,8 +4,6 @@
     $rules = [
         'welcome' => __('chat.chat.welcome'),
         'again' => __('chat.chat.again'),
-        'talk' => $agents ? __('chat.chat.talk') : null,
-        'menu' => __('chat.chat.menu'),
         'topics' => $topics,
     ];
     // Each panel opens right above its own button: its right edge lines up with the button's. On small screens it spans above both.

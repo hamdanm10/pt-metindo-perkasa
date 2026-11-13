@@ -87,18 +87,6 @@ class ContactWidgetsTest extends TestCase
         $this->assertMatchesRegularExpression('/<ul data-lenis-prevent class="[^"]*overscroll-contain/', $html);
     }
 
-    public function test_the_talk_option_is_offered_only_with_numbers(): void
-    {
-        $this->addTopic();
-        config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null]);
-
-        $this->assertNull($this->rules($this->page('/en'))['talk']);
-
-        config(['landing.contact.whatsapp' => '6281200000001']);
-
-        $this->assertSame(__('chat.chat.talk'), $this->rules($this->page('/en'))['talk']);
-    }
-
     public function test_without_numbers_only_the_chat_button_is_shown(): void
     {
         $this->addTopic();
@@ -118,7 +106,7 @@ class ContactWidgetsTest extends TestCase
             $response = $this->get("/{$code}")->assertOk();
             $rules = $this->rules($this->page("/{$code}"));
 
-            foreach (['welcome', 'again', 'talk', 'menu'] as $key) {
+            foreach (['welcome', 'again'] as $key) {
                 $this->assertNotSame("chat.chat.{$key}", $rules[$key]);
             }
 
@@ -154,13 +142,13 @@ class ContactWidgetsTest extends TestCase
     }
 
     /**
-     * @return array{welcome: string, again: string, talk: string|null, menu: string, topics: list<array{id: int, label: string, answer: string, link: array{label: string, url: string}|null, children: list<mixed>}>}
+     * @return array{welcome: string, again: string, topics: list<array{id: int, label: string, answer: string, link: array{label: string, url: string}|null, children: list<mixed>}>}
      */
     private function rules(string $html): array
     {
         preg_match('/data-chat-rules="([^"]*)"/', $html, $found);
 
-        /** @var array{welcome: string, again: string, talk: string|null, menu: string, topics: list<array{id: int, label: string, answer: string, link: array{label: string, url: string}|null, children: list<mixed>}>} $rules */
+        /** @var array{welcome: string, again: string, topics: list<array{id: int, label: string, answer: string, link: array{label: string, url: string}|null, children: list<mixed>}>} $rules */
         $rules = json_decode(html_entity_decode($found[1] ?? '{}', ENT_QUOTES), true, 512, JSON_THROW_ON_ERROR);
 
         return $rules;

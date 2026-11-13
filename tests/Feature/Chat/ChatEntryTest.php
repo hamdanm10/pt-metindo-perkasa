@@ -339,7 +339,7 @@ class ChatEntryTest extends TestCase
         );
 
         foreach (config('locales.landing') as $code) {
-            $this->assertNotSame('chat.chat.menu', __('chat.chat.menu', [], $code));
+            $this->assertNotSame('chat.chat.again', __('chat.chat.again', [], $code));
             $this->assertArrayNotHasKey('topics', trans('chat', [], $code));
         }
     }
