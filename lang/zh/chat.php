@@ -12,7 +12,7 @@ return [
         'welcome' => '您好！请选择下面的话题，我会马上回答。',
         'again' => '还有其他我可以帮忙的吗？',
         'talk' => '联系客服',
-        'menu' => '返回主菜单',
+        'menu' => '我还有其他问题',
     ],
     'whatsapp' => [
         'title' => 'WhatsApp 客服',

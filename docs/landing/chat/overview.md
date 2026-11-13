@@ -39,7 +39,7 @@ Menu "Chat assistant" / "Asisten chat" (ikon `question`) di grup Content, hanya 
 ## Di landing
 
 - `App\Services\Landing\LandingChat::topics()` mengembalikan pohon bahasa halaman: `{id, label, answer, link, children[]}`. Dimasukkan sebagai JSON ke `data-chat-rules` oleh `x-landing.floating-contact` bersama `welcome`, `again`, `talk`, dan `menu`.
-- `resources/js/landing/contact-widgets.js`: asisten menyapa dan menampilkan pertanyaan tingkat teratas. Mengetuk satu pertanyaan menaruhnya sebagai pesan pengunjung, lalu asisten menjawab (dengan tautan bila ada). **Bila punya lanjutan**, bubble pilihan di bawahnya adalah pertanyaan lanjutan itu, ditambah "Back to the main menu" yang menampilkan tingkat teratas lagi. **Bila tidak**, asisten bertanya "Anything else I can help with?" dan tingkat teratas muncul lagi. "Talk to customer service" tetap ada bila ada nomor WhatsApp.
+- `resources/js/landing/contact-widgets.js`: asisten menyapa dan menampilkan pertanyaan tingkat teratas. Mengetuk satu pertanyaan menaruhnya sebagai pesan pengunjung, lalu asisten menjawab (dengan tautan bila ada). **Bila punya lanjutan**, bubble pilihan di bawahnya adalah pertanyaan lanjutan itu, ditambah "I have another question" (Indonesia: "Saya punya pertanyaan lain") yang menaruhnya sebagai pesan pengunjung, lalu asisten bertanya "Anything else I can help with?" dan tingkat teratas muncul lagi. **Bila tidak**, asisten bertanya "Anything else I can help with?" dan tingkat teratas muncul lagi. "Talk to customer service" tetap ada bila ada nomor WhatsApp.
 - Teks tetap (sapaan, "menu", dan seterusnya) ada di `lang/<locale>/chat.php` untuk lima bahasa; teks dashboard di `lang/{en,id}/chat_manager.php`.
 
 ## Pengujian

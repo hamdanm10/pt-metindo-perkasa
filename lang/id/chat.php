@@ -12,7 +12,7 @@ return [
         'welcome' => 'Halo! Pilih topik di bawah dan saya akan langsung menjawab.',
         'again' => 'Ada lagi yang bisa saya bantu?',
         'talk' => 'Bicara dengan layanan pelanggan',
-        'menu' => 'Kembali ke menu utama',
+        'menu' => 'Saya punya pertanyaan lain',
     ],
     'whatsapp' => [
         'title' => 'Layanan pelanggan WhatsApp',

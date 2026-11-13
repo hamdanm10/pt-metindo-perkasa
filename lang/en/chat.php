@@ -12,7 +12,7 @@ return [
         'welcome' => 'Hi! Choose a topic below and I will answer right away.',
         'again' => 'Anything else I can help with?',
         'talk' => 'Talk to customer service',
-        'menu' => 'Back to the main menu',
+        'menu' => 'I have another question',
     ],
     'whatsapp' => [
         'title' => 'WhatsApp customer service',
