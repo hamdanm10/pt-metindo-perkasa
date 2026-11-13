@@ -4,86 +4,88 @@ declare(strict_types=1);
 
 namespace App\Services\Landing;
 
+use App\Models\ChatEntryTranslation;
+use Illuminate\Support\Facades\Cache;
+
 /**
- * The topics of the rule-based chat assistant, in the active language. Every topic has a label
- * for its option bubble, an answer built only from what the site already says (the number of
- * process categories, the contact details in the configuration), and a link. Topics whose data is
- * missing are left out. Nothing here is generated: the visitor taps a bubble and the browser shows
- * the matching answer.
+ * The questions of the rule-based chat assistant in one landing language, as a tree: a question has an
+ * answer, an optional link and follow-up questions, to any depth. The admin writes them per language;
+ * a question with no text in the language is left out together with everything below it. Nothing is
+ * generated: the visitor taps a question and the browser shows the answer and the follow-ups.
+ * Cached per language and cleared whenever the admin changes the chat.
  *
- * @phpstan-type Topic array{id: string, label: string, answer: string, link: array{label: string, url: string}}
+ * @phpstan-type Topic array{id: int, label: string, answer: string, link: array{label: string, url: string}|null, children: list<array<string, mixed>>}
  */
 class LandingChat
 {
-    public function __construct(private readonly LandingContent $content) {}
-
     /**
      * @return list<Topic>
      */
-    public function topics(): array
+    public function topics(?string $locale = null): array
     {
-        $contact = config()->array('landing.contact');
-        $email = $this->text($contact['email'] ?? null);
-        $phone = $this->text($contact['phone'] ?? null);
-        $hours = $this->text($contact['hours'] ?? null);
-        $address = $this->text($contact['address'] ?? null);
-        $categories = count($this->content->categories());
+        $locale ??= app()->getLocale();
 
-        $topics = [
-            $this->topic('processes', $this->line('chat.topics.processes.answer', ['count' => $categories]), 'landing.processes.index'),
-            $this->topic('services', $this->line('chat.topics.services.answer'), 'landing.services'),
-            $this->topic('quote', $this->line('chat.topics.quote.answer'), 'landing.contact'),
-        ];
-
-        $lines = array_values(array_filter([
-            $email !== null ? $this->line('chat.topics.contact.email', ['email' => $email]) : null,
-            $phone !== null ? $this->line('chat.topics.contact.phone', ['phone' => $phone]) : null,
-        ]));
-
-        if ($lines !== []) {
-            $topics[] = $this->topic('contact', implode(' ', $lines), 'landing.contact');
-        }
-
-        if ($hours !== null) {
-            $topics[] = $this->topic('hours', $this->line('chat.topics.hours.answer', ['hours' => $hours]), 'landing.contact');
-        }
-
-        if ($address !== null) {
-            $topics[] = $this->topic('location', $this->line('chat.topics.location.answer', ['address' => $address]), 'landing.about');
-        }
-
-        $topics[] = $this->topic('company', $this->line('chat.topics.company.answer'), 'landing.about');
+        /** @var list<Topic> $topics */
+        $topics = Cache::rememberForever($this->key($locale), fn (): array => $this->build($locale));
 
         return $topics;
     }
 
-    /**
-     * @return Topic
-     */
-    private function topic(string $id, string $answer, string $route): array
+    public function flush(): void
     {
-        return [
-            'id' => $id,
-            'label' => $this->line("chat.topics.{$id}.label"),
-            'answer' => $answer,
-            'link' => ['label' => $this->line("chat.topics.{$id}.link"), 'url' => route($route)],
-        ];
+        foreach (config()->array('locales.landing') as $locale) {
+            Cache::forget($this->key((string) $locale));
+        }
+    }
+
+    private function key(string $locale): string
+    {
+        return "landing.chat.{$locale}";
     }
 
     /**
-     * A translated line. A missing key or a list instead of a line gives an empty string.
-     *
-     * @param  array<string, string|int>  $replace
+     * @return list<Topic>
      */
-    private function line(string $key, array $replace = []): string
+    private function build(string $locale): array
     {
-        $text = __($key, $replace);
+        $rows = ChatEntryTranslation::query()
+            ->join('chat_entries', 'chat_entries.id', '=', 'chat_entry_translations.chat_entry_id')
+            ->where('chat_entry_translations.locale', $locale)
+            ->orderBy('chat_entries.position')
+            ->orderBy('chat_entries.id')
+            ->get(['chat_entries.id as entry_id', 'chat_entries.parent_id', 'chat_entry_translations.question', 'chat_entry_translations.answer', 'chat_entry_translations.link_label', 'chat_entry_translations.link_url']);
 
-        return is_string($text) ? $text : '';
+        $byParent = [];
+
+        foreach ($rows as $row) {
+            $byParent[(int) $row->getAttribute('parent_id')][] = $row;
+        }
+
+        return $this->branch($byParent, 0);
     }
 
-    private function text(mixed $value): ?string
+    /**
+     * @param  array<int, list<ChatEntryTranslation>>  $byParent  rows grouped by parent id, 0 for the top level
+     * @return list<Topic>
+     */
+    private function branch(array $byParent, int $parent): array
     {
-        return is_string($value) && trim($value) !== '' ? trim($value) : null;
+        $topics = [];
+
+        foreach ($byParent[$parent] ?? [] as $row) {
+            $id = (int) $row->getAttribute('entry_id');
+            $label = $row->getAttribute('link_label');
+            $url = $row->getAttribute('link_url');
+
+            $topics[] = [
+                'id' => $id,
+                'label' => (string) $row->question,
+                'answer' => (string) $row->answer,
+                'link' => is_string($label) && $label !== '' && is_string($url) && $url !== '' ? ['label' => $label, 'url' => $url] : null,
+                'children' => $this->branch($byParent, $id),
+            ];
+        }
+
+        return $topics;
     }
 }

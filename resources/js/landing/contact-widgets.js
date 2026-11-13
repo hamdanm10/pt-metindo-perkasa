@@ -5,10 +5,12 @@ import gsap from 'gsap';
  * from its bottom corner (0.5 seconds, `expo.out`); closing: it fades down (0.25 seconds). Escape
  * or a click outside closes it and the focus goes back to its button.
  *
- * The chat is rule-based and has no text box. The server sends the topics for the active language,
- * each with a label, an answer and a link. The assistant greets, then shows the topics as option
- * bubbles; tapping one adds it as the visitor's message, the assistant answers, and the options
- * come back under the answer (with an option to talk to customer service when there are numbers).
+ * The chat is rule-based and has no text box. The server sends the questions for the active language
+ * as a tree: each has a label, an answer, an optional link and follow-up questions (`children`, to any
+ * depth). The assistant greets, then shows the top-level questions as option bubbles; tapping one adds
+ * it as the visitor's message and the assistant answers. Under the answer come its follow-up questions
+ * and a way back to the main menu, or, when there are none, the top-level questions again. An option to
+ * talk to customer service is always there when there are numbers.
  * All text is put in with `textContent`.
  */
 const root = document.querySelector('[data-widgets]');
@@ -126,8 +128,8 @@ function initChat() {
 
         row.className = from === 'user' ? 'flex max-w-[88%] flex-col items-end self-end' : 'flex max-w-[88%] flex-col items-start self-start';
         body.className = from === 'user'
-            ? 'rounded-2xl rounded-ee-sm bg-ink px-3.5 py-2 text-sm text-white'
-            : 'rounded-2xl rounded-es-sm bg-white px-3.5 py-2 text-sm text-ink shadow-sm';
+            ? 'whitespace-pre-line rounded-2xl rounded-ee-sm bg-ink px-3.5 py-2 text-sm text-white'
+            : 'whitespace-pre-line rounded-2xl rounded-es-sm bg-white px-3.5 py-2 text-sm text-ink shadow-sm';
         row.append(body);
         log.append(row);
         enter(row);
@@ -140,7 +142,8 @@ function initChat() {
 
         body.textContent = text;
 
-        if (link) {
+        // The admin's link is checked on the server too; only this site's pages and web addresses become links.
+        if (link && /^(https?:\/\/|\/(?!\/))/i.test(link.url)) {
             const anchor = document.createElement('a');
 
             anchor.href = link.url;
@@ -165,16 +168,24 @@ function initChat() {
         return button;
     };
 
-    /** The option bubbles, left aligned like the assistant's. Taking them away once one is chosen keeps the log short. */
-    const showOptions = () => {
+    /**
+     * The option bubbles, left aligned like the assistant's. Taking them away once one is chosen keeps the
+     * log short. `list` is the questions to offer: the top level, or the follow-ups of the last answer.
+     * Below a follow-up list there is a way back to the top level.
+     */
+    const showOptions = (list = topics, withMenu = false) => {
         options?.remove();
         options = document.createElement('div');
         options.className = 'flex flex-col items-start gap-2 self-start';
         options.setAttribute('role', 'group');
 
-        topics.forEach((topic) => {
+        list.forEach((topic) => {
             options.append(option(topic.label, () => choose(topic)));
         });
+
+        if (withMenu && rules.menu) {
+            options.append(option(rules.menu, backToMenu));
+        }
 
         if (rules.talk) {
             const talk = option(rules.talk, () => {
@@ -191,6 +202,14 @@ function initChat() {
         scroll();
     };
 
+    const backToMenu = () => {
+        options?.remove();
+        options = null;
+        say('user', rules.menu ?? '');
+        say('bot', rules.again ?? '');
+        showOptions();
+    };
+
     const choose = (topic) => {
         options?.remove();
         options = null;
@@ -203,10 +222,16 @@ function initChat() {
         scroll();
 
         window.setTimeout(() => {
+            const followUps = Array.isArray(topic.children) ? topic.children : [];
+
             typing.row.remove();
             say('bot', topic.answer, topic.link);
-            say('bot', rules.again ?? '');
-            showOptions();
+
+            if (followUps.length === 0) {
+                say('bot', rules.again ?? '');
+            }
+
+            showOptions(followUps.length > 0 ? followUps : topics, followUps.length > 0);
             // Keep the question and its answer in view; the options sit below and can be reached by scrolling.
             log.scrollTo({ top: Math.max(asked.offsetTop - 12, 0), behavior: calm ? 'auto' : 'smooth' });
         }, calm ? 0 : 550);

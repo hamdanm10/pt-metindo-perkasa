@@ -1,18 +1,22 @@
 @php
     $agents = app(\App\Services\Landing\LandingContact::class)->agents();
+    $topics = app(\App\Services\Landing\LandingChat::class)->topics();
     $rules = [
         'welcome' => __('chat.chat.welcome'),
         'again' => __('chat.chat.again'),
         'talk' => $agents ? __('chat.chat.talk') : null,
-        'topics' => app(\App\Services\Landing\LandingChat::class)->topics(),
+        'menu' => __('chat.chat.menu'),
+        'topics' => $topics,
     ];
     // Each panel opens right above its own button: its right edge lines up with the button's. On small screens it spans above both.
     $panel = 'absolute bottom-full end-0 mb-3 origin-bottom-right overflow-hidden rounded-lg bg-white text-ink shadow-[0_20px_60px_-15px_rgba(27,31,59,0.45)] ring-1 ring-ink/10 max-sm:fixed max-sm:bottom-[5.5rem] max-sm:end-4 max-sm:mb-0';
     $round = 'group grid size-14 place-items-center rounded-full text-white shadow-lg transition-transform duration-300 hover:scale-105 focus-visible:outline-offset-4 sm:size-[3.75rem]';
 @endphp
 
-{{-- Two floating buttons side by side at the bottom right. The chat opens a rule-based assistant that is answered by tapping option bubbles (answers come from the site's own content, no server). WhatsApp opens the list of customer service numbers. Each panel opens above its own button. Opened and closed by contact-widgets.js. --}}
+{{-- Two floating buttons side by side at the bottom right. The chat opens a rule-based assistant that is answered by tapping option bubbles (the questions, answers and follow-up questions are written by the admin per language, no server round trip). It is left out while the language has no questions. WhatsApp opens the list of customer service numbers. Each panel opens above its own button. Opened and closed by contact-widgets.js. --}}
+@if ($topics !== [] || $agents)
 <div data-widgets class="fixed bottom-4 end-4 z-40 flex items-end gap-3 sm:bottom-6 sm:end-6" style="--focus-ring: #1b1f3b">
+    @if ($topics !== [])
     <div data-chat-rules="{{ json_encode($rules, JSON_UNESCAPED_UNICODE) }}" hidden></div>
 
     <div class="relative">
@@ -35,6 +39,7 @@
         <svg viewBox="0 0 24 24" class="size-7" aria-hidden="true"><path fill="currentColor" d="M12 2.5c-5.5 0-10 3.8-10 8.6 0 2.4 1.1 4.6 3 6.1-.2 1.2-.8 2.4-1.7 3.4-.3.4-.1 1 .5 1 2.3-.2 4-1.1 5.2-1.9.9.2 2 .3 3 .3 5.5 0 10-3.8 10-8.6S17.5 2.5 12 2.5Z"/><circle cx="7.6" cy="11.1" r="1.35" class="fill-brand-600 transition-colors group-hover:fill-brand-700"/><circle cx="12" cy="11.1" r="1.35" class="fill-brand-600 transition-colors group-hover:fill-brand-700"/><circle cx="16.4" cy="11.1" r="1.35" class="fill-brand-600 transition-colors group-hover:fill-brand-700"/></svg>
     </button>
     </div>
+    @endif
 
     @if ($agents)
         <div class="relative">
@@ -70,5 +75,5 @@
         </button>
         </div>
     @endif
-
-    <div data-chat-rules="{{ json_encode($rules, JSON_UNESCAPED_UNICODE) }}" hidden></div>
+</div>
+@endif

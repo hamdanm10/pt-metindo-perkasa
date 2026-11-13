@@ -31,6 +31,7 @@ return [
         'articles' => 'Artikel',
         'products' => 'Produk',
         'services' => 'Layanan',
+        'chat' => 'Asisten chat',
         'inquiries' => 'Tanya Jawab',
         'customer_inquiries' => 'Tanya Jawab Customer',
         'distributor_inquiries' => 'Tanya Jawab Distributor',

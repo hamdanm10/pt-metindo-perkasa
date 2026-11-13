@@ -24,6 +24,7 @@ class DashboardMenu
             ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'icon' => 'document', 'group' => 'content', 'roles' => [Role::Admin]],
             ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'icon' => 'cube', 'group' => 'content', 'roles' => [Role::Admin]],
             ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'content', 'roles' => [Role::Admin]],
+            ['route' => 'app.chat.index', 'label' => 'dashboard.nav.chat', 'active' => 'app.chat.*', 'icon' => 'question', 'group' => 'content', 'roles' => [Role::Admin]],
             ['route' => 'app.staff.index', 'label' => 'dashboard.nav.staff', 'active' => 'app.staff.*', 'icon' => 'briefcase', 'group' => 'users', 'roles' => [Role::Admin]],
             ['route' => 'app.customers.index', 'label' => 'dashboard.nav.customers', 'active' => 'app.customers.*', 'icon' => 'users', 'group' => 'users', 'roles' => [Role::Admin]],
             ['route' => 'app.distributors.index', 'label' => 'dashboard.nav.distributors', 'active' => 'app.distributors.*', 'icon' => 'truck', 'group' => 'users', 'roles' => [Role::Admin]],

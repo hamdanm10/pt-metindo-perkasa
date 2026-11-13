@@ -11,6 +11,7 @@ Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan
 | A3 | Kelola produk: tambah dan ubah, hanya nama dan deskripsi | [`products/overview.md`](products/overview.md) | `feat/products` | Selesai, ter-merge ke `development` |
 | A4 | Kelola layanan: tambah dan ubah, hanya nama dan deskripsi | [`services/overview.md`](services/overview.md) | `feat/services` | Selesai di kode, menunggu tinjauan |
 | A5 | Kelola konten landing lainnya (kategori, klien, mitra, video, kalimat beranda, dan tampilan produk dan layanan di landing) | belum ditulis (fase L4 di [`../../landing/implementation-plan.md`](../../landing/implementation-plan.md)) | `feat/landing-content` | Ditunda, isi landing belum final |
+| A6 | Kelola chat berbasis aturan di landing: pertanyaan, jawaban, dan pertanyaan lanjutan bersarang per bahasa | [`../../landing/chat/overview.md`](../../landing/chat/overview.md) | `feat/dynamic-chat` | Selesai di kode, menunggu tinjauan |
 
 ## Keputusan
 

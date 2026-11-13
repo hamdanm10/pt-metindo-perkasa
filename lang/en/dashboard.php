@@ -31,6 +31,7 @@ return [
         'articles' => 'Articles',
         'products' => 'Products',
         'services' => 'Services',
+        'chat' => 'Chat assistant',
         'inquiries' => 'Questions & Answers',
         'customer_inquiries' => 'Customer Q&A',
         'distributor_inquiries' => 'Distributor Q&A',
