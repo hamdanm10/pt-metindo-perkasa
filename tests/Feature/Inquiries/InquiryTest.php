@@ -587,9 +587,9 @@ class InquiryTest extends TestCase
 
     public function test_the_search_label_is_short(): void
     {
-        $this->assertSame('Search', __('inquiries.search'));
+        $this->assertSame('Search question', __('inquiries.search'));
         app()->setLocale('id');
-        $this->assertSame('Cari', __('inquiries.search'));
+        $this->assertSame('Cari pertanyaan', __('inquiries.search'));
     }
 
     public function test_the_menu_links_the_page_for_every_role(): void
