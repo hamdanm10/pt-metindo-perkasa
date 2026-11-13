@@ -15,6 +15,7 @@ return [
     'all_statuses' => 'All statuses',
     'empty' => 'No articles match.',
     'untitled' => 'Untitled',
+    'unknown_author' => 'Unknown',
     'actions' => 'Actions',
     'edit' => 'Edit',
     'delete' => 'Delete',
@@ -36,6 +37,7 @@ return [
         'published' => 'Published in this language',
         'status' => 'Status',
         'views' => 'Views',
+        'created_by' => 'Created by',
         'languages' => 'Languages',
     ],
     'types' => [

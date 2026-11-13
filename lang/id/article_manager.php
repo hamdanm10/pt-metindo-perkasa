@@ -15,6 +15,7 @@ return [
     'all_statuses' => 'Semua status',
     'empty' => 'Tidak ada artikel yang cocok.',
     'untitled' => 'Tanpa judul',
+    'unknown_author' => 'Tidak diketahui',
     'actions' => 'Aksi',
     'edit' => 'Ubah',
     'delete' => 'Hapus',
@@ -36,6 +37,7 @@ return [
         'published' => 'Terbit di bahasa ini',
         'status' => 'Status',
         'views' => 'Dibaca',
+        'created_by' => 'Dibuat oleh',
         'languages' => 'Bahasa',
     ],
     'types' => [
