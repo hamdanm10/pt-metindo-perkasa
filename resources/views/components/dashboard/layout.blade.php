@@ -42,22 +42,22 @@
             <nav aria-label="{{ __('dashboard.menu') }}" class="flex-1 space-y-4 overflow-y-auto px-4 pb-6 pt-2">
                 @foreach ($groups as $group)
                     <div>
-                        <p class="mb-2 mt-4 px-4 text-xs font-extrabold uppercase tracking-[0.2em] text-white" id="nav-group-{{ $loop->index }}">{{ __($group['label']) }}</p>
+                        <p class="mb-2 mt-4 px-4 text-[0.6875rem] font-extrabold uppercase tracking-[0.18em] text-white" id="nav-group-{{ $loop->index }}">{{ __($group['label']) }}</p>
                         <ul class="space-y-0.5" aria-labelledby="nav-group-{{ $loop->index }}">
                             @foreach ($group['entries'] as $entry)
                                 <li>
                                     @if (isset($entry['items']))
                                         @php($hasActive = collect($entry['items'])->contains(fn ($item) => request()->routeIs($item['active'])))
-                                        <details class="group/nav" data-nav-group @if ($hasActive) open @endif>
+                                        <details class="group/nav nav-dropdown" data-nav-group @if ($hasActive) open @endif>
                                             <summary class="{{ $sidebarLink }} cursor-pointer list-none text-white/70 [&::-webkit-details-marker]:hidden">
                                                 <x-dashboard.icon :name="$entry['icon']" />
                                                 <span class="flex-1">{{ __($entry['label']) }}</span>
                                                 <svg viewBox="0 0 24 24" class="size-4 transition-transform group-open/nav:rotate-180" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
                                             </summary>
-                                            <ul class="mt-0.5 space-y-0.5 ms-5 border-s border-white/15 ps-2">
+                                            <ul class="mt-0.5 space-y-0.5">
                                                 @foreach ($entry['items'] as $item)
                                                     <li>
-                                                        <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="{{ $sidebarLink }}">
+                                                        <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="{{ $sidebarLink }} ps-12! min-h-11!">
                                                             {{ __($item['label']) }}
                                                         </a>
                                                     </li>
