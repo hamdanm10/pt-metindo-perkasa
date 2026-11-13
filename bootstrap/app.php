@@ -37,13 +37,26 @@ return Application::configure(basePath: dirname(__DIR__))
                         }
                     });
             }
+
+            // The customer and the distributor each get their own area from the same route files in routes/client.
+            foreach (['customer', 'distributor'] as $area) {
+                Route::middleware(['web', SetDashboardLocale::class])
+                    ->prefix($area)
+                    ->name("{$area}.")
+                    ->group(function () use ($area): void {
+                        foreach (glob(base_path('routes/client/*.php')) as $file) {
+                            $define = require $file;
+                            $define($area);
+                        }
+                    });
+            }
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['role' => EnsureRole::class]);
 
         $middleware->redirectGuestsTo(
-            fn (Request $request): string => $request->is('portal', 'portal/*') ? route('portal.login') : route('app.login'),
+            fn (Request $request): string => $request->is('portal', 'portal/*', 'customer', 'customer/*', 'distributor', 'distributor/*') ? route('portal.login') : route('app.login'),
         );
 
         $middleware->redirectUsersTo(function (): string {

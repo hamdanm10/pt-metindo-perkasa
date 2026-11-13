@@ -25,9 +25,6 @@ abstract class AuthenticatedSessionController extends Controller
     /** Route name of the login page of this area. */
     abstract protected function loginRoute(): string;
 
-    /** Route name of the page shown after signing in. */
-    abstract protected function homeRoute(): string;
-
     abstract protected function titleKey(): string;
 
     public function create(): View
@@ -53,7 +50,7 @@ abstract class AuthenticatedSessionController extends Controller
 
         $this->keepLanguageChosenBeforeSignIn($request, $updateLocale);
 
-        return redirect()->to($this->destination($request));
+        return redirect()->to($this->destination($request, $this->homeUrl($request)));
     }
 
     /**
@@ -74,9 +71,8 @@ abstract class AuthenticatedSessionController extends Controller
      * Where to go after signing in: the page the user was sent away from, but only when
      * it belongs to this area. A page of another area would just answer 403.
      */
-    private function destination(Request $request): string
+    private function destination(Request $request, string $home): string
     {
-        $home = route($this->homeRoute());
         $intended = $request->session()->pull('url.intended');
 
         if (! is_string($intended)) {
@@ -88,6 +84,16 @@ abstract class AuthenticatedSessionController extends Controller
         $path = (string) parse_url($intended, PHP_URL_PATH);
 
         return $sameHost && str_starts_with($path, $prefix.'/') ? $intended : $home;
+    }
+
+    /**
+     * The home page of the signed-in account's own area.
+     */
+    private function homeUrl(Request $request): string
+    {
+        $user = $request->user();
+
+        return route($user instanceof User ? $user->role->homeRoute() : $this->loginRoute());
     }
 
     public function destroy(Request $request): RedirectResponse

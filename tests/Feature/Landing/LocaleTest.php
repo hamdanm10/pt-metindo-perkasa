@@ -47,6 +47,8 @@ class LocaleTest extends TestCase
         $this->get('/xx')->assertNotFound();
         $this->get('/app')->assertRedirect('/app/login');
         $this->get('/portal')->assertRedirect('/portal/login');
+        $this->get('/customer')->assertRedirect('/portal/login');
+        $this->get('/distributor')->assertRedirect('/portal/login');
     }
 
     public function test_page_declares_canonical_and_alternates_for_every_locale(): void

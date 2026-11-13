@@ -22,7 +22,7 @@ enum Role: string
     }
 
     /**
-     * Roles that sign in at /portal (customers and distributors).
+     * Roles that sign in at the shared /portal/login page (customers and distributors).
      *
      * @return list<self>
      */
@@ -50,11 +50,19 @@ enum Role: string
     }
 
     /**
-     * Route name prefix of this role's area: `app` or `portal`.
+     * Route name prefix of this role's area: `app` for admin and staff, otherwise `customer` or `distributor`.
      */
     public function area(): string
     {
-        return $this->usesStaffArea() ? 'app' : 'portal';
+        return $this->usesStaffArea() ? 'app' : $this->value;
+    }
+
+    /**
+     * Name of the route that shows the sign-in page of this role.
+     */
+    public function loginRoute(): string
+    {
+        return $this->usesStaffArea() ? 'app.login' : 'portal.login';
     }
 
     /**
@@ -62,6 +70,6 @@ enum Role: string
      */
     public function homeRoute(): string
     {
-        return $this->usesStaffArea() ? 'app.dashboard' : 'portal.dashboard';
+        return $this->area().'.dashboard';
     }
 }

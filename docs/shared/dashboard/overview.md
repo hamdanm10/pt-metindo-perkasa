@@ -6,7 +6,7 @@ Tata letak dashboard untuk admin, staf, customer, dan distributor: sidebar dan b
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
-| 1 | Satu tata letak dipakai kedua area (`/app` dan `/portal`). Isi menu berbeda per peran | Satu desain, satu perawatan |
+| 1 | Satu tata letak dipakai kedua area (`/app`, `/customer`, dan `/distributor`). Isi menu berbeda per peran | Satu desain, satu perawatan |
 | 2 | **Livewire tidak dipasang di D2.** Kerangka memakai Blade biasa dan dibuat sebagai komponen tata letak yang bisa dipakai halaman Livewire. Livewire dipasang saat fitur interaktif pertama (A1, kelola akun) | D2 tidak punya interaksi yang membutuhkannya. Tidak memasang dependensi yang belum dipakai |
 | 3 | Pemilih bahasa memakai formulir `POST` biasa ke `/{area}/locale`, bukan komponen Livewire. Di dashboard tampil sebagai **dropdown bahasa**, di halaman login sebagai tombol berdampingan | Berfungsi juga di halaman login (tamu), tanpa JavaScript, dan mudah diuji |
 | 4 | Pilihan bahasa disimpan di `users.locale` bila sudah masuk, dan di sesi bila tamu. Bahasa yang dipilih di halaman login (sesi) menjadi bahasa akun saat pengguna masuk | Mengikuti aturan locale di `CLAUDE.md`. Pilihan terbaru yang eksplisit tidak boleh dikalahkan oleh nilai tersimpan |
@@ -50,7 +50,7 @@ Tata letak dashboard untuk admin, staf, customer, dan distributor: sidebar dan b
 - `resources/views/components/dashboard/`: `layout.blade.php` (sidebar yang menjadi laci di ponsel, bilah atas, kontainer isi, tautan lewati-ke-konten), `page-header.blade.php`, `card.blade.php`, `language-dropdown.blade.php`, `user-menu.blade.php`, dan `locale-switcher.blade.php` (tombol berdampingan, dipakai di halaman login).
 - `app/Services/Dashboard/DashboardMenu.php`: daftar item menu dan penyaringan per peran, satu-satunya tempat yang bertambah saat fitur baru jadi.
 - `app/Http/Controllers/Dashboard/LocaleController.php` (invokable), `app/Http/Requests/Dashboard/UpdateLocaleRequest.php`, dan Action `app/Actions/Users/UpdateLocale.php`.
-- Route `routes/app/locale.php` dan `routes/portal/locale.php` (dapat diakses tamu).
+- Route `routes/app/locale.php`, `routes/portal/locale.php` (halaman login), dan `routes/client/locale.php` (dapat diakses tamu).
 - `resources/views/dashboard/home.blade.php` menggantikan `auth/home.blade.php`. `HomeController` kedua area tetap, hanya mengganti view dan menyerahkan area.
 - `resources/js/dashboard.js` (menutup dropdown dengan Escape dan klik di luar, serta membuka dan menutup laci sidebar dengan pengurungan fokus) didaftarkan di `vite.config.js`, dan `resources/css/dashboard.css` diperluas.
 - `lang/{en,id}/dashboard.php`.
@@ -74,7 +74,7 @@ Pemeriksaan manual di browser: sidebar dan bilah atas di desktop, laci sidebar d
 
 ## Halaman galat
 
-Galat di `/app/*` dan `/portal/*` memakai halaman galat bersama dalam `en` atau `id`. Rancangannya di bagian "Halaman galat" pada [`../../landing/ui/design.md`](../../landing/ui/design.md).
+Galat di `/app/*`, `/portal/*`, `/customer/*`, dan `/distributor/*` memakai halaman galat bersama dalam `en` atau `id`. Rancangannya di bagian "Halaman galat" pada [`../../landing/ui/design.md`](../../landing/ui/design.md).
 
 ## Ditunda
 
