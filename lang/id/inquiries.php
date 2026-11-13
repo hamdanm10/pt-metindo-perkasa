@@ -28,7 +28,7 @@ return [
     'create_title' => 'Tambah pertanyaan',
     'edit_title' => 'Ubah pertanyaan',
     'edit_description' => 'Ubah pertanyaan, jawaban, tautan, atau gambarnya.',
-    'search' => 'Cari',
+    'search' => 'Cari pertanyaan',
     'all_services' => 'Semua layanan',
     'all_products' => 'Semua produk',
     'view' => 'Baca',

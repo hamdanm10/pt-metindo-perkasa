@@ -28,7 +28,7 @@ return [
     'create_title' => 'Add question',
     'edit_title' => 'Edit question',
     'edit_description' => 'Change the question, the answer, the links or the pictures.',
-    'search' => 'Search',
+    'search' => 'Search question',
     'all_services' => 'All services',
     'all_products' => 'All products',
     'view' => 'Read',
