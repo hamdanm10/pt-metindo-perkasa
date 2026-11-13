@@ -39,12 +39,33 @@
                     <span class="brand-lockup__name"><span class="font-extrabold">Metindo</span> <span>Perkasa</span></span>
                 </a>
             </div>
-            <nav aria-label="{{ __('dashboard.menu') }}" class="flex-1 space-y-6 overflow-y-auto px-4 pb-6 pt-2">
+            <nav aria-label="{{ __('dashboard.menu') }}" class="flex-1 space-y-2 overflow-y-auto px-4 pb-6 pt-2">
                 @foreach ($groups as $group)
-                    <div>
-                        <p class="mb-2 px-4 text-xs font-extrabold uppercase tracking-[0.2em] text-white" id="nav-group-{{ $loop->index }}">{{ __($group['label']) }}</p>
+                    @php
+                        $hasActive = collect($group['items'])->contains(fn ($item) => request()->routeIs($item['active']));
+                        $items = $group['items'];
+                    @endphp
+                    @if (count($items) > 1)
+                        <details class="group/nav" data-nav-group @if ($hasActive) open @endif>
+                            <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-lg px-4 text-xs font-extrabold uppercase tracking-[0.2em] text-white hover:bg-white/10 [&::-webkit-details-marker]:hidden">
+                                {{ __($group['label']) }}
+                                <svg viewBox="0 0 24 24" class="size-4 transition-transform group-open/nav:rotate-180" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                            </summary>
+                            <ul class="mt-1 space-y-0.5">
+                                @foreach ($items as $item)
+                                    <li>
+                                        <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="{{ $sidebarLink }}">
+                                            <x-dashboard.icon :name="$item['icon']" />
+                                            {{ __($item['label']) }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </details>
+                    @else
+                        <p class="mb-2 mt-4 px-4 text-xs font-extrabold uppercase tracking-[0.2em] text-white" id="nav-group-{{ $loop->index }}">{{ __($group['label']) }}</p>
                         <ul class="space-y-0.5" aria-labelledby="nav-group-{{ $loop->index }}">
-                            @foreach ($group['items'] as $item)
+                            @foreach ($items as $item)
                                 <li>
                                     <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="{{ $sidebarLink }}">
                                         <x-dashboard.icon :name="$item['icon']" />
@@ -53,7 +74,7 @@
                                 </li>
                             @endforeach
                         </ul>
-                    </div>
+                    @endif
                 @endforeach
             </nav>
             <span class="h-1.5 shrink-0 bg-brand-600" aria-hidden="true"></span>

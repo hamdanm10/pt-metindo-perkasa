@@ -99,11 +99,20 @@ class ShellTest extends TestCase
         $this->assertGreaterThan($sidebarEnd, (int) strpos($html, '<header'));
     }
 
+    public function test_the_sidebar_collapses_groups_with_several_items_into_dropdowns_and_opens_the_active_one(): void
+    {
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/articles')->getContent();
+
+        $this->assertSame(3, substr_count($html, 'data-nav-group'));
+        $this->assertMatchesRegularExpression('/<details[^>]*data-nav-group[^>]* open\s*>\s*<summary[^>]*>\s*'.preg_quote(__('dashboard.groups.content'), '/').'/', $html);
+        $this->assertDoesNotMatchRegularExpression('/<details[^>]*data-nav-group[^>]* open\s*>\s*<summary[^>]*>\s*'.preg_quote(__('dashboard.groups.users'), '/').'/', $html);
+    }
+
     public function test_the_sidebar_groups_the_menu_under_labels_with_an_icon_on_each_item(): void
     {
         $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->getContent();
 
-        $position = fn (string $text): int => (int) strpos($html, '>'.$text.'</p>');
+        $position = fn (string $text): int => preg_match('/>\s*'.preg_quote($text, '/').'\s*(<\/p>|<svg)/', $html, $m, PREG_OFFSET_CAPTURE) === 1 ? $m[0][1] : 0;
 
         $this->assertGreaterThan(0, $position(__('dashboard.groups.menu')));
         $this->assertGreaterThan($position(__('dashboard.groups.menu')), $position(__('dashboard.groups.content')));
@@ -114,8 +123,8 @@ class ShellTest extends TestCase
         $this->assertSame(11, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
-        $this->assertStringNotContainsString('>'.__('dashboard.groups.content').'</p>', $staff);
-        $this->assertStringNotContainsString('>'.__('dashboard.groups.users').'</p>', $staff);
+        $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.content'), '/').'\s*(<\/p>|<svg)/', $staff);
+        $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.users'), '/').'\s*(<\/p>|<svg)/', $staff);
     }
 
     public function test_notifications_are_toasts_at_the_top_right_not_inline_alerts(): void
