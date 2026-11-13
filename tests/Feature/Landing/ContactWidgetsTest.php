@@ -47,6 +47,17 @@ class ContactWidgetsTest extends TestCase
         $this->assertCount(0, $contact->agents());
     }
 
+    public function test_the_whatsapp_icon_is_the_official_glyph_on_the_button_and_in_each_row(): void
+    {
+        $this->addAgents('Sales|6281200000001;Support|6281200000002');
+
+        $html = (string) $this->get('/en')->getContent();
+
+        // One on the round button and one for each number in the panel; the old hand-drawn glyph is gone.
+        $this->assertSame(3, substr_count($html, 'd="M17.472 14.382'));
+        $this->assertStringNotContainsString('d="M12.04 2a9.9', $html);
+    }
+
     public function test_the_chat_link_carries_the_greeting(): void
     {
         $url = app(LandingContact::class)->url('6281200000001');
