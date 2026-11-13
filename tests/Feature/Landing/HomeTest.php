@@ -305,8 +305,8 @@ class HomeTest extends TestCase
                 ->assertSee(__("home.services.items.{$service}.text"));
         }
 
-        // The only aria-expanded are the buttons that open something: the mobile menu and WhatsApp (the chat button is there only once the admin adds a question). The services need none.
-        $this->assertSame(2, substr_count((string) $response->getContent(), 'aria-expanded'));
+        // The only aria-expanded is the mobile menu button: the chat and WhatsApp buttons are there only once the admin adds a question or a number. The services need none.
+        $this->assertSame(1, substr_count((string) $response->getContent(), 'aria-expanded'));
         $response->assertSee('images/landing/photos/service-chemical-supply.webp', false)->assertDontSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
     }
 

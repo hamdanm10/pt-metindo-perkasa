@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ButtonComponentTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_a_button_with_an_href_is_a_link_with_two_label_copies_and_an_arrow(): void
     {
         $html = (string) $this->blade('<x-landing.button href="/x">View all</x-landing.button>');
@@ -53,9 +56,10 @@ class ButtonComponentTest extends TestCase
     {
         config(['landing.contact.email' => 'hello@example.test']);
 
-        // The round icon buttons of the floating chat and WhatsApp are not text buttons, so look at the page without them.
+        // The round icon buttons of the floating chat and WhatsApp are not text buttons; they show only with a number or a question, so this page has none.
         $html = (string) $this->get('/en')->getContent();
-        $html = substr($html, 0, (int) strpos($html, 'data-widgets'));
+
+        $this->assertStringNotContainsString('data-widgets', $html);
 
         $this->assertGreaterThanOrEqual(8, substr_count($html, 'data-btn '));
         $this->assertStringNotContainsString('hover:bg-brand-700">', $html);

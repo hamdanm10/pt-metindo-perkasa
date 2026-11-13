@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
+use App\Models\WhatsappAgent;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ContactPageTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -18,9 +22,9 @@ class ContactPageTest extends TestCase
             'landing.contact.phone' => '+62 812 0000 0000',
             'landing.contact.address' => 'Test address 1',
             'landing.contact.hours' => 'Mon-Fri',
-            'landing.contact.whatsapp' => null,
-            'landing.contact.whatsapp_agents' => 'Sales|6281200000001;Support|6281200000002',
         ]);
+        WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000001', 'position' => 0]);
+        WhatsappAgent::factory()->create(['name' => 'Support', 'number' => '6281200000002', 'position' => 1]);
     }
 
     private function page(string $path = '/en/contact'): string
@@ -84,14 +88,15 @@ class ContactPageTest extends TestCase
     {
         $this->assertSame(2, substr_count($this->page(), 'name="agent"'));
 
-        config(['landing.contact.whatsapp_agents' => 'Sales|6281200000001']);
+        WhatsappAgent::query()->where('name', 'Support')->firstOrFail()->delete();
 
         $this->assertStringNotContainsString('name="agent"', $this->page());
     }
 
     public function test_without_a_way_to_send_there_is_no_form(): void
     {
-        config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null, 'landing.contact.email' => null]);
+        WhatsappAgent::query()->get()->each->delete();
+        config(['landing.contact.email' => null]);
 
         $html = $this->page();
 

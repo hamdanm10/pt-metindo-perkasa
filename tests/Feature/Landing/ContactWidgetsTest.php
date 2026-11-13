@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Landing;
 
 use App\Models\ChatEntry;
+use App\Models\WhatsappAgent;
 use App\Services\Landing\LandingContact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,25 +14,37 @@ class ContactWidgetsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_agents_are_read_from_the_list_and_bad_entries_are_skipped(): void
+    public function test_only_active_numbers_are_read_in_the_order_the_admin_set(): void
     {
-        config(['landing.contact.whatsapp_agents' => 'Sales|+62 812-0000-0001; Support|6281200000002 ;Broken|abc;|;6281200000003']);
+        WhatsappAgent::factory()->create(['name' => 'Support', 'number' => '6281200000002', 'position' => 1]);
+        WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000001', 'position' => 0]);
+        WhatsappAgent::factory()->inactive()->create(['name' => 'Off', 'number' => '6281200000003', 'position' => 2]);
 
         $agents = app(LandingContact::class)->agents();
 
-        $this->assertSame(['Sales', 'Support', __('chat.whatsapp.default_name')], array_column($agents, 'name'));
-        $this->assertSame(['6281200000001', '6281200000002', '6281200000003'], array_column($agents, 'number'));
+        $this->assertSame(['Sales', 'Support'], array_column($agents, 'name'));
+        $this->assertSame(['6281200000001', '6281200000002'], array_column($agents, 'number'));
         $this->assertSame('+6281200000001', $agents[0]['display']);
     }
 
-    public function test_the_single_whatsapp_number_is_used_when_there_is_no_list(): void
+    public function test_the_landing_sees_changes_to_the_numbers_at_once(): void
     {
-        config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => '+62 812-0000-0009']);
+        $contact = app(LandingContact::class);
 
-        $agents = app(LandingContact::class)->agents();
+        $this->assertCount(0, $contact->agents());
 
-        $this->assertCount(1, $agents);
-        $this->assertSame('6281200000009', $agents[0]['number']);
+        $agent = WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000001']);
+        $this->assertSame(['Sales'], array_column($contact->agents(), 'name'));
+
+        $agent->update(['name' => 'Renamed']);
+        $this->assertSame(['Renamed'], array_column($contact->agents(), 'name'));
+
+        $agent->update(['is_active' => false]);
+        $this->assertCount(0, $contact->agents());
+
+        $agent->update(['is_active' => true]);
+        $agent->delete();
+        $this->assertCount(0, $contact->agents());
     }
 
     public function test_the_chat_link_carries_the_greeting(): void
@@ -44,7 +57,7 @@ class ContactWidgetsTest extends TestCase
 
     public function test_both_buttons_and_the_agent_list_are_on_every_landing_page(): void
     {
-        config(['landing.contact.whatsapp_agents' => 'Sales|6281200000001;Support|6281200000002']);
+        $this->addAgents('Sales|6281200000001;Support|6281200000002');
         $this->addTopic();
 
         foreach (['/en', '/id/about', '/zh/processes', '/ar/services'] as $path) {
@@ -61,7 +74,7 @@ class ContactWidgetsTest extends TestCase
 
     public function test_each_panel_sits_in_the_group_of_its_own_button_and_the_chat_has_no_text_box(): void
     {
-        config(['landing.contact.whatsapp_agents' => 'Sales|6281200000001']);
+        $this->addAgents('Sales|6281200000001');
         $this->addTopic();
         $html = (string) $this->get('/en')->getContent();
 
@@ -78,7 +91,7 @@ class ContactWidgetsTest extends TestCase
 
     public function test_the_scrolling_lists_of_the_panels_are_left_to_the_browser_and_not_to_the_page_scroll(): void
     {
-        config(['landing.contact.whatsapp_agents' => 'Sales|6281200000001']);
+        $this->addAgents('Sales|6281200000001');
         $this->addTopic();
 
         $html = (string) $this->get('/en')->getContent();
@@ -90,7 +103,6 @@ class ContactWidgetsTest extends TestCase
     public function test_without_numbers_only_the_chat_button_is_shown(): void
     {
         $this->addTopic();
-        config(['landing.contact.whatsapp_agents' => null, 'landing.contact.whatsapp' => null]);
 
         $this->get('/en')->assertOk()
             ->assertSee('data-widget-toggle="chat"', false)
@@ -120,6 +132,18 @@ class ContactWidgetsTest extends TestCase
         }
 
         $this->assertNotSame($this->rules($this->page('/en'))['welcome'], $this->rules($this->page('/id'))['welcome']);
+    }
+
+    /**
+     * @param  string  $list  "Name|number;Name|number"
+     */
+    private function addAgents(string $list): void
+    {
+        foreach (explode(';', $list) as $position => $entry) {
+            [$name, $number] = explode('|', $entry);
+
+            WhatsappAgent::factory()->create(['name' => $name, 'number' => $number, 'position' => $position]);
+        }
     }
 
     /**

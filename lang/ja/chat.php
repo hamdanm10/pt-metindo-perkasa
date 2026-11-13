@@ -16,7 +16,6 @@ return [
         'title' => 'WhatsApp カスタマーサービス',
         'hint' => '番号を選んでチャットを始めてください。',
         'chat' => 'チャット',
-        'default_name' => 'カスタマーサービス',
         'message' => 'PT Metindo Perkasa ご担当者様、御社のサービスについて質問があります。',
     ],
 ];

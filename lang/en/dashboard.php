@@ -32,6 +32,7 @@ return [
         'products' => 'Products',
         'services' => 'Services',
         'chat' => 'Chat assistant',
+        'whatsapp' => 'WhatsApp numbers',
         'inquiries' => 'Questions & Answers',
         'customer_inquiries' => 'Customer Q&A',
         'distributor_inquiries' => 'Distributor Q&A',
