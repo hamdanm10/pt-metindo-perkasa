@@ -31,7 +31,7 @@ class DashboardMenu
     {
         return [
             ['route' => 'app.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'app.dashboard', 'icon' => 'home', 'group' => 'menu', 'parent' => null, 'roles' => Role::staffArea()],
-            ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'icon' => 'document', 'group' => 'content', 'parent' => null, 'roles' => [Role::Admin]],
+            ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'icon' => 'document', 'group' => 'content', 'parent' => null, 'roles' => Role::staffArea()],
             ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'icon' => 'cube', 'group' => 'content', 'parent' => 'catalog', 'roles' => [Role::Admin]],
             ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'content', 'parent' => 'catalog', 'roles' => [Role::Admin]],
             ['route' => 'app.chat.index', 'label' => 'dashboard.nav.chat', 'active' => 'app.chat.*', 'icon' => 'question', 'group' => 'content', 'parent' => 'contact', 'roles' => [Role::Admin]],

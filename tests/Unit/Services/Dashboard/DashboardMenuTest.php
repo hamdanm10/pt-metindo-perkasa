@@ -17,11 +17,11 @@ class DashboardMenuTest extends TestCase
         $this->assertSame(['app.dashboard', 'app.articles.index', 'app.products.index', 'app.services.index', 'app.chat.index', 'app.whatsapp.index', 'app.staff.index', 'app.customers.index', 'app.distributors.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($menu, 'route'));
     }
 
-    public function test_staff_gets_the_home_and_the_questions(): void
+    public function test_staff_gets_the_home_the_articles_and_the_questions(): void
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->staff()->make());
 
-        $this->assertSame(['app.dashboard', 'app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($menu, 'route'));
     }
 
     public function test_customers_get_the_customer_home_and_the_questions(): void
@@ -59,7 +59,7 @@ class DashboardMenuTest extends TestCase
         $this->assertSame(['dashboard.nav.parents.qa'], array_column($groups[3]['entries'], 'label'));
 
         $staff = (new DashboardMenu)->groupsForUser(User::factory()->staff()->make());
-        $this->assertSame('dashboard.nav.parents.qa', $staff[1]['entries'][0]['label']);
+        $this->assertSame('dashboard.nav.parents.qa', $staff[2]['entries'][0]['label']);
 
         $portal = (new DashboardMenu)->groupsForUser(User::factory()->customer()->make());
         $this->assertSame(['portal.inquiries.index'], array_column($portal[1]['entries'], 'route'));
@@ -69,6 +69,6 @@ class DashboardMenuTest extends TestCase
     {
         $groups = (new DashboardMenu)->groupsForUser(User::factory()->staff()->make());
 
-        $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.support'], array_column($groups, 'label'));
+        $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.content', 'dashboard.groups.support'], array_column($groups, 'label'));
     }
 }

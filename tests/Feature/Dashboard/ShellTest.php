@@ -127,7 +127,6 @@ class ShellTest extends TestCase
         $this->assertSame(7, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
-        $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.content'), '/').'\s*(<\/p>|<svg)/', $staff);
         $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.users'), '/').'\s*(<\/p>|<svg)/', $staff);
     }
 

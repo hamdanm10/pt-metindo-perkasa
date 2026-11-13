@@ -1,6 +1,6 @@
 # Kelola Artikel (A2)
 
-Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu bahasa satu tulisan. Hanya admin yang mengelola. Fitur ini berdiri sendiri: kelola konten landing lainnya (A5: kalimat beranda, layanan, dan seterusnya) **belum dikerjakan** dan dirancang terpisah nanti. Status fase di [`../implementation-plan.md`](../implementation-plan.md). Latar keputusan bahasa: [`../../../landing/pages/overview.md`](../../../landing/pages/overview.md).
+Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu bahasa satu tulisan. Admin mengelola semua artikel; staf melihat semua artikel dan boleh menulis, tetapi hanya mengubah dan menghapus artikel yang ia buat sendiri (`created_by`). Fitur ini berdiri sendiri: kelola konten landing lainnya (A5: kalimat beranda, layanan, dan seterusnya) **belum dikerjakan** dan dirancang terpisah nanti. Status fase di [`../implementation-plan.md`](../implementation-plan.md). Latar keputusan bahasa: [`../../../landing/pages/overview.md`](../../../landing/pages/overview.md).
 
 ## Keputusan
 
@@ -53,7 +53,7 @@ Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu
 
 ## Aturan keamanan dan kasus tepi
 
-- Semua halaman dijaga `role:admin` dan `ArticlePolicy`. Persistent middleware Livewire sudah berlaku (A1). Staf dan customer mendapat 403.
+- Semua halaman dijaga `role:admin,staff` dan `ArticlePolicy`. Admin dan staf melihat semua artikel dan boleh menulis. **Admin mengubah dan menghapus semua artikel; staf hanya yang `created_by`-nya dirinya** (artikel staf lain atau yang pembuatnya sudah dihapus: tombol Edit dan Delete tidak tampil, halaman edit dan aksi hapus 403). Persistent middleware Livewire sudah berlaku (A1). Customer dan distributor mendapat 403.
 - Unggahan thumbnail: JPG, PNG, atau WebP, maksimal 2 MB, minimal 1200x675. Server memeriksa isi berkas (bukan hanya ekstensi), mengubah ukuran dan format ke WebP, dan memberi nama acak. Berkas lama dihapus saat diganti atau artikel dihapus.
 - Isi dari editor tidak dipercaya: server merender dari JSON dengan daftar node yang diizinkan (paragraf, judul 2 dan 3, tebal, miring, daftar, kutipan, tautan). Tautan luar memakai `rel="noopener nofollow"`.
 - Slug yang bentrok ditolak dengan pesan jelas. Mengubah slug artikel terbit menghapus alamat lama (dicatat sebagai risiko, pengalihan ditunda).
@@ -65,7 +65,7 @@ Admin menulis dan menerbitkan artikel dan berita landing dalam lima bahasa, satu
 
 - Model `Article`, `ArticleTranslation`. Enum `ArticleType`, `PublicationStatus`. `ArticlePolicy`.
 - Action di `app/Actions/Articles/`: `SaveArticle` (menyimpan semua tab sekaligus, termasuk menerbitkan), `DeleteArticle`, `ListArticles`. Service: `ThumbnailStore` (validasi, ubah ukuran, hapus), `ArticleBody` (render dan bersihkan JSON), `LandingArticles` (kueri publik dan cache). Form Livewire: `app/Livewire/Forms/ArticleForm.php`.
-- Livewire: `app/Livewire/Articles/{Index,Editor}.php`. Route `routes/app/articles.php` (`Route::resource`). `DashboardMenu` ditambah "Artikel" untuk admin.
+- Livewire: `app/Livewire/Articles/{Index,Editor}.php`. Route `routes/app/articles.php` (`Route::resource`). `DashboardMenu` ditambah "Artikel" untuk admin dan staf.
 - Landing: `ArticleController` dan `LandingContent` membaca database. Penyaring route slug dari config diganti pencarian per bahasa.
 - Paket baru: `ueberdosis/tiptap-php`, `intervention/image`, dan `@tiptap/*` (npm) untuk dashboard saja, tidak memengaruhi bundel landing.
 
@@ -75,7 +75,7 @@ Langkah: migrasi dan model, Action dan Service, daftar admin, editor dan thumbna
 
 Test yang harus ada:
 
-- Admin membuka semua halaman. Staf dan customer 403, tamu ke login, termasuk aksi Livewire.
+- Admin membuka semua halaman. Staf membuka daftar dan editor tulis, serta edit dan hapus hanya artikelnya sendiri (lainnya 403, termasuk aksi Livewire). Customer dan distributor 403, tamu ke login.
 - Simpan draf tanpa thumbnail berhasil, terbitkan tanpa thumbnail atau tanpa kolom wajib ditolak.
 - Slug unik per bahasa (sama di bahasa berbeda boleh), format slug, dan peran locale di luar daftar ditolak.
 - Terbitkan satu bahasa saja: tampil di bahasa itu, 404 di bahasa lain, tanpa fallback `en`.

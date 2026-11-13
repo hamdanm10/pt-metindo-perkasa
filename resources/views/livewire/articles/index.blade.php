@@ -80,8 +80,12 @@
                             </td>
                             <td class="text-muted"><span class="cell-truncate" title="{{ $article->creator?->name ?? __('article_manager.unknown_author') }}">{{ $article->creator?->name ?? __('article_manager.unknown_author') }}</span></td>
                             <td class="text-end whitespace-nowrap">
-                                <a href="{{ route('app.articles.edit', $article) }}" class="row-action">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
-                                <button type="button" wire:click="delete({{ $article->id }})" data-confirm="{{ __('article_manager.confirm_delete') }}" data-confirm-label="{{ __('article_manager.delete') }}" class="row-action row-action--danger">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
+                                @can('update', $article)
+                                    <a href="{{ route('app.articles.edit', $article) }}" class="row-action">{{ __('article_manager.edit') }}<span class="sr-only"> {{ $title }}</span></a>
+                                @endcan
+                                @can('delete', $article)
+                                    <button type="button" wire:click="delete({{ $article->id }})" data-confirm="{{ __('article_manager.confirm_delete') }}" data-confirm-label="{{ __('article_manager.delete') }}" class="row-action row-action--danger">{{ __('article_manager.delete') }}<span class="sr-only"> {{ $title }}</span></button>
+                                @endcan
                             </td>
                         </tr>
                     @empty

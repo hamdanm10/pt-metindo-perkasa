@@ -55,32 +55,72 @@ class ArticleAdminTest extends TestCase
         return UploadedFile::fake()->image('cover.jpg', $width, $height);
     }
 
-    public function test_only_admins_open_the_pages(): void
+    public function test_admin_and_staff_open_the_pages_but_customers_and_guests_do_not(): void
     {
         $article = Article::factory()->create();
 
-        foreach (['/app/articles', '/app/articles/create', "/app/articles/{$article->id}/edit"] as $url) {
+        foreach (['/app/articles', '/app/articles/create'] as $url) {
             $this->actingAs(User::factory()->admin()->create())->get($url)->assertOk();
-            $this->actingAs(User::factory()->staff()->create())->get($url)->assertForbidden();
+            $this->actingAs(User::factory()->staff()->create())->get($url)->assertOk();
             $this->actingAs(User::factory()->customer()->create())->get($url)->assertForbidden();
+            $this->actingAs(User::factory()->distributor()->create())->get($url)->assertForbidden();
         }
+
+        $this->actingAs(User::factory()->admin()->create())->get("/app/articles/{$article->id}/edit")->assertOk();
+        $this->actingAs(User::factory()->customer()->create())->get("/app/articles/{$article->id}/edit")->assertForbidden();
 
         auth()->logout();
         $this->get('/app/articles')->assertRedirect(route('app.login'));
     }
 
-    public function test_staff_cannot_use_the_livewire_actions(): void
+    public function test_staff_see_every_article_but_only_change_and_delete_their_own(): void
     {
         $staff = User::factory()->staff()->create();
+        $mine = Article::factory()->create(['created_by' => $staff->id]);
+        $theirs = Article::factory()->create(['created_by' => User::factory()->admin()->create()->id]);
+        $orphan = Article::factory()->create(['created_by' => null]);
+        foreach ([$mine, $theirs, $orphan] as $article) {
+            ArticleTranslation::factory()->create(['article_id' => $article->id]);
+        }
 
-        Livewire::actingAs($staff)->test(Editor::class)->assertForbidden();
-        Livewire::actingAs($staff)->test(Index::class)->assertForbidden();
+        $html = (string) $this->actingAs($staff)->get('/app/articles')->getContent();
+        $this->assertStringContainsString(route('app.articles.edit', $mine), $html);
+        $this->assertStringNotContainsString(route('app.articles.edit', $theirs), $html);
+        $this->assertStringNotContainsString(route('app.articles.edit', $orphan), $html);
+        $this->assertSame(3, substr_count($html, 'wire:key="article-'));
+        $this->assertSame(1, substr_count($html, 'wire:click="delete('));
+
+        $this->actingAs($staff)->get("/app/articles/{$mine->id}/edit")->assertOk();
+        $this->actingAs($staff)->get("/app/articles/{$theirs->id}/edit")->assertForbidden();
+
+        Livewire::actingAs($staff)->test(Index::class)->call('delete', $theirs->id)->assertForbidden();
+        $this->assertDatabaseHas('articles', ['id' => $theirs->id]);
+
+        Livewire::actingAs($staff)->test(Index::class)->call('delete', $mine->id);
+        $this->assertDatabaseMissing('articles', ['id' => $mine->id]);
     }
 
-    public function test_menu_shows_the_articles_link_to_admins_only(): void
+    public function test_the_admin_changes_and_deletes_any_article(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $article = Article::factory()->create(['created_by' => User::factory()->staff()->create()->id]);
+
+        $this->actingAs($admin)->get("/app/articles/{$article->id}/edit")->assertOk();
+        Livewire::actingAs($admin)->test(Index::class)->call('delete', $article->id);
+        $this->assertDatabaseMissing('articles', ['id' => $article->id]);
+    }
+
+    public function test_staff_can_open_the_editor_to_write_but_customers_cannot(): void
+    {
+        Livewire::actingAs(User::factory()->staff()->create())->test(Editor::class)->assertOk();
+        Livewire::actingAs(User::factory()->customer()->create())->test(Editor::class)->assertForbidden();
+        Livewire::actingAs(User::factory()->customer()->create())->test(Index::class)->assertForbidden();
+    }
+
+    public function test_menu_shows_the_articles_link_to_admin_and_staff_only(): void
     {
         $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->assertSee(route('app.articles.index'), false);
-        $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->assertDontSee(route('app.articles.index'), false);
+        $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->assertSee(route('app.articles.index'), false);
     }
 
     public function test_the_thumbnail_sits_under_the_type_and_the_plain_fields_have_example_placeholders_but_the_body_has_none(): void
