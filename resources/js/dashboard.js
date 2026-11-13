@@ -258,3 +258,45 @@ document.addEventListener(
     },
     true,
 );
+
+// Sidebar dropdowns slide open and closed. A plain <details> jumps, so the click is taken over here.
+document.querySelectorAll('.nav-dropdown').forEach((details) => {
+    const summary = details.querySelector('summary');
+    const panel = details.querySelector('ul');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let animation = null;
+
+    summary.addEventListener('click', (event) => {
+        event.preventDefault();
+        animation?.cancel();
+        details.removeAttribute('data-closing');
+
+        if (reduced.matches) {
+            details.open = !details.open;
+            return;
+        }
+
+        const options = { duration: 300, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' };
+        panel.style.overflow = 'hidden';
+
+        if (!details.open) {
+            details.open = true;
+            const height = panel.offsetHeight;
+            animation = panel.animate({ height: ['0px', `${height}px`], opacity: [0, 1] }, options);
+        } else {
+            const height = panel.offsetHeight;
+            animation = panel.animate({ height: [`${height}px`, '0px'], opacity: [1, 0] }, options);
+            details.dataset.closing = '';
+        }
+
+        const current = animation;
+        current.onfinish = () => {
+            if (details.hasAttribute('data-closing')) {
+                details.open = false;
+                details.removeAttribute('data-closing');
+            }
+            current.cancel();
+            panel.style.overflow = '';
+        };
+    });
+});

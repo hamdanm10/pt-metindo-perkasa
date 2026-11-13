@@ -24,6 +24,12 @@ return [
         'users' => 'Manajemen Pengguna',
     ],
     'nav' => [
+        'parents' => [
+            'catalog' => 'Katalog',
+            'contact' => 'Alat kontak',
+            'clients' => 'Klien',
+            'qa' => 'Tanya Jawab',
+        ],
         'home' => 'Dasbor',
         'staff' => 'Staf',
         'customers' => 'Customer',
