@@ -162,21 +162,21 @@ function initChat() {
 
         button.type = 'button';
         button.textContent = label;
-        button.className = 'rounded-2xl rounded-es-sm border border-brand-600 bg-white px-3.5 py-2 text-start text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-600 hover:text-white focus-visible:outline-offset-2';
+        button.className = 'rounded-2xl rounded-ee-sm border border-brand-600 bg-white px-3.5 py-2 text-start text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-600 hover:text-white focus-visible:outline-offset-2';
         button.addEventListener('click', onChoose);
 
         return button;
     };
 
     /**
-     * The option bubbles, left aligned like the assistant's. Taking them away once one is chosen keeps the
+     * The option bubbles, right aligned like the visitor's own messages (they are what the visitor says next). Taking them away once one is chosen keeps the
      * log short. `list` is the questions to offer: the top level, or the follow-ups of the last answer.
      * Below a follow-up list there is a way back to the top level.
      */
     const showOptions = (list = topics, withMenu = false) => {
         options?.remove();
         options = document.createElement('div');
-        options.className = 'flex flex-col items-start gap-2 self-start';
+        options.className = 'flex max-w-[88%] flex-col items-end gap-2 self-end';
         options.setAttribute('role', 'group');
 
         list.forEach((topic) => {

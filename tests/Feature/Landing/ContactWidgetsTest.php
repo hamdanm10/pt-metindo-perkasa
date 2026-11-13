@@ -76,6 +76,17 @@ class ContactWidgetsTest extends TestCase
         $this->assertStringNotContainsString('data-chat-form', $html);
     }
 
+    public function test_the_scrolling_lists_of_the_panels_are_left_to_the_browser_and_not_to_the_page_scroll(): void
+    {
+        config(['landing.contact.whatsapp_agents' => 'Sales|6281200000001']);
+        $this->addTopic();
+
+        $html = (string) $this->get('/en')->getContent();
+
+        $this->assertMatchesRegularExpression('/<div data-chat-log data-lenis-prevent class="[^"]*overscroll-contain/', $html);
+        $this->assertMatchesRegularExpression('/<ul data-lenis-prevent class="[^"]*overscroll-contain/', $html);
+    }
+
     public function test_the_talk_option_is_offered_only_with_numbers(): void
     {
         $this->addTopic();
