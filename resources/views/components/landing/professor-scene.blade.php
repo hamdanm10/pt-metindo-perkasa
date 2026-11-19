@@ -24,7 +24,7 @@
 
     <!-- professor -->
     <g data-part="professor" transform="translate(600 1400) scale(1.2) translate(-600 -1400)">
-        <path d="M440 1210V950C440 898 466 872 506 862L568 842H632L694 862C734 872 760 898 760 950V1210Z" fill="#FFFFFF"/>
+        <path d="M434 1210V946C434 892 462 864 508 856L568 842H632L692 856C738 864 766 892 766 946V1210Z" fill="#FFFFFF"/>
         <path d="M568 842L600 896 632 842 664 868 626 1000H574L536 868Z" fill="#F3F2FF"/>
         <path d="M568 842L600 930 554 1010 526 890 548 866Z" fill="#D9DCE8"/>
         <path d="M632 842L600 930 646 1010 674 890 652 866Z" fill="#D9DCE8"/>
@@ -70,17 +70,17 @@
             <circle cy="-136" r="21" fill="#6D5BD0"/>
             <circle r="24" fill="#6E78AE"/>
         </g>
-        <g data-part="clipboard" transform="translate(480 1062) rotate(-8)">
-            <rect x="-4" y="-120" width="104" height="146" rx="12" fill="#B6874C"/>
-            <rect x="6" y="-108" width="84" height="122" rx="6" fill="#FFFFFF"/>
-            <rect x="32" y="-124" width="32" height="20" rx="6" fill="#98A2C4"/>
-            <path d="M18-80h60M18-60h60M18-40h46M18-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
+        <g data-part="clipboard" transform="translate(500 1070) rotate(-8)">
+            <rect x="-54" y="-120" width="104" height="146" rx="12" fill="#B6874C"/>
+            <rect x="-44" y="-108" width="84" height="122" rx="6" fill="#FFFFFF"/>
+            <rect x="-18" y="-124" width="32" height="20" rx="6" fill="#98A2C4"/>
+            <path d="M-32-80h60M-32-60h60M-32-40h46M-32-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
         </g>
         <g data-part="arm-left">
-        <path data-part="arm-left-edge" d="M447 911.2L395.6 983.9L480 1062" fill="none" stroke="#CDD0E2" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-left-sleeve" d="M462 890L395.6 983.9L480 1062" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-left-cuff" d="M458 1041.6L472.7 1055.2" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
-        <g data-part="hand-left" transform="translate(480 1062) rotate(42.8)"><g transform="translate(-14 0)">
+        <path data-part="arm-left-edge" d="M456 925.9L408.1 1000.9L500 1070" fill="none" stroke="#D5D8E8" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-sleeve" d="M470 904L408.1 1000.9L500 1070" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-cuff" d="M476 1052L492 1064" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
+        <g data-part="hand-left" transform="translate(500 1070) rotate(36.9)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
                 <ellipse cx="24" cy="-24" rx="23" ry="11" fill="#D6283A" stroke="#B01022" stroke-width="3" stroke-opacity=".45" transform="rotate(-10 24 -24)"/>
@@ -88,16 +88,17 @@
             </g></g>
     </g>
         <g data-part="arm-right">
-        <path data-part="arm-right-edge" d="M732.3 915.4L712.9 1002.2L600 1024" fill="none" stroke="#CDD0E2" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-right-sleeve" d="M738 890L712.9 1002.2L600 1024" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-right-cuff" d="M629.5 1018.3L609.8 1022.1" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
-        <g data-part="hand-right" transform="translate(600 1024) rotate(169.1)"><g transform="translate(-14 0)">
+        <path data-part="arm-right-edge" d="M726.6 929.8L714.8 1018L600 1024" fill="none" stroke="#D5D8E8" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-right-sleeve" d="M730 904L714.8 1018L600 1024" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-right-cuff" d="M630 1022.4L610 1023.5" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
+        <g data-part="hand-right" transform="translate(600 1024) rotate(177)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
                 <ellipse cx="24" cy="-24" rx="23" ry="11" fill="#D6283A" stroke="#B01022" stroke-width="3" stroke-opacity=".45" transform="rotate(-10 24 -24)"/>
                 <rect x="-8" y="-25" width="14" height="50" rx="7" fill="#B01022"/>
             </g></g>
     </g>
+        <circle cx="470" cy="904" r="28" fill="#FFFFFF"/><circle cx="730" cy="904" r="28" fill="#FFFFFF"/>
     </g>
 
     <g data-part="tank-1">

@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Geometry of the artwork in components/landing/professor-scene.blade.php (the SVG's own units).
 const ARM = { upper: 115, fore: 115 };
-const SHOULDER = { left: [462, 890], right: [738, 890] };
+const SHOULDER = { left: [470, 904], right: [730, 904] };
 const LEVER = { x: 600, y: 1160, length: 136 };
 const LANE = { first: 250, second: 950 };
 const RACK = { up: 165, down: 1100 };
@@ -83,7 +83,7 @@ export const professor = () => {
         placeArm('right', SHOULDER.right, [LEVER.x + LEVER.length * Math.sin(angle), LEVER.y - LEVER.length * Math.cos(angle)], -1);
 
         // The other hand holds the clipboard and now and then writes on it.
-        const writing = [480 + Math.sin(time * 2.3) * 4, 1062 + Math.sin(time * 3.1) * 3];
+        const writing = [500 + Math.sin(time * 2.3) * 4, 1070 + Math.sin(time * 3.1) * 3];
         placeArm('left', SHOULDER.left, writing, 1);
         el.clipboard.setAttribute('transform', `translate(${writing[0].toFixed(1)} ${writing[1].toFixed(1)}) rotate(-8)`);
 
