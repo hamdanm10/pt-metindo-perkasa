@@ -33,6 +33,11 @@ class InquiryTest extends TestCase
         Storage::fake('public');
     }
 
+    private function doc(string $text): string
+    {
+        return (string) json_encode(['type' => 'doc', 'content' => [['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => $text]]]]]);
+    }
+
     private function customerId(): string
     {
         return (string) User::factory()->customer()->create()->id;
@@ -116,14 +121,14 @@ class InquiryTest extends TestCase
         Livewire::actingAs(User::factory()->staff()->create())->test(Editor::class, ['kind' => 'distributor'])
             ->set('form.customerId', (string) $customer->id)
             ->set('form.question', 'Q')
-            ->set('form.answer', 'A')
+            ->set('form.answer', $this->doc('A'))
             ->call('save')
             ->assertHasErrors('form.customerId');
 
         Livewire::actingAs(User::factory()->staff()->create())->test(Editor::class, ['kind' => 'distributor'])
             ->set('form.customerId', (string) $distributor->id)
             ->set('form.question', 'Q')
-            ->set('form.answer', 'A')
+            ->set('form.answer', $this->doc('A'))
             ->call('save')
             ->assertHasNoErrors()
             ->assertRedirect(route('app.distributor-inquiries.index'));
@@ -173,7 +178,7 @@ class InquiryTest extends TestCase
         Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', (string) $customer->id)
             ->set('form.question', ' How long does it take? ')
-            ->set('form.answer', 'Three working days.')
+            ->set('form.answer', $this->doc('Three working days.'))
             ->set('form.askedAt', '2026-10-01')
             ->set('form.serviceId', (string) $service->id)
             ->set('form.productId', (string) $product->id)
@@ -183,6 +188,7 @@ class InquiryTest extends TestCase
 
         $inquiry = Inquiry::query()->firstOrFail();
         $this->assertSame('How long does it take?', $inquiry->question);
+        $this->assertSame('<p>Three working days.</p>', $inquiry->answer);
         $this->assertSame('2026-10-01', $inquiry->asked_at?->toDateString());
         $this->assertSame($staff->id, $inquiry->created_by);
         $this->assertSame($customer->id, $inquiry->customer_id);
@@ -192,13 +198,61 @@ class InquiryTest extends TestCase
         Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Plain question')
-            ->set('form.answer', 'Plain answer')
+            ->set('form.answer', $this->doc('Plain answer'))
             ->call('save')->assertHasNoErrors();
 
         $plain = Inquiry::query()->where('question', 'Plain question')->firstOrFail();
         $this->assertNull($plain->service_id);
         $this->assertNull($plain->product_id);
         $this->assertNull($plain->asked_at);
+    }
+
+    public function test_the_answer_is_rich_text_cleaned_to_safe_html(): void
+    {
+        $document = (string) json_encode(['type' => 'doc', 'content' => [
+            ['type' => 'heading', 'attrs' => ['level' => 2], 'content' => [['type' => 'text', 'text' => 'Steps']]],
+            ['type' => 'paragraph', 'content' => [
+                ['type' => 'text', 'text' => 'Bold', 'marks' => [['type' => 'bold']]],
+                ['type' => 'text', 'text' => ' <script>alert(1)</script> ', 'marks' => []],
+                ['type' => 'text', 'text' => 'bad', 'marks' => [['type' => 'link', 'attrs' => ['href' => 'javascript:alert(1)']]]],
+            ]],
+        ]]);
+
+        Livewire::actingAs(User::factory()->staff()->create())->test(Editor::class, ['kind' => 'customer'])
+            ->set('form.customerId', $this->customerId())
+            ->set('form.question', 'Q')
+            ->set('form.answer', $document)
+            ->call('save')->assertHasNoErrors();
+
+        $answer = Inquiry::query()->firstOrFail()->answer;
+        $this->assertStringContainsString('<h2>Steps</h2>', $answer);
+        $this->assertStringContainsString('<strong>Bold</strong>', $answer);
+        $this->assertStringNotContainsString('<script>', $answer);
+        $this->assertStringNotContainsString('javascript:', $answer);
+    }
+
+    public function test_an_empty_or_invalid_answer_is_rejected(): void
+    {
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
+            ->set('form.customerId', $this->customerId())
+            ->set('form.question', 'Q');
+
+        foreach (['not json', '{"type":"doc","content":[]}', '{"type":"doc","content":[{"type":"paragraph"}]}'] as $value) {
+            $component->set('form.answer', $value)->call('save')->assertHasErrors('form.answer');
+        }
+
+        $this->assertSame(0, Inquiry::query()->count());
+    }
+
+    public function test_editing_loads_the_saved_answer_back_into_the_editor(): void
+    {
+        $inquiry = Inquiry::factory()->create(['answer' => '<p>Hello <strong>there</strong></p>']);
+
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer', 'inquiry' => $inquiry]);
+
+        $this->assertStringContainsString('"bold"', $component->get('form.answer'));
+        $component->call('save')->assertHasNoErrors();
+        $this->assertSame('<p>Hello <strong>there</strong></p>', $inquiry->fresh()?->answer);
     }
 
     public function test_the_fields_are_validated(): void
@@ -218,7 +272,7 @@ class InquiryTest extends TestCase
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
-            ->set('form.answer', 'Answer')
+            ->set('form.answer', $this->doc('Answer'))
             ->set('uploads', [$this->picture('secret-name.jpg'), $this->picture('other.png')]);
 
         $component->assertHasNoErrors()->call('save')->assertHasNoErrors();
@@ -255,7 +309,7 @@ class InquiryTest extends TestCase
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
-            ->set('form.answer', 'Answer')
+            ->set('form.answer', $this->doc('Answer'))
             ->set('uploads', array_map(fn (int $i): UploadedFile => $this->picture("p{$i}.jpg", 200, 200), range(1, 11)))
             ->assertHasErrors(['form.images']);
 
@@ -266,7 +320,7 @@ class InquiryTest extends TestCase
         $ok = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
-            ->set('form.answer', 'Answer')
+            ->set('form.answer', $this->doc('Answer'))
             ->set('uploads', array_map(fn (int $i): UploadedFile => $this->picture("p{$i}.jpg", 200, 200), range(1, 10)))
             ->call('save')->assertHasNoErrors();
 
@@ -403,13 +457,13 @@ class InquiryTest extends TestCase
     {
         $service = Service::factory()->create(['name' => 'Electroplating']);
         $customer = User::factory()->customer()->create();
-        $inquiry = Inquiry::factory()->create(['question' => 'Does it rust?', 'answer' => "Line one\nLine two", 'service_id' => $service->id, 'customer_id' => $customer->id]);
+        $inquiry = Inquiry::factory()->create(['question' => 'Does it rust?', 'answer' => '<p>Line one</p><ul><li>Line two</li></ul>', 'service_id' => $service->id, 'customer_id' => $customer->id]);
         $image = $this->withImage($inquiry);
 
         $this->actingAs($customer)->get("/customer/inquiries/{$inquiry->id}")
             ->assertOk()
             ->assertSee('Does it rust?')
-            ->assertSee('Line one')
+            ->assertSee('<p>Line one</p><ul><li>Line two</li></ul>', false)
             ->assertSee('Electroplating')
             ->assertSee(route('customer.inquiry-images.show', $image), false);
     }
@@ -493,7 +547,7 @@ class InquiryTest extends TestCase
             ->assertSet('form.askedAt', '')
             ->set('form.customerId', $this->customerId())
             ->set('form.question', 'Question')
-            ->set('form.answer', 'Answer')
+            ->set('form.answer', $this->doc('Answer'))
             ->call('save')->assertHasNoErrors();
 
         $this->assertNull(Inquiry::query()->firstOrFail()->asked_at);
@@ -560,7 +614,7 @@ class InquiryTest extends TestCase
             Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
                 ->set('form.customerId', $invalid)
                 ->set('form.question', 'Question')
-                ->set('form.answer', 'Answer')
+                ->set('form.answer', $this->doc('Answer'))
                 ->call('save')->assertHasErrors(['form.customerId']);
         }
 

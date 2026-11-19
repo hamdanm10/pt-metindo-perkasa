@@ -21,7 +21,7 @@ class InquiryFactory extends Factory
         return [
             'customer_id' => User::factory()->customer(),
             'question' => fake()->sentence().'?',
-            'answer' => fake()->paragraph(),
+            'answer' => '<p>'.fake()->paragraph().'</p>',
             'asked_at' => fake()->dateTimeBetween('-1 year')->format('Y-m-d'),
             'service_id' => null,
             'product_id' => null,

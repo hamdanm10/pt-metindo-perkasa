@@ -6,21 +6,26 @@ namespace App\Actions\Inquiries;
 
 use App\Models\Inquiry;
 use App\Models\User;
+use App\Services\Articles\ArticleBody;
 use App\Services\Inquiries\InquiryImageStore;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 class SaveInquiry
 {
-    public function __construct(private readonly InquiryImageStore $images) {}
+    public function __construct(private readonly InquiryImageStore $images, private readonly ArticleBody $body) {}
 
     /**
+     * The answer arrives as the editor JSON and is stored as sanitized HTML.
+     *
      * @param  array{customer_id: int, question: string, answer: string, asked_at: string|null, service_id: int|null, product_id: int|null}  $data
      * @param  list<UploadedFile>  $newImages
      * @param  list<int>  $removeImageIds  Ids of pictures to remove; ids that are not this record's are ignored.
      */
     public function execute(?Inquiry $inquiry, User $actor, array $data, array $newImages, array $removeImageIds): Inquiry
     {
+        $data['answer'] = $this->body->render($this->body->parse($data['answer']));
+
         $stored = array_map(fn (UploadedFile $file): string => $this->images->store($file), $newImages);
 
         try {

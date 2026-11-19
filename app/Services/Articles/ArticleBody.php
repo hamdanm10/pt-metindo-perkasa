@@ -30,11 +30,27 @@ class ArticleBody
     }
 
     /**
+     * Reads stored HTML back into an editor document, keeping only what the editor allows.
+     *
+     * @return array<string, mixed>
+     */
+    public function fromHtml(string $html): array
+    {
+        /** @var array<string, mixed> */
+        return $this->editor()->setContent($html)->getDocument();
+    }
+
+    /**
      * @param  array<string, mixed>  $document
      */
     public function render(array $document): string
     {
-        $editor = new Editor([
+        return $this->editor()->setContent($document)->getHTML();
+    }
+
+    private function editor(): Editor
+    {
+        return new Editor([
             'extensions' => [
                 new StarterKit([
                     'heading' => ['levels' => [2, 3]],
@@ -49,8 +65,6 @@ class ArticleBody
                 ]),
             ],
         ]);
-
-        return $editor->setContent($document)->getHTML();
     }
 
     /**
