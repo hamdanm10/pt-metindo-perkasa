@@ -24,6 +24,7 @@
 
     <!-- professor -->
     <g data-part="professor" transform="translate(600 1400) scale(1.2) translate(-600 -1400)">
+        <defs><clipPath id="professor-torso"><path d="M452 1210V946C452 894 476 866 516 857L568 842H632L684 857C724 866 748 894 748 946V1210Z"/></clipPath></defs>
         <path d="M452 1210V946C452 894 476 866 516 857L568 842H632L684 857C724 866 748 894 748 946V1210Z" fill="#FFFFFF"/>
         <path d="M568 842L600 896 632 842 664 868 626 1000H574L536 868Z" fill="#F3F2FF"/>
         <path d="M568 842L600 930 554 1010 526 890 548 866Z" fill="#D9DCE8"/>
@@ -77,8 +78,8 @@
             <path d="M-32-80h60M-32-60h60M-32-40h46M-32-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
         </g>
         <g data-part="arm-left">
-        <path data-part="arm-left-edge" d="M460.7 931.5L410.6 997.7L500 1070" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-left-sleeve" d="M480 906L410.6 997.7L500 1070" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-edge" d="M504 918L410.6 997.7L500 1070" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="butt" stroke-linejoin="round"/>
+        <path data-part="arm-left-sleeve" d="M504 918L410.6 997.7L500 1070" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
         <path data-part="arm-left-cuff" d="M476.7 1051.1L492.2 1063.7" fill="none" stroke="#F3F2FF" stroke-width="60" stroke-linecap="butt"/>
         <g data-part="hand-left" transform="translate(500 1070) rotate(39)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
@@ -88,8 +89,8 @@
             </g></g>
     </g>
         <g data-part="arm-right">
-        <path data-part="arm-right-edge" d="M718.6 938L715 1020.9L600 1024" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-right-sleeve" d="M720 906L715 1020.9L600 1024" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-right-edge" d="M696 918L715 1020.9L600 1024" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="butt" stroke-linejoin="round"/>
+        <path data-part="arm-right-sleeve" d="M696 918L715 1020.9L600 1024" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
         <path data-part="arm-right-cuff" d="M630 1023.2L610 1023.7" fill="none" stroke="#F3F2FF" stroke-width="60" stroke-linecap="butt"/>
         <g data-part="hand-right" transform="translate(600 1024) rotate(178.5)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
@@ -98,7 +99,7 @@
                 <rect x="-8" y="-25" width="14" height="50" rx="7" fill="#B01022"/>
             </g></g>
     </g>
-        <circle cx="480" cy="906" r="36" fill="#FFFFFF"/><circle cx="720" cy="906" r="36" fill="#FFFFFF"/>
+        <g clip-path="url(#professor-torso)"><circle cx="480" cy="906" r="36" fill="#FFFFFF"/><circle cx="720" cy="906" r="36" fill="#FFFFFF"/></g>
     </g>
 
     <g data-part="tank-1">

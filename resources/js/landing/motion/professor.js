@@ -69,13 +69,16 @@ export const professor = () => {
 
         // Each arm is one continuous sleeve (shoulder, elbow, wrist) with the glove at the wrist.
         const placeArm = (side, shoulder, target, bend) => {
-            const { upper, elbow, wrist, fore } = reach(shoulder, target, bend);
+            const { elbow, wrist, fore } = reach(shoulder, target, bend);
             const point = ([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
             const along = (distance) => [wrist[0] - distance * Math.cos(fore), wrist[1] - distance * Math.sin(fore)];
             const path = (from) => `M${point(from)}L${point(elbow)}L${point(wrist)}`;
 
-            el[`arm-${side}-edge`].setAttribute('d', path([shoulder[0] + 32 * Math.cos(upper), shoulder[1] + 32 * Math.sin(upper)]));
-            el[`arm-${side}-sleeve`].setAttribute('d', path(shoulder));
+            // The sleeve starts inside the coat, so the shoulder line stays the coat's own smooth slope.
+            const inner = [shoulder[0] + (side === 'left' ? 24 : -24), shoulder[1] + 12];
+
+            el[`arm-${side}-edge`].setAttribute('d', path(inner));
+            el[`arm-${side}-sleeve`].setAttribute('d', path(inner));
             el[`arm-${side}-cuff`].setAttribute('d', `M${point(along(30))}L${point(along(10))}`);
             el[`hand-${side}`].setAttribute('transform', `translate(${point(wrist)}) rotate(${((fore * 180) / Math.PI).toFixed(2)})`);
         };
