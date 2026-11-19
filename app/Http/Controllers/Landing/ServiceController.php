@@ -32,14 +32,13 @@ class ServiceController extends Controller
             fn (array $item): bool => $item['slug'] !== $current['slug'],
         ));
 
-        $agents = $contact->agents();
         $index = array_search($current['slug'], array_column($services, 'slug'), true);
 
         return view('landing.pages.services.show', [
             'service' => $current,
             'tone' => (int) $index,
             'others' => $others,
-            'whatsapp' => $agents !== [] ? $contact->url($agents[0]['number']) : null,
+            'agents' => $contact->agents(),
         ]);
     }
 }

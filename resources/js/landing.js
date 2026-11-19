@@ -13,3 +13,4 @@ import './landing/contact-widgets.js';
 import './landing/copy-link.js';
 import './landing/article-views.js';
 import './landing/contact-form.js';
+import './landing/number-picker.js';

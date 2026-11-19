@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Landing;
 
 use App\Models\ArticleTranslation;
+use App\Models\WhatsappAgent;
 use App\Services\Articles\LandingArticles;
+use App\Services\Landing\LandingContact;
 use App\Services\Landing\LandingGallery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Blade;
@@ -26,10 +28,11 @@ class HomeTest extends TestCase
         config([
             'landing.intro_video_id' => 'abc123',
             'landing.contact.email' => 'hello@example.test',
-            'landing.contact.phone' => '+62 812 0000 0000',
         ]);
 
         $this->createServices();
+        WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000000', 'position' => 0]);
+        WhatsappAgent::factory()->create(['name' => 'Support', 'number' => '6281200000009', 'position' => 1]);
     }
 
     public function test_home_shows_the_hero_heading_in_every_locale(): void
@@ -237,11 +240,12 @@ class HomeTest extends TestCase
         $this->get('/en')->assertDontSee('data-video', false);
     }
 
-    public function test_contact_links_use_the_configured_email_and_phone(): void
+    public function test_contact_links_use_the_configured_email_and_every_admin_number(): void
     {
         $this->get('/en')
             ->assertSee('href="mailto:hello@example.test"', false)
-            ->assertSee('href="tel:+6281200000000"', false);
+            ->assertSee('href="tel:+6281200000000"', false)
+            ->assertSee('href="tel:+6281200000009"', false);
     }
 
     public function test_hero_contact_button_opens_the_contact_page_even_without_an_email(): void
@@ -266,6 +270,7 @@ class HomeTest extends TestCase
             ->assertSee('href="'.route('landing.contact', ['locale' => 'en']).'"', false)
             ->assertSee('href="mailto:hello@example.test"', false)
             ->assertSee('href="tel:+6281200000000"', false)
+            ->assertSee('href="tel:+6281200000009"', false)
             ->assertSee('data-cta-art', false)
             // The headline width follows its own font size, so no word breaks in the middle on wide screens.
             ->assertSee('max-w-[11em]', false);
@@ -285,7 +290,9 @@ class HomeTest extends TestCase
 
     public function test_contact_links_are_absent_without_configuration(): void
     {
-        config(['landing.contact.email' => null, 'landing.contact.phone' => null]);
+        config(['landing.contact.email' => null]);
+        WhatsappAgent::query()->delete();
+        app(LandingContact::class)->flush();
 
         $this->get('/en')
             ->assertDontSee('mailto:', false)
@@ -482,6 +489,7 @@ class HomeTest extends TestCase
 
     public function test_services_list_is_complete_and_open_without_javascript(): void
     {
+        WhatsappAgent::query()->get()->each->delete();
         $response = $this->get('/en')
             ->assertSee('data-services-track', false)
             ->assertSee('data-services-pin', false)

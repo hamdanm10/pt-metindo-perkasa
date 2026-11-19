@@ -18,4 +18,9 @@ return [
         'chat' => '聊天',
         'message' => '您好 PT Metindo Perkasa，我想咨询贵公司的服务。',
     ],
+    'call' => [
+        'title' => '致电我们',
+        'hint' => '选择要拨打的号码。',
+        'action' => '拨打',
+    ],
 ];

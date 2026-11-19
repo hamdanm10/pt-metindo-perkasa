@@ -49,9 +49,7 @@
                     <h2 class="text-2xl font-black tracking-tight">{{ __('pages.services.detail.talk') }}</h2>
                     <p class="mt-3 text-white/80">{{ __('pages.services.detail.talk_text') }}</p>
                     <div class="mt-6 flex flex-wrap gap-4">
-                        @if ($whatsapp)
-                            <x-landing.button :href="$whatsapp" target="_blank" rel="noopener noreferrer">{{ __('pages.services.detail.whatsapp') }}</x-landing.button>
-                        @endif
+                        <x-landing.number-picker :agents="$agents" mode="whatsapp">{{ __('pages.services.detail.whatsapp') }}</x-landing.number-picker>
                         <x-landing.button :href="route('landing.contact')" variant="outline">{{ __('pages.services.detail.contact') }}</x-landing.button>
                     </div>
                 </div>

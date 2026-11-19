@@ -1,6 +1,7 @@
 @php
     $email = config('landing.contact.email');
-    $phone = config('landing.contact.phone');
+    $contact = app(\App\Services\Landing\LandingContact::class);
+    $phones = $contact->agents();
 @endphp
 
 @if ($email)
@@ -21,8 +22,12 @@
                             <x-landing.button :href="'mailto:'.$email" variant="outline" :arrow="false">{{ $email }}</x-landing.button>
                         </div>
 
-                        @if ($phone)
-                            <p data-anim="heading" class="mt-[1.6vw] text-[clamp(0.875rem,1vw,1.25rem)] font-bold max-lg:mt-5"><a href="tel:{{ preg_replace('/[^+\d]/', '', $phone) }}" dir="ltr" class="inline-flex"><span class="uline">{{ $phone }}</span></a></p>
+                        @if ($phones)
+                            <ul data-anim="heading" class="mt-[1.6vw] flex flex-wrap gap-x-[1.6vw] gap-y-2 text-[clamp(0.875rem,1vw,1.25rem)] font-bold max-lg:mt-5 max-lg:gap-x-6">
+                                @foreach ($phones as $phone)
+                                    <li><a href="{{ $contact->tel($phone['number']) }}" dir="ltr" class="inline-flex" title="{{ $phone['name'] }}"><span class="uline">{{ $phone['display'] }}</span></a></li>
+                                @endforeach
+                            </ul>
                         @endif
                     </div>
 

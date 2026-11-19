@@ -16,11 +16,11 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | 6 | Logo klien dan mitra dibaca dari `public/images/landing/clients/` dan `partners/` (folder dasar di `config('landing.logo_directory')`). Tanpa berkas, slide klien tidak tampil dan mitra tampil sebagai nama. **Enam logo klien dan enam logo mitra yang terpasang sekarang adalah logo contoh milik perusahaan lain, dari client untuk menilai tampilan, bukan klien dan mitra PT Metindo Perkasa**; ganti dengan logo asli sebelum rilis | Logo yang dipasang tidak boleh dikarang atau disebut sebagai klien tanpa konfirmasi |
 | 7 | Bagian artikel menampilkan **empat** artikel terbaru yang terbit di bahasa itu (dari database, A2) dan hilang bila belum ada | Artikel contoh sudah dihapus |
 | 8 | Video: tidak ada permintaan ke YouTube sebelum diklik. Tampil poster lokal dan tombol putar, lalu iframe `youtube-nocookie.com` dibuat saat diklik. ID video di `config/landing.php` (env `LANDING_INTRO_VIDEO_ID`), bagian disembunyikan bila kosong | Kecepatan, privasi, dan SEO. ID di prototipe belum dipastikan video asli |
-| 9 | Kontak (email, telepon) dari `config/landing.php` (env). Bagian dan tombol kontak hanya muncul bila diisi. Tombol hero "Contact us" dan tombol ajakan menuju halaman Contact; `mailto:` dan `tel:` hanya di baris kontak ajakan | Tombol harus berfungsi. Nilai di prototipe tampak contoh, belum dikonfirmasi |
+| 9 | Email dari `config/landing.php` (env); **telepon dari nomor aktif di dashboard admin** (menu Nomor WhatsApp), semuanya ditampilkan ([`../whatsapp/overview.md`](../whatsapp/overview.md)). Bagian dan tombol kontak hanya muncul bila diisi. Tombol hero "Contact us" dan tombol ajakan menuju halaman Contact; `mailto:` dan `tel:` hanya di baris kontak ajakan | Tombol harus berfungsi. Nilai di prototipe tampak contoh, belum dikonfirmasi |
 | 10 | Ilustrasi Recraft lama tidak dipakai lagi sejak redesign (Nov 2026). Gambar hero adalah adegan maskot profesor yang menjalankan jalur plating (SVG inline transparan buatan sendiri, dianimasikan GSAP; ide client). Monogram tidak dipakai lagi di hero | Tampilan jalan tanpa aset, dan aset tinggal diletakkan |
 | 11 | Widget chat dikerjakan terpisah di L7 | Lihat [`../chat/overview.md`](../chat/overview.md) |
 | 12 | Tidak ada gambar buatan sendiri selain logo. Foto dan ilustrasi baru diminta ke client bila dibutuhkan ([`../ui/direction.md`](../ui/direction.md)) | Aturan: jangan karang aset |
-| 13 | Kata kunci `.env`: `LANDING_INTRO_VIDEO_ID`, `LANDING_CONTACT_EMAIL`, `LANDING_CONTACT_PHONE` (kosong di `.env.example`) | Data kontak dan video belum dikonfirmasi |
+| 13 | Kata kunci `.env`: `LANDING_INTRO_VIDEO_ID`, `LANDING_CONTACT_EMAIL` (kosong di `.env.example`) | Data kontak dan video belum dikonfirmasi |
 
 ## Susunan
 
@@ -35,7 +35,7 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | Tentang perusahaan | Label "About", judul tiga baris besar ("Plate it, protect it, and polish.") dengan **grafik di sela tiap baris**, teks perusahaan dan tombol "About Us", serta setumpuk foto yang ganti kartu depan tiap 4 detik | Mengikuti section About referensi di bawah Insights ([`../ui/motion.md`](../ui/motion.md)). Kalimat judul dan teks ditulis sendiri (lima bahasa). Foto memakai tiga foto tim galeri; tiap grafik bergerak saat di-hover |
 | Galeri | Foto tim layar penuh yang berganti sendiri tiap 3 detik, dengan label, keterangan sesuai foto, dan penghitung di bawahnya | Mengikuti blok foto di bawah Clients pada referensi ([`../ui/motion.md`](../ui/motion.md)). Tiga foto dari client; keterangan ada di `lang/<locale>/home.php` (`gallery.slides`) |
 | Artikel | Judul "Articles & news" di tengah dengan pengantar, empat artikel terbaru yang terbit di bahasa itu (gambar, penanda jenis, tanggal `dd.mm.yy`, judul), dan tombol "View all" ke daftar artikel | Disamakan dengan section Insights referensi, rinciannya di [`../ui/design.md`](../ui/design.md). Bila bahasa itu belum punya artikel terbit: **tiga artikel contoh yang bisa dibuka** (lihat bagian Articles di [`../ui/design.md`](../ui/design.md)) di mode contoh, dan tersembunyi di production |
-| Ajakan | "Have a plating specification in mind?" | Satu tombol ke halaman Contact, dan baris email/telepon |
+| Ajakan | "Have a plating specification in mind?" | Satu tombol ke halaman Contact, dan baris email dan semua nomor telepon admin |
 | Footer | Deskripsi singkat, kontak, hak cipta | Footer L1 diperluas, menu tetap Home |
 
 Teks asli bahasa Inggris dari prototipe dipakai apa adanya sebagai sumber, lalu diterjemahkan ke empat bahasa lain.
@@ -61,7 +61,7 @@ Aturan dari [`../ui/design.md`](../ui/design.md), diwujudkan begini:
 
 ## Struktur kode
 
-- `config/landing.php`: daftar slug kategori, `intro_video_id`, `contact.email`, `contact.phone`.
+- `config/landing.php`: daftar slug kategori, `intro_video_id`, `contact.email`. Nomor telepon tidak ada di config.
 - `lang/{en,id,zh,ar,ja}/home.php`: teks beranda.
 - `resources/views/landing/home.blade.php` menyusun bagian dari `resources/views/landing/home/*.blade.php` (satu berkas per bagian).
 - `resources/views/components/landing/art.blade.php`: memuat aset dari `public/images/landing/` bila ada.

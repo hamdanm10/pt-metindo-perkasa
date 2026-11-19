@@ -24,6 +24,14 @@ Menu "WhatsApp numbers" / "Nomor WhatsApp" (ikon `phone`) di grup Content.
 | Tambah | `/app/whatsapp/create` | Nama dan nomor |
 | Ubah | `/app/whatsapp/{id}/edit` | Sama. Nomor sendiri tidak dianggap kembar |
 
+## Nomor telepon dan pemilih nomor
+
+Nomor yang sama dipakai sebagai **nomor telepon** di landing. `LANDING_CONTACT_PHONE` dan `landing.contact.phone` dihapus.
+
+- **Telepon:** footer, kartu ajakan, dan halaman Contact menampilkan **semua** nomor aktif (tautan `tel:+<nomor>`, berlabel nama). Halaman Contact punya satu kartu per nomor, dengan tombol Copy.
+- **Pemilih nomor** (`<x-landing.number-picker>`, `resources/js/landing/number-picker.js`): tombol "Enquire on WhatsApp" di detail layanan, serta "Chat on WhatsApp" dan "Call us" di hero Contact. Satu nomor: tautan biasa. Dua nomor atau lebih: tombol membuka **dialog** berisi semua nomor (nama, nomor, tombol Chat atau Call). Tanpa JavaScript tombol membuka nomor pertama. Tombol "Send on WhatsApp" di formulir Contact sudah memilih nomor lewat pilihan penerima.
+- Teks dialog ada di `lang/<locale>/chat.php` (`whatsapp.*`, `call.*`) dalam lima bahasa.
+
 ## Di landing
 
 - `App\Services\Landing\LandingContact::agents()` mengembalikan `{name, number, display}` untuk nomor aktif. Dipakai tombol WhatsApp, panel, halaman Contact (pilihan penerima bila lebih dari satu nomor, dan tautan `wa.me` dengan nomor pertama), dan `ContactController`.
@@ -31,7 +39,7 @@ Menu "WhatsApp numbers" / "Nomor WhatsApp" (ikon `phone`) di grup Content.
 
 ## Pengujian
 
-`tests/Feature/Whatsapp/WhatsappAgentTest.php`: akses per peran, menyimpan angka saja di urutan terakhir, validasi (nama wajib, format, kembar), mengubah dengan nomor sendiri, naik-turun dan nyala-mati, hapus, staf ditolak di komponen, tombol di landing mengikuti aksi admin (tampil, mati, hapus), jumlah query daftar tetap, dan teks tersedia di en dan id. `tests/Feature/Landing/ContactWidgetsTest.php` dan `ContactPageTest.php` untuk urutan, cache, dan halaman Contact.
+`tests/Feature/Whatsapp/WhatsappAgentTest.php`: akses per peran, menyimpan angka saja di urutan terakhir, validasi (nama wajib, format, kembar), mengubah dengan nomor sendiri, naik-turun dan nyala-mati, hapus, staf ditolak di komponen, tombol di landing mengikuti aksi admin (tampil, mati, hapus), jumlah query daftar tetap, dan teks tersedia di en dan id. `tests/Feature/Landing/NumberPickerTest.php` (semua nomor di tombol dan telepon, satu nomor, tanpa nomor, lima bahasa, jumlah query), `ContactWidgetsTest.php` dan `ContactPageTest.php` untuk urutan, cache, dan halaman Contact.
 
 ## Ditunda
 

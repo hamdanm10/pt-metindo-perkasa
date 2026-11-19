@@ -16,10 +16,10 @@ class ContactController extends Controller
     public function __invoke(LandingContact $contact, LandingContent $content, LandingMap $map): View
     {
         $agents = $contact->agents();
-        $details = array_filter(Arr::only(config()->array('landing.contact'), ['address', 'hours', 'phone', 'email']));
+        $details = array_filter(Arr::only(config()->array('landing.contact'), ['address', 'hours', 'email']));
 
         return view('landing.pages.contact', [
-            'contact' => $details + ($agents !== [] ? ['whatsapp' => $agents[0]['number']] : []),
+            'contact' => $details,
             'agents' => $agents,
             'subsidiaries' => $map->pins($content->locations()),
         ]);
