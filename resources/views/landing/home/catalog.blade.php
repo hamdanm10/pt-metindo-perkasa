@@ -51,7 +51,8 @@
                     $more = count($processes) - count($shown);
                 @endphp
                 <li>
-                    <a href="{{ route('landing.processes.show', ['category' => $category['slug']]) }}" class="group relative block focus-visible:outline-offset-4">
+                    {{-- The link must not be positioned: catalog.js measures where each cascade card lands with offsetLeft/offsetTop, which count from the nearest positioned ancestor (the stage). --}}
+                    <a href="{{ route('landing.processes.show', ['category' => $category['slug']]) }}" class="group block focus-visible:outline-offset-4">
                         <div data-catalog-tile class="{{ $tones[$loop->index] }} relative z-10 aspect-[4/3] overflow-hidden rounded-lg">
                             <div class="{{ $zoom }} absolute inset-0">
                                 <x-landing.photo :name="'product-'.$category['slug']" :fallback="$photo" ratio="aspect-[4/3]" bare class="size-full bg-transparent! text-white! transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none" />

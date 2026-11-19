@@ -127,6 +127,23 @@ class HomeTest extends TestCase
         $this->assertSame(4, substr_count($catalog, '>'.__('landing.nav.processes', [], 'en').'</span>'));
     }
 
+    public function test_the_catalog_card_links_are_not_positioned_so_the_cascade_lands_on_the_right_spot(): void
+    {
+        // catalog.js sends each cascade card to its row photo using offsetLeft/offsetTop, which count from the nearest
+        // positioned ancestor. A positioned link would become that ancestor and send every card to the top left corner.
+        $catalog = $this->catalogHtml();
+
+        preg_match_all('/<a href="[^"]*\/processes\/[^"]*" class="([^"]*)"/', $catalog, $links);
+        $this->assertCount(4, $links[1]);
+
+        foreach ($links[1] as $class) {
+            $this->assertDoesNotMatchRegularExpression('/(^|\s)(relative|absolute|fixed|sticky)(\s|$)/', $class);
+        }
+
+        // The stage that the script measures from stays the positioned ancestor of the photos.
+        $this->assertStringContainsString('data-catalog-stage class="container-site relative', $catalog);
+    }
+
     public function test_the_catalog_card_labels_exist_in_every_language(): void
     {
         foreach (config('locales.landing') as $code) {
