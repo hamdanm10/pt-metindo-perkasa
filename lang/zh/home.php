@@ -29,8 +29,7 @@ return [
         'more' => '了解更多',
     ],
     'clients' => [
-        'eyebrow' => '客户',
-        'title' => '客户与合作伙伴',
+        'eyebrow' => '客户与合作伙伴',
         'lead' => '我们的',
         'trail' => '',
         'clients' => '客户',

@@ -29,8 +29,7 @@ return [
         'more' => 'Learn more',
     ],
     'clients' => [
-        'eyebrow' => 'Clients',
-        'title' => 'Clients & Partners',
+        'eyebrow' => 'Clients & Partners',
         'lead' => 'Our',
         'trail' => '',
         'clients' => 'Clients',

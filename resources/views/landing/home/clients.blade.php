@@ -13,19 +13,18 @@
             <h2 data-anim="heading" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase">{{ __('home.clients.eyebrow') }}</h2>
 
             <div class="mt-[2.8vw] text-[clamp(3rem,9vw,11rem)] font-black uppercase leading-[0.9] tracking-tight">
-                {{-- "Our" and a chip beside it. The chip changes with the slide: its text slides and its width follows. --}}
-                <div class="flex flex-wrap items-center gap-x-[2.1vw]">
+                {{-- "Our", the word of the current slide (clients or partners, it slides and its width follows), and the trailing word. --}}
+                <div class="flex flex-wrap items-baseline gap-x-[0.25em]">
                     @if (__('home.clients.lead') !== '')
                         <span data-anim="grow">{{ __('home.clients.lead') }}</span>
                     @endif
-                    <span data-chip class="inline-flex h-[clamp(3rem,6.4vw,8rem)] items-center overflow-hidden rounded-lg bg-brand-600 px-[clamp(1.25rem,3.5vw,4rem)] align-middle text-[clamp(1.25rem,2.11vw,2.75rem)] font-bold normal-case leading-none tracking-normal text-white">
+                    <span data-chip class="inline-flex overflow-hidden pb-[0.1em] text-brand-600">
                         <span data-chip-text class="inline-block whitespace-nowrap">{{ $slides[0]['label'] }}</span>
                     </span>
                     @if (__('home.clients.trail') !== '')
                         <span data-anim="grow">{{ __('home.clients.trail') }}</span>
                     @endif
                 </div>
-                <div data-anim="grow" class="mt-[0.4vw]">{{ __('home.clients.title') }}</div>
             </div>
 
             <div data-clients-stage class="relative mt-[3vw] lg:px-[3.9vw]">
