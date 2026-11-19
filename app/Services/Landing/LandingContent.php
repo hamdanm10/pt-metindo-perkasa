@@ -43,6 +43,36 @@ class LandingContent
     }
 
     /**
+     * The three services. `key` names the texts in `home.services.items` and `pages.services.detail.items`,
+     * `slug` is the address, and `photo` names the picture (`service-<photo>`). Electroplating and chemical
+     * supply link on to the process categories.
+     *
+     * @return list<array{slug: string, key: string, photo: string, processes: bool}>
+     */
+    public function services(): array
+    {
+        return [
+            ['slug' => 'electroplating-service', 'key' => 'electroplating', 'photo' => 'electroplating', 'processes' => true],
+            ['slug' => 'chemical-supply', 'key' => 'chemical_supply', 'photo' => 'chemical-supply', 'processes' => true],
+            ['slug' => 'technical-consultation', 'key' => 'consultation', 'photo' => 'consultation', 'processes' => false],
+        ];
+    }
+
+    /**
+     * @return array{slug: string, key: string, photo: string, processes: bool}|null
+     */
+    public function service(string $slug): ?array
+    {
+        foreach ($this->services() as $service) {
+            if ($service['slug'] === $slug) {
+                return $service;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * The processes of a category with their slug and short description.
      *
      * @param  array{slug: string, name: string, processes: list<string>}  $category
@@ -134,7 +164,7 @@ class LandingContent
             ['route' => 'landing.home', 'label' => 'landing.nav.home', 'active' => 'landing.home'],
             ['route' => 'landing.about', 'label' => 'landing.nav.about', 'active' => 'landing.about'],
             ['route' => 'landing.processes.index', 'label' => 'landing.nav.processes', 'active' => 'landing.processes.*'],
-            ['route' => 'landing.services', 'label' => 'landing.nav.services', 'active' => 'landing.services'],
+            ['route' => 'landing.services.index', 'label' => 'landing.nav.services', 'active' => 'landing.services.*'],
         ];
 
         if ($this->articles->hasAny(app()->getLocale())) {

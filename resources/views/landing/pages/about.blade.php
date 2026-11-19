@@ -11,7 +11,7 @@
                 <p data-anim="hero-item" class="max-w-[38.9vw] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.4] text-white/85 max-lg:max-w-2xl">{{ __('pages.about.intro') }}</p>
                 <div data-anim="hero-item" class="flex flex-wrap gap-4">
                     <x-landing.button :href="route('landing.processes.index')">{{ __('landing.nav.processes') }}</x-landing.button>
-                    <x-landing.button :href="route('landing.services')" variant="outline">{{ __('landing.nav.services') }}</x-landing.button>
+                    <x-landing.button :href="route('landing.services.index')" variant="outline">{{ __('landing.nav.services') }}</x-landing.button>
                 </div>
             </div>
         </div>
