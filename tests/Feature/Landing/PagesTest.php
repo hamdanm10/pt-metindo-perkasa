@@ -357,14 +357,13 @@ class PagesTest extends TestCase
             $this->assertStringContainsString(__("home.services.items.{$service}.text", [], 'en'), $html);
         }
 
-        // The list has no "Talk to our team" or process buttons any more, only the closing call to action has the first.
-        $this->assertStringNotContainsString(__('pages.services.see_processes', [], 'en'), $html);
+        // The list has no "Talk to our team" button any more, only the closing call to action has it.
         $this->assertStringContainsString(__('landing.cta.button', [], 'en'), (string) preg_replace('/\s+/', ' ', strip_tags($html)));
     }
 
     public function test_every_service_has_a_detail_page(): void
     {
-        foreach ([['electroplating-service', 'electroplating', 'electroplating', true], ['chemical-supply', 'chemical_supply', 'chemical-supply', true], ['technical-consultation', 'consultation', 'consultation', false]] as [$slug, $key, $photo, $processes]) {
+        foreach ([['electroplating-service', 'electroplating', 'electroplating'], ['chemical-supply', 'chemical_supply', 'chemical-supply'], ['technical-consultation', 'consultation', 'consultation']] as [$slug, $key, $photo]) {
             $response = $this->get('/en/services/'.$slug)->assertOk()
                 ->assertSee(__("home.services.items.{$key}.title", [], 'en'))
                 ->assertSee(e(__("pages.services.detail.items.{$key}.summary", [], 'en')), false)
@@ -379,7 +378,7 @@ class PagesTest extends TestCase
                 $response->assertSee(e($item), false);
             }
 
-            $this->assertSame($processes, str_contains((string) $response->getContent(), __('pages.services.see_processes', [], 'en')), $slug);
+            $response->assertDontSee('See process categories');
         }
     }
 

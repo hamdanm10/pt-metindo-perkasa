@@ -148,7 +148,6 @@ return [
         ],
         'others' => 'Other services',
         'jump' => 'Jump to a service',
-        'see_processes' => 'See process categories',
         'title' => 'Services',
         'intro' => 'Everything PT Metindo Perkasa offers, from plating to supply.',
         'how' => [
