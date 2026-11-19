@@ -25,7 +25,7 @@ document.querySelectorAll('[data-ptabs]').forEach((root) => {
         return;
     }
 
-    const AUTOPLAY_MS = 6000;
+    const AUTOPLAY_MS = 3000;
     let current = 0;
     let timer = null;
     let paused = false;
