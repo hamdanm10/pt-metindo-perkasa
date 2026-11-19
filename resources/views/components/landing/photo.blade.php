@@ -1,9 +1,11 @@
-@props(['name', 'ratio' => 'aspect-[4/3]', 'alt' => '', 'bare' => false])
+@props(['name', 'ratio' => 'aspect-[4/3]', 'alt' => '', 'bare' => false, 'fallback' => null])
 
+{{-- The photo is images/landing/photos/{name}.{ext}. With `fallback`, a missing photo is replaced by that other photo before the sample placeholder shows, so a card can use an existing picture until its own arrives. --}}
 @php
-    $file = collect(['webp', 'svg', 'jpg', 'jpeg', 'png'])
-        ->map(fn (string $extension): string => "images/landing/photos/{$name}.{$extension}")
+    $find = fn (string $photo): ?string => collect(['webp', 'svg', 'jpg', 'jpeg', 'png'])
+        ->map(fn (string $extension): string => "images/landing/photos/{$photo}.{$extension}")
         ->first(fn (string $path): bool => is_file(public_path($path)));
+    $file = $find($name) ?? ($fallback ? $find($fallback) : null);
 @endphp
 
 @if ($file)
