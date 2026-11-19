@@ -3,10 +3,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Geometry of the artwork in components/landing/professor-scene.blade.php (the SVG's own units).
 const ARM = { upper: 140, fore: 150 };
-const SHOULDER = { left: [430, 890], right: [770, 890] };
+const SHOULDER = { left: [462, 890], right: [738, 890] };
 const LEVER = { x: 600, y: 1160, length: 136 };
 const LANE = { first: 250, second: 950 };
-const RACK = { up: 300, down: 1100 };
+const RACK = { up: 165, down: 1100 };
 const COLOR = { steel: '#98A2C4', chrome: '#E3E8F7', gold: '#F2B84B' };
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -71,7 +71,7 @@ export const professor = () => {
         el['fore-right'].setAttribute('transform', `translate(${ARM.upper} 0) rotate(${rightFore.toFixed(2)})`);
 
         // The other hand holds the clipboard and now and then writes on it.
-        const writing = [430 + Math.sin(time * 2.3) * 4, 1030 + Math.sin(time * 3.1) * 3];
+        const writing = [470 + Math.sin(time * 2.3) * 4, 1030 + Math.sin(time * 3.1) * 3];
         const [leftUpper, leftFore] = reach(SHOULDER.left, writing, 1);
         el['arm-left'].setAttribute('transform', `translate(${SHOULDER.left[0]} ${SHOULDER.left[1]}) rotate(${leftUpper.toFixed(2)})`);
         el['fore-left'].setAttribute('transform', `translate(${ARM.upper} 0) rotate(${leftFore.toFixed(2)})`);
