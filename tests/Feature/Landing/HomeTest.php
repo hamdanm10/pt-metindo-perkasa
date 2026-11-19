@@ -579,7 +579,7 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_the_chip_labels_exist_in_every_language(): void
+    public function test_the_clients_labels_exist_in_every_language(): void
     {
         foreach (config('locales.landing') as $code) {
             $this->get("/{$code}")
@@ -593,7 +593,6 @@ class HomeTest extends TestCase
         foreach (config('locales.landing') as $code) {
             $this->get("/{$code}")
                 ->assertSee(__('home.clients.eyebrow', [], $code))
-                ->assertSee(__('home.clients.title', [], $code))
                 ->assertSee(__('home.clients.next', [], $code));
         }
     }

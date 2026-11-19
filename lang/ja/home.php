@@ -29,8 +29,7 @@ return [
         'more' => '詳しく見る',
     ],
     'clients' => [
-        'eyebrow' => 'お客様',
-        'title' => 'お客様とパートナー',
+        'eyebrow' => 'お客様とパートナー',
         'lead' => '当社の',
         'trail' => '',
         'clients' => 'お客様',

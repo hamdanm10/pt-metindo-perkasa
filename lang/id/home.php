@@ -29,8 +29,7 @@ return [
         'more' => 'Pelajari lebih lanjut',
     ],
     'clients' => [
-        'eyebrow' => 'Klien',
-        'title' => 'Klien & Partner',
+        'eyebrow' => 'Klien & Partner',
         'lead' => '',
         'trail' => 'Kami',
         'clients' => 'Klien',
