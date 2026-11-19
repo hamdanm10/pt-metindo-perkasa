@@ -28,7 +28,7 @@ Arah visual landing setelah redesign (Nov 2026). Sumber tunggal untuk siapa pun 
 - Kontras WCAG AA. Teks merah di atas `ink` tidak boleh (hanya angka besar).
 - Tanpa klaim, angka, atau testimoni karangan. Tanpa logo klien karangan.
 - Gerak hanya yang ada di [`motion.md`](motion.md), dan menghormati `prefers-reduced-motion`.
-- Foto memakai komponen `x-landing.photo` (`public/images/landing/photos/<nama>.webp`, placeholder hanya saat `LANDING_SAMPLE_CONTENT` aktif). Tidak ada foto stok atau gambar buatan sendiri.
+- Foto memakai komponen `x-landing.photo` (`public/images/landing/photos/<nama>.webp`, foto yang belum ada tidak ditampilkan). Tidak ada foto stok atau gambar buatan sendiri.
 - Perubahan desain berarti perubahan dokumen di branch yang sama.
 
 ## Aset yang akan memperkuat tampilan (belum wajib)

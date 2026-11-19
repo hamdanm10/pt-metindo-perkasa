@@ -8,7 +8,6 @@ use App\Models\Article;
 use App\Models\ArticleTranslation;
 use App\Services\Articles\ArticleBody;
 use App\Services\Articles\LandingArticles;
-use App\Services\Articles\SampleArticles;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -23,62 +22,64 @@ class ArticlePagesTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
-        config(['landing.sample_content' => true]);
         app(LandingArticles::class)->flush();
     }
 
-    public function test_sample_articles_are_newest_first_and_use_the_supplied_image(): void
+    /**
+     * Four articles and two news items, the newest first.
+     *
+     * @return list<ArticleTranslation>
+     */
+    private function publishSix(): array
     {
-        $summaries = app(SampleArticles::class)->summaries();
+        $translations = [];
 
-        $this->assertCount(5, $summaries);
-        $this->assertSame(array_column($summaries, 'date'), collect(array_column($summaries, 'date'))->sortDesc()->values()->all());
-
-        foreach ($summaries as $summary) {
-            $this->assertTrue($summary['sample']);
-            $this->assertStringEndsWith('images/landing/articles/sample-business.webp', (string) $summary['image']);
-            $this->assertGreaterThanOrEqual(1, $summary['minutes']);
+        foreach (range(0, 5) as $number) {
+            $article = $number % 3 === 2 ? Article::factory()->news()->create() : Article::factory()->create();
+            $translations[] = ArticleTranslation::factory()->published('en')->create([
+                'article_id' => $article->id,
+                'title' => "Item number {$number}",
+                'published_at' => now()->subDays($number + 20),
+            ]);
         }
 
-        $this->assertFileExists(public_path('images/landing/articles/sample-business.webp'));
-        $this->assertSame(['article', 'news'], collect($summaries)->pluck('type')->unique()->sort()->values()->all());
+        app(LandingArticles::class)->flush();
+
+        return $translations;
     }
 
     public function test_the_list_shows_the_newest_large_the_rest_as_cards_and_counts_the_filters(): void
     {
-        $samples = app(SampleArticles::class)->summaries();
-        $html = (string) $this->get('/en/articles')->getContent();
+        $items = $this->publishSix();
+        $html = (string) $this->get('/en/articles')->assertOk()->getContent();
 
         $this->assertStringContainsString('data-art-featured', $html);
-        $this->assertStringContainsString($samples[0]['title'], $html);
-        $this->assertSame(4, substr_count($html, 'class="group flex h-full flex-col'));
-        $this->assertStringContainsString(__('landing.sample_note'), $html);
+        $this->assertStringContainsString('Item number 0', $html);
+        $this->assertSame(5, substr_count($html, 'class="group flex h-full flex-col'));
 
-        foreach (array_slice($samples, 1) as $sample) {
-            $this->assertStringContainsString('href="'.route('landing.articles.show', ['locale' => 'en', 'article' => $sample['slug']]).'"', $html);
+        foreach (array_slice($items, 1) as $item) {
+            $this->assertStringContainsString('href="'.route('landing.articles.show', ['locale' => 'en', 'article' => $item->slug]).'"', $html);
         }
 
-        $articles = count(array_filter($samples, fn (array $item): bool => $item['type'] === 'article'));
-        $this->assertMatchesRegularExpression('/'.preg_quote(__('pages.articles.filters.article'), '/').'\s*<span[^>]*>\s*'.$articles.'\s*</', $html);
+        $this->assertMatchesRegularExpression('/'.preg_quote(__('pages.articles.filters.article'), '/').'\s*<span[^>]*>\s*4\s*</', $html);
     }
 
     public function test_the_filter_keeps_only_that_type(): void
     {
-        $news = array_values(array_filter(app(SampleArticles::class)->summaries(), fn (array $item): bool => $item['type'] === 'news'));
-        $article = array_values(array_filter(app(SampleArticles::class)->summaries(), fn (array $item): bool => $item['type'] === 'article'));
+        $this->publishSix();
 
         $this->get('/en/articles?type=news')->assertOk()
-            ->assertSee($news[0]['title'])
-            ->assertDontSee($article[0]['title']);
+            ->assertSee('Item number 2')
+            ->assertDontSee('Item number 0');
     }
 
-    public function test_a_sample_article_opens_in_a_narrow_reading_column_with_progress_share_and_related(): void
+    public function test_an_article_opens_in_a_narrow_reading_column_with_progress_share_and_related(): void
     {
-        $sample = app(SampleArticles::class)->summaries()[0];
-        $html = (string) $this->get('/en/articles/'.$sample['slug'])->assertOk()->getContent();
+        $items = $this->publishSix();
+        $html = (string) $this->get('/en/articles/'.$items[0]->slug)->assertOk()->getContent();
 
         $this->assertStringContainsString('<h1', $html);
-        $this->assertStringContainsString($sample['title'], $html);
+        $this->assertStringContainsString('Item number 0', $html);
         $this->assertStringContainsString('max-w-[44.5rem]', $html);
         $this->assertStringContainsString('class="article-body reading"', $html);
         $this->assertStringContainsString('data-read-progress', $html);
@@ -87,10 +88,9 @@ class ArticlePagesTest extends TestCase
         $this->assertStringNotContainsString('data-read-image', $html);
         $this->assertStringNotContainsString('max-w-[60rem]', $html);
         $this->assertSame(2, substr_count($html, 'max-w-[44.5rem]'));
-        $this->assertStringContainsString('data-copy-link="'.url('/en/articles/'.$sample['slug']).'"', $html);
+        $this->assertStringContainsString('data-copy-link="'.url('/en/articles/'.$items[0]->slug).'"', $html);
         $this->assertStringContainsString('https://wa.me/?text=', $html);
-        $this->assertStringContainsString(__('landing.sample_note'), $html);
-        $this->assertStringContainsString(__('articles.minutes', ['count' => $sample['minutes']]), $html);
+        $this->assertStringContainsString('data-article-view', $html);
         $this->assertSame(3, substr_count($html, 'class="group flex h-full flex-col'));
         $this->assertStringContainsString('<meta property="og:image"', $html);
 
@@ -99,24 +99,11 @@ class ArticlePagesTest extends TestCase
         }
     }
 
-    public function test_an_unknown_slug_and_everything_outside_sample_mode_give_not_found(): void
+    public function test_without_a_published_article_the_pages_give_not_found(): void
     {
-        $this->get('/en/articles/does-not-exist')->assertNotFound();
-
-        config(['landing.sample_content' => false]);
-
         $this->get('/en/articles')->assertNotFound();
+        $this->get('/en/articles/does-not-exist')->assertNotFound();
         $this->get('/en/articles/zinc-plating-basics')->assertNotFound();
-    }
-
-    public function test_published_articles_replace_the_samples_in_their_language_only(): void
-    {
-        ArticleTranslation::factory()->published('en')->create(['slug' => 'real', 'title' => 'A real article']);
-        app(LandingArticles::class)->flush();
-
-        $this->get('/en/articles')->assertOk()->assertSee('A real article')->assertDontSee(app(SampleArticles::class)->summaries()[0]['title']);
-        $this->get('/en/articles/zinc-plating-basics')->assertNotFound();
-        $this->get('/id/articles/zinc-plating-basics')->assertOk();
     }
 
     public function test_reading_minutes_count_words_and_cjk_characters(): void
@@ -130,20 +117,16 @@ class ArticlePagesTest extends TestCase
     public function test_the_article_texts_exist_in_every_language(): void
     {
         foreach (config('locales.landing') as $code) {
-            $response = $this->get("/{$code}/articles")->assertOk();
-
-            foreach (['sample', 'latest', 'share.title', 'share.copy'] as $key) {
+            foreach (['latest', 'share.title', 'share.copy'] as $key) {
                 $this->assertNotSame("articles.{$key}", __("articles.{$key}", [], $code));
             }
 
             $this->assertNotSame('articles.minutes', __('articles.minutes', ['count' => 3], $code));
-            $response->assertSee(__('articles.latest', [], $code), false);
         }
     }
 
     public function test_a_title_with_a_very_long_word_wraps_instead_of_overflowing(): void
     {
-        config(['landing.sample_content' => false]);
         $long = str_repeat('Tedst', 24);
         ArticleTranslation::factory()->published()->create([
             'article_id' => Article::factory()->create()->id,
@@ -165,7 +148,6 @@ class ArticlePagesTest extends TestCase
 
     public function test_the_home_section_cuts_a_long_title_with_an_ellipsis_after_two_lines(): void
     {
-        config(['landing.sample_content' => false]);
         ArticleTranslation::factory()->published()->create([
             'article_id' => Article::factory()->create()->id,
             'slug' => 'long-title',
@@ -180,7 +162,6 @@ class ArticlePagesTest extends TestCase
 
     public function test_the_latest_article_cuts_a_long_title_after_three_lines_without_a_block_class_that_would_undo_it(): void
     {
-        config(['landing.sample_content' => false]);
         ArticleTranslation::factory()->published()->create([
             'article_id' => Article::factory()->create()->id,
             'slug' => 'a-very-long-latest-title',
@@ -200,7 +181,6 @@ class ArticlePagesTest extends TestCase
 
     public function test_the_card_cuts_a_long_title_after_two_lines_and_the_summary_after_three_without_a_block_class_that_would_undo_it(): void
     {
-        config(['landing.sample_content' => false]);
         foreach (['one', 'two'] as $slug) {
             ArticleTranslation::factory()->published()->create([
                 'article_id' => Article::factory()->create()->id,
@@ -234,7 +214,6 @@ class ArticlePagesTest extends TestCase
 
     private function publish(string $locale, int $daysAgo, string $title = 'An article'): ArticleTranslation
     {
-        config(['landing.sample_content' => false]);
 
         $translation = ArticleTranslation::factory()->published($locale)->create([
             'article_id' => Article::factory()->create()->id,

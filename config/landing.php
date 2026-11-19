@@ -6,18 +6,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sample Content
-    |--------------------------------------------------------------------------
-    |
-    | Subsidiaries are sample data from the prototype. They are
-    | shown outside production only, until real content replaces them.
-    |
-    */
-
-    'sample_content' => (bool) env('LANDING_SAMPLE_CONTENT', env('APP_ENV') !== 'production'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Product Categories
     |--------------------------------------------------------------------------
     |
@@ -83,7 +71,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sample Articles and Subsidiaries
+    | Subsidiaries
     |--------------------------------------------------------------------------
     |
     | Texts live in lang/{locale}/pages.php.

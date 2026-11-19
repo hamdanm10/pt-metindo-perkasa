@@ -9,7 +9,6 @@ return [
     ],
     'minutes' => ':count menit baca',
     'views' => ':count kali dibaca',
-    'sample' => 'Contoh',
     'new' => 'Baru',
     'pagination' => [
         'label' => 'Navigasi halaman',

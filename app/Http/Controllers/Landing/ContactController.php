@@ -22,7 +22,6 @@ class ContactController extends Controller
             'contact' => $details + ($agents !== [] ? ['whatsapp' => $agents[0]['number']] : []),
             'agents' => $agents,
             'subsidiaries' => $map->pins($content->locations()),
-            'sample' => $content->sampleContentEnabled(),
         ]);
     }
 }

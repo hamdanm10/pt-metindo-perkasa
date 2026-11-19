@@ -18,11 +18,6 @@ class LandingContent
         private readonly LandingServices $services,
     ) {}
 
-    public function sampleContentEnabled(): bool
-    {
-        return (bool) config('landing.sample_content');
-    }
-
     /**
      * @return list<array{slug: string, name: string, processes: list<string>}>
      */
@@ -109,15 +104,7 @@ class LandingContent
     }
 
     /**
-     * @return list<array{key: string, name: string, lat: float, lng: float, timezone: string}>
-     */
-    public function subsidiaries(): array
-    {
-        return $this->sampleContentEnabled() ? $this->locations() : [];
-    }
-
-    /**
-     * The configured group locations, whether or not sample mode is on.
+     * The group locations from the configuration.
      *
      * @return list<array{key: string, name: string, lat: float, lng: float, timezone: string}>
      */

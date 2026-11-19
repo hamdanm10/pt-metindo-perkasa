@@ -2,7 +2,7 @@
 
 Halaman dalam landing page dalam lima bahasa dengan konten statis: About Us, Processes (daftar dan halaman kategori), Services, Articles dan detailnya, serta Contact. Menu dan footer ikut diperluas. Belum ada database (L4) dan formulir (L5). Fase dan statusnya di [`../implementation-plan.md`](../implementation-plan.md). Kerangka: [`../foundation/overview.md`](../foundation/overview.md). Beranda: [`../home/overview.md`](../home/overview.md). Desain: [`../ui/design.md`](../ui/design.md).
 
-Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten contoh diganti data asli (L4) dan kontak dikonfirmasi.
+Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum data anak perusahaan dari prototipe diganti data asli dan kontak dikonfirmasi.
 
 ## Keputusan
 
@@ -10,9 +10,9 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | --- | --- | --- |
 | 1 | Halaman: About, Processes (indeks dan kategori), Services, Articles (daftar dan detail), Contact | Susunan prototipe `homepage-2`. Menu "Products" di prototipe diganti "Processes" (Nov 2026), lihat keputusan 15 |
 | 2 | **Halaman detail proses (`/{locale}/process/{slug}`) dibuat di branch `feat/process-detail`**, mengikuti alur prototipe (kategori, daftar proses, detail proses). Datanya statis di `config/landing.php` (`process_details`, dengan kunci slug proses) sampai pindah ke database di L4. Hanya **Alkaline Zinc** yang punya langkah dan bahan (data asli prototipe, 4 langkah dan 8 bahan); proses lain menampilkan "No steps defined for this process yet." dan tanpa tombol diagram. Kategori **Chemical Alkaline Type** (6 proses) ditambahkan karena memuat satu-satunya data itu, sehingga kini ada **14 kategori** | Tampilan dirancang ulang, alurnya sama dengan prototipe. Tidak mengarang langkah atau bahan |
-| 3 | Satu penanda `landing.sample_content` (env `LANDING_SAMPLE_CONTENT`, bawaan aktif di luar production) mengatur konten contoh: anak perusahaan (artikel tidak lagi contoh, lihat catatan A2 di bawah). Bila mati, bagiannya hilang | Satu tombol untuk "konten contoh tidak boleh rilis". Menggantikan pemeriksaan `isProduction()` di beranda |
+| 3 | **Mode konten contoh dihapus** (`landing.sample_content`, `LANDING_SAMPLE_CONTENT`, `SampleArticles`, kotak placeholder foto, testimoni contoh, dan catatan "sample"). Landing hanya menampilkan data asli: artikel, layanan, dan nomor WhatsApp dari dashboard, serta logo dan foto dari berkas. Bagian tanpa data tidak tampil | Konten contoh tidak boleh ikut rilis, jadi tidak perlu penanda |
 | 4 | Sertifikasi (ISO 9001 dan ISO 14001) **tidak ditampilkan** | Di prototipe tampak contoh dan belum terverifikasi. Klaim sertifikasi tidak boleh dikarang |
-| 5 | Anak perusahaan (enam kota, tautan Google Maps) ditampilkan sebagai konten contoh | Data prototipe belum dikonfirmasi |
+| 5 | Anak perusahaan (enam kota, tautan Google Maps) dibaca dari `config/landing.php` (`subsidiaries`) dan tampil di About, Contact, dan footer. **Datanya masih dari prototipe dan belum dikonfirmasi**; ganti atau kosongkan sebelum rilis | Pengelolaan dari admin belum ada |
 | 6 | Contact hanya menampilkan data yang diisi di konfigurasi: alamat, telepon, email, jam kerja, WhatsApp. Tanpa formulir pesan | Formulir dikerjakan di L5. Tidak ada kontrol yang tidak berfungsi |
 | 7 | Menu: Home, About Us, Processes, Services, Articles & News (hanya di bahasa yang punya artikel terbit), Contact. Footer memakai daftar yang sama | Semua tujuan sekarang ada |
 | 8 | Filter artikel "All / Article / News" lewat parameter `?type=` di URL, tanpa JavaScript | Berfungsi, bisa dibagikan, dan tetap terbaca mesin pencari |
@@ -21,7 +21,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | 11 | Dial: ENERGY 2 / RHYTHM 3 / MOTION 2 ([`../ui/motion.md`](../ui/motion.md)), tiap halaman punya komposisi sendiri di bawah kepala halaman yang seragam | Tidak kaku, tetapi tetap dikenali sebagai satu situs |
 | 12 | Menu enam item sebaris mulai lebar `lg`, dengan pemilih bahasa berupa dropdown `<details>` yang menampilkan bahasa aktif. Di bawah `lg`, menu dan bahasa masuk ke panel "Menu" | Enam item ditambah lima bahasa tidak muat sebaris di lebar tablet |
 | 13 | Akses data statis lewat satu kelas `LandingContent` (kategori, anak perusahaan, menu). Artikel lewat `LandingArticles`. Diganti sumber database di L4 tanpa menyentuh controller dan view | Satu titik pergantian |
-| 14 | Catatan "konten contoh" memakai satu kunci `landing.sample_note` yang tidak menyebut jenis konten | Dipakai di anak perusahaan dan halaman tentang |
+| 14 | Catatan "konten contoh" (`landing.sample_note`) dihapus bersama mode contoh | Tidak ada lagi konten contoh |
 | 15 | Menu, alamat, dan nama route untuk kategori proses memakai **Processes** (`/{locale}/processes`, `landing.processes.*`), bukan Products. Terjemahan: id Proses, zh 工艺, ar العمليات, ja 工程. Alamat `/products` tidak dialihkan karena situs belum rilis | Isinya kategori proses, bukan produk. Nama "Products" dan alamat `/products` dicadangkan untuk produk sungguhan (nama, deskripsi, TDS, harga) yang dikelola admin di A3 dan L5 |
 
 ## Halaman
@@ -33,10 +33,10 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | Kategori | `/{locale}/processes/{category}` | Pembuka dengan posisi kategori ("Category 03 of 14"), nama, deskripsi, dan jumlah proses; foto kategori yang menempel di samping kisi kartu proses bernomor (nama, deskripsi singkat, "View process"); kategori lain. Lihat [`../ui/design.md`](../ui/design.md), bagian Halaman Kategori Proses |
 | Detail proses | `/{locale}/process/{slug}` | Jejak remah (Processes / kategori), ringkasan (kategori, jumlah langkah, jumlah bahan), alur langkah bernomor dengan chip bahan, tombol **View diagram** (dialog berisi alur beranimasi), dan proses lain di kategori yang sama. Chip bahan membuka dialog detail bahan: Usage, Brochure, Product video, E-commerce (belum ada data, tampil "–"), serta TDS dan Price ("Request to admin", tautan ke Contact). Slug tidak dikenal menghasilkan 404 |
 | Services | `/{locale}/services` | Layanan dari database ([`../../roles/admin/services/overview.md`](../../roles/admin/services/overview.md)), masing-masing dengan **gambar** unggahan (sama dengan daftar di beranda). Tanpa layanan aktif halaman ini 404 dan menu Services disembunyikan. Tiap layanan punya dan satu tombol "Learn more" ke halaman detailnya (tombol "Talk to our team" dipindah ke halaman detail), tautan loncat di pembuka, dan "How we work" empat langkah berurutan (Enquiry, Spec review, Process and supply, Delivery). Tanpa label "What we do"; lihat [`../ui/design.md`](../ui/design.md), bagian Services |
-| Detail layanan | `/{locale}/services/{slug}` | Slug dari database (tiga layanan awal: `electroplating-service`, `chemical-supply`, `technical-consultation`, diimpor lewat `php artisan services:import-defaults`). Kepala dengan jejak remah "Services / Service detail", ringkasan, deskripsi, daftar "What's included", "Good fit for" (bagian yang kosong tidak tampil), gambar layanan, kartu "Talk to our team" (tombol WhatsApp dari nomor aktif pertama yang dikelola admin, tersembunyi bila tidak ada nomor, dan tombol Contact us), "How we work", kartu layanan lain (judul, ringkasan, Learn more), dan ajakan. Slug tidak dikenal atau layanan nonaktif menghasilkan 404, dan bagian "layanan lain" tidak tampil bila hanya ada satu layanan. Teks layanan dari database per bahasa dengan cadangan `en`. Label tetap (judul bagian, tombol) di `lang/<locale>/pages.php` (`services.detail`), lima bahasa |
-| Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu: satu artikel terbaru besar, kartu untuk sisanya, dan filter jenis dengan jumlah. 404 bila bahasa itu belum punya artikel terbit (kecuali mode contoh, yang menampilkan lima artikel contoh) |
+| Detail layanan | `/{locale}/services/{slug}` | Slug dari database (diisi admin di dashboard). Kepala dengan jejak remah "Services / Service detail", ringkasan, deskripsi, daftar "What's included", "Good fit for" (bagian yang kosong tidak tampil), gambar layanan, kartu "Talk to our team" (tombol WhatsApp dari nomor aktif pertama yang dikelola admin, tersembunyi bila tidak ada nomor, dan tombol Contact us), "How we work", kartu layanan lain (judul, ringkasan, Learn more), dan ajakan. Slug tidak dikenal atau layanan nonaktif menghasilkan 404, dan bagian "layanan lain" tidak tampil bila hanya ada satu layanan. Teks layanan dari database per bahasa dengan cadangan `en`. Label tetap (judul bagian, tombol) di `lang/<locale>/pages.php` (`services.detail`), lima bahasa |
+| Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu: satu artikel terbaru besar, kartu untuk sisanya, dan filter jenis dengan jumlah. 404 bila bahasa itu belum punya artikel terbit |
 | Artikel | `/{locale}/articles/{slug}` | **Halaman baca ala Medium** (kolom 680 px): judul, jenis, tanggal, waktu baca, gambar, isi, tombol bagikan, jumlah view (mulai 10), dan artikel terkait |
-| Contact | `/{locale}/contact` | Kartu data kontak yang dikonfigurasi (telepon, email, alamat, jam) dengan tombol salin, tombol WhatsApp dan telepon, **formulir pesan yang membuka WhatsApp atau email dengan pesan sudah tertulis** (situs tidak menyimpan apa pun), dan peta lokasi (titik contoh dari config, selalu tampil). Lihat [`../ui/design.md`](../ui/design.md), bagian Contact |
+| Contact | `/{locale}/contact` | Kartu data kontak yang dikonfigurasi (telepon, email, alamat, jam) dengan tombol salin, tombol WhatsApp dan telepon, **formulir pesan yang membuka WhatsApp atau email dengan pesan sudah tertulis** (situs tidak menyimpan apa pun), dan peta lokasi (dari config). Lihat [`../ui/design.md`](../ui/design.md), bagian Contact |
 
 Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bila perlu) dan diakhiri ajakan menghubungi yang sama seperti beranda. Tautan kategori, layanan, dan artikel di beranda diaktifkan di fase ini.
 
@@ -46,7 +46,7 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 - Judul artikel di bagian Articles beranda dipotong dengan "…" setelah dua baris (`line-clamp-2`). Kartu artikel (daftar dan artikel terkait) memotong judul setelah dua baris dan ringkasan setelah tiga baris. Elemen dengan `line-clamp-*` tidak boleh diberi kelas `block` karena menimpa `display: -webkit-box` yang dibutuhkan pemotongan.
 - Judul, ringkasan, dan isi artikel tidak boleh melebarkan halaman: kata yang sangat panjang dipatahkan (`overflow-wrap: anywhere` pada judul, ringkasan, kartu, dan `.article-body`).
 - Parameter `?type=` hanya menerima `article` atau `news`, nilai lain diabaikan (menampilkan semua).
-- Konten contoh nonaktif: bagian anak perusahaan tidak dirender.
+- Anak perusahaan: pin dan kartu dirender dari config di About dan Contact.
 - Bahasa tanpa artikel terbit: route artikel 404, serta tautan menu dan bagian beranda hilang (A2).
 - Tautan Google Maps dibuat dari data anak perusahaan, dibuka dengan `rel="noopener noreferrer"` dan jelas ditandai sebagai tautan luar.
 - Tombol WhatsApp memakai `https://wa.me/<nomor>` dari konfigurasi dan hanya dirender bila nomor diisi.
@@ -57,8 +57,8 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 
 - Controller invokable atau resource di `app/Http/Controllers/Landing`: `AboutController`, `ProcessController` (`index`, `show`), `ProcessDetailController` (`show`), `ServiceController`, `ArticleController` (`index`, `show`), `ContactController`.
 - Route di `routes/landing/{about,processes,services,articles,contact}.php`. Resource dipakai untuk processes, services (`landing.services.index` dan `landing.services.show`), dan articles. Controller kategori: `ProcessController`.
-- `config/landing.php` ditambah: `sample_content`, `categories[].processes`, `subsidiaries`, `contact.address`, `contact.hours` (env `LANDING_SAMPLE_CONTENT`, `LANDING_CONTACT_ADDRESS`, `LANDING_CONTACT_HOURS`). Nomor WhatsApp tidak lagi di konfigurasi: dikelola admin ([`../whatsapp/overview.md`](../whatsapp/overview.md)).
-- `app/Services/Landing/LandingServices.php`: layanan aktif dengan alamat dan teks `en` untuk satu bahasa, cache per bahasa yang dibersihkan `SaveService`. `app/Services/Services/DefaultServices.php` dan perintah `services:import-defaults` memasukkan tiga layanan lama dari `lang` (`home.services.items`, `pages.services.detail.items`) dan foto `public/images/landing/photos/service-*.webp` ke database, melewati alamat yang sudah ada. Jalankan sekali setelah migration.
+- `config/landing.php` ditambah: `categories[].processes`, `subsidiaries`, `contact.address`, `contact.hours` (env `LANDING_CONTACT_ADDRESS`, `LANDING_CONTACT_HOURS`). Nomor WhatsApp tidak lagi di konfigurasi: dikelola admin ([`../whatsapp/overview.md`](../whatsapp/overview.md)).
+- `app/Services/Landing/LandingServices.php`: layanan aktif dengan alamat dan teks `en` untuk satu bahasa, cache per bahasa yang dibersihkan `SaveService`.
 - `app/Services/Landing/LandingContent.php`: akses kategori, anak perusahaan, dan daftar menu (item Services hanya bila ada layanan aktif). `SetLandingLocale` kini melepas parameter `locale` dari route setelah dipakai, supaya controller hanya menerima parameternya sendiri.
 - `lang/{en,id,zh,ar,ja}/pages.php` dan `articles.php`. Kunci `lang/*/landing.php` untuk menu ditambah.
 - View di `resources/views/landing/pages/` (satu berkas per halaman) dan komponen `x-landing.page-header` serta `x-landing.cta` (ajakan, dipakai juga beranda).
@@ -73,9 +73,9 @@ Test (feature) yang harus ada:
 - Setiap halaman mengembalikan 200 di kelima locale dengan `lang` dan `dir` yang benar, dan judulnya dalam bahasa aktif.
 - Kunci `lang/*/pages.php` dan `articles.php` identik di kelima bahasa.
 - Kategori yang tidak dikenal menghasilkan 404, semua 14 kategori dan semua prosesnya menghasilkan 200 dan menampilkan prosesnya.
-- Artikel: filter `?type=` menyaring, slug tidak dikenal 404, dan dengan konten contoh nonaktif route artikel 404 serta menu tidak memuatnya.
+- Artikel: filter `?type=` menyaring, slug tidak dikenal 404, dan tanpa artikel terbit route artikel 404 serta menu tidak memuatnya.
 - Contact: elemen hanya muncul bila konfigurasinya diisi, dan tautan WhatsApp berbentuk `wa.me`.
-- Sertifikasi tidak muncul di About, dan anak perusahaan hanya muncul dengan konten contoh aktif.
+- Sertifikasi tidak muncul di About, dan anak perusahaan muncul dari config.
 - Menu memuat tautan ke semua halaman yang ada dan tanda halaman aktif (`aria-current`).
 
 Pemeriksaan manual di browser: semua halaman di ponsel dan desktop, Arab dalam RTL, filter artikel, dan tautan beranda ke halaman dalam.

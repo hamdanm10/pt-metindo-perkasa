@@ -46,10 +46,6 @@
     <section class="bg-lavender text-ink">
         <div class="container-site section-y">
             @if ($articles !== [])
-                @if ($articles[0]['sample'])
-                    <p class="mb-8 inline-block rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold">{{ __('landing.sample_note') }}</p>
-                @endif
-
                 @if ($featured)
                     {{-- The newest item, large. --}}
                     <a href="{{ route('landing.articles.show', ['article' => $featured['slug']]) }}" data-art-featured class="group grid items-center gap-[2.5vw] max-lg:gap-6 lg:grid-cols-[7fr_5fr] focus-visible:outline-offset-4">
@@ -73,9 +69,9 @@
                                     <span>{{ $viewsLabel }}</span>
                                 @endif
                             </span>
-                            <span class="mt-[1.4vw] line-clamp-3 text-balance pb-[0.1em] [overflow-wrap:anywhere] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
+                            <span class="mt-[1.4vw] line-clamp-3 text-balance pb-[0.1em] [overflow-wrap:anywhere] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4"><span class="title-hover">{{ $featured['title'] }}</span></span>
                             @if ($featured['excerpt'] !== '')
-                                <span class="mt-[1.2vw] block max-w-[32em] [overflow-wrap:anywhere] text-[clamp(1rem,1.25vw,1.55rem)] leading-snug text-ink/75 max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif>{{ $featured['excerpt'] }}</span>
+                                <span class="mt-[1.2vw] block max-w-[32em] [overflow-wrap:anywhere] text-[clamp(1rem,1.25vw,1.55rem)] leading-snug text-ink/75 max-lg:mt-4">{{ $featured['excerpt'] }}</span>
                             @endif
                             <span class="mt-[2vw] inline-flex items-center gap-2 text-[clamp(0.9rem,1vw,1.25rem)] font-bold max-lg:mt-6"><span class="uline">{{ __('landing.read') }}</span><span aria-hidden="true" class="transition-transform duration-500 group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1">→</span></span>
                         </span>

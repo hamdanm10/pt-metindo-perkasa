@@ -30,7 +30,6 @@ return [
         'text' => 'Tell us the process and substrate. Our team will walk you through the options.',
         'button' => 'Talk to our team',
     ],
-    'sample_note' => 'Sample content from the prototype. It is replaced by real content before release.',
     'read' => 'Read',
     'back' => 'Back to all articles',
 ];
