@@ -40,8 +40,8 @@
             <ellipse cx="510" cy="712" rx="16" ry="26" fill="#F0C4A2"/>
             <ellipse cx="690" cy="712" rx="16" ry="26" fill="#F0C4A2"/>
             <path d="M510 650C510 596 548 568 600 568S690 596 690 650V712C690 774 650 812 600 812S510 774 510 712Z" fill="#F7D3B5"/>
-            <ellipse cx="540" cy="752" rx="22" ry="14" fill="#D6283A" opacity=".16"/>
-            <ellipse cx="660" cy="752" rx="22" ry="14" fill="#D6283A" opacity=".16"/>
+            <ellipse cx="538" cy="738" rx="20" ry="12" fill="#D6283A" opacity=".16"/>
+            <ellipse cx="662" cy="738" rx="20" ry="12" fill="#D6283A" opacity=".16"/>
             <path d="M500 584Q600 548 700 584" fill="none" stroke="#6D5BD0" stroke-width="22" stroke-linecap="round"/>
             <circle cx="562" cy="570" r="30" fill="#CFE0FF" stroke="#6D5BD0" stroke-width="9"/>
             <circle cx="638" cy="570" r="30" fill="#CFE0FF" stroke="#6D5BD0" stroke-width="9"/>
@@ -53,10 +53,8 @@
             <circle cx="638" cy="706" r="31" fill="none" stroke="#6D5BD0" stroke-width="6"/>
             <path d="M593 702q7-8 14 0M531 700L514 696M669 700L686 696" fill="none" stroke="#6D5BD0" stroke-width="6" stroke-linecap="round"/>
             <ellipse cx="600" cy="750" rx="17" ry="21" fill="#EDBE9B"/>
-            <path d="M524 744C520 800 552 862 600 870S680 800 676 744C664 786 636 790 600 790S536 786 524 744Z" fill="#FFFFFF"/>
-            <path d="M532 776C560 788 584 780 600 770 616 780 640 788 668 776 650 800 626 808 600 806S550 800 532 776Z" fill="#F3F2FF"/>
+            <path d="M510 722C506 800 548 856 600 862 652 856 694 800 690 722 682 748 654 758 600 758 546 758 518 748 510 722Z" fill="#E7E6F7"/>
             <path d="M544 760Q566 738 600 768 634 738 656 760 640 790 600 780 560 790 544 760Z" fill="#FFFFFF"/>
-            <path d="M574 800Q600 826 626 800" fill="none" stroke="#D6283A" stroke-width="9" stroke-linecap="round"/>
         </g>
         <g data-part="console">
             <rect x="512" y="1150" width="176" height="260" rx="20" fill="#D9DCE8"/>
