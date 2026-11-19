@@ -6,13 +6,14 @@ namespace App\Services\Articles;
 
 use App\Models\Article;
 use App\Models\ArticleTranslation;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 /**
  * Published articles for the landing, one language at a time. There is no fallback to
  * another language: a language without a published translation has no articles.
  *
- * @phpstan-type Summary array{slug: string, type: string, title: string, excerpt: string, date: string, image: string|null, alt: string, minutes: int, views: int, sample: bool}
+ * @phpstan-type Summary array{slug: string, type: string, title: string, excerpt: string, date: string, image: string|null, alt: string, minutes: int, views: int, sample: bool, new: bool}
  */
 class LandingArticles
 {
@@ -22,8 +23,35 @@ class LandingArticles
         private readonly ArticleViews $views = new ArticleViews,
     ) {}
 
+    /** An article or news item counts as new for this many days after the day it was published. */
+    public const NEW_DAYS = 14;
+
     /** @var array<string, array<string, int>> */
     private array $viewCounts = [];
+
+    /**
+     * Whether a publication date (Y-m-d) is within the last two weeks. Worked out when the page is built, never stored
+     * with the cached summaries, so the badge disappears by itself.
+     */
+    public static function isNew(string $date): bool
+    {
+        if ($date === '') {
+            return false;
+        }
+
+        $published = Carbon::parse($date)->startOfDay();
+
+        return $published->lessThanOrEqualTo(Carbon::today()) && $published->greaterThanOrEqualTo(Carbon::today()->subDays(self::NEW_DAYS));
+    }
+
+    /**
+     * True when the newest published item of the language is new, for the badge on the menu. The list is newest first,
+     * so looking at its first item is enough, and no view counts are read.
+     */
+    public function hasNew(string $locale): bool
+    {
+        return self::isNew($this->summaries($locale)[0]['date'] ?? '');
+    }
 
     /**
      * Newest first. Cached per language and cleared whenever an article changes.
@@ -32,14 +60,7 @@ class LandingArticles
      */
     public function list(string $locale, ?string $type = null): array
     {
-        /** @var list<Summary> $all */
-        $all = Cache::rememberForever($this->key($locale), fn (): array => $this->query($locale));
-
-        if ($all === [] && $this->sampling()) {
-            $all = $this->samples->summaries();
-        }
-
-        $all = $this->withViews($locale, $all);
+        $all = $this->withViews($locale, $this->summaries($locale));
 
         return $type === null
             ? $all
@@ -47,7 +68,20 @@ class LandingArticles
     }
 
     /**
-     * Views change on every visit, so they are not part of the cached summaries: they are added here.
+     * The cached summaries of a language, or the samples that stand in for them in sample mode.
+     *
+     * @return list<Summary>
+     */
+    private function summaries(string $locale): array
+    {
+        /** @var list<Summary> $all */
+        $all = Cache::rememberForever($this->key($locale), fn (): array => $this->query($locale));
+
+        return $all === [] && $this->sampling() ? $this->samples->summaries() : $all;
+    }
+
+    /**
+     * Views and the new badge change without any edit, so they are not part of the cached summaries: they are added here.
      *
      * @param  list<Summary>  $summaries
      * @return list<Summary>
@@ -56,7 +90,7 @@ class LandingArticles
     {
         $counts = $this->viewCounts[$locale] ??= $this->views->forLocale($locale);
 
-        return array_map(fn (array $item): array => [...$item, 'views' => $counts[$item['slug']] ?? $item['views']], $summaries);
+        return array_map(fn (array $item): array => [...$item, 'views' => $counts[$item['slug']] ?? $item['views'], 'new' => self::isNew($item['date'])], $summaries);
     }
 
     /** True while the sample articles stand in for real ones: sample mode, and nothing published in the language. */
@@ -195,6 +229,7 @@ class LandingArticles
             'minutes' => ArticleBody::readingMinutes($translation->body_html ?? ''),
             'views' => 0,
             'sample' => false,
+            'new' => false,
         ];
     }
 }

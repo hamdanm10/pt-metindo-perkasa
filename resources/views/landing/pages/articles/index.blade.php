@@ -50,6 +50,9 @@
                     <span class="block">
                         <span class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[clamp(0.75rem,0.83vw,1.05rem)] text-ink/70">
                             <span class="rounded-full bg-ink px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-white">{{ __('articles.latest') }}</span>
+                            @if ($featured['new'])
+                                <span data-new-badge class="rounded-full bg-brand-600 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-white">{{ __('articles.new') }}</span>
+                            @endif
                             <span class="rounded-full border border-ink/40 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-bold uppercase">{{ __("articles.tags.{$featured['type']}") }}</span>
                             <time datetime="{{ $featured['date'] }}">{{ \Illuminate\Support\Carbon::parse($featured['date'])->isoFormat('LL') }}</time>
                             <span aria-hidden="true">·</span>

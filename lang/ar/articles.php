@@ -10,6 +10,7 @@ return [
     'minutes' => 'قراءة :count دقيقة',
     'views' => ':count مشاهدة',
     'sample' => 'عينة',
+    'new' => 'جديد',
     'latest' => 'الأحدث',
     'share' => [
         'title' => 'مشاركة',
