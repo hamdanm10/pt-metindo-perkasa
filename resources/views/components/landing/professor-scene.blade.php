@@ -34,7 +34,7 @@
         <rect x="462" y="1030" width="56" height="50" rx="9" fill="#F3F2FF"/>
         <rect x="490" y="1012" width="9" height="36" rx="4.5" fill="#D6283A"/>
         <rect x="566" y="810" width="68" height="56" rx="24" fill="#E8B894"/>
-        <g data-part="head" transform="rotate(0 600 800)"><g transform="translate(600 852) scale(.84) translate(-600 -826)">
+        <g data-part="head" transform="rotate(0 600 800)"><g transform="translate(600 866) scale(.84) translate(-600 -826)">
             <circle cx="512" cy="638" r="36" fill="#F3F2FF"/><circle cx="500" cy="690" r="31" fill="#F3F2FF"/><circle cx="512" cy="738" r="24" fill="#F3F2FF"/>
             <circle cx="688" cy="638" r="36" fill="#F3F2FF"/><circle cx="700" cy="690" r="31" fill="#F3F2FF"/><circle cx="688" cy="738" r="24" fill="#F3F2FF"/>
             <ellipse cx="510" cy="712" rx="16" ry="26" fill="#F0C4A2"/>
@@ -53,7 +53,6 @@
             <circle cx="638" cy="706" r="31" fill="none" stroke="#6D5BD0" stroke-width="6"/>
             <path d="M593 702q7-8 14 0M531 700L514 696M669 700L686 696" fill="none" stroke="#6D5BD0" stroke-width="6" stroke-linecap="round"/>
             <ellipse cx="600" cy="750" rx="17" ry="21" fill="#EDBE9B"/>
-            <path d="M514 724C512 782 550 832 600 836 650 832 688 782 686 724 680 746 654 756 600 756 546 756 520 746 514 724Z" fill="#E7E6F7"/>
             <path d="M544 760Q566 738 600 768 634 738 656 760 640 790 600 780 560 790 544 760Z" fill="#FFFFFF"/>
         </g></g>
         <g data-part="console">
@@ -78,7 +77,8 @@
             <path d="M18-80h60M18-60h60M18-40h46M18-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
         </g>
         <g data-part="arm-left" transform="translate(462 890) rotate(151.5)">
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF"/>
+        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
         <path d="M110-12Q120 0 110 12" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linecap="round"/>
         <g data-part="fore-left" transform="translate(140 0) rotate(-122.3)">
             <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
@@ -92,7 +92,8 @@
         </g>
     </g>
         <g data-part="arm-right" transform="translate(738 890) rotate(85.1)">
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF"/>
+        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
         <path d="M110-12Q120 0 110 12" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linecap="round"/>
         <g data-part="fore-right" transform="translate(140 0) rotate(-263)">
             <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
