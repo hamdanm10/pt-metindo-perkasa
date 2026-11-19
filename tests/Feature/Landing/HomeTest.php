@@ -267,7 +267,7 @@ class HomeTest extends TestCase
         // Every part the animation looks up must exist in the artwork.
         $script = (string) file_get_contents(resource_path('js/landing/motion/professor.js'));
         preg_match_all("/'([a-z]+(?:-[a-z0-9]+)*)'/", (string) preg_replace('/^\s*(import|\/\/|\*|\/\*).*$/m', '', $script), $found);
-        $required = ['carriage', 'rope', 'rack', 'plated', 'lever', 'clipboard', 'arm-left', 'fore-left', 'arm-right', 'fore-right', 'head', 'eye-left', 'eye-right', 'pupil-left', 'pupil-right', 'needle', 'light-a', 'light-b', 'light-c', 'lamp-left', 'lamp-right', 'dial-left', 'dial-right', 'current-1', 'current-2', 'bubbles-1', 'bubbles-2'];
+        $required = ['carriage', 'rope', 'rack', 'plated', 'lever', 'clipboard', 'arm-left-edge', 'arm-left-sleeve', 'arm-left-cuff', 'hand-left', 'arm-right-edge', 'arm-right-sleeve', 'arm-right-cuff', 'hand-right', 'head', 'eye-left', 'eye-right', 'pupil-left', 'pupil-right', 'needle', 'light-a', 'light-b', 'light-c', 'lamp-left', 'lamp-right', 'dial-left', 'dial-right', 'current-1', 'current-2', 'bubbles-1', 'bubbles-2'];
 
         foreach ($required as $name) {
             $this->assertStringContainsString('data-part="'.$name.'"', $hero, $name);

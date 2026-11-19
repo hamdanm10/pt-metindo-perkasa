@@ -2,7 +2,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Geometry of the artwork in components/landing/professor-scene.blade.php (the SVG's own units).
-const ARM = { upper: 140, fore: 150 };
+const ARM = { upper: 115, fore: 115 };
 const SHOULDER = { left: [462, 890], right: [738, 890] };
 const LEVER = { x: 600, y: 1160, length: 136 };
 const LANE = { first: 250, second: 950 };
@@ -12,7 +12,7 @@ const COLOR = { steel: '#98A2C4', chrome: '#E3E8F7', gold: '#F2B84B' };
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const deg = (radians) => (radians * 180) / Math.PI;
 
-/** Two-bone arm: angles (degrees) of the upper arm and, relative to it, the forearm so the hand reaches the target. */
+/** Two-bone arm: the elbow and wrist points, and the forearm angle (radians), so the hand reaches the target. */
 const reach = (shoulder, target, side) => {
     const dx = target[0] - shoulder[0];
     const dy = target[1] - shoulder[1];
@@ -21,8 +21,9 @@ const reach = (shoulder, target, side) => {
     const upper = Math.atan2(dy, dx) + side * bend;
     const elbow = [shoulder[0] + ARM.upper * Math.cos(upper), shoulder[1] + ARM.upper * Math.sin(upper)];
     const fore = Math.atan2(target[1] - elbow[1], target[0] - elbow[0]);
+    const wrist = [elbow[0] + ARM.fore * Math.cos(fore), elbow[1] + ARM.fore * Math.sin(fore)];
 
-    return [deg(upper), deg(fore - upper)];
+    return { upper, elbow, wrist, fore };
 };
 
 /**
@@ -40,7 +41,8 @@ export const professor = () => {
 
     const part = (name) => scene.querySelector(`[data-part="${name}"]`);
     const el = Object.fromEntries([
-        'carriage', 'rope', 'rack', 'plated', 'lever', 'clipboard', 'arm-left', 'fore-left', 'arm-right', 'fore-right',
+        'carriage', 'rope', 'rack', 'plated', 'lever', 'clipboard', 'arm-left-edge', 'arm-left-sleeve', 'arm-left-cuff', 'hand-left',
+        'arm-right-edge', 'arm-right-sleeve', 'arm-right-cuff', 'hand-right',
         'head', 'eye-left', 'eye-right', 'pupil-left', 'pupil-right', 'needle', 'light-a', 'light-b', 'light-c',
         'lamp-left', 'lamp-right', 'dial-left', 'dial-right', 'current-1', 'current-2', 'bubbles-1', 'bubbles-2',
     ].map((name) => [name, part(name)]));
@@ -65,16 +67,24 @@ export const professor = () => {
         const angle = (state.lever * Math.PI) / 180;
         el.lever.setAttribute('transform', `translate(${LEVER.x} ${LEVER.y}) rotate(${state.lever.toFixed(2)})`);
 
-        const grip = [LEVER.x + LEVER.length * Math.sin(angle), LEVER.y - LEVER.length * Math.cos(angle)];
-        const [rightUpper, rightFore] = reach(SHOULDER.right, grip, -1);
-        el['arm-right'].setAttribute('transform', `translate(${SHOULDER.right[0]} ${SHOULDER.right[1]}) rotate(${rightUpper.toFixed(2)})`);
-        el['fore-right'].setAttribute('transform', `translate(${ARM.upper} 0) rotate(${rightFore.toFixed(2)})`);
+        // Each arm is one continuous sleeve (shoulder, elbow, wrist) with the glove at the wrist.
+        const placeArm = (side, shoulder, target, bend) => {
+            const { upper, elbow, wrist, fore } = reach(shoulder, target, bend);
+            const point = ([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
+            const along = (distance) => [wrist[0] - distance * Math.cos(fore), wrist[1] - distance * Math.sin(fore)];
+            const path = (from) => `M${point(from)}L${point(elbow)}L${point(wrist)}`;
+
+            el[`arm-${side}-edge`].setAttribute('d', path([shoulder[0] + 26 * Math.cos(upper), shoulder[1] + 26 * Math.sin(upper)]));
+            el[`arm-${side}-sleeve`].setAttribute('d', path(shoulder));
+            el[`arm-${side}-cuff`].setAttribute('d', `M${point(along(30))}L${point(along(10))}`);
+            el[`hand-${side}`].setAttribute('transform', `translate(${point(wrist)}) rotate(${((fore * 180) / Math.PI).toFixed(2)})`);
+        };
+
+        placeArm('right', SHOULDER.right, [LEVER.x + LEVER.length * Math.sin(angle), LEVER.y - LEVER.length * Math.cos(angle)], -1);
 
         // The other hand holds the clipboard and now and then writes on it.
-        const writing = [470 + Math.sin(time * 2.3) * 4, 1030 + Math.sin(time * 3.1) * 3];
-        const [leftUpper, leftFore] = reach(SHOULDER.left, writing, 1);
-        el['arm-left'].setAttribute('transform', `translate(${SHOULDER.left[0]} ${SHOULDER.left[1]}) rotate(${leftUpper.toFixed(2)})`);
-        el['fore-left'].setAttribute('transform', `translate(${ARM.upper} 0) rotate(${leftFore.toFixed(2)})`);
+        const writing = [480 + Math.sin(time * 2.3) * 4, 1062 + Math.sin(time * 3.1) * 3];
+        placeArm('left', SHOULDER.left, writing, 1);
         el.clipboard.setAttribute('transform', `translate(${writing[0].toFixed(1)} ${writing[1].toFixed(1)}) rotate(-8)`);
 
         // He follows the rack with his head and eyes.

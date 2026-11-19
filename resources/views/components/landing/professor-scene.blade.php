@@ -70,41 +70,33 @@
             <circle cy="-136" r="21" fill="#6D5BD0"/>
             <circle r="24" fill="#6E78AE"/>
         </g>
-        <g data-part="clipboard" transform="translate(470 1030) rotate(-8)">
+        <g data-part="clipboard" transform="translate(480 1062) rotate(-8)">
             <rect x="-4" y="-120" width="104" height="146" rx="12" fill="#B6874C"/>
             <rect x="6" y="-108" width="84" height="122" rx="6" fill="#FFFFFF"/>
             <rect x="32" y="-124" width="32" height="20" rx="6" fill="#98A2C4"/>
             <path d="M18-80h60M18-60h60M18-40h46M18-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
         </g>
-        <g data-part="arm-left" transform="translate(462 890) rotate(151.5)">
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF"/>
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
-        <path d="M110-12Q120 0 110 12" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linecap="round"/>
-        <g data-part="fore-left" transform="translate(140 0) rotate(-122.3)">
-            <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
-            <rect x="116" y="-26" width="24" height="52" rx="10" fill="#F3F2FF" stroke="#CDD0E2" stroke-width="3"/>
-            <g transform="translate(136 0)">
+        <g data-part="arm-left">
+        <path data-part="arm-left-edge" d="M447 911.2L395.6 983.9L480 1062" fill="none" stroke="#CDD0E2" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-sleeve" d="M462 890L395.6 983.9L480 1062" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-cuff" d="M458 1041.6L472.7 1055.2" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
+        <g data-part="hand-left" transform="translate(480 1062) rotate(42.8)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
                 <ellipse cx="24" cy="-24" rx="23" ry="11" fill="#D6283A" stroke="#B01022" stroke-width="3" stroke-opacity=".45" transform="rotate(-10 24 -24)"/>
                 <rect x="-8" y="-25" width="14" height="50" rx="7" fill="#B01022"/>
-            </g>
-        </g>
+            </g></g>
     </g>
-        <g data-part="arm-right" transform="translate(738 890) rotate(85.1)">
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF"/>
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
-        <path d="M110-12Q120 0 110 12" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linecap="round"/>
-        <g data-part="fore-right" transform="translate(140 0) rotate(-263)">
-            <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
-            <rect x="116" y="-26" width="24" height="52" rx="10" fill="#F3F2FF" stroke="#CDD0E2" stroke-width="3"/>
-            <g transform="translate(136 0)">
+        <g data-part="arm-right">
+        <path data-part="arm-right-edge" d="M732.3 915.4L712.9 1002.2L600 1024" fill="none" stroke="#CDD0E2" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-right-sleeve" d="M738 890L712.9 1002.2L600 1024" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-right-cuff" d="M629.5 1018.3L609.8 1022.1" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
+        <g data-part="hand-right" transform="translate(600 1024) rotate(169.1)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
                 <ellipse cx="24" cy="-24" rx="23" ry="11" fill="#D6283A" stroke="#B01022" stroke-width="3" stroke-opacity=".45" transform="rotate(-10 24 -24)"/>
                 <rect x="-8" y="-25" width="14" height="50" rx="7" fill="#B01022"/>
-            </g>
-        </g>
+            </g></g>
     </g>
     </g>
 
