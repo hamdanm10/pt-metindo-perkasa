@@ -20,7 +20,7 @@ Gerak landing mengikuti situs referensi `newengen.com` (putaran kedua redesign, 
 | --- | --- | --- | --- |
 | `data-anim="hero-title"` | Judul hero dan kepala halaman | Huruf tumbuh dari garis dasar (`scaleY` 0 ke 1, asal bawah) berurutan 0,035 detik, lalu `SplitText` dikembalikan | Judul "CREATIVE IS OUR EDGE." |
 | `data-anim="hero-item"` | Paragraf, tombol, dan panel hero | Naik dan muncul berurutan setelah judul | Teks `js-t-fade-up` |
-| `data-hero-panel` | Panel monogram hero | Mengecil ke 86 persen saat hero digulir keluar (`scrub`) | Kartu hero yang menyusut (`js-flip`) |
+| `data-hero-panel` | Adegan profesor hero | Mengecil ke 86 persen saat hero digulir keluar (`scrub`). Adegannya sendiri bergerak lewat `motion/professor.js` (bagian dicari lewat `data-part`): gir turun-naik di bak, gelembung, kedip, lirikan; semuanya berhenti saat hero di luar layar (`ScrollTrigger`) | Kartu hero yang menyusut (`js-flip`) |
 | `data-cta-card`, `data-cta-art` | Kartu ajakan (di semua halaman) | Kartu **naik 70 px dan membesar dari 95 persen** saat terlihat (1,1 detik, `expo.out`); cahaya putih di sudut **melayang pelan** bolak-balik (7 detik); **tiga grafik membuka dan menutup bergantian** tiap 1,6 detik (gerakan sama dengan hover grafik About, lewat peristiwa `art:open` dan `art:close`), hanya saat kartu terlihat; dengan pointer, tumpukan grafik **bergeser mengikuti kursor** (hingga 22 x 16 px, berlawanan arah). Huruf judul tumbuh seperti judul lain | Tidak ada di referensi (kartu rancangan sendiri) |
 | `data-anim="grow"` | Judul besar (Services, Clients, ajakan) | Huruf meninggi dari 0 ke penuh mengikuti gulir (`scrub`) | Judul "CLIENTS SHINE" |
 | `data-anim="heading"`, `card` | Judul biasa dan blok | Naik dan muncul saat terlihat | `js-t-fade-up` |

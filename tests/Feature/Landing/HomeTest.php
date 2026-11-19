@@ -253,6 +253,28 @@ class HomeTest extends TestCase
         }
     }
 
+    public function test_hero_shows_the_electroplating_professor_scene_without_a_background(): void
+    {
+        $html = (string) $this->get('/en')->assertOk()->getContent();
+        $start = (int) strpos($html, '<section data-hero');
+        $hero = substr($html, $start, (int) strpos($html, '</section>', $start) - $start);
+
+        $this->assertStringContainsString('data-professor-scene', $hero);
+        $this->assertStringContainsString('aria-hidden="true"', $hero);
+        $this->assertStringNotContainsString('bg-lavender', $hero);
+        $this->assertStringNotContainsString('images/brand/logo.svg', $hero);
+
+        // Every part the animation looks up must exist in the artwork.
+        $script = (string) file_get_contents(resource_path('js/landing/motion/professor.js'));
+        preg_match_all("/'([a-z]+(?:-[a-z]+)*)'/", (string) preg_replace('/^\s*(import|\/\/|\*|\/\*).*$/m', '', $script), $found);
+        $required = ['glove-left', 'glove-right', 'pupil-left', 'pupil-right', 'eye-left', 'eye-right', 'gear', 'wire', 'gear-fill', 'gear-shine', 'sparkle', 'bubbles', 'button', 'light', 'goggles', 'mouth', 'professor'];
+
+        foreach ($required as $name) {
+            $this->assertStringContainsString('data-part="'.$name.'"', $hero, $name);
+            $this->assertContains($name, $found[1], $name);
+        }
+    }
+
     public function test_brand_assets_are_the_new_monogram(): void
     {
         foreach (['images/brand/logo.svg', 'images/brand/logo-white.svg', 'favicon.svg', 'favicon.ico', 'apple-touch-icon.png'] as $file) {

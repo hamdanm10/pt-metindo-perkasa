@@ -13,8 +13,8 @@
             </div>
         </div>
 
-        <div data-anim="hero-item" data-hero-panel class="relative aspect-[5/4] overflow-hidden rounded-lg bg-lavender lg:aspect-square lg:max-h-[calc(100svh-var(--header-h)-6rem)] lg:w-full" aria-hidden="true">
-            <img src="{{ asset('images/brand/logo.svg') }}" alt="" width="612" height="256" class="absolute start-1/2 top-1/2 w-[120%] max-w-none -translate-y-1/2 -translate-x-1/2 rtl:translate-x-1/2">
+        <div data-anim="hero-item" data-hero-panel class="relative aspect-[1600/1700] w-full max-w-[40rem] justify-self-center lg:max-h-[calc(100svh-var(--header-h)-6rem)] lg:max-w-none" aria-hidden="true">
+            <x-landing.professor-scene class="size-full" />
         </div>
     </div>
 </section>

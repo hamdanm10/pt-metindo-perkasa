@@ -38,7 +38,7 @@ Aturan supaya layar intro tidak merugikan SEO dan pengunjung:
 ## Hero
 
 - **Tingginya setinggi layar** (`min-h-svh`): hero dimulai di puncak halaman (di bawah header yang transparan, lihat Navbar) dan berakhir tepat di tepi bawah layar, dengan isinya di tengah secara vertikal. Panel monogram dibatasi tingginya (`100svh` dikurangi header dan 6rem) supaya muat di layar pendek; padding atas-bawah di `lg` 3rem. Di layar yang sangat pendek (di bawah sekitar 650 px) isi yang lebih tinggi dari layar menambah tinggi hero, tidak dipotong.
-- Latar `ink`, dua kolom di `lg`: judul besar (`font-black`, huruf kapital, `clamp(3rem, 8.2vw, 7rem)`), paragraf, dan dua tombol (krimson berpanah, dan garis putih). Di kanan, panel lavender berisi monogram logo besar yang terpotong tepinya, sebagai pengganti foto.
+- Latar `ink`, dua kolom di `lg`: judul besar (`font-black`, huruf kapital, `clamp(3rem, 8.2vw, 7rem)`), paragraf, dan dua tombol (krimson berpanah, dan garis putih). Di kanan, **adegan maskot profesor yang sedang melakukan electroplating** (SVG inline di `components/landing/professor-scene.blade.php`, **transparan tanpa latar atau panel** sehingga langsung menempel pada hero `ink`; warnanya dirancang untuk latar gelap: jas putih, sarung tangan krimson, biru, lavender, perak dan emas, tidak ada bentuk besar berwarna `ink`). Profesor berada di belakang bak larutan, dengan kotak daya di kanannya. Gir perak diturunkan lewat kawat ke dalam larutan, gelembung naik, lalu gir naik berwarna emas dengan kilau, dan siklus mengulang (sekitar 8 detik). Profesor berkedip, melirik gir, tersenyum, dan tubuhnya naik-turun pelan. Dekoratif (`aria-hidden`), jadi tanpa teks alternatif. Dengan `prefers-reduced-motion` adegan diam di pose awal.
 
 ## Navbar
 
