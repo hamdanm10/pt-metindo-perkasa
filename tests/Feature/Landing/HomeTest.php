@@ -38,7 +38,7 @@ class HomeTest extends TestCase
         $response = $this->get('/en')->assertOk();
         $categories = config('landing.categories');
 
-        $this->assertCount(13, $categories);
+        $this->assertCount(14, $categories);
 
         foreach (array_slice($categories, 0, 4) as $category) {
             $response->assertSee($category['name'])

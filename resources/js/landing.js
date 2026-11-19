@@ -8,6 +8,7 @@ import './landing/to-top.js';
 import './landing/mobile-menu.js';
 import './landing/about-map.js';
 import './landing/process-tabs.js';
+import './landing/process-detail.js';
 import './landing/contact-widgets.js';
 import './landing/copy-link.js';
 import './landing/article-views.js';

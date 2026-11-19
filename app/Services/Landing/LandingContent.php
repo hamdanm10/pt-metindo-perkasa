@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Landing;
 
 use App\Services\Articles\LandingArticles;
+use Illuminate\Support\Str;
 
 /**
  * Static landing content read from config. The catalog moves to the database
@@ -35,6 +36,69 @@ class LandingContent
         foreach ($this->categories() as $category) {
             if ($category['slug'] === $slug) {
                 return $category;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The processes of a category with their slug and short description.
+     *
+     * @param  array{slug: string, name: string, processes: list<string>}  $category
+     * @return list<array{slug: string, name: string, description: string}>
+     */
+    public function processes(array $category): array
+    {
+        return array_map(function (string $name): array {
+            $slug = Str::slug($name);
+            $description = config("landing.process_details.{$slug}.description");
+
+            return [
+                'slug' => $slug,
+                'name' => $name,
+                'description' => is_string($description) ? $description : __('pages.process.flow', ['name' => $name]),
+            ];
+        }, $category['processes']);
+    }
+
+    /**
+     * @return list<array{name: string, description: string, materials: list<string>}>
+     */
+    private function configuredSteps(string $slug): array
+    {
+        return config("landing.process_details.{$slug}.steps", []);
+    }
+
+    /**
+     * One process with its category, steps, materials, and the other processes of that category.
+     *
+     * @return array{slug: string, name: string, description: string, category: array{slug: string, name: string}, steps: list<array{name: string, description: string, materials: list<array{slug: string, name: string}>}>, materials: int, others: list<array{slug: string, name: string, description: string}>}|null
+     */
+    public function process(string $slug): ?array
+    {
+        foreach ($this->categories() as $category) {
+            foreach ($this->processes($category) as $process) {
+                if ($process['slug'] !== $slug) {
+                    continue;
+                }
+
+                $steps = array_map(fn (array $step): array => [
+                    'name' => $step['name'],
+                    'description' => $step['description'],
+                    'materials' => array_map(fn (string $name): array => ['slug' => Str::slug($name), 'name' => $name], $step['materials']),
+                ], $this->configuredSteps($slug));
+
+                return [
+                    ...$process,
+                    'category' => ['slug' => $category['slug'], 'name' => $category['name']],
+                    'steps' => $steps,
+                    'materials' => array_sum(array_map(fn (array $step): int => count($step['materials']), $steps)),
+                    'others' => array_values(array_filter(
+                        $this->processes($category),
+                        fn (array $other): bool => $other['slug'] !== $slug,
+                    )),
+                ];
             }
         }
 

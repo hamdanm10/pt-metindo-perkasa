@@ -9,9 +9,9 @@ Landing page publik PT Metindo Perkasa (electroplating, metal finishing, dan pem
 
 ## Susunan halaman (dari prototipe)
 
-Beranda: hero, video pengantar ("See how we work"), pendekatan, katalog 13 kategori bahan kimia (produk dengan TDS dan harga "Request to admin", serta proses), layanan (Electroplating Service, Chemical Supply, Technical Consultation), klien dan mitra, artikel, ajakan menghubungi, dan footer.
+Beranda: hero, video pengantar ("See how we work"), pendekatan, katalog 14 kategori bahan kimia (produk dengan TDS dan harga "Request to admin", serta proses), layanan (Electroplating Service, Chemical Supply, Technical Consultation), klien dan mitra, artikel, ajakan menghubungi, dan footer.
 
-Halaman lain: About Us, Processes (di prototipe Products), Services, Articles (dan detail artikel), Contact, dan halaman detail per proses (`/process/<kategori>-<proses>`, sekitar 50 halaman).
+Halaman lain: About Us, Processes (di prototipe Products), Services, Articles (dan detail artikel), Contact, dan halaman detail per proses (`/process/<proses>`; langkah dan bahan baru ada untuk Alkaline Zinc, lihat [`pages/overview.md`](pages/overview.md)).
 
 ## Fase
 
