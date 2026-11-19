@@ -16,7 +16,10 @@
                 <thead>
                     <tr>
                         <th scope="col">{{ __('services.fields.name') }}</th>
-                        <th scope="col">{{ __('services.fields.description') }}</th>
+                        <th scope="col">{{ __('services.fields.slug') }}</th>
+                        <th scope="col">{{ __('services.fields.languages') }}</th>
+                        <th scope="col">{{ __('services.fields.position') }}</th>
+                        <th scope="col">{{ __('services.status') }}</th>
                         <th scope="col"><span class="sr-only">{{ __('services.actions') }}</span></th>
                     </tr>
                 </thead>
@@ -24,14 +27,17 @@
                     @forelse ($services as $service)
                         <tr wire:key="service-{{ $service->id }}" class="align-middle">
                             <td class="font-semibold"><span class="cell-truncate" title="{{ $service->name }}">{{ $service->name }}</span></td>
-                            <td class="text-muted"><span class="cell-truncate" title="{{ \Illuminate\Support\Str::limit((string) $service->description, 300) }}">{{ \Illuminate\Support\Str::limit((string) $service->description, 200) }}</span></td>
+                            <td class="text-muted"><span class="cell-truncate" title="{{ $service->slug }}">{{ $service->slug ?? '—' }}</span></td>
+                            <td class="text-muted">{{ $service->translations->pluck('locale')->sortBy(fn ($locale) => array_search($locale, config('locales.landing'), true))->map(fn ($locale) => strtoupper($locale))->implode(', ') }}</td>
+                            <td class="text-muted">{{ $service->position }}</td>
+                            <td>{{ $service->is_active ? __('services.active') : __('services.inactive') }}</td>
                             <td class="text-end">
                                 <a href="{{ route('app.services.edit', $service) }}" class="row-action">{{ __('services.edit') }}<span class="sr-only"> {{ $service->name }}</span></a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="py-12 text-center text-muted">{{ __('services.empty') }}</td>
+                            <td colspan="6" class="py-12 text-center text-muted">{{ __('services.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

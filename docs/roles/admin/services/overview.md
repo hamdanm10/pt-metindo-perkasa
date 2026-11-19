@@ -1,36 +1,41 @@
 # Kelola Layanan (A4)
 
-Admin menambah dan mengubah layanan perusahaan dari dashboard. Untuk saat ini layanan hanya punya **nama** dan **deskripsi**, dengan pola yang sama seperti kelola produk ([`../products/overview.md`](../products/overview.md)). Belum tampil di landing: halaman Services masih memakai teks tetap sampai fitur kelola konten landing (A5) dirancang. Status fase di [`../implementation-plan.md`](../implementation-plan.md).
+Admin menambah dan mengubah layanan perusahaan dari dashboard. Layanan punya **data bersama** (nama internal, alamat, gambar, urutan, aktif) dan **teks per bahasa** (judul, ringkasan, deskripsi, daftar yang termasuk, cocok untuk). Field ini disiapkan agar landing bisa membaca layanan dari database. **Landing membaca data ini**: beranda, daftar, dan detail layanan ([`../../landing/pages/overview.md`](../../landing/pages/overview.md)). Hanya layanan aktif dengan slug dan teks `en` yang tampil, urut `position`, dan bahasa tanpa teks memakai teks `en`. Cache landing dibersihkan tiap admin menyimpan. Status fase di [`../implementation-plan.md`](../implementation-plan.md).
 
 ## Keputusan
 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
 | 1 | Hanya admin yang mengelola, di `/app/services`. Staf dan customer mendapat 403, dijaga middleware dan `ServicePolicy` | Keputusan client untuk pengelolaan konten |
-| 2 | Kolom: `name` (wajib, maks 255) dan `description` (opsional, maks 5000) | Cukup untuk tahap ini |
-| 3 | Satu bahasa saja, belum diterjemahkan ke lima bahasa landing | Menunggu konsep konten landing (A5) |
-| 4 | Belum ada hapus, gambar, urutan, atau tampil di landing | Ditunda sampai kebutuhannya jelas |
-| 5 | Livewire `Services\Index` dan `Services\Editor`, logic di `SaveService` dan `ListServices` | Pola yang sama dengan produk |
+| 2 | Data bersama di tabel `services`: `name` (wajib, maks 255, dilihat staf di daftar dan dropdown pencarian, tidak tampil di landing), `slug` (wajib, huruf kecil, angka, tanda hubung, unik, sama di semua bahasa), `image_path`, `position` (angka kecil lebih dulu), `is_active` | Alamat dan gambar tidak perlu beda per bahasa. `name` dipertahankan karena dipakai Tanya Jawab dan `Lookup` |
+| 3 | Teks per bahasa di `service_translations` (`service_id` + `locale` unik): `title` (wajib bila bahasa terisi, maks 255), `summary` (maks 500), `description` (maks 5000), `included` (daftar JSON, satu butir per baris di form, maks 255 karakter per butir), `fit` (maks 1000) | Mengikuti pola chat dan artikel: tabel terjemahan, bukan kolom JSON |
+| 4 | Lima bahasa landing (`en`, `id`, `zh`, `ar`, `ja`) dalam tab. Bahasa tanpa teks tidak disimpan, dan bahasa yang dikosongkan saat ubah dihapus. **Bahasa Inggris wajib** karena jadi cadangan bahasa lain (aturan teks dinamis landing di `CLAUDE.md`) | Berbeda dari artikel: layanan tidak diterbitkan per bahasa |
+| 5 | Satu gambar bersama, unggahan JPG, PNG, atau WebP maks 2 MB, minimal 800x600, dipotong 4:3 dan disimpan WebP di disk `public` dengan nama acak (`ServiceImageStore`). Gambar lama dihapus saat diganti | Rasio 4:3 sama dengan kotak gambar layanan di landing |
+| 6 | Layanan lama dipindah otomatis oleh migration: `name` menjadi `title` bahasa Inggris, `description` menjadi `description` bahasa Inggris, lalu kolom `description` dihapus. `slug` kosong sampai admin mengisinya | Tidak kehilangan data |
+| 7 | Tiga layanan lama dimasukkan lewat `php artisan services:import-defaults` (bukan seeder): teks lima bahasa dibaca dari `lang`, deskripsi berasal dari teks beranda (`home.services.items.*.text`), dan foto disalin ke disk `public`. Aman dijalankan ulang, alamat yang sudah ada dilewati. Teks `pages.services.detail.items.*.body` tidak diimpor | Landing tidak boleh kosong setelah beralih ke database |
+| 8 | Livewire `Services\Index` dan `Services\Editor`, logic di `SaveService` (satu transaksi) dan `ListServices` | Pola yang sama dengan produk dan artikel |
 
 ## Halaman
 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
-| Daftar | `/app/services` | Nama dan cuplikan deskripsi, pencarian nama, 15 per halaman |
-| Tambah | `/app/services/create` | Nama dan deskripsi |
+| Daftar | `/app/services` | Nama, alamat, bahasa yang terisi, urutan, status. Pencarian nama, urut berdasarkan `position` lalu nama, 15 per halaman |
+| Tambah | `/app/services/create` | Data bersama dan tab lima bahasa |
 | Ubah | `/app/services/{service}/edit` | Sama dengan Tambah |
 
 ## Aturan keamanan dan kasus tepi
 
 - Setiap aksi Livewire memanggil `authorize`, dan persistent middleware dari A1 berlaku.
-- Id layanan di komponen dikunci. Nama dan deskripsi dipangkas spasi, deskripsi kosong disimpan `null`.
-- Teks di `lang/{en,id}/services.php`. Kolom `name` diberi indeks untuk pencarian dan urutan.
+- Id layanan di komponen dikunci. Isian dipangkas spasi, slug diubah ke huruf kecil, teks kosong disimpan `null`, dan baris kosong di daftar "yang termasuk" dibuang.
+- Berkas unggahan diperiksa jenis dan ukurannya, lalu disandikan ulang ke WebP sehingga nama dan metadata asli tidak sampai ke disk publik.
+- Daftar memuat `translations` lewat `with()`, jadi jumlah query tidak naik bersama jumlah baris. Kolom `name`, `position`, `slug`, dan `locale` punya index.
+- Teks di `lang/{en,id}/services.php`, nama kolom di pesan validasi lewat `validationAttributes()` form.
 - Nama `app.services.*` tidak bentrok dengan `landing.services` karena prefix route berbeda.
 
 ## Test
 
-Sama dengan produk: akses per peran dan tamu, menu hanya untuk admin, tambah dan ubah, validasi, deskripsi opsional, pencarian, penomoran dan jumlah query tetap, kunci terjemahan identik, dan unit test `SaveService`.
+`tests/Feature/Services/ServiceAdminTest.php`: akses per peran dan tamu, menu hanya untuk admin, tambah dengan bahasa dan gambar, bahasa Inggris wajib, judul wajib di bahasa yang terisi, validasi data bersama (nama, slug unik dan format, urutan), batas panjang teks, validasi gambar, ubah dan hapus bahasa yang dikosongkan, slug sendiri bukan duplikat, penggantian gambar menghapus berkas lama, daftar (pencarian, urutan, bahasa, status, penomoran, jumlah query tetap), dan kunci terjemahan identik. Unit test `SaveServiceTest`. Sisi landing di `tests/Feature/Landing/DynamicServicesTest.php`. Migration yang memindahkan data lama belum diuji otomatis karena rollback tidak dipakai di test (lihat `CLAUDE.md`).
 
 ## Ditunda
 
-- Terjemahan lima bahasa, hapus, gambar, urutan tampil, dan tampil di landing (A5).
+- Hapus layanan, tombol geser urutan (sekarang angka), judul `<title>` dan deskripsi meta per layanan, alt gambar per bahasa.

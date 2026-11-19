@@ -6,7 +6,6 @@ namespace Tests\Unit\Services\Landing;
 
 use App\Models\ArticleTranslation;
 use App\Services\Articles\LandingArticles;
-use App\Services\Articles\ThumbnailStore;
 use App\Services\Landing\LandingContent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -17,7 +16,7 @@ class LandingContentTest extends TestCase
 
     private function content(): LandingContent
     {
-        return new LandingContent(new LandingArticles(new ThumbnailStore));
+        return app(LandingContent::class);
     }
 
     public function test_it_finds_a_category_by_slug(): void

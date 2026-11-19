@@ -17,7 +17,9 @@ class ListServices
         $term = '%'.addcslashes(trim($search), '%_\\').'%';
 
         return Service::query()
+            ->with('translations:id,service_id,locale')
             ->when(trim($search) !== '', fn ($query) => $query->where('name', 'ilike', $term))
+            ->orderBy('position')
             ->orderBy('name')
             ->paginate(15);
     }
