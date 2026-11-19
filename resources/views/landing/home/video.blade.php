@@ -24,7 +24,7 @@
             <div data-video="{{ $videoId }}" data-video-title="{{ __('home.video.title') }}"
                  class="group relative aspect-video overflow-hidden rounded-lg bg-ink lg:col-span-7">
                 <div data-video-parallax class="absolute inset-x-0 -inset-y-[7%]">
-                    <x-landing.photo name="video-thumbnail" ratio="aspect-video" bare class="absolute inset-0 size-full transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none" />
+                    <x-landing.photo name="video-thumbnail" fallback="service-consultation" ratio="aspect-video" bare class="absolute inset-0 size-full transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none" />
                 </div>
                 <div class="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" aria-hidden="true"></div>
 

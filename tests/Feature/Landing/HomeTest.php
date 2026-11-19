@@ -195,12 +195,13 @@ class HomeTest extends TestCase
             ->assertDontSee('<iframe', false);
     }
 
-    public function test_video_thumbnail_is_a_placeholder_until_the_file_exists_and_never_comes_from_youtube(): void
+    public function test_video_thumbnail_uses_the_fallback_photo_until_its_own_file_exists_and_never_comes_from_youtube(): void
     {
         config(['landing.sample_content' => true]);
 
         $this->get('/en')
-            ->assertSee('[PHOTO] images/landing/photos/video-thumbnail.webp')
+            ->assertSee('photos/service-consultation.webp', false)
+            ->assertDontSee('[PHOTO] images/landing/photos/video-thumbnail.webp')
             ->assertSee(__('home.video.play'))
             ->assertDontSee('ytimg', false);
 
@@ -209,9 +210,7 @@ class HomeTest extends TestCase
         file_put_contents($path, 'x');
 
         try {
-            $this->get('/en')
-                ->assertSee('photos/video-thumbnail.webp', false)
-                ->assertDontSee('[PHOTO] images/landing/photos/video-thumbnail.webp');
+            $this->get('/en')->assertSee('photos/video-thumbnail.webp', false);
         } finally {
             unlink($path);
         }
