@@ -6,6 +6,7 @@ namespace Tests\Feature\Landing;
 
 use App\Services\Articles\SampleArticles;
 use App\Services\Landing\LandingGallery;
+use Illuminate\Support\Facades\Blade;
 use Tests\TestCase;
 
 class HomeTest extends TestCase
@@ -275,6 +276,71 @@ class HomeTest extends TestCase
         }
 
         $this->assertStringContainsString('data-part="spark"', $hero);
+    }
+
+    public function test_the_home_page_has_no_scrolling_type_bands(): void
+    {
+        foreach (['en', 'id', 'zh', 'ar', 'ja'] as $locale) {
+            $html = (string) $this->get('/'.$locale)->assertOk()->getContent();
+
+            $this->assertStringNotContainsString('data-marquee', $html, $locale);
+            $this->assertStringNotContainsString('marquee-track', $html, $locale);
+        }
+    }
+
+    public function test_the_only_chips_on_the_home_page_are_in_the_video_section_and_are_hidden_from_assistive_technology(): void
+    {
+        $html = (string) $this->get('/en')->getContent();
+
+        preg_match_all('/<svg[^>]*data-chip="[a-z]+"[^>]*>/', $html, $chips);
+        $this->assertCount(4, $chips[0]);
+        foreach ($chips[0] as $chip) {
+            $this->assertStringContainsString('aria-hidden="true"', $chip);
+            $this->assertStringContainsString('focusable="false"', $chip);
+        }
+
+        // All four sit between the hero and the catalog (the video section), nowhere else.
+        $heroEnd = (int) strpos($html, '</section>', (int) strpos($html, '<section data-hero'));
+        $catalog = (int) strpos($html, 'id="catalog"');
+        $this->assertSame(4, substr_count(substr($html, $heroEnd, $catalog - $heroEnd), 'data-chip='));
+        $this->assertSame(0, substr_count(substr($html, 0, $heroEnd), 'data-chip='));
+        $this->assertSame(0, substr_count(substr($html, $catalog), 'data-chip='));
+    }
+
+    public function test_every_chip_kind_draws_in_brand_colours_without_text(): void
+    {
+        foreach (['bands', 'chart', 'hexagons', 'pills', 'grid', 'rings', 'stripes'] as $kind) {
+            foreach ([false, true] as $dark) {
+                $svg = Blade::render('<x-landing.chip :kind="$kind" :dark="$dark" class="size-10" />', ['kind' => $kind, 'dark' => $dark]);
+
+                $this->assertStringContainsString('data-chip="'.$kind.'"', $svg, $kind);
+                $this->assertStringContainsString('var(--color-', $svg, $kind);
+                $this->assertStringContainsString('preserveAspectRatio="xMidYMid slice"', $svg, $kind);
+                $this->assertStringNotContainsString('<text', $svg, $kind);
+                $this->assertMatchesRegularExpression('/<(path|rect|polygon|circle)\b/', $svg, $kind);
+            }
+        }
+
+        // The dark chips never draw the ink colour, which would vanish on the ink sections.
+        foreach (['bands', 'pills', 'grid', 'rings'] as $kind) {
+            $svg = Blade::render('<x-landing.chip :kind="$kind" dark />', ['kind' => $kind]);
+            $this->assertStringNotContainsString('var(--color-ink)', $svg, $kind);
+        }
+    }
+
+    public function test_ornament_motion_is_transform_only_and_stops_with_reduced_motion(): void
+    {
+        $css = (string) file_get_contents(resource_path('css/landing.css'));
+        $part = substr($css, (int) strpos($css, '/* Ornaments on the home page'));
+
+        $this->assertStringStartsWith('/* Ornaments on the home page', $part);
+        $this->assertStringContainsString('@media (prefers-reduced-motion: no-preference)', $part);
+
+        foreach (['.chip-slide-bands', '.chip-slide-hex', '.chip-slide-stripes', '.chip-pill'] as $selector) {
+            $this->assertStringContainsString($selector.' {', $part, $selector);
+        }
+
+        $this->assertDoesNotMatchRegularExpression('/\b(top|left|width|height|margin)\s*:/', $part);
     }
 
     public function test_brand_assets_are_the_new_monogram(): void

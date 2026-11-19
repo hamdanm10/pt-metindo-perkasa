@@ -10,6 +10,14 @@
                 <p class="mt-5 text-lg text-muted sm:text-xl">
                     {{ __('home.video.text') }}
                 </p>
+
+                {{-- Decorative chips in the style of the About headline graphics. --}}
+                <div class="mt-10 grid max-w-xl grid-cols-[1fr_1fr_auto] grid-rows-[repeat(2,var(--chip-h))] gap-3" style="--chip-h: clamp(2.5rem,3.6vw,4.5rem)" aria-hidden="true">
+                    <x-landing.chip kind="bands" class="col-span-2 size-full" />
+                    <x-landing.chip kind="rings" class="row-span-2 h-full w-[calc(var(--chip-h)*2_+_0.75rem)]" />
+                    <x-landing.chip kind="chart" class="size-full" />
+                    <x-landing.chip kind="hexagons" class="size-full" />
+                </div>
             </div>
 
             {{-- The thumbnail is images/landing/photos/video-thumbnail.{webp,jpg,jpeg,png}. Replace the file to change it. --}}
