@@ -687,6 +687,19 @@ class HomeTest extends TestCase
             ->assertSee('href="'.url('/en/articles').'"', false);
     }
 
+    public function test_home_marks_only_articles_published_within_two_weeks_as_new(): void
+    {
+        ArticleTranslation::factory()->published('en')->create(['published_at' => now()->subDays(3)]);
+        ArticleTranslation::factory()->published('en')->create(['published_at' => now()->subDays(40)]);
+        app(LandingArticles::class)->flush();
+
+        $html = (string) $this->get('/en')->assertOk()->getContent();
+
+        // The menu has its own badge (twice, with the phone menu); the cards have one, for the recent article only.
+        $this->assertSame(1, substr_count($html, 'data-new-badge class="inline-flex h-'));
+        $this->assertStringContainsString('>'.__('articles.new', [], 'en').'<', $html);
+    }
+
     public function test_home_has_no_articles_section_while_nothing_is_published(): void
     {
         $this->get('/en')->assertOk()->assertDontSee(__('home.articles.title'));
