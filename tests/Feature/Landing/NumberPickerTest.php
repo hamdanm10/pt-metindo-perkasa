@@ -8,10 +8,12 @@ use App\Models\WhatsappAgent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Tests\Concerns\CreatesServices;
 use Tests\TestCase;
 
 class NumberPickerTest extends TestCase
 {
+    use CreatesServices;
     use RefreshDatabase;
 
     protected function setUp(): void
@@ -19,7 +21,8 @@ class NumberPickerTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
-        config(['landing.sample_content' => true, 'landing.contact.email' => 'hello@example.test']);
+        config(['landing.contact.email' => 'hello@example.test']);
+        $this->createServices();
     }
 
     private function threeNumbers(): void
