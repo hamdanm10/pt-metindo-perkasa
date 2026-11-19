@@ -6,6 +6,7 @@ namespace App\Livewire\Forms;
 
 use App\Enums\Role;
 use App\Models\Inquiry;
+use App\Services\Articles\ArticleBody;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Form;
@@ -19,6 +20,7 @@ class InquiryForm extends Form
 
     public string $question = '';
 
+    /** The answer as the editor's JSON document (stored as sanitized HTML). */
     public string $answer = '';
 
     public string $askedAt = '';
@@ -44,7 +46,7 @@ class InquiryForm extends Form
         $this->customerId = (string) $inquiry->customer_id;
         $this->askedAt = $inquiry->asked_at?->toDateString() ?? '';
         $this->question = $inquiry->question;
-        $this->answer = $inquiry->answer;
+        $this->answer = (string) json_encode(app(ArticleBody::class)->fromHtml($inquiry->answer));
         $this->serviceId = (string) $inquiry->service_id;
         $this->productId = (string) $inquiry->product_id;
         $this->keptImages = $inquiry->images->count();
@@ -58,7 +60,11 @@ class InquiryForm extends Form
         return [
             'customerId' => ['required', 'integer', Rule::exists('users', 'id')->where('role', in_array($this->kind, [Role::Customer->value, Role::Distributor->value], true) ? $this->kind : Role::Customer->value)],
             'question' => ['required', 'string', 'max:5000'],
-            'answer' => ['required', 'string', 'max:10000'],
+            'answer' => ['required', 'string', 'max:50000', function (string $attribute, mixed $value, \Closure $fail): void {
+                if (is_string($value) && ! $this->answerHasText($value)) {
+                    $fail(__('validation.required', ['attribute' => __('inquiries.fields.answer')]));
+                }
+            }],
             'askedAt' => ['nullable', 'date_format:Y-m-d', 'before_or_equal:today'],
             'serviceId' => ['nullable', 'integer', Rule::exists('services', 'id')],
             'productId' => ['nullable', 'integer', Rule::exists('products', 'id')],
@@ -108,5 +114,16 @@ class InquiryForm extends Form
     {
         $this->question = trim($this->question);
         $this->answer = trim($this->answer);
+    }
+
+    private function answerHasText(string $json): bool
+    {
+        $body = app(ArticleBody::class);
+
+        try {
+            return ! $body->isEmpty($body->parse($json));
+        } catch (\InvalidArgumentException) {
+            return false;
+        }
     }
 }

@@ -18,16 +18,16 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 
 ## Data
 
-- `inquiries`: `customer_id` (wajib, relasi ke `users` berperan customer, tanpa hapus berantai; index gabungan `customer_id, asked_at`), `question` (teks), `answer` (teks), `asked_at` (tanggal pertanyaan masuk, **opsional**, tanpa nilai awal; bila diisi tidak boleh di masa depan; catatan tanpa tanggal tampil "—" dan diurutkan paling akhir), `service_id` dan `product_id` (opsional, `nullOnDelete`), `created_by` (`nullOnDelete`), cap waktu. Index: `asked_at`, `service_id`, `product_id`, `created_by`.
+- `inquiries`: `customer_id` (wajib, relasi ke `users` berperan customer, tanpa hapus berantai; index gabungan `customer_id, asked_at`), `question` (teks), `answer` (teks berisi HTML hasil rich text yang sudah disanitasi), `asked_at` (tanggal pertanyaan masuk, **opsional**, tanpa nilai awal; bila diisi tidak boleh di masa depan; catatan tanpa tanggal tampil "—" dan diurutkan paling akhir), `service_id` dan `product_id` (opsional, `nullOnDelete`), `created_by` (`nullOnDelete`), cap waktu. Index: `asked_at`, `service_id`, `product_id`, `created_by`.
 - `inquiry_images`: `inquiry_id` (`cascadeOnDelete`, index), `path`, cap waktu. Urutan gambar mengikuti id.
-- `question` maks 5000 karakter, `answer` maks 10000. Keduanya dipangkas spasi.
+- `question` maks 5000 karakter dan dipangkas spasi. `answer` adalah rich text dengan editor Tiptap yang sama seperti artikel (tebal, miring, judul H2/H3, daftar, kutipan, tautan): formulir mengirim dokumen JSON editor (maks 50000 karakter, wajib berisi teks), lalu `SaveInquiry` mengubahnya lewat `ArticleBody` menjadi HTML yang hanya memuat node dan mark yang diizinkan (skrip dan tautan berbahaya dibuang). Migrasi `convert_inquiry_answers_to_html` mengubah jawaban teks biasa lama menjadi paragraf ber-escape. Pencarian `answer` masih memakai `ilike` pada HTML.
 
 ## Halaman
 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
 | Daftar | `/app/customer-inquiries`, `/app/distributor-inquiries`, `/customer/inquiries` dan `/distributor/inquiries` | Pertanyaan (cuplikan), layanan atau produk terkait, tanggal, jumlah gambar. Pencarian di pertanyaan dan jawaban (tanpa membedakan huruf), saringan layanan dan produk, urutan terbaru dulu, 15 per halaman. Customer hanya mendapat catatan miliknya. Staf mendapat kolom "Customer" dan "Added by", serta saringan per customer (customer tidak melihat keduanya). Tombol Edit dan Delete muncul sesuai Policy |
-| Baca | `/app/customer-inquiries/{id}`, `/app/distributor-inquiries/{id}`, `/customer/inquiries/{id}` dan `/distributor/inquiries/{id}` | Pertanyaan, jawaban (baris baru dipertahankan), tautan layanan dan produk, galeri gambar (klik membuka gambar penuh di tab baru). Nama customer dan nama penulis hanya untuk staf. Catatan customer lain: 404 |
+| Baca | `/app/customer-inquiries/{id}`, `/app/distributor-inquiries/{id}`, `/customer/inquiries/{id}` dan `/distributor/inquiries/{id}` | Pertanyaan, jawaban (rich text, ditampilkan sebagai HTML), tautan layanan dan produk, galeri gambar (klik membuka gambar penuh di tab baru). Nama customer dan nama penulis hanya untuk staf. Catatan customer lain: 404 |
 | Tambah | `/app/customer-inquiries/create`, `/app/distributor-inquiries/create` | Customer atau Distributor\* (pilihan akun sesuai halaman), pertanyaan\*, jawaban\*, tanggal ditanyakan (opsional), layanan, produk, unggah banyak gambar |
 | Ubah | `/app/customer-inquiries/{id}/edit`, `/app/distributor-inquiries/{id}/edit` | Sama dengan Tambah. Gambar tersimpan bisa ditandai untuk dihapus (bisa dibatalkan sebelum simpan), gambar baru bisa ditarik sebelum simpan |
 | Gambar | `/app/inquiry-images/{id}`, `/customer/inquiry-images/{id}`, `/distributor/inquiry-images/{id}` | Mengirim gambar dari disk privat. Guest diarahkan ke login, peran yang salah mendapat 403, gambar milik customer lain 404 |

@@ -18,10 +18,13 @@
             </div>
 
             <div>
-                <label for="form-answer" class="field-label">{{ __('inquiries.fields.answer') }}<span class="text-brand-600" aria-hidden="true"> *</span></label>
-                <textarea id="form-answer" rows="7" wire:model="form.answer" required
-                          @error('form.answer') aria-invalid="true" aria-describedby="form-answer-error" @enderror
-                          class="field-input"></textarea>
+                <span id="answer-label" class="field-label">{{ __('inquiries.fields.answer') }}<span class="text-brand-600" aria-hidden="true"> *</span></span>
+                <div wire:ignore data-tiptap data-labelled-by="answer-label" data-input="form-answer"
+                     data-dir="ltr" data-lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+                     data-labels="{{ json_encode(__('article_manager.editor')) }}"
+                     data-content="{{ $form->answer }}"
+                     class="mt-2"></div>
+                <textarea id="form-answer" wire:model="form.answer" class="sr-only" tabindex="-1" aria-hidden="true"></textarea>
                 @error('form.answer')
                     <p id="form-answer-error" class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                 @enderror

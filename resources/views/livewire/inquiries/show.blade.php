@@ -24,7 +24,7 @@
 
         <div class="mt-6 border-t border-ink/10 pt-6">
             <h3 class="field-label">{{ __('inquiries.answer_heading') }}</h3>
-            <p class="mt-2 whitespace-pre-line text-base leading-relaxed">{{ $inquiry->answer }}</p>
+            <div class="article-body mt-2 text-base">{!! $inquiry->answer !!}</div>
         </div>
 
         @if ($inquiry->images->isNotEmpty())
