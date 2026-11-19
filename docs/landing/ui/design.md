@@ -102,6 +102,14 @@ Isi mengikuti halaman Products prototipe (`http://103.125.180.65/~wwwmetin/en/pr
 - **How the catalogue is organised** (putih): judul besar, pengantar, dan empat tingkat bernomor (Category, Process, Diagram, Materials) yang dihubungkan **garis yang tergambar mengikuti gulir**. Isinya dari prototipe; Diagram dan Materials ada di halaman detail proses (di bawah); baru Alkaline Zinc yang berisi data.
 - **Ajakan:** kartu ajakan seperti di halaman lain.
 
+## Halaman Kategori Proses
+
+`/{locale}/processes/{category}`, dibuka dari daftar proses atau katalog beranda. Dari atas ke bawah:
+
+- **Pembuka** (`ink`): jejak remah "Processes / nama kategori", label "Category 03 of 14", nama kategori kapital besar (tetap bahasa Inggris), deskripsi, dan di kanan **jumlah proses** (angka krimson muda besar dengan label "Processes"). Nomor kategori raksasa sangat redup di latar sebagai hiasan.
+- **Proses** (lavender, dua kolom 4:8): di kiri foto kategori 4:3 di atas warna krimson, indigo, atau biru yang **menempel** saat gulir (`product-<kunci>`, sama dengan daftar proses). Di kanan **kisi kartu putih** (dua kolom di `sm`): nomor, nama proses, deskripsi, dan "View process →". Saat hover kartu naik 4 px, garisnya krimson, dan panah maju (di RTL dicerminkan).
+- **Other categories** (putih): pil tautan ke kategori lain, lalu ajakan menghubungi.
+
 ## Halaman Detail Layanan
 
 `/{locale}/services/{slug}`. Alurnya mengikuti prototipe (`.../en/services/electroplating-service`), tampilannya dirancang ulang. Dari atas ke bawah:

@@ -181,6 +181,19 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_category_page_shows_its_position_and_process_count(): void
+    {
+        $categories = config('landing.categories');
+        $category = $categories[1];
+
+        $this->get('/en/processes/'.$category['slug'])->assertOk()
+            ->assertSee(__('pages.processes.position', ['number' => '02', 'total' => count($categories)], 'en'))
+            ->assertSee('>'.count($category['processes']).'</span>', false);
+
+        $this->get('/id/processes/'.$category['slug'])->assertOk()
+            ->assertSee(__('pages.processes.position', ['number' => '02', 'total' => count($categories)], 'id'));
+    }
+
     public function test_the_category_pages_are_called_processes_in_every_language_and_products_is_free(): void
     {
         foreach (config('locales.landing') as $code) {
