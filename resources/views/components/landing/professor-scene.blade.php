@@ -24,15 +24,15 @@
 
     <!-- professor -->
     <g data-part="professor" transform="translate(600 1400) scale(1.2) translate(-600 -1400)">
-        <path d="M434 1210V946C434 892 462 864 508 856L568 842H632L692 856C738 864 766 892 766 946V1210Z" fill="#FFFFFF"/>
+        <path d="M452 1210V946C452 894 476 866 516 857L568 842H632L684 857C724 866 748 894 748 946V1210Z" fill="#FFFFFF"/>
         <path d="M568 842L600 896 632 842 664 868 626 1000H574L536 868Z" fill="#F3F2FF"/>
         <path d="M568 842L600 930 554 1010 526 890 548 866Z" fill="#D9DCE8"/>
         <path d="M632 842L600 930 646 1010 674 890 652 866Z" fill="#D9DCE8"/>
         <path d="M588 884h24l5 22h-34ZM584 910h32l12 96-28 24-28-24Z" fill="#D6283A"/>
         <path d="M600 1052V1210" stroke="#D9DCE8" stroke-width="5"/>
         <circle cx="600" cy="1110" r="7" fill="#98A2C4"/><circle cx="600" cy="1160" r="7" fill="#98A2C4"/>
-        <rect x="462" y="1030" width="56" height="50" rx="9" fill="#F3F2FF"/>
-        <rect x="490" y="1012" width="9" height="36" rx="4.5" fill="#D6283A"/>
+        <rect x="470" y="1030" width="54" height="50" rx="9" fill="#F3F2FF"/>
+        <rect x="496" y="1012" width="9" height="36" rx="4.5" fill="#D6283A"/>
         <rect x="566" y="810" width="68" height="56" rx="24" fill="#E8B894"/>
         <g data-part="head" transform="rotate(0 600 800)"><g transform="translate(600 866) scale(.84) translate(-600 -826)">
             <circle cx="512" cy="638" r="36" fill="#F3F2FF"/><circle cx="500" cy="690" r="31" fill="#F3F2FF"/><circle cx="512" cy="738" r="24" fill="#F3F2FF"/>
@@ -77,10 +77,10 @@
             <path d="M-32-80h60M-32-60h60M-32-40h46M-32-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
         </g>
         <g data-part="arm-left">
-        <path data-part="arm-left-edge" d="M456 925.9L408.1 1000.9L500 1070" fill="none" stroke="#D5D8E8" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-left-sleeve" d="M470 904L408.1 1000.9L500 1070" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-left-cuff" d="M476 1052L492 1064" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
-        <g data-part="hand-left" transform="translate(500 1070) rotate(36.9)"><g transform="translate(-14 0)">
+        <path data-part="arm-left-edge" d="M460.7 931.5L410.6 997.7L500 1070" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-sleeve" d="M480 906L410.6 997.7L500 1070" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-cuff" d="M476.7 1051.1L492.2 1063.7" fill="none" stroke="#F3F2FF" stroke-width="60" stroke-linecap="butt"/>
+        <g data-part="hand-left" transform="translate(500 1070) rotate(39)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
                 <ellipse cx="24" cy="-24" rx="23" ry="11" fill="#D6283A" stroke="#B01022" stroke-width="3" stroke-opacity=".45" transform="rotate(-10 24 -24)"/>
@@ -88,17 +88,17 @@
             </g></g>
     </g>
         <g data-part="arm-right">
-        <path data-part="arm-right-edge" d="M726.6 929.8L714.8 1018L600 1024" fill="none" stroke="#D5D8E8" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-right-sleeve" d="M730 904L714.8 1018L600 1024" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-right-cuff" d="M630 1022.4L610 1023.5" fill="none" stroke="#F3F2FF" stroke-width="48" stroke-linecap="butt"/>
-        <g data-part="hand-right" transform="translate(600 1024) rotate(177)"><g transform="translate(-14 0)">
+        <path data-part="arm-right-edge" d="M718.6 938L715 1020.9L600 1024" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-right-sleeve" d="M720 906L715 1020.9L600 1024" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-right-cuff" d="M630 1023.2L610 1023.7" fill="none" stroke="#F3F2FF" stroke-width="60" stroke-linecap="butt"/>
+        <g data-part="hand-right" transform="translate(600 1024) rotate(178.5)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
                 <ellipse cx="24" cy="-24" rx="23" ry="11" fill="#D6283A" stroke="#B01022" stroke-width="3" stroke-opacity=".45" transform="rotate(-10 24 -24)"/>
                 <rect x="-8" y="-25" width="14" height="50" rx="7" fill="#B01022"/>
             </g></g>
     </g>
-        <circle cx="470" cy="904" r="28" fill="#FFFFFF"/><circle cx="730" cy="904" r="28" fill="#FFFFFF"/>
+        <circle cx="480" cy="906" r="36" fill="#FFFFFF"/><circle cx="720" cy="906" r="36" fill="#FFFFFF"/>
     </g>
 
     <g data-part="tank-1">

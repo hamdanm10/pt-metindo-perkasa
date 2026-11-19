@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Geometry of the artwork in components/landing/professor-scene.blade.php (the SVG's own units).
 const ARM = { upper: 115, fore: 115 };
-const SHOULDER = { left: [470, 904], right: [730, 904] };
+const SHOULDER = { left: [480, 906], right: [720, 906] };
 const LEVER = { x: 600, y: 1160, length: 136 };
 const LANE = { first: 250, second: 950 };
 const RACK = { up: 165, down: 1100 };
@@ -74,7 +74,7 @@ export const professor = () => {
             const along = (distance) => [wrist[0] - distance * Math.cos(fore), wrist[1] - distance * Math.sin(fore)];
             const path = (from) => `M${point(from)}L${point(elbow)}L${point(wrist)}`;
 
-            el[`arm-${side}-edge`].setAttribute('d', path([shoulder[0] + 26 * Math.cos(upper), shoulder[1] + 26 * Math.sin(upper)]));
+            el[`arm-${side}-edge`].setAttribute('d', path([shoulder[0] + 32 * Math.cos(upper), shoulder[1] + 32 * Math.sin(upper)]));
             el[`arm-${side}-sleeve`].setAttribute('d', path(shoulder));
             el[`arm-${side}-cuff`].setAttribute('d', `M${point(along(30))}L${point(along(10))}`);
             el[`hand-${side}`].setAttribute('transform', `translate(${point(wrist)}) rotate(${((fore * 180) / Math.PI).toFixed(2)})`);
