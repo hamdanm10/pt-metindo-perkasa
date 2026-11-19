@@ -11,6 +11,13 @@ return [
     'account_menu' => 'Account menu',
     'cancel' => 'Cancel',
     'close_notification' => 'Close notification',
+    'pagination' => [
+        'label' => 'Pagination',
+        'summary' => 'Showing :from to :to of :total results',
+        'previous' => 'Previous',
+        'next' => 'Next',
+        'page' => 'Go to page :page',
+    ],
     'lookup' => [
         'search' => 'Search…',
         'no_results' => 'No results.',

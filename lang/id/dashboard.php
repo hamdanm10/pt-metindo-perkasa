@@ -11,6 +11,13 @@ return [
     'cancel' => 'Batal',
     'close_notification' => 'Tutup notifikasi',
     'account_menu' => 'Menu akun',
+    'pagination' => [
+        'label' => 'Navigasi halaman',
+        'summary' => 'Menampilkan :from sampai :to dari :total hasil',
+        'previous' => 'Sebelumnya',
+        'next' => 'Berikutnya',
+        'page' => 'Ke halaman :page',
+    ],
     'lookup' => [
         'search' => 'Cari…',
         'no_results' => 'Tidak ada hasil.',
