@@ -6,7 +6,7 @@
                 <p data-anim="heading" class="mt-5 max-w-[54rem] text-[clamp(1rem,1.22vw,1.5rem)] text-muted">{{ __('home.articles.intro') }}</p>
             </div>
 
-            <div class="mt-[2.8vw] grid grid-cols-1 gap-x-[3.6vw] gap-y-10 md:grid-cols-3">
+            <div class="mt-[2.8vw] grid grid-cols-1 gap-x-[3.6vw] gap-y-10 md:grid-cols-2 lg:grid-cols-4">
                 @foreach ($articles as $article)
                     <article>
                         <a href="{{ route('landing.articles.show', ['article' => $article['slug']]) }}" class="group flex h-full flex-col focus-visible:outline-offset-4">

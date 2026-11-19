@@ -18,17 +18,20 @@ class ArticleController extends Controller
         abort_unless($articles->hasAny($locale), 404);
 
         $type = in_array($request->query('type'), ['article', 'news'], true) ? $request->query('type') : null;
+        $page = max(1, $request->integer('page', 1));
+        $paged = $articles->page($locale, $type, $page);
 
-        $all = $articles->list($locale);
+        // A page past the last one does not exist (page 1 always does, even when a filter matches nothing).
+        abort_if($page > $paged['last'], 404);
 
         return view('landing.pages.articles.index', [
-            'articles' => $articles->list($locale, $type),
+            'articles' => $paged['items'],
+            'page' => $page,
+            'lastPage' => $paged['last'],
             'type' => $type,
-            'counts' => [
-                'all' => count($all),
-                'article' => count(array_filter($all, fn (array $item): bool => $item['type'] === 'article')),
-                'news' => count(array_filter($all, fn (array $item): bool => $item['type'] === 'news')),
-            ],
+            'counts' => $articles->counts($locale),
+            // The canonical address of page 2 and later keeps its page; a filtered list points at the plain list.
+            'pageQuery' => $type === null && $page > 1 ? ['page' => $page] : [],
         ]);
     }
 

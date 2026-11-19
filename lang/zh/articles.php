@@ -11,6 +11,12 @@ return [
     'views' => ':count 次阅读',
     'sample' => '示例',
     'new' => '新',
+    'pagination' => [
+        'label' => '分页',
+        'previous' => '上一页',
+        'next' => '下一页',
+        'page' => '第 :number 页',
+    ],
     'latest' => '最新',
     'share' => [
         'title' => '分享',

@@ -11,6 +11,12 @@ return [
     'views' => ':count kali dibaca',
     'sample' => 'Contoh',
     'new' => 'Baru',
+    'pagination' => [
+        'label' => 'Navigasi halaman',
+        'previous' => 'Sebelumnya',
+        'next' => 'Berikutnya',
+        'page' => 'Halaman :number',
+    ],
     'latest' => 'Terbaru',
     'share' => [
         'title' => 'Bagikan',
