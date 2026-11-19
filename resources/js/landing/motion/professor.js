@@ -86,7 +86,7 @@ export const professor = () => {
         placeArm('right', SHOULDER.right, [LEVER.x + LEVER.length * Math.sin(angle), LEVER.y - LEVER.length * Math.cos(angle)], -1);
 
         // The other hand holds the clipboard and now and then writes on it.
-        const writing = [500 + Math.sin(time * 2.3) * 4, 1070 + Math.sin(time * 3.1) * 3];
+        const writing = [514 + Math.sin(time * 2.3) * 4, 1092 + Math.sin(time * 3.1) * 3];
         placeArm('left', SHOULDER.left, writing, 1);
         el.clipboard.setAttribute('transform', `translate(${writing[0].toFixed(1)} ${writing[1].toFixed(1)}) rotate(-8)`);
 

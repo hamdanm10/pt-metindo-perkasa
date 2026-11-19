@@ -71,17 +71,17 @@
             <circle cy="-136" r="21" fill="#6D5BD0"/>
             <circle r="24" fill="#6E78AE"/>
         </g>
-        <g data-part="clipboard" transform="translate(500 1070) rotate(-8)">
+        <g data-part="clipboard" transform="translate(514 1092) rotate(-8)">
             <rect x="-54" y="-120" width="104" height="146" rx="12" fill="#B6874C"/>
             <rect x="-44" y="-108" width="84" height="122" rx="6" fill="#FFFFFF"/>
             <rect x="-18" y="-124" width="32" height="20" rx="6" fill="#98A2C4"/>
             <path d="M-32-80h60M-32-60h60M-32-40h46M-32-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
         </g>
         <g data-part="arm-left">
-        <path data-part="arm-left-edge" d="M504 918L410.6 997.7L500 1070" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="butt" stroke-linejoin="round"/>
-        <path data-part="arm-left-sleeve" d="M504 918L410.6 997.7L500 1070" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
-        <path data-part="arm-left-cuff" d="M476.7 1051.1L492.2 1063.7" fill="none" stroke="#F3F2FF" stroke-width="60" stroke-linecap="butt"/>
-        <g data-part="hand-left" transform="translate(500 1070) rotate(39)"><g transform="translate(-14 0)">
+        <path data-part="arm-left-edge" d="M504 918L432.6 1010.8L514 1092" fill="none" stroke="#D5D8E8" stroke-width="64" stroke-linecap="butt" stroke-linejoin="round"/>
+        <path data-part="arm-left-sleeve" d="M504 918L432.6 1010.8L514 1092" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
+        <path data-part="arm-left-cuff" d="M492.8 1070.8L506.9 1084.9" fill="none" stroke="#F3F2FF" stroke-width="60" stroke-linecap="butt"/>
+        <g data-part="hand-left" transform="translate(514 1092) rotate(44.9)"><g transform="translate(-14 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
                 <ellipse cx="24" cy="-24" rx="23" ry="11" fill="#D6283A" stroke="#B01022" stroke-width="3" stroke-opacity=".45" transform="rotate(-10 24 -24)"/>
