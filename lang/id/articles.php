@@ -10,6 +10,7 @@ return [
     'minutes' => ':count menit baca',
     'views' => ':count kali dibaca',
     'sample' => 'Contoh',
+    'new' => 'Baru',
     'latest' => 'Terbaru',
     'share' => [
         'title' => 'Bagikan',

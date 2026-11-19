@@ -6,6 +6,8 @@
     $menu = array_values(array_filter($menu, fn (array $item): bool => $item['route'] !== 'landing.home'));
     $currentLocale = config('locales.locales.'.app()->getLocale());
     $link = 'header-link relative inline-flex items-center text-white';
+    // A red "New" badge beside the Articles & News item (it widens that item) while the newest article or news item is within two weeks.
+    $newArticles = app(\App\Services\Articles\LandingArticles::class)->hasNew(app()->getLocale());
 @endphp
 
 <header data-header class="sticky top-0 z-50 pointer-events-none text-white" style="--focus-ring: #ffffff">
@@ -23,7 +25,7 @@
                         <li>
                             <a href="{{ route($item['route']) }}"
                                @if (request()->routeIs($item['active'])) aria-current="page" @endif
-                               class="{{ $link }}"><span class="uline">{{ __($item['label']) }}</span></a>
+                               class="{{ $link }}"><span class="uline">{{ __($item['label']) }}</span>@if ($newArticles && $item['route'] === 'landing.articles.index')<span data-new-badge class="ms-2 inline-flex items-center rounded-full bg-brand-600 px-2 py-1 text-[0.65rem] font-extrabold uppercase leading-none tracking-wide text-white">{{ __('articles.new') }}</span>@endif</a>
                         </li>
                     @endforeach
                 </ul>
@@ -61,7 +63,7 @@
                 <ul class="border-b border-white/20">
                     @foreach ($menu as $item)
                         <li data-menu-item class="border-t border-white/20">
-                            <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="menu-link block px-4 py-3 text-2xl font-bold aria-[current=page]:text-brand-300">{{ __($item['label']) }}</a>
+                            <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="menu-link block px-4 py-3 text-2xl font-bold aria-[current=page]:text-brand-300">{{ __($item['label']) }}@if ($newArticles && $item['route'] === 'landing.articles.index')<span data-new-badge class="ms-3 inline-block -translate-y-1 rounded-full bg-brand-600 px-2 py-1 align-middle text-xs font-extrabold uppercase leading-none tracking-wide text-white">{{ __('articles.new') }}</span>@endif</a>
                         </li>
                     @endforeach
                 </ul>

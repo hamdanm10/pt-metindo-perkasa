@@ -61,6 +61,7 @@ class SampleArticles
                     'minutes' => ArticleBody::readingMinutes($body),
                     'views' => 0,
                     'sample' => true,
+                    'new' => false,
                 ],
                 'body_html' => $body,
             ];

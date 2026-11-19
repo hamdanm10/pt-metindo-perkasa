@@ -10,6 +10,8 @@ use App\Services\Articles\ArticleBody;
 use App\Services\Articles\LandingArticles;
 use App\Services\Articles\SampleArticles;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ArticlePagesTest extends TestCase
@@ -214,5 +216,120 @@ class ArticlePagesTest extends TestCase
         $this->assertMatchesRegularExpression('/<span class="mt-3 line-clamp-2 [^"]*font-black[^"]*\[overflow-wrap:anywhere\]/', $html);
         $this->assertMatchesRegularExpression('/<span class="mt-3 line-clamp-3 [^"]*\[overflow-wrap:anywhere\]/', $html);
         $this->assertDoesNotMatchRegularExpression('/line-clamp-\d [^"]*\bblock\b/', $html);
+    }
+
+    public function test_an_item_is_new_for_two_weeks_from_the_day_it_was_published(): void
+    {
+        Carbon::setTestNow('2026-11-19 15:30:00');
+
+        $this->assertTrue(LandingArticles::isNew('2026-11-19'));
+        $this->assertTrue(LandingArticles::isNew('2026-11-12'));
+        $this->assertTrue(LandingArticles::isNew('2026-11-05'));
+        $this->assertFalse(LandingArticles::isNew('2026-11-04'));
+        $this->assertFalse(LandingArticles::isNew('2026-10-01'));
+        $this->assertFalse(LandingArticles::isNew('2026-11-20'));
+        $this->assertFalse(LandingArticles::isNew(''));
+        $this->assertSame(14, LandingArticles::NEW_DAYS);
+    }
+
+    private function publish(string $locale, int $daysAgo, string $title = 'An article'): ArticleTranslation
+    {
+        config(['landing.sample_content' => false]);
+
+        $translation = ArticleTranslation::factory()->published($locale)->create([
+            'article_id' => Article::factory()->create()->id,
+            'title' => $title,
+            'published_at' => now()->subDays($daysAgo),
+        ]);
+        app(LandingArticles::class)->flush();
+
+        return $translation;
+    }
+
+    public function test_a_recent_item_puts_a_red_new_badge_on_the_menu_and_on_its_list_entries(): void
+    {
+        $this->publish('en', 3, 'Fresh one');
+        $this->publish('en', 10, 'Recent one');
+        $this->publish('en', 40, 'Old one');
+
+        $html = (string) $this->get('/en/articles')->assertOk()->getContent();
+
+        // One on the menu (and one in the phone menu), one on the big latest entry, one on the recent card; none on the old card.
+        $this->assertSame(1, substr_count($html, 'class="ms-2 inline-flex items-center rounded-full bg-brand-600'));
+        $this->assertSame(1, substr_count($html, 'class="ms-3 inline-block'));
+        // Beside the menu text, in the flow (it widens the item), not floating over it.
+        $this->assertStringNotContainsString('absolute -end-5', $html);
+        $this->assertSame(4, substr_count($html, 'data-new-badge'));
+        $this->assertStringContainsString('bg-brand-600 px-3 py-1', $html);
+        $this->assertStringContainsString(__('articles.new', [], 'en'), $html);
+
+        // The badge sits on the Articles & News item only.
+        $this->assertMatchesRegularExpression('/href="[^"]*\/en\/articles"[^>]*>\s*<span class="uline">Articles &amp; News<\/span><span data-new-badge/', $html);
+        $this->assertDoesNotMatchRegularExpression('/<span class="uline">(About Us|Processes|Services|Contact)<\/span><span data-new-badge/', $html);
+    }
+
+    public function test_the_card_of_an_older_item_has_no_badge(): void
+    {
+        $this->publish('en', 2, 'Newest');
+        $this->publish('en', 30, 'Month old');
+
+        $html = (string) $this->get('/en/articles')->assertOk()->getContent();
+        $grid = substr($html, (int) strpos($html, 'data-art-grid'));
+
+        $this->assertStringContainsString('Month old', $grid);
+        $this->assertStringNotContainsString('data-new-badge', $grid);
+    }
+
+    public function test_without_anything_recent_there_is_no_badge_anywhere(): void
+    {
+        $this->publish('en', 30, 'Old');
+
+        foreach (['/en', '/en/articles', '/en/about'] as $url) {
+            $this->assertStringNotContainsString('data-new-badge', (string) $this->get($url)->assertOk()->getContent(), $url);
+        }
+    }
+
+    public function test_the_badge_goes_away_by_itself_without_the_cache_being_cleared(): void
+    {
+        $this->publish('en', 10, 'Ten days old');
+
+        $this->assertStringContainsString('data-new-badge', (string) $this->get('/en/articles')->getContent());
+
+        // Nothing is edited, so the cached list stays as it is; only the day changes.
+        Carbon::setTestNow(now()->addDays(5));
+        $this->assertStringNotContainsString('data-new-badge', (string) $this->get('/en/articles')->getContent());
+        $this->assertFalse(app(LandingArticles::class)->hasNew('en'));
+    }
+
+    public function test_the_badge_follows_the_language_of_the_page(): void
+    {
+        $this->publish('id', 2, 'Artikel baru');
+
+        $id = (string) $this->get('/id/articles')->assertOk()->getContent();
+        $this->assertStringContainsString('data-new-badge', $id);
+        $this->assertStringContainsString('>'.__('articles.new', [], 'id').'<', $id);
+
+        // English has no published item, so nothing is new there.
+        $this->assertStringNotContainsString('data-new-badge', (string) $this->get('/en/articles')->getContent());
+    }
+
+    public function test_the_menu_badge_reads_only_the_cached_list_so_it_costs_no_extra_query_per_page(): void
+    {
+        $this->publish('en', 2);
+        app(LandingArticles::class)->hasNew('en');
+
+        DB::enableQueryLog();
+        app(LandingArticles::class)->hasNew('en');
+
+        $this->assertCount(0, DB::getQueryLog());
+    }
+
+    public function test_the_new_label_exists_in_every_landing_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->assertNotSame('articles.new', __('articles.new', [], $code), $code);
+        }
+
+        $this->assertSame('New', __('articles.new', [], 'en'));
     }
 }

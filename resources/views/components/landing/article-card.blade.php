@@ -6,7 +6,12 @@
         @if ($article['image'])
             <img src="{{ $article['image'] }}" alt="{{ $article['alt'] }}" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover transition-transform duration-700 [transition-timing-function:var(--header-ease)] group-hover:scale-105">
         @endif
-        <span class="absolute start-3 top-3 rounded-full bg-white px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-ink">{{ __("articles.tags.{$article['type']}") }}</span>
+        <span class="absolute start-3 top-3 flex items-center gap-2">
+            <span class="rounded-full bg-white px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-ink">{{ __("articles.tags.{$article['type']}") }}</span>
+            @if ($article['new'])
+                <span data-new-badge class="rounded-full bg-brand-600 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-white">{{ __('articles.new') }}</span>
+            @endif
+        </span>
         @if ($article['sample'])
             <span class="absolute end-3 top-3 rounded-full bg-ink/80 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-bold text-white">{{ __('articles.sample') }}</span>
         @endif

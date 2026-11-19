@@ -10,6 +10,7 @@ return [
     'minutes' => '読了目安 :count 分',
     'views' => ':count 回閲覧',
     'sample' => 'サンプル',
+    'new' => '新着',
     'latest' => '最新',
     'share' => [
         'title' => '共有',
