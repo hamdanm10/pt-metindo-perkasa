@@ -3,7 +3,6 @@
 @import './article-body.css';
 
 @source '../../storage/framework/views/*.php';
-@source '../../vendor/livewire/livewire/src/Features/SupportPagination/views/*.php';
 
 @layer base {
     h1,
