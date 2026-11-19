@@ -22,14 +22,14 @@
                 <p class="mt-6 max-w-xl text-lg text-muted sm:text-xl">{{ __('home.catalog.text') }}</p>
             </div>
 
-            {{-- Cascade: four landscape (4:3) cards of the same size, each shifted right and down, stacked by z-index. Decorative, the row below holds the real links. --}}
-            <div data-catalog-panel class="relative hidden aspect-square w-full justify-self-end lg:block lg:max-w-[min(100%,68svh)]" aria-hidden="true">
+            {{-- Cascade: four landscape (4:3) cards of the same size in a 4:3 panel, each shifted right and down by the same 8.67%, stacked by z-index. Decorative, the row below holds the real links. --}}
+            <div data-catalog-panel class="relative hidden aspect-[4/3] w-full justify-self-end lg:block lg:max-w-[min(100%,90svh)]" aria-hidden="true">
                 <div data-deck class="absolute inset-0 origin-bottom">
                     @foreach ($featured as $category)
                         @php
                             [$photo, $zoom] = $photos[$category['slug']] ?? ['service-electroplating', ''];
                         @endphp
-                        <article data-deck-card class="absolute aspect-[4/3] w-[74%]" style="inset-inline-start: {{ $loop->index * 8.67 }}%; top: {{ $loop->index * 14.8 }}%; z-index: {{ $count - $loop->index }}">
+                        <article data-deck-card class="absolute aspect-[4/3] w-[74%]" style="inset-inline-start: {{ $loop->index * 8.67 }}%; top: {{ $loop->index * 8.67 }}%; z-index: {{ $count - $loop->index }}">
                             <div data-deck-media class="{{ $tones[$loop->index] }} relative size-full overflow-hidden rounded-lg shadow-[0_18px_40px_-18px_rgba(27,31,59,0.55)]">
                                 <div class="{{ $zoom }} absolute inset-0">
                                     <x-landing.photo :name="'product-'.$category['slug']" :fallback="$photo" ratio="aspect-[4/3]" bare class="size-full bg-transparent! text-white!" />
