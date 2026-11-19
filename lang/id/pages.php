@@ -148,7 +148,6 @@ return [
         ],
         'others' => 'Layanan lain',
         'jump' => 'Lompat ke layanan',
-        'see_processes' => 'Lihat kategori proses',
         'title' => 'Layanan',
         'intro' => 'Seluruh layanan PT Metindo Perkasa, dari pelapisan hingga suplai.',
         'how' => [

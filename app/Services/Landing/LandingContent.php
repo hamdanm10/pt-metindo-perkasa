@@ -47,19 +47,19 @@ class LandingContent
      * `slug` is the address, and `photo` names the picture (`service-<photo>`). Electroplating and chemical
      * supply link on to the process categories.
      *
-     * @return list<array{slug: string, key: string, photo: string, processes: bool}>
+     * @return list<array{slug: string, key: string, photo: string}>
      */
     public function services(): array
     {
         return [
-            ['slug' => 'electroplating-service', 'key' => 'electroplating', 'photo' => 'electroplating', 'processes' => true],
-            ['slug' => 'chemical-supply', 'key' => 'chemical_supply', 'photo' => 'chemical-supply', 'processes' => true],
-            ['slug' => 'technical-consultation', 'key' => 'consultation', 'photo' => 'consultation', 'processes' => false],
+            ['slug' => 'electroplating-service', 'key' => 'electroplating', 'photo' => 'electroplating'],
+            ['slug' => 'chemical-supply', 'key' => 'chemical_supply', 'photo' => 'chemical-supply'],
+            ['slug' => 'technical-consultation', 'key' => 'consultation', 'photo' => 'consultation'],
         ];
     }
 
     /**
-     * @return array{slug: string, key: string, photo: string, processes: bool}|null
+     * @return array{slug: string, key: string, photo: string}|null
      */
     public function service(string $slug): ?array
     {

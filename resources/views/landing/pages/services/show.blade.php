@@ -49,9 +49,6 @@
                         @endif
                         <x-landing.button :href="route('landing.contact')" variant="outline">{{ __('pages.services.detail.contact') }}</x-landing.button>
                     </div>
-                    @if ($service['processes'])
-                        <a href="{{ route('landing.processes.index') }}" class="mt-6 inline-flex min-h-11 items-center font-bold"><span class="uline">{{ __('pages.services.see_processes') }}</span></a>
-                    @endif
                 </div>
             </div>
         </div>

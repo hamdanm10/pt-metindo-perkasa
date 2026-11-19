@@ -148,7 +148,6 @@ return [
         ],
         'others' => '其他服务',
         'jump' => '跳转到服务',
-        'see_processes' => '查看工艺类别',
         'title' => '服务',
         'intro' => 'PT Metindo Perkasa 提供的全部服务，从电镀到供应。',
         'how' => [
