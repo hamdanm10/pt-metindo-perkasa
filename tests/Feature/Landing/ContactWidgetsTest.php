@@ -100,6 +100,39 @@ class ContactWidgetsTest extends TestCase
         $this->assertStringNotContainsString('data-chat-form', $html);
     }
 
+    public function test_the_chat_shows_the_professor_beside_its_title_and_gives_the_script_the_avatar_for_each_reply(): void
+    {
+        $this->addTopic();
+        $html = (string) $this->get('/en')->getContent();
+        $avatar = asset('images/landing/professor-avatar.svg');
+
+        $this->assertFileExists(public_path('images/landing/professor-avatar.svg'));
+        $this->assertStringContainsString('<img src="'.$avatar.'" alt=""', $html);
+
+        // The image sits in the chat header, before the title.
+        $this->assertLessThan((int) strpos($html, 'id="chat-title"'), (int) strpos($html, $avatar));
+        $this->assertGreaterThan((int) strpos($html, 'data-panel="chat"'), (int) strpos($html, $avatar));
+
+        // The script builds the replies' avatars from the same file, passed in the rules.
+        $this->assertSame(1, preg_match('/data-chat-rules="([^"]*)"/', $html, $found));
+        $rules = json_decode(html_entity_decode($found[1] ?? ''), true);
+        $this->assertIsArray($rules);
+        $this->assertSame($avatar, $rules['avatar'] ?? null);
+
+        $script = (string) file_get_contents(resource_path('js/landing/contact-widgets.js'));
+        $this->assertStringContainsString('rules.avatar', $script);
+    }
+
+    public function test_the_avatar_is_a_small_self_contained_circle_svg(): void
+    {
+        $svg = (string) file_get_contents(public_path('images/landing/professor-avatar.svg'));
+
+        $this->assertLessThan(8 * 1024, strlen($svg));
+        $this->assertStringContainsString('clipPath', $svg);
+        $this->assertStringNotContainsString('<script', $svg);
+        $this->assertStringNotContainsString('href=', $svg);
+    }
+
     public function test_the_scrolling_lists_of_the_panels_are_left_to_the_browser_and_not_to_the_page_scroll(): void
     {
         $this->addAgents('Sales|6281200000001');
