@@ -6,11 +6,16 @@ namespace Tests\Feature\Landing;
 
 use App\Services\Articles\SampleArticles;
 use App\Services\Landing\LandingGallery;
+use App\Services\Services\DefaultServices;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class HomeTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,6 +27,9 @@ class HomeTest extends TestCase
             'landing.contact.email' => 'hello@example.test',
             'landing.contact.phone' => '+62 812 0000 0000',
         ]);
+
+        Storage::fake('public');
+        app(DefaultServices::class)->import();
     }
 
     public function test_home_shows_the_hero_heading_in_every_locale(): void
@@ -502,7 +510,7 @@ class HomeTest extends TestCase
 
         // The only aria-expanded is the mobile menu button: the chat and WhatsApp buttons are there only once the admin adds a question or a number. The services need none.
         $this->assertSame(1, substr_count((string) $response->getContent(), 'aria-expanded'));
-        $response->assertSee('images/landing/photos/service-chemical-supply.webp', false)->assertDontSee('[PHOTO] images/landing/photos/service-chemical-supply.webp');
+        $response->assertSee('/storage/services/', false)->assertDontSee('[PHOTO] images/landing/photos/service-chemical-supply');
     }
 
     public function test_every_service_has_a_full_description_in_every_language(): void

@@ -194,7 +194,7 @@ class ShellTest extends TestCase
 
         $long = str_repeat('Very long text ', 15);
         Product::factory()->create(['description' => $long]);
-        Service::factory()->create(['description' => $long]);
+        Service::factory()->create(['name' => $long]);
         Inquiry::factory()->create(['question' => $long]);
         ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id, 'title' => $long]);
         User::factory()->staff()->create(['name' => $long]);

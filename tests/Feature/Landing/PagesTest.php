@@ -7,7 +7,9 @@ namespace Tests\Feature\Landing;
 use App\Models\ArticleTranslation;
 use App\Models\WhatsappAgent;
 use App\Services\Landing\LandingContact;
+use App\Services\Services\DefaultServices;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PagesTest extends TestCase
@@ -28,6 +30,9 @@ class PagesTest extends TestCase
             'landing.contact.hours' => 'Mon-Fri',
         ]);
         WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000000']);
+
+        Storage::fake('public');
+        app(DefaultServices::class)->import();
     }
 
     public function test_every_inner_page_renders_in_every_locale(): void
@@ -339,16 +344,16 @@ class PagesTest extends TestCase
     {
         $html = (string) $this->get('/en/services')->getContent();
 
-        foreach ([['electroplating-service', 'electroplating'], ['chemical-supply', 'chemical-supply'], ['technical-consultation', 'consultation']] as [$slug, $photo]) {
+        foreach (['electroplating-service', 'chemical-supply', 'technical-consultation'] as $slug) {
             $this->assertStringContainsString('id="service-'.$slug.'"', $html);
             $this->assertStringContainsString('href="#service-'.$slug.'"', $html);
-            // The same illustrations as the services list on the home page.
-            $this->assertStringContainsString('images/landing/photos/service-'.$photo.'.webp', $html);
             // Each service links to its own page, once.
             $this->assertSame(1, substr_count($html, 'href="'.route('landing.services.show', ['locale' => 'en', 'service' => $slug]).'"'), $slug);
         }
 
         $this->assertSame(3, substr_count($html, 'data-svc-art '));
+        // The pictures are the ones the admin uploaded.
+        $this->assertSame(3, substr_count($html, '/storage/services/'));
         $this->assertSame(4, substr_count($html, 'data-svc-step '));
         $this->assertStringNotContainsString('What we do', $html);
 
@@ -363,13 +368,13 @@ class PagesTest extends TestCase
 
     public function test_every_service_has_a_detail_page(): void
     {
-        foreach ([['electroplating-service', 'electroplating', 'electroplating'], ['chemical-supply', 'chemical_supply', 'chemical-supply'], ['technical-consultation', 'consultation', 'consultation']] as [$slug, $key, $photo]) {
+        foreach ([['electroplating-service', 'electroplating'], ['chemical-supply', 'chemical_supply'], ['technical-consultation', 'consultation']] as [$slug, $key]) {
             $response = $this->get('/en/services/'.$slug)->assertOk()
                 ->assertSee(__("home.services.items.{$key}.title", [], 'en'))
                 ->assertSee(e(__("pages.services.detail.items.{$key}.summary", [], 'en')), false)
-                ->assertSee(e(__("pages.services.detail.items.{$key}.body", [], 'en')), false)
+                ->assertSee(e(__("home.services.items.{$key}.text", [], 'en')), false)
                 ->assertSee(e(__("pages.services.detail.items.{$key}.fit", [], 'en')), false)
-                ->assertSee('images/landing/photos/service-'.$photo.'.webp', false)
+                ->assertSee('/storage/services/', false)
                 ->assertSee('data-svc-step ', false)
                 ->assertSee('href="'.route('landing.contact', ['locale' => 'en']).'"', false)
                 ->assertSee('href="'.route('landing.services.index', ['locale' => 'en']).'"', false);
@@ -426,17 +431,18 @@ class PagesTest extends TestCase
             $response->assertSeeText(__('pages.services.detail.contact', [], $code), false);
 
             foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
+                $this->assertNotSame("home.services.items.{$service}.text", __("home.services.items.{$service}.text", [], $code));
                 $included = __("pages.services.detail.items.{$service}.included", [], $code);
 
                 $this->assertIsArray($included, "{$code} {$service}");
                 $this->assertCount(5, $included, "{$code} {$service}");
 
-                foreach (['summary', 'body', 'fit'] as $part) {
+                foreach (['summary', 'fit'] as $part) {
                     $this->assertNotSame("pages.services.detail.items.{$service}.{$part}", __("pages.services.detail.items.{$service}.{$part}", [], $code));
                 }
             }
 
-            $response->assertSee(e(__('pages.services.detail.items.electroplating.body', [], $code)), false);
+            $response->assertSee(e(__('home.services.items.electroplating.text', [], $code)), false);
         }
 
         $this->get('/ar/services/technical-consultation')->assertSee('dir="rtl"', false);

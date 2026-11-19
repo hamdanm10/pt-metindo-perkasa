@@ -20,7 +20,7 @@
                             <li>
                                 <a href="#service-{{ $service['slug'] }}" class="group inline-flex min-h-11 items-center gap-3 rounded-full border border-white/30 px-4 text-[clamp(0.85rem,0.95vw,1.2rem)] font-bold transition-colors duration-300 hover:border-white hover:bg-white hover:text-ink">
                                     <span class="text-[0.75em] text-brand-300 group-hover:text-brand-600" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                                    {{ __("home.services.items.{$service['key']}.title") }}
+                                    {{ $service['title'] }}
                                 </a>
                             </li>
                         @endforeach
@@ -37,8 +37,8 @@
             <div class="container-site section-y grid items-center gap-10 lg:grid-cols-2 lg:gap-[5vw]">
                 <div class="{{ $loop->even ? 'lg:order-2' : '' }}">
                     <p data-anim="heading" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-600">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }} / {{ $total }}</p>
-                    <h2 data-anim="grow" class="mt-[1.2vw] text-balance text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight max-lg:mt-3">{{ __("home.services.items.{$service['key']}.title") }}</h2>
-                    <p data-anim="heading" class="mt-[2vw] max-w-[30em] text-[clamp(1.05rem,1.4vw,1.75rem)] leading-[1.45] text-ink/75 max-lg:mt-5">{{ __("home.services.items.{$service['key']}.text") }}</p>
+                    <h2 data-anim="grow" class="mt-[1.2vw] text-balance text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight max-lg:mt-3">{{ $service['title'] }}</h2>
+                    <p data-anim="heading" class="mt-[2vw] max-w-[30em] text-[clamp(1.05rem,1.4vw,1.75rem)] leading-[1.45] text-ink/75 max-lg:mt-5">{{ $service['description'] ?? $service['summary'] }}</p>
                     <div data-anim="heading" class="mt-[2.4vw] flex flex-wrap items-center gap-x-6 gap-y-4 max-lg:mt-7">
                         <x-landing.button :href="route('landing.services.show', ['service' => $slug])">{{ __('home.services.more') }}</x-landing.button>
                     </div>
@@ -46,7 +46,7 @@
 
                 <div data-svc-art class="{{ $tones[$loop->index % count($tones)] }} {{ $loop->even ? 'lg:order-1' : '' }} relative aspect-[4/3] overflow-hidden rounded-lg" aria-hidden="true">
                     <div data-svc-art-inner class="absolute -inset-y-[9%] inset-x-0">
-                        <x-landing.photo :name="'service-'.$service['photo']" ratio="aspect-[4/3]" bare class="absolute inset-0 size-full items-center! justify-center! bg-transparent! text-center! text-white/80!" />
+                        <x-landing.service-image :service="$service" class="absolute inset-0 size-full items-center! justify-center! bg-transparent! text-center! text-white/80!" />
                     </div>
                 </div>
             </div>

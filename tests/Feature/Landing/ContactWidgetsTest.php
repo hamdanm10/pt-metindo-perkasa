@@ -71,7 +71,7 @@ class ContactWidgetsTest extends TestCase
         $this->addAgents('Sales|6281200000001;Support|6281200000002');
         $this->addTopic();
 
-        foreach (['/en', '/id/about', '/zh/processes', '/ar/services'] as $path) {
+        foreach (['/en', '/id/about', '/zh/processes', '/ar/contact'] as $path) {
             $this->get($path)->assertOk()
                 ->assertSee('data-widgets', false)
                 ->assertSee('data-widget-toggle="chat"', false)

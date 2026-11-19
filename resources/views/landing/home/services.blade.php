@@ -1,5 +1,4 @@
-@php($services = ['electroplating', 'chemical_supply', 'consultation'])
-
+@if ($services !== [])
 <section data-services class="bg-ink text-white" style="--focus-ring: #ffffff">
     <div class="container-site pb-10 pt-16 lg:pb-[4.5vw] lg:pt-[clamp(4rem,9vw,10rem)]">
         <h2 data-anim="heading" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase">{{ __('home.services.title') }}</h2>
@@ -12,17 +11,17 @@
             @foreach ($services as $service)
                 <div data-acc-item class="border-t border-white/20">
                     <h3 class="container-site flex min-h-20 items-center text-[clamp(1.5rem,2.11vw,3rem)] font-bold lg:h-[clamp(4.5rem,6.25vw,7rem)]">
-                        {{ __("home.services.items.{$service}.title") }}
+                        {{ $service['title'] }}
                     </h3>
                     <div data-acc-panel>
                         <div data-acc-inner class="container-site flex flex-col gap-8 pb-12 lg:flex-row lg:items-start lg:justify-between lg:pb-[3.5vw]">
                             <div class="max-w-[55rem] lg:w-[55%]">
-                                <p class="text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-white/90">{{ __("home.services.items.{$service}.text") }}</p>
-                                <x-landing.button :href="route('landing.services.index')" class="mt-8">{{ __('home.services.more') }}</x-landing.button>
+                                <p class="text-[clamp(1rem,1.22vw,1.5rem)] leading-snug text-white/90">{{ $service['description'] ?? $service['summary'] }}</p>
+                                <x-landing.button :href="route('landing.services.show', ['service' => $service['slug']])" class="mt-8">{{ __('home.services.more') }}</x-landing.button>
                             </div>
 
                             <div class="relative aspect-video w-full shrink-0 overflow-hidden rounded-lg bg-white/10 lg:w-[32%]" aria-hidden="true">
-                                <x-landing.photo :name="'service-'.str_replace('_', '-', $service)" ratio="aspect-video" bare class="absolute inset-0 size-full bg-transparent! text-white/80!" />
+                                <x-landing.service-image :service="$service" ratio="aspect-video" class="absolute inset-0 size-full bg-transparent! text-white/80!" />
                             </div>
                         </div>
                     </div>
@@ -31,3 +30,4 @@
         </div>
     </div>
 </section>
+@endif
