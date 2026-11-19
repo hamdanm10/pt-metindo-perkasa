@@ -18,7 +18,6 @@ class ContactPageTest extends TestCase
 
         config([
             'landing.contact.email' => 'hello@example.test',
-            'landing.contact.phone' => '+62 812 0000 0000',
             'landing.contact.address' => 'Test address 1',
             'landing.contact.hours' => 'Mon-Fri',
         ]);
@@ -38,20 +37,37 @@ class ContactPageTest extends TestCase
         $html = $this->page();
 
         $this->assertStringContainsString('data-contact-tiles', $html);
-        $this->assertStringContainsString('href="tel:+6281200000000"', $html);
+        $this->assertStringContainsString('href="tel:+6281200000001"', $html);
+        $this->assertStringContainsString('href="tel:+6281200000002"', $html);
         $this->assertStringContainsString('href="mailto:hello@example.test"', $html);
         $this->assertStringContainsString('google.com/maps/search/?api=1&query=Test%20address%201', $html);
         $this->assertStringContainsString('Mon-Fri', $html);
-        $this->assertSame(2, substr_count($html, 'data-copy-link='));
+        $this->assertSame(3, substr_count($html, 'data-copy-link='));
+        $this->assertStringContainsString('data-copy-link="+6281200000002"', $html);
         $this->assertStringContainsString('data-copy-link="hello@example.test"', $html);
     }
 
-    public function test_the_hero_offers_whatsapp_with_the_first_number_and_a_call_button(): void
+    public function test_the_hero_buttons_open_a_picker_with_every_number(): void
     {
         $html = $this->page();
 
-        $this->assertStringContainsString('href="https://wa.me/6281200000001"', $html);
-        $this->assertStringContainsString('href="tel:+6281200000000"', $html);
+        $this->assertSame(2, substr_count($html, 'data-number-picker='));
+        $this->assertSame(2, substr_count($html, 'data-number-dialog'));
+
+        foreach (['6281200000001', '6281200000002'] as $number) {
+            $this->assertStringContainsString('href="https://wa.me/'.$number.'?text=', $html);
+            $this->assertStringContainsString('href="tel:+'.$number.'"', $html);
+        }
+    }
+
+    public function test_a_single_number_makes_plain_links_without_a_picker(): void
+    {
+        WhatsappAgent::query()->where('number', '6281200000002')->firstOrFail()->delete();
+
+        $html = $this->page();
+
+        $this->assertStringNotContainsString('data-number-picker', $html);
+        $this->assertStringContainsString('href="https://wa.me/6281200000001?text=', $html);
     }
 
     public function test_the_required_contact_fields_have_a_red_asterisk(): void

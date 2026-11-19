@@ -5,12 +5,11 @@
 @section('content')
     @php
         $email = $contact['email'] ?? null;
-        $phone = $contact['phone'] ?? null;
-        $phoneLink = $phone ? preg_replace('/[^+\d]/', '', $phone) : null;
         $address = $contact['address'] ?? null;
         $hours = $contact['hours'] ?? null;
         $first = $agents[0] ?? null;
         $canSend = $first !== null || $email !== null;
+        $hasDetails = $contact !== [] || $agents !== [];
         $tile = 'contact-tile group relative flex min-h-[clamp(6.5rem,8vw,10rem)] flex-col justify-between overflow-hidden rounded-lg border border-ink/15 bg-white p-[clamp(1.1rem,1.6vw,2rem)] transition-colors duration-500 hover:border-ink hover:bg-ink hover:text-white focus-within:border-ink focus-within:bg-ink focus-within:text-white';
         $label = 'text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-600 transition-colors duration-500 group-hover:text-brand-300 group-focus-within:text-brand-300';
         $value = 'mt-3 block text-[clamp(1.15rem,1.7vw,2.1rem)] font-black leading-tight tracking-tight';
@@ -23,34 +22,30 @@
             <h1 data-anim="hero-title" class="max-w-[12em] text-balance text-[clamp(2.75rem,7.2vw,9rem)] font-black uppercase leading-[0.92] tracking-tight">{{ __('pages.contact.title') }}</h1>
             <div class="mt-[3vw] grid items-end gap-8 max-lg:mt-8 lg:grid-cols-[1fr_auto]">
                 <p data-anim="hero-item" class="max-w-[34em] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.4] text-white/85">{{ __('pages.contact.intro') }}</p>
-                @if ($contact)
+                @if ($agents)
                     <div data-anim="hero-item" class="flex flex-wrap gap-4">
-                        @isset($contact['whatsapp'])
-                            <x-landing.button :href="'https://wa.me/'.$contact['whatsapp']" target="_blank" rel="noopener noreferrer">{{ __('pages.contact.whatsapp') }}</x-landing.button>
-                        @endisset
-                        @if ($phoneLink)
-                            <x-landing.button :href="'tel:'.$phoneLink" variant="outline" :arrow="false">{{ __('pages.contact.call') }}</x-landing.button>
-                        @endif
+                        <x-landing.number-picker :agents="$agents" mode="whatsapp">{{ __('pages.contact.whatsapp') }}</x-landing.number-picker>
+                        <x-landing.number-picker :agents="$agents" mode="call" variant="outline" :arrow="false">{{ __('pages.contact.call') }}</x-landing.number-picker>
                     </div>
                 @endif
             </div>
         </div>
     </section>
 
-    @if ($contact)
+    @if ($hasDetails)
         <section class="bg-lavender text-ink">
             <div class="container-site section-y grid items-start gap-[2.5vw] max-lg:gap-10 lg:grid-cols-[5fr_7fr]">
                 {{-- The details, as tiles. The ones that can be used turn dark on hover, and the whole tile is the link. --}}
                 <ul data-contact-tiles class="grid gap-[1.2vw] max-lg:gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                    @if ($phone)
+                    @foreach ($agents as $agent)
                         <li class="{{ $tile }}">
                             <div>
-                                <p class="{{ $label }}">{{ __('pages.contact.phone') }}</p>
-                                <a href="tel:{{ $phoneLink }}" class="{{ $value }} before:absolute before:inset-0" dir="ltr">{{ $phone }}</a>
+                                <p class="{{ $label }}">{{ __('pages.contact.phone') }} · {{ $agent['name'] }}</p>
+                                <a href="tel:+{{ $agent['number'] }}" class="{{ $value }} before:absolute before:inset-0" dir="ltr">{{ $agent['display'] }}</a>
                             </div>
-                            <button type="button" data-copy-link="{{ $phone }}" data-copied="{{ __('pages.contact.copied') }}" class="{{ $copy }}"><span data-copy-label>{{ __('pages.contact.copy') }}</span></button>
+                            <button type="button" data-copy-link="{{ $agent['display'] }}" data-copied="{{ __('pages.contact.copied') }}" class="{{ $copy }}"><span data-copy-label>{{ __('pages.contact.copy') }}</span></button>
                         </li>
-                    @endif
+                    @endforeach
                     @if ($email)
                         <li class="{{ $tile }}">
                             <div>

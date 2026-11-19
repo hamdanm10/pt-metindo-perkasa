@@ -18,4 +18,9 @@ return [
         'chat' => 'チャット',
         'message' => 'PT Metindo Perkasa ご担当者様、御社のサービスについて質問があります。',
     ],
+    'call' => [
+        'title' => 'お電話ください',
+        'hint' => 'お電話する番号を選んでください。',
+        'action' => '電話',
+    ],
 ];

@@ -8,7 +8,7 @@ use App\Models\WhatsappAgent;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * The WhatsApp customer service numbers of the floating button, as the admin set them in the
+ * The customer service numbers of the landing (WhatsApp buttons and every phone line), as the admin set them in the
  * dashboard: active numbers only, in the admin's order. No numbers, no button. Cached and cleared
  * whenever a number changes (see `WhatsappAgent`).
  *
@@ -44,6 +44,12 @@ class LandingContact
     public function url(string $number): string
     {
         return 'https://wa.me/'.$number.'?text='.rawurlencode(__('chat.whatsapp.message'));
+    }
+
+    /** A call link for a number. */
+    public function tel(string $number): string
+    {
+        return 'tel:+'.$number;
     }
 
     private function display(string $number): string

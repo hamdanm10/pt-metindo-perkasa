@@ -4,7 +4,7 @@
     $offices = $content->locations();
     $contact = config('landing.contact');
     $email = $contact['email'] ?? null;
-    $phone = $contact['phone'] ?? null;
+    $phones = app(\App\Services\Landing\LandingContact::class)->agents();
     $address = $contact['address'] ?? null;
     $hours = $contact['hours'] ?? null;
     $heading = 'text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-300';
@@ -26,14 +26,17 @@
                 <x-landing.button :href="route('landing.contact')" class="mt-[1.7vw] max-lg:mt-6">{{ __('landing.talk') }}</x-landing.button>
             </div>
 
-            @if ($email || $phone)
+            @if ($email || $phones)
                 <ul class="space-y-[0.8vw] max-lg:space-y-3 lg:self-end">
                     @if ($email)
                         <li><a href="mailto:{{ $email }}" class="inline-flex text-[clamp(1.1rem,1.75vw,2.2rem)] font-bold leading-tight" dir="ltr"><span class="uline">{{ $email }}</span></a></li>
                     @endif
-                    @if ($phone)
-                        <li><a href="tel:{{ preg_replace('/[^+\d]/', '', $phone) }}" class="inline-flex text-[clamp(1.1rem,1.75vw,2.2rem)] font-bold leading-tight" dir="ltr"><span class="uline">{{ $phone }}</span></a></li>
-                    @endif
+                    @foreach ($phones as $phone)
+                        <li>
+                            <span class="{{ $label }} block">{{ $phone['name'] }}</span>
+                            <a href="tel:+{{ $phone['number'] }}" class="inline-flex text-[clamp(1.1rem,1.75vw,2.2rem)] font-bold leading-tight" dir="ltr"><span class="uline">{{ $phone['display'] }}</span></a>
+                        </li>
+                    @endforeach
                 </ul>
             @endif
         </div>

@@ -24,7 +24,6 @@ class PagesTest extends TestCase
 
         config([
             'landing.contact.email' => 'hello@example.test',
-            'landing.contact.phone' => '+62 812 0000 0000',
             'landing.contact.address' => 'Test address',
             'landing.contact.hours' => 'Mon-Fri',
         ]);
@@ -231,9 +230,9 @@ class PagesTest extends TestCase
             ->assertSee('Test address')
             ->assertSee('href="tel:+6281200000000"', false)
             ->assertSee('href="mailto:hello@example.test"', false)
-            ->assertSee('href="https://wa.me/6281200000000"', false);
+            ->assertSee('href="https://wa.me/6281200000000?text=', false);
 
-        config(['landing.contact' => ['email' => null, 'phone' => null, 'address' => null, 'hours' => null]]);
+        config(['landing.contact' => ['email' => null, 'address' => null, 'hours' => null]]);
         WhatsappAgent::query()->get()->each->delete();
 
         $this->get('/en/contact')

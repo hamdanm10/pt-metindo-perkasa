@@ -94,7 +94,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Sections that depend on these values are not rendered when they are empty.
-    | The WhatsApp customer service numbers are not here: the admin manages them in the dashboard.
+    | The phone and WhatsApp numbers are not here: the admin manages them in the dashboard.
     |
     */
 
@@ -102,7 +102,6 @@ return [
 
     'contact' => [
         'email' => env('LANDING_CONTACT_EMAIL'),
-        'phone' => env('LANDING_CONTACT_PHONE'),
         'address' => env('LANDING_CONTACT_ADDRESS'),
         'hours' => env('LANDING_CONTACT_HOURS'),
     ],

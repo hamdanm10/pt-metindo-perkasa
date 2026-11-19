@@ -13,7 +13,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum data anak pe
 | 3 | **Mode konten contoh dihapus** (`landing.sample_content`, `LANDING_SAMPLE_CONTENT`, `SampleArticles`, kotak placeholder foto, dan catatan "sample"). Landing hanya menampilkan data asli: artikel, layanan, dan nomor WhatsApp dari dashboard, serta logo dan foto dari berkas. Bagian tanpa data tidak tampil | Konten contoh tidak boleh ikut rilis, jadi tidak perlu penanda |
 | 4 | Sertifikasi (ISO 9001 dan ISO 14001) **tidak ditampilkan** | Di prototipe tampak contoh dan belum terverifikasi. Klaim sertifikasi tidak boleh dikarang |
 | 5 | Anak perusahaan (enam kota, tautan Google Maps) dibaca dari `config/landing.php` (`subsidiaries`) dan tampil di About, Contact, dan footer. **Datanya masih dari prototipe dan belum dikonfirmasi**; ganti atau kosongkan sebelum rilis | Pengelolaan dari admin belum ada |
-| 6 | Contact hanya menampilkan data yang diisi di konfigurasi: alamat, telepon, email, jam kerja, WhatsApp. Tanpa formulir pesan | Formulir dikerjakan di L5. Tidak ada kontrol yang tidak berfungsi |
+| 6 | Contact hanya menampilkan data yang diisi di konfigurasi: alamat, email, dan jam kerja dari konfigurasi, serta telepon dan WhatsApp dari nomor aktif di dashboard admin (semuanya tampil). Tanpa formulir pesan | Formulir dikerjakan di L5. Tidak ada kontrol yang tidak berfungsi |
 | 7 | Menu: Home, About Us, Processes, Services, Articles & News (hanya di bahasa yang punya artikel terbit), Contact. Footer memakai daftar yang sama | Semua tujuan sekarang ada |
 | 8 | Filter artikel "All / Article / News" lewat parameter `?type=` di URL, tanpa JavaScript | Berfungsi, bisa dibagikan, dan tetap terbaca mesin pencari |
 | 9 | Data kategori dengan nama prosesnya di `config/landing.php`. **Artikel sudah dari database** (A2): [`../../roles/admin/articles/overview.md`](../../roles/admin/articles/overview.md). `lang/<locale>/articles.php` hanya memuat label jenis artikel | Satu sumber per jenis data sampai L4. Tiga artikel di `lang/*/home.php` dipindah ke sini |
@@ -36,7 +36,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum data anak pe
 | Detail layanan | `/{locale}/services/{slug}` | Slug dari database (diisi admin di dashboard). Kepala dengan jejak remah "Services / Service detail", ringkasan, deskripsi, daftar "What's included", "Good fit for" (bagian yang kosong tidak tampil), gambar layanan, kartu "Talk to our team" (tombol WhatsApp dari nomor aktif pertama yang dikelola admin, tersembunyi bila tidak ada nomor, dan tombol Contact us), "How we work", kartu layanan lain (judul, ringkasan, Learn more), dan ajakan. Slug tidak dikenal atau layanan nonaktif menghasilkan 404, dan bagian "layanan lain" tidak tampil bila hanya ada satu layanan. Teks layanan dari database per bahasa dengan cadangan `en`. Label tetap (judul bagian, tombol) di `lang/<locale>/pages.php` (`services.detail`), lima bahasa |
 | Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu: satu artikel terbaru besar, kartu untuk sisanya, dan filter jenis dengan jumlah. 404 bila bahasa itu belum punya artikel terbit |
 | Artikel | `/{locale}/articles/{slug}` | **Halaman baca ala Medium** (kolom 680 px): judul, jenis, tanggal, waktu baca, gambar, isi, tombol bagikan, jumlah view (mulai 10), dan artikel terkait |
-| Contact | `/{locale}/contact` | Kartu data kontak yang dikonfigurasi (telepon, email, alamat, jam) dengan tombol salin, tombol WhatsApp dan telepon, **formulir pesan yang membuka WhatsApp atau email dengan pesan sudah tertulis** (situs tidak menyimpan apa pun), dan peta lokasi (dari config). Lihat [`../ui/design.md`](../ui/design.md), bagian Contact |
+| Contact | `/{locale}/contact` | Kartu data kontak (satu kartu telepon per nomor admin, email, alamat, jam) dengan tombol salin, tombol WhatsApp dan telepon, **formulir pesan yang membuka WhatsApp atau email dengan pesan sudah tertulis** (situs tidak menyimpan apa pun), dan peta lokasi (dari config). Lihat [`../ui/design.md`](../ui/design.md), bagian Contact |
 
 Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bila perlu) dan diakhiri ajakan menghubungi yang sama seperti beranda. Tautan kategori, layanan, dan artikel di beranda diaktifkan di fase ini.
 
@@ -49,7 +49,7 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 - Anak perusahaan: pin dan kartu dirender dari config di About dan Contact.
 - Bahasa tanpa artikel terbit: route artikel 404, serta tautan menu dan bagian beranda hilang (A2).
 - Tautan Google Maps dibuat dari data anak perusahaan, dibuka dengan `rel="noopener noreferrer"` dan jelas ditandai sebagai tautan luar.
-- Tombol WhatsApp memakai `https://wa.me/<nomor>` dari konfigurasi dan hanya dirender bila nomor diisi.
+- Tombol WhatsApp dan Call memakai semua nomor aktif dari dashboard admin (`wa.me/<nomor>` dan `tel:+<nomor>`) lewat pemilih nomor ([`../whatsapp/overview.md`](../whatsapp/overview.md)), dan hanya dirender bila ada nomor aktif.
 - Setiap halaman menyetel judul `<title>` per halaman dan `hreflang` serta `canonical` seperti kerangka. Deskripsi meta menyusul di L6.
 - Properti logis dan uji RTL berlaku seperti sebelumnya. Teks panjang (Indonesia, Arab) diuji di tiap komposisi.
 
