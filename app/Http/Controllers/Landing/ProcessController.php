@@ -26,8 +26,12 @@ class ProcessController extends Controller
             fn (array $item): bool => $item['slug'] !== $current['slug'],
         ));
 
+        $position = array_search($current['slug'], array_column($content->categories(), 'slug'), true);
+
         return view('landing.pages.processes.show', [
             'category' => $current,
+            'position' => (int) $position + 1,
+            'total' => count($content->categories()),
             'processes' => $content->processes($current),
             'others' => $others,
         ]);
