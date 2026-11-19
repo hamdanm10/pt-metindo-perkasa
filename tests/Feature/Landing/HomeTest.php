@@ -526,6 +526,16 @@ class HomeTest extends TestCase
             ->assertDontSee('Oil &amp; Gas', false);
     }
 
+    public function test_the_clients_section_shows_a_client_and_a_partner_testimonial_with_a_logo(): void
+    {
+        $response = $this->get('/en')->assertOk();
+
+        $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-testimonial'));
+        $response->assertSee('Sample Customer')
+            ->assertSee('Sample Partner')
+            ->assertSee('images/landing/clients/client-3.png', false);
+    }
+
     public function test_clients_section_falls_back_to_partner_names_and_leaves_out_an_empty_clients_slide(): void
     {
         $empty = sys_get_temp_dir().'/landing-logos-'.uniqid();
