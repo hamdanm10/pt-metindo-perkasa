@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div data-anim="hero-item" data-hero-panel class="relative aspect-[1200/1410] w-full max-w-[40rem] justify-self-center lg:-me-[3vw] lg:w-auto lg:max-h-[calc(100svh-var(--header-h)-2rem)] lg:max-w-none lg:justify-self-stretch" aria-hidden="true">
+        <div data-anim="hero-item" data-hero-panel class="relative aspect-[1200/1410] w-full max-w-[40rem] justify-self-center lg:w-[min(100%,calc((100svh_-_var(--header-h)_-_2rem)_*_0.851))] lg:max-w-none lg:justify-self-end" aria-hidden="true">
             <x-landing.professor-scene class="size-full" />
         </div>
     </div>
