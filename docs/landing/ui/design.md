@@ -149,6 +149,15 @@ Disamakan dengan footer referensi, **tanpa marquee logo mitra** dan **tanpa form
 
 Halaman dalam memakai kepala halaman `ink` dengan judul kapital besar (seragam dengan header), lalu isi terang. Kontras diperiksa: teks putih di atas krimson 4,97, di atas `ink` 16:1. Angka krimson di atas `ink` hanya untuk teks besar, dan memakai `brand-400` bila kecil.
 
+## Ornamen beranda
+
+Client ingin beranda lebih ramai. Ornamennya **tidak memakai bentuk baru yang asing**, tetapi melanjutkan bahasa grafik judul About (`x-landing.about-art`): kotak bersudut 8 px berwarna datar dari token (ink, indigo, biru, krimson, `brand-300`, lavender). Semuanya dekoratif (`aria-hidden`), tanpa teks baru, dan berada **di dalam alur tata letak** (bukan melayang di atas konten), jadi tidak menutupi teks atau tombol. Saat ini hanya di satu tempat di beranda (bagian Video); bila disetujui, diterapkan ke bagian dan halaman landing lain.
+
+- **Chip** (`x-landing.chip kind=... [dark]`): `bands` (tiga pita bersambung seperti judul About), `chart` (grafik bertangga), `hexagons` (deretan heksagon), `pills` (tiga batang seperti meter), `grid` (kotak 3x3 warna merek), `rings` (seperempat lingkaran berlapis, seperti potongan lapisan plating), `stripes` (garis miring krimson). Ukuran dari kelas; gambar dipotong (`xMidYMid slice`), tidak pernah ditarik. Varian `dark` untuk section `ink` tidak memakai warna `ink`.
+- **Kolase chip** dua baris (tinggi baris `clamp(2.5rem, 3.6vw, 4.5rem)`, jarak 0,75 rem; chip `bands`, `chart`, `hexagons`, `rings`) hanya di **bawah teks bagian Video ("See how we work")**. Kolase di Catalog, Services, Articles, dan About sempat dibuat lalu **dihapus atas permintaan client**; bagian itu kembali seperti semula. Jenis chip lain (`pills`, `grid`, `stripes`) masih ada di komponen untuk dipakai nanti.
+- **Tanpa pita teks berjalan** (marquee) di beranda: pita krimson di bawah hero dan pita `ink` di bawah Articles sempat dibuat, lalu **dihapus atas permintaan client**, begitu pula komponennya. Hero tetap tanpa pita.
+- Gerak dan batasannya di [`motion.md`](motion.md).
+
 ## Halaman galat
 
 Halaman galat 403, 404, 419, 429, 500, dan 503 memakai satu komponen (`components/error-page`) dan view tipis di `resources/views/errors/`. Area dan bahasa dibaca dari URL oleh `App\Services\Errors\ErrorContext`, karena 404 tidak melewati middleware locale.

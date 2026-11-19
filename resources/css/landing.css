@@ -893,3 +893,48 @@ html[dir='rtl'] .field__control::after {
         transition: none;
     }
 }
+
+/* Ornaments on the home page: the chips (x-landing.chip). Transform only; still with reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+    .chip-slide-bands {
+        animation: chip-bands 14s linear infinite;
+    }
+
+    .chip-slide-hex {
+        animation: chip-hex 6s linear infinite;
+    }
+
+    .chip-slide-stripes {
+        animation: chip-stripes 2.4s linear infinite;
+    }
+
+    .chip-pill {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: chip-pill 3.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes chip-bands {
+        to {
+            transform: translateX(481px);
+        }
+    }
+
+    @keyframes chip-hex {
+        to {
+            transform: translateX(120px);
+        }
+    }
+
+    @keyframes chip-stripes {
+        to {
+            transform: translateX(48px);
+        }
+    }
+
+    @keyframes chip-pill {
+        to {
+            transform: scaleX(0.62);
+        }
+    }
+}
