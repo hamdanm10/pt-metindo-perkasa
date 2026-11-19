@@ -5,6 +5,7 @@
         'welcome' => __('chat.chat.welcome'),
         'again' => __('chat.chat.again'),
         'topics' => $topics,
+        'avatar' => asset('images/landing/professor-avatar.svg'),
     ];
     // Each panel opens right above its own button: its right edge lines up with the button's. On small screens it spans above both.
     $panel = 'absolute bottom-full end-0 mb-3 origin-bottom-right overflow-hidden rounded-lg bg-white text-ink shadow-[0_20px_60px_-15px_rgba(27,31,59,0.45)] ring-1 ring-ink/10 max-sm:fixed max-sm:bottom-[5.5rem] max-sm:end-4 max-sm:mb-0';
@@ -20,9 +21,12 @@
     <div class="relative">
     <section id="chat-panel" data-panel="chat" hidden role="dialog" aria-labelledby="chat-title" class="{{ $panel }} flex h-[28rem] max-h-[calc(100dvh-9rem)] w-[min(22rem,calc(100vw-2rem))] flex-col">
         <div class="flex items-start justify-between gap-3 bg-brand-600 px-4 py-3 text-white" style="--focus-ring: #ffffff">
-            <div class="min-w-0">
-                <h2 id="chat-title" class="text-base font-bold">{{ __('chat.chat.title') }}</h2>
-                <p class="mt-0.5 text-xs text-white/85">{{ __('chat.chat.subtitle') }}</p>
+            <div class="flex min-w-0 items-center gap-3">
+                <img src="{{ $rules['avatar'] }}" alt="" width="44" height="44" decoding="async" class="size-11 shrink-0 rounded-full ring-2 ring-white/80">
+                <div class="min-w-0">
+                    <h2 id="chat-title" class="text-base font-bold">{{ __('chat.chat.title') }}</h2>
+                    <p class="mt-0.5 text-xs text-white/85">{{ __('chat.chat.subtitle') }}</p>
+                </div>
             </div>
             <button type="button" data-widget-close aria-label="{{ __('chat.close') }}" class="grid size-8 shrink-0 place-items-center rounded-lg hover:bg-white/20">
                 <svg viewBox="0 0 20 20" class="size-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg>

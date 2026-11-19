@@ -108,6 +108,7 @@ function initChat() {
     }
 
     const topics = Array.isArray(rules.topics) ? rules.topics : [];
+    const avatarUrl = typeof rules.avatar === 'string' && /^(https?:\/\/|\/(?!\/))/i.test(rules.avatar) ? rules.avatar : '';
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let options = null;
 
@@ -121,23 +122,45 @@ function initChat() {
         }
     };
 
+    /** The professor's face beside each of the assistant's messages. Only this site's own avatar file is used. */
+    const avatar = () => {
+        const image = document.createElement('img');
+
+        image.src = avatarUrl;
+        image.alt = '';
+        image.width = 32;
+        image.height = 32;
+        image.decoding = 'async';
+        image.className = 'size-8 shrink-0 rounded-full ring-1 ring-ink/15';
+
+        return image;
+    };
+
     const bubble = (from) => {
         const row = document.createElement('div');
+        const column = document.createElement('div');
         const body = document.createElement('div');
 
-        row.className = from === 'user' ? 'flex max-w-[88%] flex-col items-end self-end' : 'flex max-w-[88%] flex-col items-start self-start';
+        column.className = from === 'user' ? 'flex min-w-0 flex-col items-end' : 'flex min-w-0 flex-col items-start';
+        row.className = from === 'user' ? 'flex max-w-[88%] self-end' : 'flex max-w-[92%] items-start gap-2 self-start';
         body.className = from === 'user'
             ? 'whitespace-pre-line rounded-2xl rounded-ee-sm bg-ink px-3.5 py-2 text-sm text-white'
             : 'whitespace-pre-line rounded-2xl rounded-es-sm bg-white px-3.5 py-2 text-sm text-ink shadow-sm';
-        row.append(body);
+        column.append(body);
+
+        if (from !== 'user' && avatarUrl) {
+            row.append(avatar());
+        }
+
+        row.append(column);
         log.append(row);
         enter(row);
 
-        return { row, body };
+        return { row, column, body };
     };
 
     const say = (from, text, link = null) => {
-        const { row, body } = bubble(from);
+        const { row, column, body } = bubble(from);
 
         body.textContent = text;
 
@@ -148,7 +171,7 @@ function initChat() {
             anchor.href = link.url;
             anchor.textContent = `${link.label} →`;
             anchor.className = 'mt-1.5 inline-block text-xs font-bold text-brand-700 underline underline-offset-2';
-            row.append(anchor);
+            column.append(anchor);
         }
 
         scroll();
