@@ -80,14 +80,11 @@
             <path d="M18-80h60M18-60h60M18-40h46M18-20h56" stroke="#B5B0F2" stroke-width="6" stroke-linecap="round"/>
         </g>
         <g data-part="arm-left" transform="translate(462 890) rotate(151.5)">
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#DAD7F5"/>
-        <path d="M-6 20Q-26 16-28 0M6 28L140 22" fill="none" stroke="#C7C3EC" stroke-width="7" stroke-linecap="round"/>
-        <path d="M2-26L134-20" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M110-12Q120 0 110 12" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linecap="round"/>
         <g data-part="fore-left" transform="translate(140 0) rotate(-122.3)">
-            <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#DAD7F5"/>
-            <path d="M4-20L120-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".7"/>
-            <path d="M-6 22L120 18" fill="none" stroke="#C7C3EC" stroke-width="6" stroke-linecap="round"/>
-            <rect x="116" y="-26" width="24" height="52" rx="10" fill="#D9DCE8"/>
+            <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
+            <rect x="116" y="-26" width="24" height="52" rx="10" fill="#F3F2FF" stroke="#CDD0E2" stroke-width="3"/>
             <g transform="translate(136 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
@@ -97,14 +94,11 @@
         </g>
     </g>
         <g data-part="arm-right" transform="translate(738 890) rotate(85.1)">
-        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#DAD7F5"/>
-        <path d="M-6 20Q-26 16-28 0M6 28L140 22" fill="none" stroke="#C7C3EC" stroke-width="7" stroke-linecap="round"/>
-        <path d="M2-26L134-20" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+        <path d="M0-32L140-24A24 24 0 0 1 140 24L0 32A32 32 0 0 1 0-32Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M110-12Q120 0 110 12" fill="none" stroke="#CDD0E2" stroke-width="4" stroke-linecap="round"/>
         <g data-part="fore-right" transform="translate(140 0) rotate(-263)">
-            <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#DAD7F5"/>
-            <path d="M4-20L120-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".7"/>
-            <path d="M-6 22L120 18" fill="none" stroke="#C7C3EC" stroke-width="6" stroke-linecap="round"/>
-            <rect x="116" y="-26" width="24" height="52" rx="10" fill="#D9DCE8"/>
+            <path d="M0-26L124-20V20L0 26A26 26 0 0 1 0-26Z" fill="#FFFFFF" stroke="#CDD0E2" stroke-width="4" stroke-linejoin="round"/>
+            <rect x="116" y="-26" width="24" height="52" rx="10" fill="#F3F2FF" stroke="#CDD0E2" stroke-width="3"/>
             <g transform="translate(136 0)">
                 <path d="M0-23C28-30 58-29 70-14 78-4 78 8 70 16 58 31 28 30 0 23Z" fill="#D6283A"/>
                 <path d="M46-17Q60-13 70-7M42-2Q58 2 74 0M44 13Q58 16 68 12" fill="none" stroke="#B01022" stroke-width="4" stroke-linecap="round" opacity=".55"/>
