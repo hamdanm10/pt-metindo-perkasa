@@ -59,7 +59,7 @@
                                 <span>{{ $viewsLabel }}</span>
                             @endif
                         </span>
-                        <span class="mt-[1.4vw] block text-balance [overflow-wrap:anywhere] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
+                        <span class="mt-[1.4vw] line-clamp-3 text-balance pb-[0.1em] [overflow-wrap:anywhere] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
                         @if ($featured['excerpt'] !== '')
                             <span class="mt-[1.2vw] block max-w-[32em] [overflow-wrap:anywhere] text-[clamp(1rem,1.25vw,1.55rem)] leading-snug text-ink/75 max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif>{{ $featured['excerpt'] }}</span>
                         @endif

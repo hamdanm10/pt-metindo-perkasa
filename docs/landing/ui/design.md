@@ -68,7 +68,7 @@ Gambar artikel yang dipasang: `public/images/landing/articles/sample-business.we
 
 **Daftar** (`/{locale}/articles`):
 - **Pembuka** (`ink`): judul kapital besar (huruf tumbuh), pengantar, dan **filter** berbentuk pil (All, Article, News) dengan **jumlah** di tiap pil.
-- **Artikel terbaru besar** (lavender): gambar 16:10 di kiri (7 bagian) dan di kanan penanda "Latest", jenis, tanggal (diformat sesuai bahasa), waktu baca, judul besar (3,3vw, `title-hover`), ringkasan, dan "Read →". **Saat hover** gambar membesar 1,05 kali (1 detik) dan panah bergeser.
+- **Artikel terbaru besar** (lavender): gambar 16:10 di kiri (7 bagian) dan di kanan penanda "Latest", jenis, tanggal (diformat sesuai bahasa), waktu baca, judul besar (3,3vw, `title-hover`, **dipotong setelah 3 baris** dengan "…" lewat `line-clamp-3`, tanpa kelas `block` karena akan membatalkannya), ringkasan, dan "Read →". **Saat hover** gambar membesar 1,05 kali (1 detik) dan panah bergeser.
 - **Kartu sisanya** dalam kisi tiga kolom (dua di tablet, satu di ponsel): gambar 16:10 dengan penanda jenis (putih) dan "Sample", tanggal dan waktu baca, judul 900, ringkasan (maksimum tiga baris), dan "Read →". Hover: gambar membesar, judul bergaris sorot.
 
 **Halaman baca** (`/{locale}/articles/{slug}`), **mengikuti kenyamanan baca Medium**:

@@ -156,7 +156,7 @@ class ArticlePagesTest extends TestCase
             ->assertSee('text-ink/65 [overflow-wrap:anywhere]', false);
 
         $list = (string) $this->get('/en/articles')->assertOk()->getContent();
-        $this->assertStringContainsString('block text-balance [overflow-wrap:anywhere]', $list);
+        $this->assertStringContainsString('text-balance pb-[0.1em] [overflow-wrap:anywhere]', $list);
 
         $this->assertMatchesRegularExpression('/\.article-body\s*\{\s*overflow-wrap: anywhere;/', (string) file_get_contents(resource_path('css/article-body.css')));
     }
@@ -174,6 +174,26 @@ class ArticlePagesTest extends TestCase
         $this->get('/en')->assertOk()
             ->assertSee('<h3 class="mt-4 line-clamp-2 ', false)
             ->assertSee('[overflow-wrap:anywhere]', false);
+    }
+
+    public function test_the_latest_article_cuts_a_long_title_after_three_lines_without_a_block_class_that_would_undo_it(): void
+    {
+        config(['landing.sample_content' => false]);
+        ArticleTranslation::factory()->published()->create([
+            'article_id' => Article::factory()->create()->id,
+            'slug' => 'a-very-long-latest-title',
+            'title' => str_repeat('A very long latest title ', 9),
+        ]);
+        app(LandingArticles::class)->flush();
+
+        $html = (string) $this->get('/en/articles')->assertOk()->getContent();
+        $start = (int) strpos($html, 'data-art-featured');
+        $featured = substr($html, $start, (int) strpos($html, '</a>', $start) - $start);
+
+        // The big title carries the clamp, and no `block` class sits beside it to turn the clamp off.
+        $this->assertMatchesRegularExpression('/<span class="[^"]*\bline-clamp-3\b[^"]*\[overflow-wrap:anywhere\][^"]*font-black/', $featured);
+        $this->assertDoesNotMatchRegularExpression('/<span class="[^"]*\bline-clamp-3\b[^"]*\bblock\b/', $featured);
+        $this->assertDoesNotMatchRegularExpression('/<span class="[^"]*\bblock\b[^"]*\bline-clamp-3\b/', $featured);
     }
 
     public function test_the_card_cuts_a_long_title_after_two_lines_and_the_summary_after_three_without_a_block_class_that_would_undo_it(): void
