@@ -28,7 +28,7 @@
                     <p data-anim="heading">{{ __('pages.about.approach.first') }}</p>
                     <p data-anim="heading" class="text-ink/75">{{ __('pages.about.approach.second') }}</p>
                 </div>
-                <x-landing.photo name="about-company" ratio="aspect-[16/10]" class="mt-[3vw] rounded-lg max-lg:mt-8" />
+                <x-landing.photo name="about-company" fallback="gallery-teamwork" ratio="aspect-[16/10]" class="mt-[3vw] rounded-lg max-lg:mt-8" />
             </div>
         </div>
     </section>
@@ -56,7 +56,7 @@
     {{-- Facilities --}}
     <section class="bg-white text-ink">
         <div class="container-site section-y grid items-center gap-10 lg:grid-cols-[7fr_5fr] lg:gap-[5vw]">
-            <x-landing.photo name="about-facilities" ratio="aspect-video" class="rounded-lg max-lg:order-2" />
+            <x-landing.photo name="about-facilities" fallback="service-electroplating" ratio="aspect-video" class="rounded-lg max-lg:order-2" />
             <div>
                 <h2 data-anim="grow" class="text-balance text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.about.facilities.title') }}</h2>
                 <p data-anim="heading" class="mt-[2vw] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.45] text-ink/75 max-lg:mt-6">{{ __('pages.about.facilities.text') }}</p>
