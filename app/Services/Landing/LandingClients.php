@@ -7,8 +7,7 @@ namespace App\Services\Landing;
 /**
  * The two slides of the clients section: clients and partners. Logos come from
  * public/images/landing/clients and public/images/landing/partners. Partners fall back to the
- * names in config, and clients to labelled placeholders in sample mode. A slide with nothing to
- * show is left out.
+ * names in config. A slide with nothing to show is left out.
  *
  * @phpstan-type Item array{src: string|null, name: string}
  * @phpstan-type Slide array{key: string, label: string, items: list<Item>}
@@ -26,10 +25,6 @@ class LandingClients
     public function slides(): array
     {
         $clients = $this->logos('clients');
-
-        if ($clients === [] && config()->boolean('landing.sample_content')) {
-            $clients = array_fill(0, self::PER_SLIDE, ['src' => null, 'name' => 'Logo']);
-        }
 
         $partners = $this->logos('partners');
 

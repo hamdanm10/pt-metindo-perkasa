@@ -9,7 +9,6 @@ return [
     ],
     'minutes' => '阅读约 :count 分钟',
     'views' => ':count 次阅读',
-    'sample' => '示例',
     'new' => '新',
     'pagination' => [
         'label' => '分页',

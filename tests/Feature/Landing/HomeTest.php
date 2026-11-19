@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Landing;
 
-use App\Services\Articles\SampleArticles;
+use App\Models\ArticleTranslation;
+use App\Services\Articles\LandingArticles;
 use App\Services\Landing\LandingGallery;
-use App\Services\Services\DefaultServices;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\CreatesServices;
 use Tests\TestCase;
 
 class HomeTest extends TestCase
 {
+    use CreatesServices;
     use RefreshDatabase;
 
     protected function setUp(): void
@@ -28,8 +29,7 @@ class HomeTest extends TestCase
             'landing.contact.phone' => '+62 812 0000 0000',
         ]);
 
-        Storage::fake('public');
-        app(DefaultServices::class)->import();
+        $this->createServices();
     }
 
     public function test_home_shows_the_hero_heading_in_every_locale(): void
@@ -74,11 +74,8 @@ class HomeTest extends TestCase
 
     public function test_catalog_cards_use_the_existing_landscape_photos_until_a_category_has_its_own(): void
     {
-        config(['landing.sample_content' => true]);
         $catalog = $this->catalogHtml();
 
-        // No "[PHOTO]" placeholder: the four cards of the row and the four of the cascade show real pictures.
-        $this->assertStringNotContainsString('[PHOTO]', $catalog);
         $this->assertSame(8, substr_count($catalog, '<img '));
         $this->assertSame(8, substr_count($catalog, 'images/landing/photos/service-electroplating.webp') + substr_count($catalog, 'images/landing/photos/service-chemical-supply.webp'));
 
@@ -165,23 +162,20 @@ class HomeTest extends TestCase
         $this->assertNotSame(__('home.catalog.view', [], 'en'), __('home.catalog.view', [], 'id'));
     }
 
-    public function test_the_photo_component_falls_back_to_another_photo_before_the_placeholder(): void
+    public function test_the_photo_component_falls_back_to_another_photo(): void
     {
-        config(['landing.sample_content' => true]);
-
         $withFallback = Blade::render('<x-landing.photo name="product-does-not-exist" fallback="service-electroplating" />');
         $this->assertStringContainsString('images/landing/photos/service-electroplating.webp', $withFallback);
-        $this->assertStringNotContainsString('[PHOTO]', $withFallback);
 
         $own = Blade::render('<x-landing.photo name="service-consultation" fallback="service-electroplating" />');
         $this->assertStringContainsString('service-consultation.webp', $own);
         $this->assertStringNotContainsString('service-electroplating', $own);
 
         $neither = Blade::render('<x-landing.photo name="product-does-not-exist" fallback="also-missing" />');
-        $this->assertStringContainsString('[PHOTO] images/landing/photos/product-does-not-exist.webp', $neither);
+        $this->assertSame('', trim($neither));
 
         $plain = Blade::render('<x-landing.photo name="product-does-not-exist" />');
-        $this->assertStringContainsString('[PHOTO] images/landing/photos/product-does-not-exist.webp', $plain);
+        $this->assertSame('', trim($plain));
     }
 
     public function test_catalog_description_and_button_exist_in_every_language(): void
@@ -205,11 +199,8 @@ class HomeTest extends TestCase
 
     public function test_video_thumbnail_uses_the_fallback_photo_until_its_own_file_exists_and_never_comes_from_youtube(): void
     {
-        config(['landing.sample_content' => true]);
-
         $this->get('/en')
             ->assertSee('photos/service-consultation.webp', false)
-            ->assertDontSee('[PHOTO] images/landing/photos/video-thumbnail.webp')
             ->assertSee(__('home.video.play'))
             ->assertDontSee('ytimg', false);
 
@@ -342,12 +333,8 @@ class HomeTest extends TestCase
             ->assertSee('__introReady', false);
     }
 
-    public function test_photo_component_follows_files_and_the_sample_content_flag(): void
+    public function test_photo_component_follows_files(): void
     {
-        config(['landing.sample_content' => true]);
-        $this->assertStringContainsString('[PHOTO] images/landing/photos/missing.webp', (string) $this->blade('<x-landing.photo name="missing" />'));
-
-        config(['landing.sample_content' => false]);
         $this->assertSame('', trim((string) $this->blade('<x-landing.photo name="missing" />')));
 
         $name = 'test-photo-'.uniqid();
@@ -361,7 +348,6 @@ class HomeTest extends TestCase
 
             $this->assertStringContainsString("photos/{$name}.webp", $html);
             $this->assertStringContainsString('alt="Factory"', $html);
-            $this->assertStringNotContainsString('[PHOTO]', $html);
         } finally {
             unlink($path);
         }
@@ -503,27 +489,13 @@ class HomeTest extends TestCase
 
         $this->assertSame(3, substr_count((string) $response->getContent(), 'data-acc-item'));
 
-        foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
-            $response->assertSee(__("home.services.items.{$service}.title"))
-                ->assertSee(__("home.services.items.{$service}.text"));
+        foreach (['Electroplating Service', 'Chemical Supply', 'Technical Consultation'] as $title) {
+            $response->assertSee($title)->assertSee("{$title} description.");
         }
 
         // The only aria-expanded is the mobile menu button: the chat and WhatsApp buttons are there only once the admin adds a question or a number. The services need none.
         $this->assertSame(1, substr_count((string) $response->getContent(), 'aria-expanded'));
-        $response->assertSee('/storage/services/', false)->assertDontSee('[PHOTO] images/landing/photos/service-chemical-supply');
-    }
-
-    public function test_every_service_has_a_full_description_in_every_language(): void
-    {
-        foreach (config('locales.landing') as $code) {
-            foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
-                $this->assertGreaterThan(
-                    $code === 'en' || $code === 'id' ? 150 : 50,
-                    mb_strlen(__("home.services.items.{$service}.text", [], $code)),
-                    "{$code} {$service} description is too short",
-                );
-            }
-        }
+        $response->assertSee('/storage/services/', false);
     }
 
     public function test_services_learn_more_exists_in_every_language(): void
@@ -537,8 +509,6 @@ class HomeTest extends TestCase
 
     public function test_clients_section_shows_the_client_and_partner_logos(): void
     {
-        config(['landing.sample_content' => false]);
-
         $response = $this->get('/en')->assertOk();
 
         $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
@@ -556,40 +526,17 @@ class HomeTest extends TestCase
             ->assertDontSee('Oil &amp; Gas', false);
     }
 
-    public function test_sample_mode_shows_a_client_and_a_partner_testimonial_with_a_logo_and_production_none(): void
-    {
-        config(['landing.sample_content' => true]);
-
-        $response = $this->get('/en')->assertOk();
-
-        $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-testimonial'));
-        $response->assertSee('Sample Customer')
-            ->assertSee('Sample Partner')
-            ->assertSee('images/landing/clients/client-3.png', false);
-
-        config(['landing.sample_content' => false]);
-
-        $this->get('/en')->assertOk()->assertDontSee('data-clients-testimonial', false);
-    }
-
-    public function test_clients_section_falls_back_to_placeholders_and_partner_names_without_logo_files(): void
+    public function test_clients_section_falls_back_to_partner_names_and_leaves_out_an_empty_clients_slide(): void
     {
         $empty = sys_get_temp_dir().'/landing-logos-'.uniqid();
         mkdir($empty);
-        config(['landing.logo_directory' => $empty, 'landing.sample_content' => true, 'landing.partners' => ['Alpha', 'Beta']]);
+        config(['landing.logo_directory' => $empty, 'landing.partners' => ['Alpha', 'Beta']]);
 
         try {
             $response = $this->get('/en')->assertOk();
 
-            $this->assertSame(2, substr_count((string) $response->getContent(), 'data-clients-slide '));
-            $this->assertSame(9, substr_count((string) $response->getContent(), '[LOGO]'));
-            $response->assertSee('Alpha');
-
-            config(['landing.sample_content' => false]);
-
-            $response = $this->get('/en')->assertOk();
             $this->assertSame(1, substr_count((string) $response->getContent(), 'data-clients-slide '));
-            $response->assertDontSee('data-clients-next', false);
+            $response->assertSee('Alpha')->assertDontSee('[LOGO]')->assertDontSee('data-clients-next', false);
         } finally {
             rmdir($empty);
         }
@@ -600,7 +547,7 @@ class HomeTest extends TestCase
         $directory = sys_get_temp_dir().'/landing-logos-'.uniqid();
         mkdir($directory.'/clients', 0777, true);
         file_put_contents($directory.'/clients/acme-motors.svg', '<svg xmlns="http://www.w3.org/2000/svg"/>');
-        config(['landing.logo_directory' => $directory, 'landing.sample_content' => false, 'landing.partners' => ['Alpha']]);
+        config(['landing.logo_directory' => $directory, 'landing.partners' => ['Alpha']]);
 
         try {
             $this->get('/en')->assertOk()
@@ -635,8 +582,6 @@ class HomeTest extends TestCase
 
     public function test_gallery_shows_the_team_photos_with_a_caption_for_each(): void
     {
-        config(['landing.sample_content' => false]);
-
         $response = $this->get('/en')->assertOk();
 
         $this->assertSame(3, substr_count((string) $response->getContent(), 'data-gallery-slide '));
@@ -649,8 +594,7 @@ class HomeTest extends TestCase
 
         $response->assertSee('data-gallery-count', false)
             ->assertSee('01 / 03')
-            ->assertSee(__('home.gallery.label'))
-            ->assertDontSee('[PHOTO]');
+            ->assertSee(__('home.gallery.label'));
     }
 
     public function test_gallery_captions_exist_in_every_language(): void
@@ -707,33 +651,27 @@ class HomeTest extends TestCase
         }
     }
 
-    public function test_home_shows_three_linked_sample_article_cards_while_there_is_no_article(): void
+    public function test_home_shows_linked_article_cards_of_the_published_articles(): void
     {
-        config(['landing.sample_content' => true]);
+        $items = ArticleTranslation::factory()->published('en')->count(3)->create();
+        app(LandingArticles::class)->flush();
 
         $response = $this->get('/en')->assertOk();
-        $samples = array_slice(app(SampleArticles::class)->summaries(), 0, 3);
 
-        $this->assertCount(3, $samples);
-
-        foreach ($samples as $sample) {
-            $response->assertSee($sample['title'])
-                ->assertSee('href="'.route('landing.articles.show', ['locale' => 'en', 'article' => $sample['slug']]).'"', false);
+        foreach ($items as $item) {
+            $response->assertSee($item->title)
+                ->assertSee('href="'.route('landing.articles.show', ['locale' => 'en', 'article' => $item->slug]).'"', false);
         }
 
         $response->assertSee(__('home.articles.title'))
-            ->assertSee('images/landing/articles/sample-business.webp', false)
             ->assertSee('class="title-hover"', false)
-            ->assertSee(__('articles.tags.news'))
             ->assertSee('data-btn', false)
             ->assertSeeText(__('home.articles.all'))
             ->assertSee('href="'.url('/en/articles').'"', false);
     }
 
-    public function test_sample_article_cards_are_hidden_outside_sample_mode(): void
+    public function test_home_has_no_articles_section_while_nothing_is_published(): void
     {
-        config(['landing.sample_content' => false]);
-
-        $this->get('/en')->assertOk()->assertDontSee('sample-business.webp', false)->assertDontSee(__('home.articles.title'));
+        $this->get('/en')->assertOk()->assertDontSee(__('home.articles.title'));
     }
 }

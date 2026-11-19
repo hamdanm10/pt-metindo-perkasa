@@ -17,7 +17,6 @@ class ContactPageTest extends TestCase
         parent::setUp();
 
         config([
-            'landing.sample_content' => true,
             'landing.contact.email' => 'hello@example.test',
             'landing.contact.phone' => '+62 812 0000 0000',
             'landing.contact.address' => 'Test address 1',
@@ -104,7 +103,7 @@ class ContactPageTest extends TestCase
         $this->assertStringContainsString('Test address 1', $html);
     }
 
-    public function test_the_map_of_the_group_is_always_shown(): void
+    public function test_the_map_of_the_group_is_shown(): void
     {
         $html = $this->page();
 
@@ -112,10 +111,6 @@ class ContactPageTest extends TestCase
         $this->assertSame(6, substr_count($html, 'data-pin="'));
         $this->assertStringContainsString('data-map-stage', $html);
 
-        config(['landing.sample_content' => false]);
-
-        $this->assertStringContainsString('data-map-stage', $this->page());
-        $this->assertStringNotContainsString(__('landing.sample_note'), $this->page());
     }
 
     public function test_the_page_texts_exist_in_every_language(): void

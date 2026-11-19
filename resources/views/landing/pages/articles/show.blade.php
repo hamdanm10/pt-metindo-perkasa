@@ -38,15 +38,12 @@
                     <span aria-hidden="true">·</span>
                     <span>{{ $viewsLabel }}</span>
                 @endif
-                @if ($article['sample'])
-                    <span class="rounded-full bg-ink px-3 py-1 text-xs font-bold text-white">{{ __('articles.sample') }}</span>
-                @endif
             </div>
 
-            <h1 class="mt-5 text-balance [overflow-wrap:anywhere] text-[clamp(2rem,4.4vw,3.5rem)] font-black leading-[1.08] tracking-tight" @if ($article['sample']) lang="en" dir="ltr" @endif>{{ $article['title'] }}</h1>
+            <h1 class="mt-5 text-balance [overflow-wrap:anywhere] text-[clamp(2rem,4.4vw,3.5rem)] font-black leading-[1.08] tracking-tight">{{ $article['title'] }}</h1>
 
             @if ($article['excerpt'] !== '')
-                <p class="mt-5 text-[clamp(1.15rem,1.6vw,1.5rem)] leading-snug text-ink/65 [overflow-wrap:anywhere]" @if ($article['sample']) lang="en" dir="ltr" @endif>{{ $article['excerpt'] }}</p>
+                <p class="mt-5 text-[clamp(1.15rem,1.6vw,1.5rem)] leading-snug text-ink/65 [overflow-wrap:anywhere]">{{ $article['excerpt'] }}</p>
             @endif
 
             <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border-y border-ink/10 py-3">
@@ -64,13 +61,8 @@
         </div>
 
 
-        <div class="mx-auto max-w-[44.5rem] px-4 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-14" @if ($article['sample']) lang="en" dir="ltr" @endif>
-            @if ($article['sample'])
-                <p class="mb-8 rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold" lang="{{ app()->getLocale() }}" dir="{{ config('locales.locales.'.app()->getLocale().'.dir') }}">{{ __('landing.sample_note') }}</p>
-            @endif
-            @unless ($article['sample'])
-                <div data-article-view data-url="{{ route('landing.articles.views.store', ['article' => $article['slug']]) }}" hidden></div>
-            @endunless
+        <div class="mx-auto max-w-[44.5rem] px-4 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-14">
+            <div data-article-view data-url="{{ route('landing.articles.views.store', ['article' => $article['slug']]) }}" hidden></div>
             <div data-read-body class="article-body reading">{!! $bodyHtml !!}</div>
 
             <div class="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 pt-6" lang="{{ app()->getLocale() }}" dir="{{ config('locales.locales.'.app()->getLocale().'.dir') }}">

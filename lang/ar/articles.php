@@ -9,7 +9,6 @@ return [
     ],
     'minutes' => 'قراءة :count دقيقة',
     'views' => ':count مشاهدة',
-    'sample' => 'عينة',
     'new' => 'جديد',
     'pagination' => [
         'label' => 'ترقيم الصفحات',

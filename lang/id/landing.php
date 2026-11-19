@@ -30,7 +30,6 @@ return [
         'text' => 'Sampaikan proses dan material dasarnya. Tim kami akan bantu menjelaskan pilihannya.',
         'button' => 'Bicara dengan tim kami',
     ],
-    'sample_note' => 'Konten contoh dari prototipe. Diganti konten asli sebelum rilis.',
     'read' => 'Baca',
     'back' => 'Kembali ke semua artikel',
 ];

@@ -8,7 +8,7 @@ namespace App\Services\Landing;
  * The slides of the full-screen gallery. Each slide is one team photo at
  * public/images/landing/photos/gallery-<key>.{webp,jpg,jpeg,png,svg} with a label and a caption
  * that describe the photo (lang/<locale>/home.php, `gallery.slides`). A slide whose photo is
- * missing is skipped, except in sample mode where it shows a labelled placeholder.
+ * missing is skipped.
  *
  * @phpstan-type Slide array{key: string, label: string, caption: string}
  */
@@ -27,7 +27,7 @@ class LandingGallery
         $slides = [];
 
         foreach (self::KEYS as $key) {
-            if (! config('landing.sample_content') && ! $this->hasPhoto($key)) {
+            if (! $this->hasPhoto($key)) {
                 continue;
             }
 

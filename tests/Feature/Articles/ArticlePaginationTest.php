@@ -21,7 +21,6 @@ class ArticlePaginationTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
-        config(['landing.sample_content' => false]);
     }
 
     /** Publishes items "Item 01" (newest) to "Item NN" (oldest), one per day. */

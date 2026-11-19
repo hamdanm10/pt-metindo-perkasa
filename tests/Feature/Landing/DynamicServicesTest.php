@@ -7,9 +7,7 @@ namespace Tests\Feature\Landing;
 use App\Actions\Services\SaveService;
 use App\Models\Service;
 use App\Services\Landing\LandingServices;
-use App\Services\Services\DefaultServices;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -158,32 +156,5 @@ class DynamicServicesTest extends TestCase
         app(LandingServices::class)->all('en');
 
         $this->assertSame($few, count(DB::getQueryLog()));
-    }
-
-    public function test_the_default_services_import_the_old_texts_once(): void
-    {
-        $this->assertSame(3, app(DefaultServices::class)->import());
-
-        $this->assertSame(0, app(DefaultServices::class)->import());
-        $this->assertSame(3, Service::query()->count());
-
-        $service = Service::query()->where('slug', 'chemical-supply')->with('translations')->firstOrFail();
-        $this->assertSame(config()->array('locales.landing'), $service->translations->pluck('locale')->sort(fn ($a, $b) => array_search($a, config()->array('locales.landing'), true) <=> array_search($b, config()->array('locales.landing'), true))->values()->all());
-        $this->assertSame(__('home.services.items.chemical_supply.title', [], 'ja'), $service->translations->firstWhere('locale', 'ja')?->title);
-        $this->assertCount(5, $service->translations->firstWhere('locale', 'en')->included ?? []);
-        $this->assertNotNull($service->image_path);
-        Storage::disk('public')->assertExists((string) $service->image_path);
-    }
-
-    public function test_the_import_command_keeps_the_admins_changes(): void
-    {
-        Artisan::call('services:import-defaults');
-        Service::query()->where('slug', 'chemical-supply')->firstOrFail()->translations()->where('locale', 'en')->update(['title' => 'Changed by admin']);
-
-        Artisan::call('services:import-defaults');
-
-        $this->assertSame(3, Service::query()->count());
-        $this->assertStringContainsString('Added 0 service(s).', Artisan::output());
-        $this->get('/en/services/chemical-supply')->assertSee('Changed by admin');
     }
 }

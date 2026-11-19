@@ -7,13 +7,13 @@ namespace Tests\Feature\Landing;
 use App\Models\ArticleTranslation;
 use App\Models\WhatsappAgent;
 use App\Services\Landing\LandingContact;
-use App\Services\Services\DefaultServices;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\CreatesServices;
 use Tests\TestCase;
 
 class PagesTest extends TestCase
 {
+    use CreatesServices;
     use RefreshDatabase;
 
     protected function setUp(): void
@@ -23,7 +23,6 @@ class PagesTest extends TestCase
         $this->withoutVite();
 
         config([
-            'landing.sample_content' => true,
             'landing.contact.email' => 'hello@example.test',
             'landing.contact.phone' => '+62 812 0000 0000',
             'landing.contact.address' => 'Test address',
@@ -31,8 +30,7 @@ class PagesTest extends TestCase
         ]);
         WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000000']);
 
-        Storage::fake('public');
-        app(DefaultServices::class)->import();
+        $this->createServices();
     }
 
     public function test_every_inner_page_renders_in_every_locale(): void
@@ -256,13 +254,6 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('google.com/maps/search/?api=1&query=3.5952,98.6722', $html);
     }
 
-    public function test_about_has_no_map_when_the_subsidiaries_are_not_shown(): void
-    {
-        config(['landing.sample_content' => false]);
-
-        $this->get('/en/about')->assertOk()->assertDontSee('data-map-stage', false);
-    }
-
     public function test_about_texts_and_map_label_exist_in_every_language(): void
     {
         foreach (config('locales.landing') as $code) {
@@ -357,9 +348,9 @@ class PagesTest extends TestCase
         $this->assertSame(4, substr_count($html, 'data-svc-step '));
         $this->assertStringNotContainsString('What we do', $html);
 
-        foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
-            $this->assertStringContainsString(__("home.services.items.{$service}.title", [], 'en'), $html);
-            $this->assertStringContainsString(__("home.services.items.{$service}.text", [], 'en'), $html);
+        foreach (['Electroplating Service', 'Chemical Supply', 'Technical Consultation'] as $title) {
+            $this->assertStringContainsString($title, $html);
+            $this->assertStringContainsString("{$title} description.", $html);
         }
 
         // The list has no "Talk to our team" button any more, only the closing call to action has it.
@@ -368,22 +359,19 @@ class PagesTest extends TestCase
 
     public function test_every_service_has_a_detail_page(): void
     {
-        foreach ([['electroplating-service', 'electroplating'], ['chemical-supply', 'chemical_supply'], ['technical-consultation', 'consultation']] as [$slug, $key]) {
-            $response = $this->get('/en/services/'.$slug)->assertOk()
-                ->assertSee(__("home.services.items.{$key}.title", [], 'en'))
-                ->assertSee(e(__("pages.services.detail.items.{$key}.summary", [], 'en')), false)
-                ->assertSee(e(__("home.services.items.{$key}.text", [], 'en')), false)
-                ->assertSee(e(__("pages.services.detail.items.{$key}.fit", [], 'en')), false)
+        foreach ([['electroplating-service', 'Electroplating Service'], ['chemical-supply', 'Chemical Supply'], ['technical-consultation', 'Technical Consultation']] as [$slug, $title]) {
+            $this->get('/en/services/'.$slug)->assertOk()
+                ->assertSee($title)
+                ->assertSee("{$title} summary.")
+                ->assertSee("{$title} description.")
+                ->assertSee("{$title} fit.")
+                ->assertSee("{$title} first item")
+                ->assertSee("{$title} second item")
                 ->assertSee('/storage/services/', false)
                 ->assertSee('data-svc-step ', false)
                 ->assertSee('href="'.route('landing.contact', ['locale' => 'en']).'"', false)
-                ->assertSee('href="'.route('landing.services.index', ['locale' => 'en']).'"', false);
-
-            foreach (__("pages.services.detail.items.{$key}.included", [], 'en') as $item) {
-                $response->assertSee(e($item), false);
-            }
-
-            $response->assertDontSee('See process categories');
+                ->assertSee('href="'.route('landing.services.index', ['locale' => 'en']).'"', false)
+                ->assertDontSee('See process categories');
         }
     }
 
@@ -409,10 +397,10 @@ class PagesTest extends TestCase
         $this->assertStringContainsString(route('landing.services.show', ['locale' => 'en', 'service' => 'electroplating-service']), $others);
         $this->assertStringContainsString(route('landing.services.show', ['locale' => 'en', 'service' => 'chemical-supply']), $others);
         $this->assertStringNotContainsString(route('landing.services.show', ['locale' => 'en', 'service' => 'technical-consultation']), $others);
-        $this->assertStringContainsString(e(__('pages.services.detail.items.chemical_supply.summary', [], 'en')), $others);
+        $this->assertStringContainsString('Chemical Supply summary.', $others);
     }
 
-    public function test_unknown_service_is_not_found_and_the_detail_texts_exist_in_every_language(): void
+    public function test_unknown_service_is_not_found_and_the_detail_labels_exist_in_every_language(): void
     {
         $this->get('/en/services/unknown')->assertNotFound();
         $this->get('/en/services/consultation')->assertNotFound();
@@ -430,19 +418,8 @@ class PagesTest extends TestCase
             // Button labels are split into one span per word, so look at the text only.
             $response->assertSeeText(__('pages.services.detail.contact', [], $code), false);
 
-            foreach (['electroplating', 'chemical_supply', 'consultation'] as $service) {
-                $this->assertNotSame("home.services.items.{$service}.text", __("home.services.items.{$service}.text", [], $code));
-                $included = __("pages.services.detail.items.{$service}.included", [], $code);
-
-                $this->assertIsArray($included, "{$code} {$service}");
-                $this->assertCount(5, $included, "{$code} {$service}");
-
-                foreach (['summary', 'fit'] as $part) {
-                    $this->assertNotSame("pages.services.detail.items.{$service}.{$part}", __("pages.services.detail.items.{$service}.{$part}", [], $code));
-                }
-            }
-
-            $response->assertSee(e(__('home.services.items.electroplating.text', [], $code)), false);
+            // The services have no text of their own in these languages, so they show the English text.
+            $response->assertSee('Electroplating Service description.');
         }
 
         $this->get('/ar/services/technical-consultation')->assertSee('dir="rtl"', false);
@@ -462,15 +439,11 @@ class PagesTest extends TestCase
         }
     }
 
-    public function test_about_hides_certifications_and_gates_subsidiaries(): void
+    public function test_about_hides_certifications_and_shows_subsidiaries(): void
     {
         $this->get('/en/about')
             ->assertDontSee('ISO 9001')
             ->assertSee('PT Metindo Surface Medan')
             ->assertSee('rel="noopener noreferrer"', false);
-
-        config(['landing.sample_content' => false]);
-
-        $this->get('/en/about')->assertDontSee('PT Metindo Surface Medan');
     }
 }

@@ -10,7 +10,6 @@ use App\Models\ArticleTranslation;
 use App\Models\User;
 use App\Services\Articles\ArticleViews;
 use App\Services\Articles\LandingArticles;
-use App\Services\Articles\SampleArticles;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
@@ -29,7 +28,6 @@ class ArticleViewsTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
-        config(['landing.sample_content' => false]);
         app(LandingArticles::class)->flush();
     }
 
@@ -106,7 +104,7 @@ class ArticleViewsTest extends TestCase
         $this->assertCount(100, $views->remember($many, 999));
     }
 
-    public function test_drafts_unknown_addresses_and_samples_are_not_counted(): void
+    public function test_drafts_and_unknown_addresses_are_not_counted(): void
     {
         $draft = ArticleTranslation::factory()->create([
             'article_id' => Article::factory()->create()->id,
@@ -172,15 +170,6 @@ class ArticleViewsTest extends TestCase
         ArticleTranslation::query()->update(['views_count' => 9]);
 
         $this->get('/en/articles/hello')->assertOk()->assertDontSee('9 views');
-    }
-
-    public function test_sample_articles_do_not_load_the_counter(): void
-    {
-        config(['landing.sample_content' => true]);
-        app(LandingArticles::class)->flush();
-        $slug = app(SampleArticles::class)->summaries()[0]['slug'];
-
-        $this->get("/en/articles/{$slug}")->assertOk()->assertDontSee('data-article-view', false);
     }
 
     public function test_the_list_cards_show_the_count_without_going_stale_in_the_cache(): void

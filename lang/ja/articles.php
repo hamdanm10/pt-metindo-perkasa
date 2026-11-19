@@ -9,7 +9,6 @@ return [
     ],
     'minutes' => '読了目安 :count 分',
     'views' => ':count 回閲覧',
-    'sample' => 'サンプル',
     'new' => '新着',
     'pagination' => [
         'label' => 'ページ送り',

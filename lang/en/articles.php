@@ -9,7 +9,6 @@ return [
     ],
     'minutes' => ':count min read',
     'views' => '{1} :count view|[2,*] :count views',
-    'sample' => 'Sample',
     'new' => 'New',
     'pagination' => [
         'label' => 'Pagination',

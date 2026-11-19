@@ -1,11 +1,5 @@
 @php
     $slides = app(\App\Services\Landing\LandingClients::class)->slides();
-    $testimonial = config('landing.sample_content');
-    // Example testimonials, shown only in sample mode: one for each slide. The logo is one example file.
-    $quotes = [
-        'clients' => ['quote' => 'The Metindo team understood our finishing requirements from the first meeting. Coating quality stayed consistent across every batch, and delivery was always on schedule.', 'name' => 'Sample Customer', 'role' => 'Production Manager'],
-        'partners' => ['quote' => 'Working with Metindo as a supply partner has been smooth. Their technical support helps our team solve process issues quickly, and the chemicals always arrive as specified.', 'name' => 'Sample Partner', 'role' => 'Business Development'],
-    ];
 @endphp
 
 @if ($slides)
@@ -31,18 +25,16 @@
 
             <div data-clients-stage class="relative mt-[3vw] lg:px-[3.9vw]">
                 <div class="grid gap-5 lg:grid-cols-5 lg:gap-[2.5vw]">
-                    <div class="{{ $testimonial ? 'lg:col-span-3' : 'lg:col-span-5' }}">
+                    <div class="lg:col-span-5">
                         @foreach ($slides as $slide)
                             <ul data-clients-slide data-label="{{ $slide['label'] }}" @if (! $loop->first) hidden @endif
-                                class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-[2.5vw] {{ $testimonial ? '' : 'lg:grid-cols-5' }}">
+                                class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-[2.5vw] lg:grid-cols-5">
                                 @foreach ($slide['items'] as $item)
                                     <li data-client-cell class="relative flex aspect-[218/124] items-center justify-center rounded-lg border border-ink">
                                         @if ($item['src'])
                                             <span class="flex aspect-[3/2] w-1/2 items-center justify-center"><img src="{{ $item['src'] }}" alt="{{ $item['name'] }}" loading="lazy" decoding="async" class="size-full object-contain"></span>
-                                        @elseif ($slide['key'] === 'partners')
-                                            <span class="text-center text-xl font-bold" lang="en" dir="ltr">{{ $item['name'] }}</span>
                                         @else
-                                            <span class="text-xs font-semibold text-muted" lang="en" dir="ltr">[LOGO] client</span>
+                                            <span class="text-center text-xl font-bold" lang="en" dir="ltr">{{ $item['name'] }}</span>
                                         @endif
                                     </li>
                                 @endforeach
@@ -50,28 +42,6 @@
                         @endforeach
                     </div>
 
-                    @if ($testimonial)
-                        {{-- Example text only, shown in sample mode. One testimonial per slide, and it changes with the slide. --}}
-                        <div class="lg:col-span-2">
-                            @foreach ($slides as $slide)
-                                @php($quote = $quotes[$slide['key']])
-                                <figure data-clients-testimonial @if (! $loop->first) hidden @endif class="flex h-full flex-col justify-between rounded-lg bg-accent-blue/10 px-[clamp(1.25rem,2.22vw,2.75rem)] py-[clamp(1.5rem,2.78vw,3.5rem)]" lang="en" dir="ltr">
-                                    <div>
-                                        <svg class="h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 30 17" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.0742 0.109896L10.8054 16.6515H0.2668L7.4037 0.109896H15.0742ZM29.5481 0.109896L25.346 16.6515H14.7407L21.8776 0.109896H29.5481Z"/></svg>
-                                        <blockquote class="my-[1.39vw] text-[clamp(0.95rem,1.11vw,1.4rem)] leading-[1.42]">{{ $quote['quote'] }}</blockquote>
-                                        <svg class="ms-auto h-[clamp(0.7rem,0.83vw,1.05rem)] w-auto" viewBox="0 0 31 18" fill="none" aria-hidden="true"><path fill="currentColor" d="M15.2143 17.312L19.4831 0.770378H30.0217L22.8848 17.312H15.2143ZM0.740402 17.312L4.9425 0.770378H15.5478L8.4109 17.312H0.740402Z"/></svg>
-                                    </div>
-                                    <figcaption class="mt-[2.8vw] flex items-end justify-between gap-4 text-[clamp(0.75rem,0.83vw,1.05rem)] leading-[1.35]">
-                                        <div>
-                                            <div class="font-bold">{{ $quote['name'] }}</div>
-                                            <div>{{ $quote['role'] }}</div>
-                                        </div>
-                                        <img src="{{ asset('images/landing/clients/client-3.png') }}" alt="" loading="lazy" decoding="async" class="h-[clamp(1.75rem,2.22vw,2.75rem)] w-auto">
-                                    </figcaption>
-                                </figure>
-                            @endforeach
-                        </div>
-                    @endif
                 </div>
 
                 @if (count($slides) > 1)

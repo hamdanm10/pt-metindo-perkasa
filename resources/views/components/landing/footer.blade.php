@@ -1,7 +1,7 @@
 @php
     $content = app(\App\Services\Landing\LandingContent::class);
     $menu = $content->menu();
-    $offices = $content->subsidiaries();
+    $offices = $content->locations();
     $contact = config('landing.contact');
     $email = $contact['email'] ?? null;
     $phone = $contact['phone'] ?? null;
