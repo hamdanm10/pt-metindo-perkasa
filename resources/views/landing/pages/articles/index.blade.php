@@ -5,9 +5,19 @@
 @section('content')
     @php
         $filters = [['value' => null, 'key' => 'all'], ['value' => 'article', 'key' => 'article'], ['value' => 'news', 'key' => 'news']];
-        $featured = $articles[0] ?? null;
-        $rest = array_slice($articles, 1);
+        // Only page 1 has the large newest entry above the grid; later pages are grids of their own.
+        $featured = $page === 1 ? ($articles[0] ?? null) : null;
+        $rest = $page === 1 ? array_slice($articles, 1) : $articles;
     @endphp
+
+    @push('head')
+        @if ($page > 1)
+            <link rel="prev" href="{{ route('landing.articles.index', array_filter(['type' => $type, 'page' => $page > 2 ? $page - 1 : null])) }}">
+        @endif
+        @if ($page < $lastPage)
+            <link rel="next" href="{{ route('landing.articles.index', array_filter(['type' => $type, 'page' => $page + 1])) }}">
+        @endif
+    @endpush
 
     {{-- Opening: the headline, the intro, and the filter. --}}
     <section class="bg-ink text-white" style="--focus-ring: #ffffff">
@@ -35,48 +45,52 @@
 
     <section class="bg-lavender text-ink">
         <div class="container-site section-y">
-            @if ($featured)
-                @if ($featured['sample'])
+            @if ($articles !== [])
+                @if ($articles[0]['sample'])
                     <p class="mb-8 inline-block rounded-lg border border-ink/30 px-4 py-2 text-sm font-semibold">{{ __('landing.sample_note') }}</p>
                 @endif
 
-                {{-- The newest item, large. --}}
-                <a href="{{ route('landing.articles.show', ['article' => $featured['slug']]) }}" data-art-featured class="group grid items-center gap-[2.5vw] max-lg:gap-6 lg:grid-cols-[7fr_5fr] focus-visible:outline-offset-4">
-                    <span data-art-featured-media class="relative block aspect-[16/10] overflow-hidden rounded-lg bg-white">
-                        @if ($featured['image'])
-                            <img src="{{ $featured['image'] }}" alt="{{ $featured['alt'] }}" loading="eager" decoding="async" class="absolute inset-0 size-full object-cover transition-transform duration-1000 [transition-timing-function:var(--header-ease)] group-hover:scale-105">
-                        @endif
-                    </span>
-                    <span class="block">
-                        <span class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[clamp(0.75rem,0.83vw,1.05rem)] text-ink/70">
-                            <span class="rounded-full bg-ink px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-white">{{ __('articles.latest') }}</span>
-                            @if ($featured['new'])
-                                <span data-new-badge class="rounded-full bg-brand-600 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-white">{{ __('articles.new') }}</span>
-                            @endif
-                            <span class="rounded-full border border-ink/40 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-bold uppercase">{{ __("articles.tags.{$featured['type']}") }}</span>
-                            <time datetime="{{ $featured['date'] }}">{{ \Illuminate\Support\Carbon::parse($featured['date'])->isoFormat('LL') }}</time>
-                            <span aria-hidden="true">·</span>
-                            <span>{{ __('articles.minutes', ['count' => $featured['minutes']]) }}</span>
-                            @if ($viewsLabel = \App\Services\Articles\ArticleViews::label($featured['views']))
-                                <span aria-hidden="true">·</span>
-                                <span>{{ $viewsLabel }}</span>
+                @if ($featured)
+                    {{-- The newest item, large. --}}
+                    <a href="{{ route('landing.articles.show', ['article' => $featured['slug']]) }}" data-art-featured class="group grid items-center gap-[2.5vw] max-lg:gap-6 lg:grid-cols-[7fr_5fr] focus-visible:outline-offset-4">
+                        <span data-art-featured-media class="relative block aspect-[16/10] overflow-hidden rounded-lg bg-white">
+                            @if ($featured['image'])
+                                <img src="{{ $featured['image'] }}" alt="{{ $featured['alt'] }}" loading="eager" decoding="async" class="absolute inset-0 size-full object-cover transition-transform duration-1000 [transition-timing-function:var(--header-ease)] group-hover:scale-105">
                             @endif
                         </span>
-                        <span class="mt-[1.4vw] line-clamp-3 text-balance pb-[0.1em] [overflow-wrap:anywhere] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
-                        @if ($featured['excerpt'] !== '')
-                            <span class="mt-[1.2vw] block max-w-[32em] [overflow-wrap:anywhere] text-[clamp(1rem,1.25vw,1.55rem)] leading-snug text-ink/75 max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif>{{ $featured['excerpt'] }}</span>
-                        @endif
-                        <span class="mt-[2vw] inline-flex items-center gap-2 text-[clamp(0.9rem,1vw,1.25rem)] font-bold max-lg:mt-6"><span class="uline">{{ __('landing.read') }}</span><span aria-hidden="true" class="transition-transform duration-500 group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1">→</span></span>
-                    </span>
-                </a>
+                        <span class="block">
+                            <span class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[clamp(0.75rem,0.83vw,1.05rem)] text-ink/70">
+                                <span class="rounded-full bg-ink px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-white">{{ __('articles.latest') }}</span>
+                                @if ($featured['new'])
+                                    <span data-new-badge class="rounded-full bg-brand-600 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-white">{{ __('articles.new') }}</span>
+                                @endif
+                                <span class="rounded-full border border-ink/40 px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-bold uppercase">{{ __("articles.tags.{$featured['type']}") }}</span>
+                                <time datetime="{{ $featured['date'] }}">{{ \Illuminate\Support\Carbon::parse($featured['date'])->isoFormat('LL') }}</time>
+                                <span aria-hidden="true">·</span>
+                                <span>{{ __('articles.minutes', ['count' => $featured['minutes']]) }}</span>
+                                @if ($viewsLabel = \App\Services\Articles\ArticleViews::label($featured['views']))
+                                    <span aria-hidden="true">·</span>
+                                    <span>{{ $viewsLabel }}</span>
+                                @endif
+                            </span>
+                            <span class="mt-[1.4vw] line-clamp-3 text-balance pb-[0.1em] [overflow-wrap:anywhere] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black leading-[1.02] tracking-tight max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif><span class="title-hover">{{ $featured['title'] }}</span></span>
+                            @if ($featured['excerpt'] !== '')
+                                <span class="mt-[1.2vw] block max-w-[32em] [overflow-wrap:anywhere] text-[clamp(1rem,1.25vw,1.55rem)] leading-snug text-ink/75 max-lg:mt-4" @if ($featured['sample']) lang="en" dir="ltr" @endif>{{ $featured['excerpt'] }}</span>
+                            @endif
+                            <span class="mt-[2vw] inline-flex items-center gap-2 text-[clamp(0.9rem,1vw,1.25rem)] font-bold max-lg:mt-6"><span class="uline">{{ __('landing.read') }}</span><span aria-hidden="true" class="transition-transform duration-500 group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1">→</span></span>
+                        </span>
+                    </a>
+                @endif
 
                 @if ($rest)
-                    <ul data-art-grid class="mt-[5vw] grid gap-x-[2.5vw] gap-y-[4vw] max-lg:mt-14 max-lg:gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+                    <ul data-art-grid class="grid gap-x-[2.5vw] gap-y-[4vw] max-lg:gap-y-12 sm:grid-cols-2 lg:grid-cols-3 {{ $featured ? 'mt-[5vw] max-lg:mt-14' : '' }}">
                         @foreach ($rest as $article)
                             <li><x-landing.article-card :article="$article" /></li>
                         @endforeach
                     </ul>
                 @endif
+
+                <x-landing.pagination :page="$page" :last="$lastPage" :type="$type" />
             @else
                 <p class="text-xl text-ink/70">{{ __('pages.articles.empty') }}</p>
             @endif

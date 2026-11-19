@@ -3,7 +3,7 @@
     $locale = config("locales.locales.{$code}");
     $route = request()->route();
     $alternates = $alternateUrls ?? null;
-    $urlFor = fn (string $target) => $alternates[$target] ?? route($route->getName(), array_merge($route->parameters(), ['locale' => $target]));
+    $urlFor = fn (string $target, array $query = []) => $alternates[$target] ?? route($route->getName(), array_merge($route->parameters(), ['locale' => $target], $query));
     $targets = $alternates === null ? config('locales.landing') : array_keys($alternates);
     $default = in_array(config('locales.default'), $targets, true) ? config('locales.default') : ($targets[0] ?? $code);
     $assets = ['resources/css/landing.css', 'resources/css/fonts/latin.css', 'resources/js/landing.js'];
@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{-- yieldContent returns text that @section already escaped once. --}}
     <title>{!! $__env->hasSection('title') ? trim($__env->yieldContent('title')).' | PT Metindo Perkasa' : 'PT Metindo Perkasa' !!}</title>
-    <link rel="canonical" href="{{ $urlFor($code) }}">
+    <link rel="canonical" href="{{ $urlFor($code, $pageQuery ?? []) }}">
     @foreach ($targets as $target)
         <link rel="alternate" hreflang="{{ config("locales.locales.{$target}.html_lang") }}" href="{{ $urlFor($target) }}">
     @endforeach

@@ -11,6 +11,12 @@ return [
     'views' => '{1} :count view|[2,*] :count views',
     'sample' => 'Sample',
     'new' => 'New',
+    'pagination' => [
+        'label' => 'Pagination',
+        'previous' => 'Previous',
+        'next' => 'Next',
+        'page' => 'Page :number',
+    ],
     'latest' => 'Latest',
     'share' => [
         'title' => 'Share this',

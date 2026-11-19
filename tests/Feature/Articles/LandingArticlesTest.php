@@ -111,14 +111,14 @@ class LandingArticlesTest extends TestCase
             ->assertSee('<p>Body <strong>here</strong></p>', false);
     }
 
-    public function test_home_shows_the_three_newest_of_the_language_only(): void
+    public function test_home_shows_the_four_newest_of_the_language_only(): void
     {
-        foreach (['a', 'b', 'c', 'd'] as $i => $slug) {
+        foreach (['a', 'b', 'c', 'd', 'e'] as $i => $slug) {
             $this->publish('en', $slug, null, ['published_at' => now()->subDays(10 - $i)]);
         }
         $this->publish('id', 'lain');
 
-        $this->get('/en')->assertSee('Title d')->assertSee('Title c')->assertSee('Title b')->assertDontSee('Title a')->assertDontSee('Title lain');
+        $this->get('/en')->assertSee('Title e')->assertSee('Title d')->assertSee('Title c')->assertSee('Title b')->assertDontSee('Title a')->assertDontSee('Title lain');
     }
 
     public function test_related_lists_other_articles_of_the_same_language(): void
@@ -130,18 +130,22 @@ class LandingArticlesTest extends TestCase
         $this->get('/en/articles/main')->assertSee('Title other')->assertDontSee('Title lain');
     }
 
-    public function test_the_list_is_cached_and_cleared_on_change(): void
+    public function test_the_counts_and_the_newest_entries_are_cached_and_cleared_on_change(): void
     {
         $translation = $this->publish('en', 'cached');
         $service = app(LandingArticles::class);
 
-        $this->assertCount(1, $service->list('en'));
+        $first = array_column($service->latest('en'), 'title');
+        $this->assertSame(['all' => 1, 'article' => 1, 'news' => 0], $service->counts('en'));
+        $this->assertSame(['Title cached'], $first);
 
         $translation->update(['title' => 'Renamed']);
-        $this->assertSame('Title cached', $service->list('en')[0]['title']);
+        $stale = array_column($service->latest('en'), 'title');
+        $this->assertSame(['Title cached'], $stale);
 
         $service->flush();
-        $this->assertSame('Renamed', $service->list('en')[0]['title']);
+        $fresh = array_column($service->latest('en'), 'title');
+        $this->assertSame(['Renamed'], $fresh);
     }
 
     public function test_query_count_does_not_grow_with_more_articles(): void

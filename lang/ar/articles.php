@@ -11,6 +11,12 @@ return [
     'views' => ':count مشاهدة',
     'sample' => 'عينة',
     'new' => 'جديد',
+    'pagination' => [
+        'label' => 'ترقيم الصفحات',
+        'previous' => 'السابق',
+        'next' => 'التالي',
+        'page' => 'الصفحة :number',
+    ],
     'latest' => 'الأحدث',
     'share' => [
         'title' => 'مشاركة',

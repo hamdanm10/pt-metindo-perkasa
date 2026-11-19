@@ -12,6 +12,6 @@ class HomeController extends Controller
 {
     public function __invoke(LandingArticles $articles): View
     {
-        return view('landing.home', ['articles' => array_slice($articles->list(app()->getLocale()), 0, 3)]);
+        return view('landing.home', ['articles' => $articles->latest(app()->getLocale(), LandingArticles::LATEST)]);
     }
 }

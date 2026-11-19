@@ -11,6 +11,12 @@ return [
     'views' => ':count 回閲覧',
     'sample' => 'サンプル',
     'new' => '新着',
+    'pagination' => [
+        'label' => 'ページ送り',
+        'previous' => '前へ',
+        'next' => '次へ',
+        'page' => ':number ページ',
+    ],
     'latest' => '最新',
     'share' => [
         'title' => '共有',
