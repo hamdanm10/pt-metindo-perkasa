@@ -56,18 +56,107 @@ class HomeTest extends TestCase
             ->assertSeeText(__('home.catalog.all', [], 'en'));
     }
 
-    public function test_catalog_cards_show_placeholder_images_and_no_label(): void
+    private function catalogHtml(): string
+    {
+        $html = (string) $this->get('/en')->assertOk()->getContent();
+        $start = (int) strpos($html, 'id="catalog"');
+
+        return substr($html, $start, (int) strpos($html, '</section>', $start) - $start);
+    }
+
+    public function test_catalog_cards_use_the_existing_landscape_photos_until_a_category_has_its_own(): void
+    {
+        config(['landing.sample_content' => true]);
+        $catalog = $this->catalogHtml();
+
+        // No "[PHOTO]" placeholder: the four cards of the row and the four of the cascade show real pictures.
+        $this->assertStringNotContainsString('[PHOTO]', $catalog);
+        $this->assertSame(8, substr_count($catalog, '<img '));
+        $this->assertSame(8, substr_count($catalog, 'images/landing/photos/service-electroplating.webp') + substr_count($catalog, 'images/landing/photos/service-chemical-supply.webp'));
+
+        // Landscape (4:3) everywhere, never the old portrait ratio.
+        $this->assertStringNotContainsString('aspect-[365/620]', $catalog);
+        $this->assertSame(4, substr_count($catalog, 'data-catalog-tile class="'));
+        $this->assertSame(4, substr_count($catalog, 'data-deck-card class="absolute aspect-[4/3]'));
+        $this->assertSame(4, substr_count($catalog, 'relative z-10 aspect-[4/3]'));
+    }
+
+    public function test_a_category_photo_replaces_its_stand_in_once_it_exists(): void
+    {
+        $path = public_path('images/landing/photos/product-zinc-plating.webp');
+        copy(public_path('images/landing/photos/service-consultation.webp'), $path);
+
+        try {
+            $catalog = $this->catalogHtml();
+
+            // The zinc card (row and cascade) now uses its own file; the other three keep their stand-ins.
+            $this->assertSame(2, substr_count($catalog, 'images/landing/photos/product-zinc-plating.webp'));
+            $this->assertSame(6, substr_count($catalog, 'service-electroplating.webp') + substr_count($catalog, 'service-chemical-supply.webp'));
+        } finally {
+            unlink($path);
+        }
+    }
+
+    public function test_each_catalog_card_carries_the_data_of_its_process_category(): void
+    {
+        $catalog = $this->catalogHtml();
+
+        foreach (array_slice(config('landing.categories'), 0, 4) as $index => $category) {
+            $processes = $category['processes'];
+
+            $this->assertStringContainsString(e($category['name']), $catalog);
+            $this->assertStringContainsString('>'.sprintf('%02d', $index + 1).'</span>', $catalog);
+            $this->assertStringContainsString('>'.count($processes).'</span>', $catalog);
+
+            foreach (array_slice($processes, 0, 3) as $process) {
+                $this->assertStringContainsString('>'.e($process).'</li>', $catalog);
+            }
+
+            $more = count($processes) - 3;
+            $more > 0
+                ? $this->assertStringContainsString('>+'.$more.'</li>', $catalog)
+                : $this->assertStringNotContainsString('>+0</li>', $catalog);
+
+            // Only the first three processes are listed; the rest are counted.
+            if (isset($processes[3])) {
+                $this->assertStringNotContainsString('>'.e($processes[3]).'</li>', $catalog);
+            }
+        }
+
+        $this->assertSame(4, substr_count($catalog, __('home.catalog.view', [], 'en')));
+        $this->assertSame(4, substr_count($catalog, '>'.__('landing.nav.processes', [], 'en').'</span>'));
+    }
+
+    public function test_the_catalog_card_labels_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $this->assertNotSame('home.catalog.view', __('home.catalog.view', [], $code), $code);
+
+            $this->get("/{$code}")
+                ->assertSeeText(__('home.catalog.view', [], $code))
+                ->assertSeeText(__('landing.nav.processes', [], $code));
+        }
+
+        $this->assertNotSame(__('home.catalog.view', [], 'en'), __('home.catalog.view', [], 'id'));
+    }
+
+    public function test_the_photo_component_falls_back_to_another_photo_before_the_placeholder(): void
     {
         config(['landing.sample_content' => true]);
 
-        $response = $this->get('/en')->assertOk();
+        $withFallback = Blade::render('<x-landing.photo name="product-does-not-exist" fallback="service-electroplating" />');
+        $this->assertStringContainsString('images/landing/photos/service-electroplating.webp', $withFallback);
+        $this->assertStringNotContainsString('[PHOTO]', $withFallback);
 
-        foreach (array_slice(config('landing.categories'), 0, 4) as $category) {
-            $response->assertSee('[PHOTO] images/landing/photos/product-'.$category['slug'].'.webp');
-        }
+        $own = Blade::render('<x-landing.photo name="service-consultation" fallback="service-electroplating" />');
+        $this->assertStringContainsString('service-consultation.webp', $own);
+        $this->assertStringNotContainsString('service-electroplating', $own);
 
-        $response->assertDontSee('data-catalog-badge', false)
-            ->assertDontSee('data-catalog-label', false);
+        $neither = Blade::render('<x-landing.photo name="product-does-not-exist" fallback="also-missing" />');
+        $this->assertStringContainsString('[PHOTO] images/landing/photos/product-does-not-exist.webp', $neither);
+
+        $plain = Blade::render('<x-landing.photo name="product-does-not-exist" />');
+        $this->assertStringContainsString('[PHOTO] images/landing/photos/product-does-not-exist.webp', $plain);
     }
 
     public function test_catalog_description_and_button_exist_in_every_language(): void

@@ -21,6 +21,7 @@ return [
         'title' => 'Proses terkendali, hasil konsisten.',
         'text' => 'Setiap proses pelapisan yang kami jalankan mengikuti resep yang terdefinisi, sehingga hasil bulan depan sama dengan yang Anda setujui hari ini. Berikut empat dari kategori bahan kimia yang kami pasok.',
         'all' => 'Lihat semua proses',
+        'view' => 'Lihat kategori',
     ],
     'services' => [
         'title' => 'Layanan',
