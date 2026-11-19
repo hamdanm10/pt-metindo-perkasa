@@ -1,5 +1,5 @@
 <section data-hero class="flex min-h-svh flex-col justify-center bg-ink text-white" style="--focus-ring: #ffffff">
-    <div class="container-site grid w-full items-center gap-12 pb-16 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1.17fr)_minmax(0,1fr)] lg:gap-[3.4vw] lg:py-12">
+    <div class="container-site grid w-full items-center gap-12 pb-16 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] lg:gap-[2.4vw] lg:py-4">
         <div>
             <h1 data-anim="hero-title" class="text-balance text-[clamp(3rem,7.2vw,10rem)] font-black uppercase leading-[0.9] tracking-tight">
                 {{ __('home.hero.title') }}
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div data-anim="hero-item" data-hero-panel class="relative aspect-[1200/1410] w-full max-w-[40rem] justify-self-center lg:max-h-[calc(100svh-var(--header-h)-9rem)] lg:max-w-none" aria-hidden="true">
+        <div data-anim="hero-item" data-hero-panel class="relative aspect-[1200/1410] w-full max-w-[40rem] justify-self-center lg:w-[min(100%,calc((100svh_-_var(--header-h)_-_2rem)_*_0.851))] lg:max-w-none lg:justify-self-end" aria-hidden="true">
             <x-landing.professor-scene class="size-full" />
         </div>
     </div>
