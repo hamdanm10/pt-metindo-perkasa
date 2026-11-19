@@ -81,8 +81,8 @@ export const professor = () => {
         const lookX = clamp((state.cx - 600) / 350, -1, 1);
         const lookY = clamp((state.ry - 700) / 400, -1, 1);
         el.head.setAttribute('transform', `rotate(${(lookX * 3).toFixed(2)} 600 800)`);
-        el['eye-left'].setAttribute('transform', `translate(556 706) scale(1 ${state.blink.toFixed(2)})`);
-        el['eye-right'].setAttribute('transform', `translate(644 706) scale(1 ${state.blink.toFixed(2)})`);
+        el['eye-left'].setAttribute('transform', `translate(562 706) scale(1 ${state.blink.toFixed(2)})`);
+        el['eye-right'].setAttribute('transform', `translate(638 706) scale(1 ${state.blink.toFixed(2)})`);
         [el['pupil-left'], el['pupil-right']].forEach((pupil) => {
             pupil.setAttribute('cx', (lookX * 10).toFixed(1));
             pupil.setAttribute('cy', (lookY * 8).toFixed(1));
