@@ -61,9 +61,11 @@
 
                                 <ul class="mt-[2vw] grid gap-x-[2vw] sm:grid-cols-2 xl:grid-cols-3 max-lg:mt-6" lang="en" dir="ltr">
                                     @foreach ($category['processes'] as $process)
-                                        <li data-pitem class="flex items-baseline gap-3 border-t border-white/20 py-[0.75vw] text-[clamp(0.9rem,1vw,1.25rem)] font-semibold max-lg:py-3">
-                                            <span class="text-[0.7em] font-extrabold tabular-nums text-brand-300">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                                            <span>{{ $process }}</span>
+                                        <li data-pitem class="border-t border-white/20 text-[clamp(0.9rem,1vw,1.25rem)] font-semibold">
+                                            <a href="{{ route('landing.process.show', ['process' => Str::slug($process)]) }}" class="flex items-baseline gap-3 py-[0.75vw] hover:text-brand-300 max-lg:py-3">
+                                                <span class="text-[0.7em] font-extrabold tabular-nums text-brand-300">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                                                <span>{{ $process }}</span>
+                                            </a>
                                         </li>
                                     @endforeach
                                 </ul>

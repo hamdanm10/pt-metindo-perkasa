@@ -47,7 +47,7 @@ Minimalist flat vector illustration, square composition, one large crimson #D628
 Minimalist flat vector background, wide 16:9, solid ink navy #1B1F3B with one large crimson #D6283A quarter circle in the bottom left corner and one thin diagonal crimson line crossing the top right corner, empty center, nothing else in the image, no text, no gradients, no shadows.
 ```
 
-### 3. Ikon 13 kategori: `icon-<slug>.svg` (1:1)
+### 3. Ikon 14 kategori: `icon-<slug>.svg` (1:1)
 
 Satu gaya untuk semuanya: garis tebal berujung bulat seperti guratan monogram logo, dua warna (ink dan crimson). Jika paket Recraft punya pembuatan gaya dari gambar acuan, jadikan ikon pertama yang paling bagus sebagai gaya, lalu pakai untuk sisanya.
 

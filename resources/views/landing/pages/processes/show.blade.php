@@ -15,8 +15,17 @@
         <div class="container-site grid gap-10 lg:grid-cols-12 lg:gap-16 section-y">
             <h2 data-anim="heading" class="text-3xl font-black tracking-tight text-ink lg:col-span-4">{{ __('pages.processes.list') }}</h2>
             <ul data-anim="rows" class="lg:col-span-8">
-                @foreach ($category['processes'] as $process)
-                    <li class="border-t border-ink/20 py-5 text-2xl font-semibold text-ink last:border-b" lang="en" dir="ltr">{{ $process }}</li>
+                @foreach ($processes as $process)
+                    <li class="border-t border-ink/20 last:border-b">
+                        <a href="{{ route('landing.process.show', ['process' => $process['slug']]) }}" class="group flex items-baseline gap-5 py-5 hover:text-brand-700" lang="en" dir="ltr">
+                            <span class="w-[2ch] text-sm font-extrabold tabular-nums text-ink/40 group-hover:text-brand-600">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                            <span class="flex-1">
+                                <span class="block text-2xl font-semibold text-ink group-hover:text-brand-700">{{ $process['name'] }}</span>
+                                <span class="mt-1 block text-base text-ink/70">{{ $process['description'] }}</span>
+                            </span>
+                            <span class="shrink-0 text-sm font-bold">{{ __('pages.process.view') }} →</span>
+                        </a>
+                    </li>
                 @endforeach
             </ul>
         </div>

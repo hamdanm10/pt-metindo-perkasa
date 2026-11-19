@@ -40,6 +40,40 @@ return [
         ['slug' => 'sustainable-steel', 'name' => 'Sustainable Steel Solutions', 'processes' => ['Eco Passivation', 'Eco Degreasing', 'Low-Temperature Cleaning', 'Metal Recovery', 'Waste Minimization']],
         ['slug' => 'wastewater-treatment', 'name' => 'Wastewater Treatment Chemicals', 'processes' => ['Heavy Metal Precipitation', 'pH Neutralization', 'Coagulation & Flocculation', 'Ion Exchange', 'Sludge Dewatering']],
         ['slug' => 'chemical-laboratory', 'name' => 'Chemical Laboratory Services', 'processes' => ['Bath Analysis', 'Hull Cell Test', 'Thickness Testing', 'Salt Spray Test']],
+        ['slug' => 'chemical-alkaline-type', 'name' => 'Chemical Alkaline Type', 'processes' => ['Alkaline Zinc', 'Alkaline Copper', 'Alkaline Zinc-Nickel', 'Alkaline Tin', 'Alkaline Electro Cleaner', 'Alkaline Degreaser']],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Process Details
+    |--------------------------------------------------------------------------
+    |
+    | Steps and materials per process, keyed by the process slug (the name
+    | through Str::slug). Only Alkaline Zinc has steps in the prototype, and a
+    | process without an entry shows "no steps yet". Moves to the database
+    | together with the categories.
+    |
+    */
+
+    'process_details' => [
+        'alkaline-zinc' => [
+            'description' => 'Alkaline zinc plating process flow.',
+            'steps' => [
+                [
+                    'name' => 'Degreasing',
+                    'description' => 'Remove oil and grease from the surface.',
+                    'materials' => ['Epclen 62', 'Epclen 541', 'Hanson SC 821', 'Jasco CA 135G', 'Jasco Plus Clean A', 'Jasco Plus Clean B', 'Epclen 55RT', 'Epclen 20NS'],
+                ],
+                ['name' => 'Rinsing', 'description' => 'Rinse the surface with water.', 'materials' => []],
+                ['name' => 'Activation', 'description' => 'Activate the surface before plating.', 'materials' => []],
+                ['name' => 'Plating', 'description' => 'Deposit the zinc layer.', 'materials' => []],
+            ],
+        ],
+        'alkaline-copper' => ['description' => 'Alkaline copper plating process flow.'],
+        'alkaline-zinc-nickel' => ['description' => 'Alkaline zinc-nickel alloy plating process flow.'],
+        'alkaline-tin' => ['description' => 'Alkaline tin plating process flow.'],
+        'alkaline-electro-cleaner' => ['description' => 'Alkaline electrolytic cleaning process flow.'],
+        'alkaline-degreaser' => ['description' => 'Alkaline soak degreasing process flow.'],
     ],
 
     'partners' => ['Epclen', 'Hanson SC', 'Jasco', 'Plus Clean', 'Metindo Lab'],

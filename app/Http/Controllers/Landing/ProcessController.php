@@ -26,6 +26,10 @@ class ProcessController extends Controller
             fn (array $item): bool => $item['slug'] !== $current['slug'],
         ));
 
-        return view('landing.pages.processes.show', ['category' => $current, 'others' => $others]);
+        return view('landing.pages.processes.show', [
+            'category' => $current,
+            'processes' => $content->processes($current),
+            'others' => $others,
+        ]);
     }
 }

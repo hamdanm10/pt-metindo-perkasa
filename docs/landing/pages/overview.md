@@ -9,7 +9,7 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | # | Keputusan | Alasan |
 | --- | --- | --- |
 | 1 | Halaman: About, Processes (indeks dan kategori), Services, Articles (daftar dan detail), Contact | Susunan prototipe `homepage-2`. Menu "Products" di prototipe diganti "Processes" (Nov 2026), lihat keputusan 15 |
-| 2 | **Halaman detail proses (`/process/...`) tidak dibuat di L3** dan dipindah ke L4. Halaman kategori menampilkan nama proses tanpa tautan | Halaman itu murni data (langkah, diagram, bahan, TDS, harga) dan di prototipe pun masih kosong. Datanya hidup di database |
+| 2 | **Halaman detail proses (`/{locale}/process/{slug}`) dibuat di branch `feat/process-detail`**, mengikuti alur prototipe (kategori, daftar proses, detail proses). Datanya statis di `config/landing.php` (`process_details`, dengan kunci slug proses) sampai pindah ke database di L4. Hanya **Alkaline Zinc** yang punya langkah dan bahan (data asli prototipe, 4 langkah dan 8 bahan); proses lain menampilkan "No steps defined for this process yet." dan tanpa tombol diagram. Kategori **Chemical Alkaline Type** (6 proses) ditambahkan karena memuat satu-satunya data itu, sehingga kini ada **14 kategori** | Tampilan dirancang ulang, alurnya sama dengan prototipe. Tidak mengarang langkah atau bahan |
 | 3 | Satu penanda `landing.sample_content` (env `LANDING_SAMPLE_CONTENT`, bawaan aktif di luar production) mengatur konten contoh: anak perusahaan (artikel tidak lagi contoh, lihat catatan A2 di bawah). Bila mati, bagiannya hilang | Satu tombol untuk "konten contoh tidak boleh rilis". Menggantikan pemeriksaan `isProduction()` di beranda |
 | 4 | Sertifikasi (ISO 9001 dan ISO 14001) **tidak ditampilkan** | Di prototipe tampak contoh dan belum terverifikasi. Klaim sertifikasi tidak boleh dikarang |
 | 5 | Anak perusahaan (enam kota, tautan Google Maps) ditampilkan sebagai konten contoh | Data prototipe belum dikonfirmasi |
@@ -29,8 +29,9 @@ Seperti beranda, **halaman L3 tidak dirilis ke production** sebelum konten conto
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
 | About | `/{locale}/about` | Profil perusahaan, pendekatan, visi dan misi, fasilitas (teks), dan anak perusahaan sebagai **peta Indonesia** dengan pin (contoh). Isinya mengikuti halaman About prototipe `.../en/about`; tampilannya dirancang ulang ([`../ui/design.md`](../ui/design.md), bagian About) |
-| Processes | `/{locale}/processes` | Jumlah kategori, **daftar tab 13 kategori dengan panel rinci** (proses lengkap dan tautan "View all N processes" ke halaman kategori; mengikuti `homepage-5`), dan penjelasan empat tingkat katalog. Tanpa label "Process catalogue"; lihat [`../ui/design.md`](../ui/design.md), bagian Processes |
-| Kategori | `/{locale}/processes/{category}` | Nama kategori, daftar proses (tanpa tautan), kategori lain |
+| Processes | `/{locale}/processes` | Jumlah kategori, **daftar tab 14 kategori dengan panel rinci** (tiap proses bertautan ke halamannya, dan tautan "View all N processes" ke halaman kategori; mengikuti `homepage-5`), dan penjelasan empat tingkat katalog. Tanpa label "Process catalogue"; lihat [`../ui/design.md`](../ui/design.md), bagian Processes |
+| Kategori | `/{locale}/processes/{category}` | Nama kategori, daftar proses bernomor (nama, deskripsi singkat, tautan "View process"), kategori lain |
+| Detail proses | `/{locale}/process/{slug}` | Jejak remah (Processes / kategori), ringkasan (kategori, jumlah langkah, jumlah bahan), alur langkah bernomor dengan chip bahan, tombol **View diagram** (dialog berisi alur beranimasi), dan proses lain di kategori yang sama. Chip bahan membuka dialog detail bahan: Usage, Brochure, Product video, E-commerce (belum ada data, tampil "–"), serta TDS dan Price ("Request to admin", tautan ke Contact). Slug tidak dikenal menghasilkan 404 |
 | Services | `/{locale}/services` | Tiga layanan masing-masing dengan **ilustrasi** (sama dengan daftar layanan di beranda) dan tombol ke Contact, tautan loncat di pembuka, dan "How we work" empat langkah berurutan (Enquiry, Spec review, Process and supply, Delivery). Tanpa label "What we do"; lihat [`../ui/design.md`](../ui/design.md), bagian Services |
 | Articles | `/{locale}/articles` | Daftar artikel terbit di bahasa itu: satu artikel terbaru besar, kartu untuk sisanya, dan filter jenis dengan jumlah. 404 bila bahasa itu belum punya artikel terbit (kecuali mode contoh, yang menampilkan lima artikel contoh) |
 | Artikel | `/{locale}/articles/{slug}` | **Halaman baca ala Medium** (kolom 680 px): judul, jenis, tanggal, waktu baca, gambar, isi, tombol bagikan, jumlah view (mulai 10), dan artikel terkait |
@@ -53,7 +54,7 @@ Setiap halaman memakai komponen kepala halaman (judul, ringkasan, jejak remah bi
 
 ## Struktur kode
 
-- Controller invokable atau resource di `app/Http/Controllers/Landing`: `AboutController`, `ProductController` (`index`, `show`), `ServiceController`, `ArticleController` (`index`, `show`), `ContactController`.
+- Controller invokable atau resource di `app/Http/Controllers/Landing`: `AboutController`, `ProcessController` (`index`, `show`), `ProcessDetailController` (`show`), `ServiceController`, `ArticleController` (`index`, `show`), `ContactController`.
 - Route di `routes/landing/{about,processes,services,articles,contact}.php`. Resource dipakai untuk processes dan articles. Controller kategori: `ProcessController`.
 - `config/landing.php` ditambah: `sample_content`, `categories[].processes`, `subsidiaries`, `contact.address`, `contact.hours` (env `LANDING_SAMPLE_CONTENT`, `LANDING_CONTACT_ADDRESS`, `LANDING_CONTACT_HOURS`). Nomor WhatsApp tidak lagi di konfigurasi: dikelola admin ([`../whatsapp/overview.md`](../whatsapp/overview.md)).
 - `app/Services/Landing/LandingContent.php`: akses kategori, artikel, anak perusahaan, dan daftar menu. `SetLandingLocale` kini melepas parameter `locale` dari route setelah dipakai, supaya controller hanya menerima parameternya sendiri.
@@ -69,7 +70,7 @@ Test (feature) yang harus ada:
 
 - Setiap halaman mengembalikan 200 di kelima locale dengan `lang` dan `dir` yang benar, dan judulnya dalam bahasa aktif.
 - Kunci `lang/*/pages.php` dan `articles.php` identik di kelima bahasa.
-- Kategori yang tidak dikenal menghasilkan 404, semua 13 kategori menghasilkan 200 dan menampilkan prosesnya.
+- Kategori yang tidak dikenal menghasilkan 404, semua 14 kategori dan semua prosesnya menghasilkan 200 dan menampilkan prosesnya.
 - Artikel: filter `?type=` menyaring, slug tidak dikenal 404, dan dengan konten contoh nonaktif route artikel 404 serta menu tidak memuatnya.
 - Contact: elemen hanya muncul bila konfigurasinya diisi, dan tautan WhatsApp berbentuk `wa.me`.
 - Sertifikasi tidak muncul di About, dan anak perusahaan hanya muncul dengan konten contoh aktif.
@@ -79,7 +80,7 @@ Pemeriksaan manual di browser: semua halaman di ponsel dan desktop, Arab dalam R
 
 ## Ditunda
 
-- Halaman detail proses, langkah, diagram, bahan, TDS, dan harga (L4 dan L5).
+- Langkah dan bahan untuk proses selain Alkaline Zinc, data e-commerce, brosur, video, serta TDS dan harga yang sebenarnya (L4 dan L5). Permintaan TDS dan harga kini hanya mengarah ke Contact.
 - Empat grup di prototipe (Chemical Alkaline Type, Acid Type, Basic, Ferrous Metals Pre Treatment): isinya belum dikenal, jadi belum dimodelkan.
 - Formulir pesan di Contact (L5), widget chat (L7).
 - Sertifikasi, foto perusahaan, dan data resmi anak perusahaan menunggu konfirmasi client.

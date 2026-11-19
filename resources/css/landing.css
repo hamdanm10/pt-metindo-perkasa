@@ -894,6 +894,33 @@ html[dir='rtl'] .field__control::after {
     }
 }
 
+/* Process diagram: the connector from a step to the next one in the same row. The grid has 1, 2, or 4 columns. */
+.diagram-link {
+    transform-origin: left center;
+}
+
+[dir='rtl'] .diagram-link {
+    transform-origin: right center;
+}
+
+@media (max-width: 47.99rem) {
+    .diagram-link {
+        display: none;
+    }
+}
+
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+    [data-diagram-node]:nth-child(even) > .diagram-link {
+        display: none;
+    }
+}
+
+@media (min-width: 64rem) {
+    [data-diagram-node]:nth-child(4n) > .diagram-link {
+        display: none;
+    }
+}
+
 /* Ornaments on the home page: the chips (x-landing.chip). Transform only; still with reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
     .chip-slide-bands {
