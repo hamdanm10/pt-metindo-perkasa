@@ -7,6 +7,11 @@ import gsap from 'gsap';
  * seconds, `expo.out`) and the panel changes: the picture opens upward from its bottom edge while
  * its photo settles from 115%, the big number, the heading, the text, and each process rise in
  * one after another, and the previous panel fades away. With reduced motion the panel just changes.
+ *
+ * The list also advances by itself every few seconds (looping back to the first category). It
+ * pauses while the pointer or keyboard focus is inside the list, while the section is off screen,
+ * and while the browser tab is hidden. A click restarts the wait. With reduced motion it never
+ * advances on its own.
  */
 document.querySelectorAll('[data-ptabs]').forEach((root) => {
     const tabs = Array.from(root.querySelectorAll('[data-ptab]'));
@@ -20,7 +25,28 @@ document.querySelectorAll('[data-ptabs]').forEach((root) => {
         return;
     }
 
+    const AUTOPLAY_MS = 6000;
     let current = 0;
+    let timer = null;
+    let paused = false;
+    let onScreen = false;
+
+    const stopAuto = () => {
+        window.clearTimeout(timer);
+        timer = null;
+    };
+
+    const startAuto = () => {
+        stopAuto();
+
+        if (calm || paused || !onScreen || document.hidden) {
+            return;
+        }
+
+        timer = window.setTimeout(() => {
+            select(current + 1);
+        }, AUTOPLAY_MS);
+    };
 
     const placeBar = (index, instant = false) => {
         if (!bar || !wide.matches) {
@@ -98,6 +124,8 @@ document.querySelectorAll('[data-ptabs]').forEach((root) => {
         if (focus) {
             tabs[current].focus();
         }
+
+        startAuto();
     };
 
     tabs.forEach((tab, index) => {
@@ -118,6 +146,16 @@ document.querySelectorAll('[data-ptabs]').forEach((root) => {
             select(tabs.length - 1, true);
         }
     });
+
+    root.addEventListener('pointerenter', () => { paused = true; stopAuto(); });
+    root.addEventListener('pointerleave', () => { paused = root.querySelector(':focus-visible') !== null; startAuto(); });
+    root.addEventListener('focusin', () => { paused = root.querySelector(':focus-visible') !== null || root.matches(':hover'); stopAuto(); });
+    root.addEventListener('focusout', () => { paused = root.matches(':hover'); startAuto(); });
+    document.addEventListener('visibilitychange', startAuto);
+    new IntersectionObserver(([entry]) => {
+        onScreen = entry.isIntersecting;
+        startAuto();
+    }, { threshold: 0.3 }).observe(root);
 
     wide.addEventListener('change', () => placeBar(current, true));
     window.addEventListener('resize', () => placeBar(current, true));
