@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { professor } from './professor.js';
 import { all, canSplitChars, growLetters, rise, root } from './shared.js';
 
 export const hero = () => {
@@ -31,6 +32,8 @@ export const hero = () => {
     } else {
         start();
     }
+
+    professor();
 
     const panel = document.querySelector('[data-hero-panel]');
     const section = document.querySelector('[data-hero]');

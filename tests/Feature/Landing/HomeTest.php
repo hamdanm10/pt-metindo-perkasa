@@ -253,6 +253,30 @@ class HomeTest extends TestCase
         }
     }
 
+    public function test_hero_shows_the_electroplating_professor_scene_without_a_background(): void
+    {
+        $html = (string) $this->get('/en')->assertOk()->getContent();
+        $start = (int) strpos($html, '<section data-hero');
+        $hero = substr($html, $start, (int) strpos($html, '</section>', $start) - $start);
+
+        $this->assertStringContainsString('data-professor-scene', $hero);
+        $this->assertStringContainsString('aria-hidden="true"', $hero);
+        $this->assertStringNotContainsString('bg-lavender', $hero);
+        $this->assertStringNotContainsString('images/brand/logo.svg', $hero);
+
+        // Every part the animation looks up must exist in the artwork.
+        $script = (string) file_get_contents(resource_path('js/landing/motion/professor.js'));
+        preg_match_all("/'([a-z]+(?:-[a-z0-9]+)*)'/", (string) preg_replace('/^\s*(import|\/\/|\*|\/\*).*$/m', '', $script), $found);
+        $required = ['carriage', 'rope', 'rack', 'plated', 'lever', 'clipboard', 'arm-left-edge', 'arm-left-sleeve', 'arm-left-cuff', 'hand-left', 'arm-right-edge', 'arm-right-sleeve', 'arm-right-cuff', 'hand-right', 'head', 'eye-left', 'eye-right', 'pupil-left', 'pupil-right', 'needle', 'light-a', 'light-b', 'light-c', 'lamp-left', 'lamp-right', 'dial-left', 'dial-right', 'current-1', 'current-2', 'bubbles-1', 'bubbles-2'];
+
+        foreach ($required as $name) {
+            $this->assertStringContainsString('data-part="'.$name.'"', $hero, $name);
+            $this->assertContains($name, $found[1], $name);
+        }
+
+        $this->assertStringContainsString('data-part="spark"', $hero);
+    }
+
     public function test_brand_assets_are_the_new_monogram(): void
     {
         foreach (['images/brand/logo.svg', 'images/brand/logo-white.svg', 'favicon.svg', 'favicon.ico', 'apple-touch-icon.png'] as $file) {
