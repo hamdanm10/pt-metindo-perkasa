@@ -58,7 +58,7 @@
 <aside id="mobile-menu" data-menu hidden class="fixed inset-0 z-[45] lg:hidden" style="--focus-ring: #ffffff">
     <div data-menu-backdrop class="absolute inset-0 bg-ink/60"></div>
     <div data-menu-mask class="absolute inset-0 origin-top-left overflow-hidden">
-        <div data-menu-panel class="absolute inset-0 overflow-y-auto overflow-x-hidden bg-ink text-white">
+        <div data-menu-panel data-lenis-prevent class="absolute inset-0 overflow-y-auto overflow-x-hidden overscroll-contain bg-ink text-white">
             <nav aria-label="{{ __('landing.menu') }}" class="pt-[calc(var(--header-h)+1.5rem)]">
                 <ul class="border-b border-white/20">
                     @foreach ($menu as $item)
@@ -66,13 +66,23 @@
                             <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['active'])) aria-current="page" @endif class="menu-link block px-4 py-3 text-2xl font-bold aria-[current=page]:text-brand-300">{{ __($item['label']) }}@if ($newArticles && $item['route'] === 'landing.articles.index')<span data-new-badge class="ms-3 inline-block -translate-y-1 rounded-full bg-brand-600 px-2 py-1 align-middle text-xs font-extrabold uppercase leading-none tracking-wide text-white">{{ __('articles.new') }}</span>@endif</a>
                         </li>
                     @endforeach
+                    <li data-menu-item class="border-t border-white/20">
+                        <button type="button" data-accordion-toggle aria-expanded="false" aria-controls="menu-languages"
+                                class="lang-summary menu-link flex w-full items-center justify-between px-4 py-3 text-start text-2xl font-bold"
+                                aria-label="{{ __('landing.language') }}">
+                            <span lang="{{ $currentLocale['html_lang'] }}">{{ $currentLocale['name'] }}</span>
+                            <svg viewBox="0 0 20 20" class="size-6" fill="currentColor" aria-hidden="true"><path d="M5.25 7.5 10 12.25 14.75 7.5l1.06 1.06L10 14.37 4.19 8.56 5.25 7.5Z"/></svg>
+                        </button>
+                        <div id="menu-languages" class="menu-accordion">
+                            <div class="min-h-0 overflow-hidden">
+                                <x-landing.language-links menu :alternates="$alternates" />
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </nav>
-            <div data-menu-item class="px-4 pt-6">
-                <x-landing.button :href="route('portal.login')" variant="outline" :arrow="false">{{ __('landing.login') }}</x-landing.button>
-            </div>
             <div data-menu-item class="px-4 py-6">
-                <x-landing.language-links dark :alternates="$alternates" />
+                <x-landing.button :href="route('portal.login')" variant="outline" :arrow="false">{{ __('landing.login') }}</x-landing.button>
             </div>
         </div>
     </div>

@@ -52,7 +52,22 @@ if (toggle && menu) {
             .fromTo(items, { y: 52, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.7, ease: 'expo.out', stagger: 0.07, clearProps: 'transform,opacity,visibility' }, 0.33);
     };
 
+    // The language row: opens and closes its list (the animation is in the stylesheet) and, once open, brings the whole list into view.
+    const accordion = menu.querySelector('[data-accordion-toggle]');
+    const list = menu.querySelector('#menu-languages');
+
+    accordion?.addEventListener('click', () => {
+        const expand = accordion.getAttribute('aria-expanded') !== 'true';
+
+        accordion.setAttribute('aria-expanded', String(expand));
+
+        if (expand) {
+            window.setTimeout(() => list?.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'nearest' }), 560);
+        }
+    });
+
     const finish = () => {
+        accordion?.setAttribute('aria-expanded', 'false');
         menu.hidden = true;
         gsap.set([backdrop, mask, panel, ...items], { clearProps: 'all' });
         lock(false);

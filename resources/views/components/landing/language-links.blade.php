@@ -1,4 +1,4 @@
-@props(['stacked' => false, 'alternates' => null, 'dark' => false, 'dropdown' => false])
+@props(['stacked' => false, 'alternates' => null, 'dropdown' => false, 'menu' => false])
 
 @php
     $route = request()->route();
@@ -6,7 +6,19 @@
 @endphp
 
 <nav aria-label="{{ __('landing.language') }}">
-    @if ($dropdown)
+    @if ($menu)
+        {{-- Rows of the mobile menu: the same look as its menu items, the current language in the accent colour. --}}
+        <ul class="border-t border-white/20">
+            @foreach (config('locales.landing') as $code)
+                @php($locale = config("locales.locales.{$code}"))
+                <li class="menu-lang border-t border-white/10 first:border-t-0" style="--i: {{ $loop->index }}">
+                    <a href="{{ $alternates === null ? route($route->getName(), array_merge($route->parameters(), ['locale' => $code])) : ($alternates[$code] ?? route('landing.home', ['locale' => $code])) }}"
+                       lang="{{ $locale['html_lang'] }}" hreflang="{{ $locale['html_lang'] }}" @if ($code === $current) aria-current="true" @endif
+                       class="menu-link block px-4 py-3 ps-8 text-xl font-bold text-white/80 aria-[current=true]:text-brand-300">{{ $locale['name'] }}</a>
+                </li>
+            @endforeach
+        </ul>
+    @elseif ($dropdown)
         {{-- The list of the header dropdown: the code in the accent colour, the name beside it, and a crimson dot on the current language. --}}
         <ul class="lang-list flex flex-col">
             @foreach (config('locales.landing') as $code)
@@ -31,7 +43,7 @@
                    lang="{{ $locale['html_lang'] }}"
                    hreflang="{{ $locale['html_lang'] }}"
                    @if ($code === $current) aria-current="true" @endif
-                   class="{{ $dark ? 'flex min-h-11 items-center rounded-lg border border-white/25 px-4 text-sm font-semibold text-white hover:bg-white/10 aria-[current=true]:border-white aria-[current=true]:bg-white aria-[current=true]:font-bold aria-[current=true]:text-ink' : 'flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-ink hover:bg-lavender aria-[current=true]:bg-lavender aria-[current=true]:font-bold aria-[current=true]:text-brand-700' }}">
+                   class="flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-ink hover:bg-lavender aria-[current=true]:bg-lavender aria-[current=true]:font-bold aria-[current=true]:text-brand-700">
                     {{ $locale['name'] }}
                 </a>
             </li>
