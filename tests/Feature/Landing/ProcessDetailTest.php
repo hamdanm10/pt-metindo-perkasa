@@ -155,7 +155,7 @@ class ProcessDetailTest extends TestCase
 
         $this->assertNotNull($process);
         $this->assertSame(4, count($process['steps']));
-        $this->assertSame(8, $process['materials']);
+        $this->assertSame(8, $process['products']);
         $this->assertSame('chemical-alkaline-type', $process['category']['slug']);
         $this->assertSame(5, count($process['others']));
         $this->assertNull(app(LandingContent::class)->process('nope'));

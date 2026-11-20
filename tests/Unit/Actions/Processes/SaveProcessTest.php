@@ -21,7 +21,7 @@ class SaveProcessTest extends TestCase
         $first = Product::factory()->create();
         $second = Product::factory()->create();
 
-        $process = (new SaveProcess)->execute(null, 'Flow', 'flow', $category->id, true, ['en' => 'Text'], [
+        $process = app(SaveProcess::class)->execute(null, 'Flow', 'flow', $category->id, true, ['en' => 'Text'], [
             ['name' => 'One', 'descriptions' => ['en' => 'First', 'id' => ''], 'products' => [$second->id, $first->id]],
             ['name' => 'Two', 'descriptions' => ['en' => ''], 'products' => []],
         ]);
@@ -38,7 +38,7 @@ class SaveProcessTest extends TestCase
     public function test_it_updates_in_place_and_replaces_steps_and_languages(): void
     {
         $category = ProcessCategory::factory()->create();
-        $action = new SaveProcess;
+        $action = app(SaveProcess::class);
         $process = $action->execute(null, 'Flow', 'flow', $category->id, true, ['en' => 'Text', 'id' => 'Teks'], [
             ['name' => 'One', 'descriptions' => [], 'products' => []],
         ]);

@@ -57,14 +57,14 @@
                             <div class="p-[clamp(1.25rem,2.4vw,3rem)]">
                                 <p data-pitem class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-300">{{ __('pages.processes.position', ['number' => str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT), 'total' => count($categories)]) }}</p>
                                 <h2 data-ptitle class="mt-[0.6vw] text-[clamp(1.75rem,3.3vw,4.25rem)] font-black uppercase leading-[0.98] tracking-tight max-lg:mt-2" lang="en" dir="ltr">{{ $category['name'] }}</h2>
-                                <p data-pitem class="mt-[0.8vw] max-w-[34em] text-[clamp(1rem,1.15vw,1.45rem)] leading-snug text-white/75 max-lg:mt-3">{{ __("pages.processes.categories.{$category['slug']}") }}</p>
+                                <p data-pitem class="mt-[0.8vw] max-w-[34em] text-[clamp(1rem,1.15vw,1.45rem)] leading-snug text-white/75 max-lg:mt-3">{{ $category['description'] }}</p>
 
                                 <ul class="mt-[2vw] grid gap-x-[2vw] sm:grid-cols-2 xl:grid-cols-3 max-lg:mt-6" lang="en" dir="ltr">
                                     @foreach ($category['processes'] as $process)
                                         <li data-pitem class="border-t border-white/20 text-[clamp(0.9rem,1vw,1.25rem)] font-semibold">
-                                            <a href="{{ route('landing.process.show', ['process' => Str::slug($process)]) }}" class="flex items-baseline gap-3 py-[0.75vw] hover:text-brand-300 max-lg:py-3">
+                                            <a href="{{ route('landing.process.show', ['process' => $process['slug']]) }}" class="flex items-baseline gap-3 py-[0.75vw] hover:text-brand-300 max-lg:py-3">
                                                 <span class="text-[0.7em] font-extrabold tabular-nums text-brand-300">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                                                <span>{{ $process }}</span>
+                                                <span>{{ $process['name'] }}</span>
                                             </a>
                                         </li>
                                     @endforeach

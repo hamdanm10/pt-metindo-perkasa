@@ -8,4 +8,4 @@ use Illuminate\Support\Facades\Route;
 Route::resource('processes', ProcessController::class)
     ->only(['index', 'show'])
     ->parameters(['processes' => 'category'])
-    ->where(['category' => implode('|', array_column(config('landing.categories'), 'slug'))]);
+    ->where(['category' => '[a-z0-9]+(?:-[a-z0-9]+)*']);

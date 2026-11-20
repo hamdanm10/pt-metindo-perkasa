@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\ProcessCategories;
 
 use App\Models\ProcessCategory;
+use App\Services\Landing\LandingProcesses;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
  */
 class MoveProcessCategory
 {
+    public function __construct(private readonly LandingProcesses $landing) {}
+
     public function execute(ProcessCategory $processCategory, bool $up): void
     {
         DB::transaction(function () use ($processCategory, $up): void {
@@ -38,5 +41,7 @@ class MoveProcessCategory
                 ProcessCategory::query()->whereKey($id)->update(['position' => $position]);
             }
         });
+
+        $this->landing->flush();
     }
 }

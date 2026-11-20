@@ -17,7 +17,7 @@ class SaveProcessCategoryTest extends TestCase
     {
         ProcessCategory::factory()->create(['position' => 3]);
 
-        $category = (new SaveProcessCategory)->execute(null, 'Name', 'name', true, ['en' => 'Text']);
+        $category = app(SaveProcessCategory::class)->execute(null, 'Name', 'name', true, ['en' => 'Text']);
 
         $this->assertTrue($category->exists);
         $this->assertSame(4, $category->position);
@@ -26,7 +26,7 @@ class SaveProcessCategoryTest extends TestCase
 
     public function test_it_updates_in_place_and_replaces_the_languages(): void
     {
-        $action = new SaveProcessCategory;
+        $action = app(SaveProcessCategory::class);
         $category = $action->execute(null, 'Name', 'name', true, ['en' => 'Text', 'id' => 'Teks']);
 
         $action->execute($category, 'Changed', 'name', false, ['en' => 'New text']);

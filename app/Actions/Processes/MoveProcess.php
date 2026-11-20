@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Processes;
 
 use App\Models\Process;
+use App\Services\Landing\LandingProcesses;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
  */
 class MoveProcess
 {
+    public function __construct(private readonly LandingProcesses $landing) {}
+
     public function execute(Process $process, bool $up): void
     {
         DB::transaction(function () use ($process, $up): void {
@@ -39,5 +42,7 @@ class MoveProcess
                 Process::query()->whereKey($id)->update(['position' => $position]);
             }
         });
+
+        $this->landing->flush();
     }
 }

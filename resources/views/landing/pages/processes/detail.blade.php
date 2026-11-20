@@ -24,7 +24,7 @@
                 </div>
                 <div class="bg-white p-6">
                     <dt class="text-xs font-extrabold uppercase text-ink/60">{{ __('pages.process.materials') }}</dt>
-                    <dd class="mt-3 text-4xl font-black tabular-nums text-ink">{{ str_pad((string) $process['materials'], 2, '0', STR_PAD_LEFT) }}</dd>
+                    <dd class="mt-3 text-4xl font-black tabular-nums text-ink">{{ str_pad((string) $process['products'], 2, '0', STR_PAD_LEFT) }}</dd>
                 </div>
             </dl>
         </div>
@@ -52,16 +52,28 @@
                             <span class="absolute start-0 top-0 inline-flex size-11 items-center justify-center rounded-full bg-brand-600 text-sm font-extrabold text-white" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                             <div class="rounded-lg bg-white p-6">
                                 <h3 class="text-xl font-black text-ink" lang="en" dir="ltr">{{ $step['name'] }}</h3>
-                                <p class="mt-1 text-ink/75" lang="en" dir="ltr">{{ $step['description'] }}</p>
-                                @if ($step['materials'] !== [])
+                                @if ($step['description'] !== '')
+                                    <p class="mt-1 text-ink/75" lang="en" dir="ltr">{{ $step['description'] }}</p>
+                                @endif
+                                @if ($step['products'] !== [])
                                     <p class="mt-5 text-xs font-extrabold uppercase text-ink/60">{{ __('pages.process.materials') }}</p>
                                     <ul class="mt-3 flex flex-wrap gap-2" lang="en" dir="ltr">
-                                        @foreach ($step['materials'] as $material)
+                                        @foreach ($step['products'] as $product)
                                             <li>
-                                                <button type="button" data-material-open data-name="{{ $material['name'] }}"
-                                                        data-usage="{{ __('pages.process.usage_text', ['name' => $material['name'], 'step' => mb_strtolower($step['name'])]) }}"
+                                                @php
+                                                    $detail = [
+                                                        'name' => $product['name'],
+                                                        'usage' => $product['description'] ?? __('pages.process.usage_text', ['name' => $product['name'], 'step' => mb_strtolower($step['name'])]),
+                                                        'brochure' => $product['brochure_url'],
+                                                        'video' => $product['video_url'],
+                                                        'price' => $product['price'],
+                                                        'tds' => $product['tds_url'],
+                                                        'links' => $product['links'],
+                                                    ];
+                                                @endphp
+                                                <button type="button" data-material-open data-product="{{ json_encode($detail, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) }}"
                                                         class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-ink/30 bg-white px-4 text-sm font-semibold text-ink hover:border-brand-700 hover:text-brand-700">
-                                                    {{ $material['name'] }}<span aria-hidden="true" class="text-brand-600">+</span>
+                                                    {{ $product['name'] }}<span aria-hidden="true" class="text-brand-600">+</span>
                                                 </button>
                                             </li>
                                         @endforeach
@@ -111,14 +123,16 @@
                         <span data-diagram-link class="diagram-link absolute start-11 top-5 h-[3px] w-[calc(100%-2.75rem)] bg-brand-600 {{ $loop->last ? 'hidden' : '' }}" aria-hidden="true"></span>
                         <span data-diagram-badge class="relative z-10 inline-flex size-11 items-center justify-center rounded-full bg-white text-sm font-extrabold text-brand-700 ring-2 ring-brand-600 transition-colors duration-300 data-[reached]:bg-brand-600 data-[reached]:text-white">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <h3 class="mt-3 pe-4 text-lg font-black">{{ $step['name'] }}</h3>
-                        <p class="mt-1 pe-4 text-sm text-ink/75">{{ $step['description'] }}</p>
+                        @if ($step['description'] !== '')
+                            <p class="mt-1 pe-4 text-sm text-ink/75">{{ $step['description'] }}</p>
+                        @endif
                     </li>
                 @endforeach
             </ol>
         </dialog>
     @endif
 
-    <dialog data-material-dialog aria-labelledby="material-title" class="m-auto w-[min(32rem,calc(100vw-2rem))] max-w-none rounded-lg bg-white p-0 text-ink backdrop:bg-ink/70">
+    <dialog data-material-dialog data-open-label="{{ __('pages.process.open') }}" data-request-label="{{ __('pages.process.request') }}" data-contact-url="{{ route('landing.contact') }}" aria-labelledby="material-title" class="m-auto w-[min(32rem,calc(100vw-2rem))] max-w-none rounded-lg bg-white p-0 text-ink backdrop:bg-ink/70">
         <div class="flex items-start justify-between gap-4 border-b border-ink/15 p-5">
             <div>
                 <p class="text-xs font-extrabold uppercase text-brand-700">{{ __('pages.process.material_detail') }}</p>
@@ -127,12 +141,9 @@
             <button type="button" data-dialog-close class="inline-flex min-h-11 shrink-0 items-center rounded-lg bg-ink px-4 text-sm font-bold text-white hover:bg-brand-600">{{ __('pages.process.close') }}</button>
         </div>
         <dl class="divide-y divide-ink/10 p-5">
-            <div class="py-3"><dt class="text-xs font-extrabold uppercase text-ink/60">{{ __('pages.process.usage') }}</dt><dd data-material-usage class="mt-1" lang="en" dir="ltr"></dd></div>
-            @foreach (['brochure', 'video', 'ecommerce'] as $field)
-                <div class="py-3"><dt class="text-xs font-extrabold uppercase text-ink/60">{{ __("pages.process.{$field}") }}</dt><dd class="mt-1 text-ink/60">–</dd></div>
-            @endforeach
-            @foreach (['tds', 'price'] as $field)
-                <div class="py-3"><dt class="text-xs font-extrabold uppercase text-ink/60">{{ __("pages.process.{$field}") }}</dt><dd class="mt-1"><a href="{{ route('landing.contact') }}" class="font-semibold text-brand-700 underline underline-offset-4">{{ __('pages.process.request') }}</a></dd></div>
+            <div class="py-3"><dt class="text-xs font-extrabold uppercase text-ink/60">{{ __('pages.process.usage') }}</dt><dd data-material-usage class="mt-1 whitespace-pre-line"></dd></div>
+            @foreach (['brochure', 'video', 'ecommerce', 'tds', 'price'] as $field)
+                <div class="py-3"><dt class="text-xs font-extrabold uppercase text-ink/60">{{ __("pages.process.{$field}") }}</dt><dd data-material-{{ $field }} class="mt-1 text-ink/60">–</dd></div>
             @endforeach
         </dl>
     </dialog>
