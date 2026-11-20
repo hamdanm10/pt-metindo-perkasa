@@ -10,6 +10,10 @@ return [
     'create_description' => 'Fill in the shared details, then write each language yourself. English is required.',
     'edit_description' => 'Change the details or the texts of this service.',
     'edit_title' => 'Edit service',
+    'move_up' => 'Up',
+    'move_down' => 'Down',
+    'language_filled' => 'Written',
+    'language_empty' => 'Not written',
     'edit' => 'Edit',
     'search' => 'Search name',
     'actions' => 'Actions',
@@ -42,10 +46,10 @@ return [
         'included' => 'One item per line.',
     ],
     'messages' => [
+        'name_unusable' => 'This name gives an address that another service already uses or cannot be made into an address. Use a different name.',
         'created' => 'Service added.',
         'updated' => 'Changes saved.',
         'default_language_required' => 'Write the :language texts: they are shown in languages without a translation.',
         'included_item_too_long' => 'Each item of the list can be at most 255 characters.',
-        'name_unusable' => 'This name gives an address that another service already uses or cannot be made into an address. Use a different name.',
     ],
 ];

@@ -253,7 +253,36 @@ class ServiceAdminTest extends TestCase
         $service->translations()->create(['locale' => 'en', 'title' => 'E']);
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Index::class)
-            ->assertSeeInOrder(['Listed', 'listed', 'EN, JA', __('services.inactive')]);
+            ->assertSeeInOrder(['Listed', 'listed', 'English:', __('services.language_filled'), 'Bahasa Indonesia:', __('services.language_empty'), '日本語:', __('services.language_filled'), __('services.inactive')]);
+    }
+
+    public function test_services_move_up_and_down_in_the_whole_list(): void
+    {
+        $a = Service::factory()->create(['name' => 'A', 'position' => 0]);
+        $b = Service::factory()->create(['name' => 'B', 'position' => 0]);
+        $c = Service::factory()->create(['name' => 'C', 'position' => 7]);
+        $admin = User::factory()->admin()->create();
+
+        Livewire::actingAs($admin)->test(Index::class)->call('move', $c->id, 'up');
+        $this->assertSame([$a->id, $c->id, $b->id], Service::query()->orderBy('position')->pluck('id')->all());
+
+        Livewire::actingAs($admin)->test(Index::class)->call('move', $a->id, 'up');
+        $this->assertSame(0, $a->refresh()->position);
+
+        Livewire::actingAs($admin)->test(Index::class)->call('move', $a->id, 'down');
+        $this->assertSame([$c->id, $a->id, $b->id], Service::query()->orderBy('position')->pluck('id')->all());
+        $this->assertSame(2, $b->refresh()->position);
+    }
+
+    public function test_only_admins_can_move_services(): void
+    {
+        $service = Service::factory()->create(['position' => 0]);
+        Service::factory()->create(['position' => 1]);
+
+        Livewire::actingAs(User::factory()->staff()->create())->test(Index::class)->assertForbidden();
+        $this->actingAs(User::factory()->staff()->create())->get('/app/services')->assertForbidden();
+
+        $this->assertSame(0, $service->refresh()->position);
     }
 
     public function test_the_list_is_ordered_by_position_then_name(): void

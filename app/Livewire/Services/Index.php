@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Services;
 
 use App\Actions\Services\ListServices;
+use App\Actions\Services\MoveService;
 use App\Models\Service;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
@@ -28,11 +29,23 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function move(MoveService $moveService, int $id, string $direction): void
+    {
+        $service = Service::query()->findOrFail($id);
+
+        $this->authorize('update', $service);
+
+        $moveService->execute($service, $direction === 'up');
+    }
+
     public function render(ListServices $listServices): View
     {
         $this->authorize('viewAny', Service::class);
 
-        return view('livewire.services.index', ['services' => $listServices->execute($this->search)])
+        return view('livewire.services.index', [
+            'services' => $listServices->execute($this->search),
+            'ends' => $listServices->ends(),
+        ])
             ->layout('components.dashboard.layout', ['title' => __('services.title')]);
     }
 }

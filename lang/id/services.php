@@ -10,6 +10,10 @@ return [
     'create_description' => 'Isi data bersama, lalu tulis tiap bahasa sendiri. Bahasa Inggris wajib.',
     'edit_description' => 'Ubah data atau teks layanan ini.',
     'edit_title' => 'Ubah layanan',
+    'move_up' => 'Naik',
+    'move_down' => 'Turun',
+    'language_filled' => 'Terisi',
+    'language_empty' => 'Belum ditulis',
     'edit' => 'Ubah',
     'search' => 'Cari nama',
     'actions' => 'Aksi',
@@ -42,10 +46,10 @@ return [
         'included' => 'Satu butir per baris.',
     ],
     'messages' => [
+        'name_unusable' => 'Nama ini menghasilkan alamat yang sudah dipakai layanan lain atau tidak bisa dijadikan alamat. Pakai nama lain.',
         'created' => 'Layanan ditambahkan.',
         'updated' => 'Perubahan disimpan.',
         'default_language_required' => 'Tulis teks :language: teks itu tampil di bahasa yang belum diterjemahkan.',
         'included_item_too_long' => 'Setiap butir daftar maksimal 255 karakter.',
-        'name_unusable' => 'Nama ini menghasilkan alamat yang sudah dipakai layanan lain atau tidak bisa dijadikan alamat. Pakai nama lain.',
     ],
 ];
