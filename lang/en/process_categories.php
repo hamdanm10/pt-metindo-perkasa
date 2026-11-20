@@ -20,11 +20,13 @@ return [
     'empty' => 'No process categories yet.',
     'save' => 'Save',
     'cancel' => 'Cancel',
+    'image_current' => 'Current image',
     'status' => 'Status',
     'processes' => 'Processes',
     'active' => 'Active',
     'inactive' => 'Hidden',
     'fields' => [
+        'image' => 'Image',
         'name' => 'Name',
         'slug' => 'Address (slug)',
         'active' => 'Show on the website',
@@ -32,6 +34,7 @@ return [
         'description' => 'Description',
     ],
     'hints' => [
+        'image' => 'JPG, PNG or WebP up to 2 MB, at least 800x600. It is cropped to 4:3 and shown on the process pages and the home page.',
         'name' => 'The name shown on the website. The page address is made from it when the category is added.',
         'active' => 'Turn off to hide the category and its processes without deleting them.',
         'languages' => 'A language without any text is not saved. A language without a translation shows the English text.',

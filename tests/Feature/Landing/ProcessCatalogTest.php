@@ -62,6 +62,40 @@ class ProcessCatalogTest extends TestCase
         $this->get('/en/process/custom-flow')->assertNotFound();
     }
 
+    public function test_the_category_picture_shows_on_the_pages_and_the_home_page(): void
+    {
+        $data = $this->catalog();
+        $data['category']->update(['image_path' => 'process-categories/pic.webp']);
+        app(LandingProcesses::class)->flush();
+
+        foreach (['/en/processes', '/en/processes/custom-category', '/en'] as $url) {
+            $this->get($url)->assertOk()->assertSee('/storage/process-categories/pic.webp', false);
+        }
+    }
+
+    public function test_a_category_without_a_picture_shows_no_uploaded_picture(): void
+    {
+        $this->catalog();
+
+        $this->get('/en/processes')->assertOk()->assertDontSee('/storage/process-categories/', false);
+    }
+
+    public function test_the_static_catalog_shows_the_picture_of_the_category_with_the_same_name_or_address(): void
+    {
+        config(['landing.catalog_source' => 'static']);
+        $byName = ProcessCategory::factory()->create(['name' => 'Zinc Plating Chemicals', 'slug' => 'zinc-plating-chemicals', 'image_path' => 'process-categories/by-name.webp']);
+        ProcessCategory::factory()->create(['name' => 'Anything', 'slug' => 'nickel-plating', 'image_path' => 'process-categories/by-slug.webp']);
+        ProcessCategory::factory()->create(['name' => 'Hidden Copper', 'slug' => 'copper-plating', 'image_path' => 'process-categories/hidden.webp', 'is_active' => false]);
+        app(LandingProcesses::class)->flush();
+
+        $html = (string) $this->get('/en/processes')->assertOk()->getContent();
+
+        $this->assertStringContainsString('/storage/process-categories/by-name.webp', $html);
+        $this->assertStringContainsString('/storage/process-categories/by-slug.webp', $html);
+        $this->assertStringNotContainsString('hidden.webp', $html);
+        $this->assertSame('Zinc Plating Chemicals', $byName->name);
+    }
+
     public function test_without_an_active_category_the_static_catalog_is_shown(): void
     {
         $this->get('/en/processes')->assertOk()->assertSee('Zinc Plating Chemicals');

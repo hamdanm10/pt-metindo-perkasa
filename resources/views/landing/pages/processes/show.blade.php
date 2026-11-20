@@ -34,7 +34,7 @@
     <section class="bg-lavender text-ink">
         <div class="container-site section-y grid items-start gap-10 lg:grid-cols-[4fr_8fr] lg:gap-[2.5vw]">
             <div class="{{ $tone }} relative aspect-[4/3] overflow-hidden rounded-lg lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]" aria-hidden="true">
-                <x-landing.photo :name="'product-'.$category['slug']" ratio="aspect-[4/3]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
+                <x-landing.photo :name="'product-'.$category['slug']" :src="$category['image']" ratio="aspect-[4/3]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
             </div>
 
             <ul data-anim="rows" class="grid gap-4 sm:grid-cols-2">

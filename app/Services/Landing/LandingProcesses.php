@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Services\Landing;
 
 use App\Models\ProcessCategory;
+use App\Services\ProcessCategories\ProcessCategoryImageStore;
 use App\Services\Products\ProductTdsStore;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 /**
  * The process catalog of the landing as the admin set it in the dashboard: active categories, their active
@@ -17,11 +19,14 @@ use Illuminate\Support\Facades\Cache;
  * @phpstan-type Product array{slug: string, name: string, description: string|null, brochure_url: string|null, video_url: string|null, price: string|null, tds_url: string|null, links: list<array{label: string, url: string}>}
  * @phpstan-type Step array{name: string, description: string|null, products: list<Product>}
  * @phpstan-type Process array{slug: string, name: string, description: string|null, steps: list<Step>}
- * @phpstan-type Category array{slug: string, name: string, description: string|null, processes: list<Process>}
+ * @phpstan-type Category array{slug: string, name: string, description: string|null, image: string|null, processes: list<Process>}
  */
 class LandingProcesses
 {
-    public function __construct(private readonly ProductTdsStore $tds) {}
+    public function __construct(
+        private readonly ProductTdsStore $tds,
+        private readonly ProcessCategoryImageStore $images,
+    ) {}
 
     /**
      * @return list<Category>
@@ -34,8 +39,36 @@ class LandingProcesses
         return $categories;
     }
 
+    /**
+     * The picture URL of every active category that has one, by its address and by the address its name
+     * gives, so the static catalog can show the pictures the admin uploaded for categories of the same name.
+     *
+     * @return array<string, string>
+     */
+    public function images(): array
+    {
+        /** @var array<string, string> $images */
+        $images = Cache::rememberForever('landing.process_images', function (): array {
+            $images = [];
+
+            foreach (ProcessCategory::query()->where('is_active', true)->whereNotNull('image_path')->orderBy('position')->get(['name', 'slug', 'image_path']) as $category) {
+                $url = $this->images->url((string) $category->image_path);
+
+                foreach ([(string) $category->slug, Str::slug($category->name)] as $key) {
+                    $images[$key] ??= $url;
+                }
+            }
+
+            return $images;
+        });
+
+        return $images;
+    }
+
     public function flush(): void
     {
+        Cache::forget('landing.process_images');
+
         foreach (config()->array('locales.landing') as $locale) {
             Cache::forget($this->key($locale));
         }
@@ -120,6 +153,7 @@ class LandingProcesses
                 'slug' => (string) $category->slug,
                 'name' => $category->name,
                 'description' => $this->text($category->translations->pluck('description', 'locale')->all(), $locale, $default),
+                'image' => $category->image_path === null ? null : $this->images->url($category->image_path),
                 'processes' => $processes,
             ];
         }

@@ -26,13 +26,13 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 | 6 | **Langkah dikelola di dalam form proses**: tambah, hapus, geser, lalu pilih produk tiap langkah lewat dropdown pencarian `Lookup` (sumber baru `produk`, banyak pilihan). Satu transaksi di `SaveProcess` | Admin tidak perlu halaman terpisah |
 | 7 | Satu produk boleh dipakai di banyak langkah (tabel pivot `process_step_product`, pasangan unik, ada `position`). Produk nonaktif disembunyikan dari langkah di landing tetapi tidak dilepas dari pivot | Mudah diaktifkan lagi |
 | 8 | **Tanpa impor data awal dan tanpa seeder.** Admin mengisi kategori, proses, langkah, dan produk lewat dashboard. Satu-satunya migrasi data: deskripsi kategori A3 yang sudah ada dipindah ke terjemahan bahasa Inggris. **Data statis di `config/landing.php` dan teks kategori di `lang/*/pages.php` tidak dihapus dulu, dan untuk saat ini landing memakai data statis**: sumbernya diatur `landing.catalog_source` (env `LANDING_CATALOG_SOURCE`, bawaan `static`). Dengan `database`, landing memakai database begitu ada satu kategori aktif dan data statis selama belum ada (semua atau tidak sama sekali, tidak dicampur). Penghapusannya menunggu dashboard dirapikan dan data diisi | Landing tidak kosong selama admin belum mengisi. Aturan proyek: tanpa data contoh |
-| 9 | Foto kategori tetap berkas statis `public/images/landing/photos/product-<slug>` dengan cadangan yang sudah ada. Unggah foto lewat dashboard ditunda | Cakupan |
+| 9 | **Gambar kategori diunggah admin** (JPG, PNG, atau WebP, maks 2 MB, minimal 800x600, dipotong 4:3 dan disimpan WebP di disk `public` dengan nama acak lewat `ProcessCategoryImageStore`, file lama dihapus saat diganti). Dipakai di daftar proses (panel 16:8), halaman kategori, dan kartu katalog beranda. Tanpa gambar unggahan, landing memakai berkas statis `public/images/landing/photos/product-<slug>` dan cadangan yang sudah ada. Pada mode landing `static`, gambar kategori database dipakai untuk kategori statis yang slug atau nama-slug-nya sama, dan hanya dari kategori aktif | Kotak gambar di landing yang tadinya kosong terisi dari dashboard |
 
 ## Data
 
 - `products`: `name` (unik, maks 255), `slug` (unik), `brochure_url`, `video_url` (maks 2048, harus `https`), `price` (rupiah bulat, boleh kosong), `tds_path` (PDF maks 5 MB di disk `public`, nama acak), `is_active`. Terjemahan: `description` (penjelasan penggunaan, maks 2000).
 - `product_links`: `product_id`, `label` (nama olshop, contoh Tokopedia), `url` (`https`), `position`. Tautan e-commerce bisa lebih dari satu.
-- `process_categories` (sudah ada): tambah `slug` (unik), `position`, `is_active`. `description` dipindah ke `process_category_translations` bahasa Inggris oleh migration lalu kolomnya dihapus, dan `slug` diisi dari nama.
+- `process_categories` (sudah ada): tambah `slug` (unik), `position`, `is_active`, `image_path`. `description` dipindah ke `process_category_translations` bahasa Inggris oleh migration lalu kolomnya dihapus, dan `slug` diisi dari nama.
 - `processes`: `process_category_id` (index, `restrictOnDelete`), `name` (unik), `slug` (unik), `position`, `is_active`. Terjemahan di `process_translations`: `description`.
 - `process_steps`: `process_id` (`cascadeOnDelete`), `name`, `position`. Terjemahan di `process_step_translations`: `description` (opsional, maks 1000, tidak disimpan bila kosong).
 - `process_step_product`: `process_step_id`, `product_id`, `position`, pasangan unik.
@@ -55,7 +55,7 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 - Route kategori menerima slug apa saja (huruf kecil, angka, tanda hubung). Slug yang tidak ada atau nonaktif menjadi 404. Kategori nonaktif menyembunyikan prosesnya (404 di halaman detail), proses nonaktif hilang dari daftar dan "proses lain", produk nonaktif hilang dari langkah.
 - Dialog produk di halaman detail: penjelasan (cadangan: kalimat umum seperti sebelumnya), brosur, video, tautan olshop (satu tautan per toko, `target="_blank"`, `rel="noopener noreferrer"`), TDS, dan harga ("Rp 125.000"). Brosur, video, dan olshop kosong tampil "–". TDS atau harga kosong tetap menautkan ke halaman kontak ("Request to admin") sampai L5. Data dikirim sebagai JSON di atribut tombol (di-escape Blade), dan JavaScript membuat elemen dengan `textContent`, hanya menerima tautan `https` atau berkas situs sendiri.
 - Label landing "Materials / Material detail" diganti "Products / Product detail" di lima bahasa (kunci `pages.process.materials` dan `material_detail` tetap), dan ada kunci baru `pages.process.open`.
-- Beranda menampilkan empat kategori pertama menurut `position`. Kategori tanpa proses aktif tetap muncul dengan jumlah 0. Nama berkas foto kategori tetap `product-<slug>` dengan cadangan yang sudah ada.
+- Beranda menampilkan empat kategori pertama menurut `position`. Kategori tanpa proses aktif tetap muncul dengan jumlah 0. Gambar kategori dari `image_path` (lihat keputusan 9), dengan berkas statis `product-<slug>` sebagai cadangan. Cache gambar untuk mode statis (`LandingProcesses::images()`) dibersihkan bersama katalog.
 
 ## Aturan keamanan dan kasus tepi
 
@@ -75,7 +75,7 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 
 ## Ditunda
 
-- Hapus kategori, proses, dan produk. Unggah foto kategori. Nama yang diterjemahkan. Seret dan lepas. `<title>` dan meta per proses. Permintaan harga dan unduhan TDS lewat formulir (L5). Gambar atau diagram unggahan per langkah.
+- Hapus kategori, proses, dan produk. Nama yang diterjemahkan. Seret dan lepas. `<title>` dan meta per proses. Permintaan harga dan unduhan TDS lewat formulir (L5). Gambar atau diagram unggahan per langkah.
 
 ## Catatan A9
 

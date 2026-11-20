@@ -10,7 +10,9 @@ use App\Models\Process;
 use App\Models\ProcessCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -126,6 +128,56 @@ class ProcessCategoryAdminTest extends TestCase
 
         $this->assertSame(['en'], $category->translations()->pluck('locale')->all());
         $this->assertSame(1, ProcessCategory::query()->count());
+    }
+
+    public function test_admin_adds_a_category_with_a_picture(): void
+    {
+        Storage::fake('public');
+
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+            ->set('form.name', 'With Picture')
+            ->set('form.descriptions.en', 'x')
+            ->set('form.image', UploadedFile::fake()->image('cover.jpg', 1000, 800))
+            ->call('save')->assertHasNoErrors();
+
+        $category = ProcessCategory::query()->firstOrFail();
+        $this->assertNotNull($category->image_path);
+        $this->assertStringStartsWith('process-categories/', (string) $category->image_path);
+        Storage::disk('public')->assertExists((string) $category->image_path);
+    }
+
+    public function test_the_picture_must_be_a_large_enough_picture(): void
+    {
+        Storage::fake('public');
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class);
+
+        $component->set('form.image', UploadedFile::fake()->image('small.jpg', 200, 200))->assertHasErrors(['form.image']);
+        $component->set('form.image', UploadedFile::fake()->create('doc.pdf', 10, 'application/pdf'))->assertHasErrors(['form.image']);
+        $component->set('form.image', UploadedFile::fake()->image('big.jpg', 1000, 800)->size(3000))->assertHasErrors(['form.image']);
+        $component->set('form.image', UploadedFile::fake()->image('ok.png', 1000, 800))->assertHasNoErrors(['form.image']);
+    }
+
+    public function test_a_new_picture_replaces_the_old_file_and_saving_without_one_keeps_it(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->admin()->create();
+        Storage::disk('public')->put('process-categories/old.webp', 'old');
+        $category = ProcessCategory::factory()->create(['image_path' => 'process-categories/old.webp']);
+        $category->translations()->create(['locale' => 'en', 'description' => 'x']);
+
+        Livewire::actingAs($admin)->test(Editor::class, ['processCategory' => $category])
+            ->set('form.name', 'Renamed')->call('save')->assertHasNoErrors();
+        $this->assertSame('process-categories/old.webp', $category->refresh()->image_path);
+        Storage::disk('public')->assertExists('process-categories/old.webp');
+
+        Livewire::actingAs($admin)->test(Editor::class, ['processCategory' => $category])
+            ->set('form.image', UploadedFile::fake()->image('new.jpg', 1000, 800))
+            ->call('save')->assertHasNoErrors();
+
+        $category->refresh();
+        Storage::disk('public')->assertMissing('process-categories/old.webp');
+        Storage::disk('public')->assertExists((string) $category->image_path);
+        $this->assertNotSame('process-categories/old.webp', $category->image_path);
     }
 
     public function test_the_list_searches_by_name_without_regard_to_case(): void

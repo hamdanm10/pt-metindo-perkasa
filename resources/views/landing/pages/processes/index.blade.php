@@ -48,7 +48,7 @@
                                  class="ppanel col-start-1 row-start-1 overflow-hidden rounded-lg bg-ink text-white" style="--focus-ring: #ffffff">
                             <div data-pmedia class="{{ $tone }} relative aspect-[16/8] overflow-hidden">
                                 <div data-pmedia-inner class="absolute inset-0">
-                                    <x-landing.photo :name="'product-'.$category['slug']" ratio="aspect-[16/8]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
+                                    <x-landing.photo :name="'product-'.$category['slug']" :src="$category['image']" ratio="aspect-[16/8]" bare class="absolute inset-0 size-full bg-transparent! text-white!" />
                                 </div>
                                 <span data-pnumber class="absolute bottom-0 start-[clamp(1.25rem,2.2vw,2.75rem)] block overflow-hidden text-[clamp(4rem,9vw,11rem)] font-black leading-[0.8] text-white/35" aria-hidden="true"><span class="block">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span></span>
                                 <span class="absolute end-[clamp(1rem,1.6vw,2rem)] top-[clamp(1rem,1.6vw,2rem)] rounded-full bg-white px-3 py-1 text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-ink">{{ __('pages.processes.list') }} · {{ count($category['processes']) }}</span>
