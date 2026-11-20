@@ -19,6 +19,13 @@ class ProcessCatalogTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['landing.catalog_source' => 'database']);
+    }
+
     /**
      * An active category with one active process, one step, and one product that has links.
      *
@@ -42,6 +49,17 @@ class ProcessCatalogTest extends TestCase
         $step->products()->attach($product->id, ['position' => 0]);
 
         return ['category' => $category, 'process' => $process, 'product' => $product];
+    }
+
+    public function test_the_static_catalog_is_the_default_even_when_the_database_has_categories(): void
+    {
+        config(['landing.catalog_source' => 'static']);
+        $this->catalog();
+
+        $this->assertSame('static', (require config_path('landing.php'))['catalog_source']);
+        $this->get('/en/processes')->assertOk()->assertSee('Zinc Plating Chemicals')->assertDontSee('Custom Category');
+        $this->get('/en/process/alkaline-zinc')->assertOk();
+        $this->get('/en/process/custom-flow')->assertNotFound();
     }
 
     public function test_without_an_active_category_the_static_catalog_is_shown(): void

@@ -6,6 +6,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Process Catalog Source
+    |--------------------------------------------------------------------------
+    |
+    | Where the landing reads process categories, processes, steps, and products:
+    | "static" uses the lists below, "database" uses what the admin set in the
+    | dashboard (and the lists below while no category is active yet).
+    |
+    */
+
+    'catalog_source' => env('LANDING_CATALOG_SOURCE', 'static'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Product Categories
     |--------------------------------------------------------------------------
     |
