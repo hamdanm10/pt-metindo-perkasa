@@ -14,6 +14,7 @@ use Livewire\Form;
 /**
  * The process category form: the name, the on or off switch, and one description per landing language.
  * A language is only saved when it has text, and English is required because it is the fallback for the others.
+ * The picture is required until the category has one, and a category that has one keeps it when no new file is chosen.
  */
 class ProcessCategoryForm extends Form
 {
@@ -73,7 +74,7 @@ class ProcessCategoryForm extends Form
                 },
             ],
             'isActive' => ['boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=800,min_height=600'],
+            'image' => [$this->processCategory?->image_path === null ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=800,min_height=600'],
             'descriptions' => [function (string $attribute, mixed $value, Closure $fail) use ($default): void {
                 if (! in_array($default, $this->activeLocales(), true)) {
                     $fail(__('process_categories.messages.default_language_required', ['language' => config()->string("locales.locales.{$default}.name")]));

@@ -50,8 +50,11 @@ class ProcessCategoryAdminTest extends TestCase
 
     public function test_admin_adds_a_process_category_with_languages(): void
     {
+        Storage::fake('public');
+
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
             ->set('form.name', '  Zinc Brightener  ')
+            ->set('form.image', UploadedFile::fake()->image('cover.jpg', 1000, 800))
             ->set('form.descriptions.en', 'Bright finish additive.')
             ->set('form.descriptions.id', 'Aditif kilap.')
             ->call('save')
@@ -95,10 +98,12 @@ class ProcessCategoryAdminTest extends TestCase
 
     public function test_new_categories_go_last_and_editing_keeps_the_slug(): void
     {
+        Storage::fake('public');
         ProcessCategory::factory()->create(['position' => 4]);
         $admin = User::factory()->admin()->create();
 
         Livewire::actingAs($admin)->test(Editor::class)
+            ->set('form.image', UploadedFile::fake()->image('cover.jpg', 1000, 800))
             ->set('form.name', 'Second')->set('form.descriptions.en', 'x')->call('save')->assertHasNoErrors();
 
         $second = ProcessCategory::query()->where('name', 'Second')->firstOrFail();
@@ -116,7 +121,7 @@ class ProcessCategoryAdminTest extends TestCase
 
     public function test_admin_edits_a_category_and_removes_an_emptied_language(): void
     {
-        $category = ProcessCategory::factory()->create(['name' => 'Old']);
+        $category = ProcessCategory::factory()->create(['name' => 'Old', 'image_path' => 'process-categories/old.webp']);
         $category->translations()->create(['locale' => 'en', 'description' => 'English']);
         $category->translations()->create(['locale' => 'id', 'description' => 'Indonesia']);
 
@@ -144,6 +149,30 @@ class ProcessCategoryAdminTest extends TestCase
         $this->assertNotNull($category->image_path);
         $this->assertStringStartsWith('process-categories/', (string) $category->image_path);
         Storage::disk('public')->assertExists((string) $category->image_path);
+    }
+
+    public function test_the_picture_is_required_until_the_category_has_one(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->admin()->create();
+
+        Livewire::actingAs($admin)->test(Editor::class)
+            ->set('form.name', 'No Picture')->set('form.descriptions.en', 'x')
+            ->call('save')->assertHasErrors(['form.image' => 'required']);
+        $this->assertSame(0, ProcessCategory::query()->count());
+
+        $without = ProcessCategory::factory()->create(['image_path' => null]);
+        $without->translations()->create(['locale' => 'en', 'description' => 'x']);
+
+        Livewire::actingAs($admin)->test(Editor::class, ['processCategory' => $without])
+            ->call('save')->assertHasErrors(['form.image' => 'required']);
+
+        $with = ProcessCategory::factory()->create(['image_path' => 'process-categories/kept.webp']);
+        $with->translations()->create(['locale' => 'en', 'description' => 'x']);
+
+        Livewire::actingAs($admin)->test(Editor::class, ['processCategory' => $with])
+            ->call('save')->assertHasNoErrors();
+        $this->assertSame('process-categories/kept.webp', $with->refresh()->image_path);
     }
 
     public function test_the_picture_must_be_a_large_enough_picture(): void
