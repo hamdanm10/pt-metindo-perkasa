@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\ProcessCategories;
 
 use App\Models\ProcessCategory;
+use App\Services\Landing\LandingProcesses;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -13,12 +14,14 @@ use Illuminate\Support\Facades\DB;
  */
 class SaveProcessCategory
 {
+    public function __construct(private readonly LandingProcesses $landing) {}
+
     /**
      * @param  array<string, string>  $descriptions  keyed by locale
      */
     public function execute(?ProcessCategory $processCategory, string $name, string $slug, bool $active, array $descriptions): ProcessCategory
     {
-        return DB::transaction(function () use ($processCategory, $name, $slug, $active, $descriptions): ProcessCategory {
+        $saved = DB::transaction(function () use ($processCategory, $name, $slug, $active, $descriptions): ProcessCategory {
             $processCategory ??= new ProcessCategory;
 
             $processCategory->fill(['name' => $name, 'slug' => $slug, 'is_active' => $active]);
@@ -37,5 +40,9 @@ class SaveProcessCategory
 
             return $processCategory;
         });
+
+        $this->landing->flush();
+
+        return $saved;
     }
 }

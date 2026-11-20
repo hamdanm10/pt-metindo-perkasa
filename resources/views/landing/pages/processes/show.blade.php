@@ -21,7 +21,7 @@
             <p data-anim="hero-item" class="text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase text-brand-300">{{ __('pages.processes.position', ['number' => $number, 'total' => $total]) }}</p>
             <h1 data-anim="hero-title" class="mt-3 max-w-[12em] text-balance text-[clamp(2.75rem,7.2vw,9rem)] font-black uppercase leading-[0.92] tracking-tight" lang="en" dir="ltr">{{ $category['name'] }}</h1>
             <div class="mt-[3vw] grid items-end gap-8 max-lg:mt-8 lg:grid-cols-[1fr_auto]">
-                <p data-anim="hero-item" class="max-w-[34em] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.4] text-white/85">{{ __('pages.processes.categories.'.$category['slug']) }}</p>
+                <p data-anim="hero-item" class="max-w-[34em] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.4] text-white/85">{{ $category['description'] }}</p>
                 <p data-anim="hero-item" class="flex items-end gap-[1vw] max-lg:gap-3">
                     <span class="text-[clamp(3.5rem,7vw,9rem)] font-black leading-[0.85] text-brand-300">{{ count($processes) }}</span>
                     <span class="pb-[0.4vw] text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase max-lg:pb-1">{{ __('pages.processes.list') }}</span>

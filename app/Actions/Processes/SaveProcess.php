@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Processes;
 
 use App\Models\Process;
+use App\Services\Landing\LandingProcesses;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -16,13 +17,15 @@ use Illuminate\Support\Facades\DB;
  */
 class SaveProcess
 {
+    public function __construct(private readonly LandingProcesses $landing) {}
+
     /**
      * @param  array<string, string>  $descriptions  keyed by locale
      * @param  list<StepInput>  $steps
      */
     public function execute(?Process $process, string $name, string $slug, int $categoryId, bool $active, array $descriptions, array $steps): Process
     {
-        return DB::transaction(function () use ($process, $name, $slug, $categoryId, $active, $descriptions, $steps): Process {
+        $saved = DB::transaction(function () use ($process, $name, $slug, $categoryId, $active, $descriptions, $steps): Process {
             $process ??= new Process;
             $moved = ! $process->exists || $process->process_category_id !== $categoryId;
 
@@ -60,5 +63,9 @@ class SaveProcess
 
             return $process;
         });
+
+        $this->landing->flush();
+
+        return $saved;
     }
 }

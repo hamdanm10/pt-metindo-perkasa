@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Products;
 
 use App\Models\Product;
+use App\Services\Landing\LandingProcesses;
 use App\Services\Products\ProductTdsStore;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,10 @@ use Illuminate\Support\Facades\DB;
  */
 class SaveProduct
 {
-    public function __construct(private readonly ProductTdsStore $tds) {}
+    public function __construct(
+        private readonly ProductTdsStore $tds,
+        private readonly LandingProcesses $landing,
+    ) {}
 
     /**
      * @param  ProductInput  $data
@@ -66,6 +70,8 @@ class SaveProduct
         if ($newPath !== null || $removeTds) {
             $this->tds->delete($oldPath);
         }
+
+        $this->landing->flush();
 
         return $saved;
     }

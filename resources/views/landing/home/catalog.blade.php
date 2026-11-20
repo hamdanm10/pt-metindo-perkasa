@@ -1,5 +1,5 @@
 @php
-    $featured = array_slice(config('landing.categories'), 0, 4);
+    $featured = array_slice(app(\App\Services\Landing\LandingContent::class)->categories(), 0, 4);
     $tones = ['bg-ink', 'bg-brand-600', 'bg-accent-indigo', 'bg-accent-blue'];
     // Until a category has its own photo (product-{slug}), a card uses one of the two existing landscape photos, zoomed on a different part so the four do not look alike.
     $photos = [
@@ -71,7 +71,7 @@
 
                             <ul class="mt-4 flex flex-wrap gap-1.5" lang="en" dir="ltr">
                                 @foreach ($shown as $process)
-                                    <li class="rounded-full border border-ink/25 px-2.5 py-1 text-xs font-semibold leading-none text-ink">{{ $process }}</li>
+                                    <li class="rounded-full border border-ink/25 px-2.5 py-1 text-xs font-semibold leading-none text-ink">{{ $process['name'] }}</li>
                                 @endforeach
                                 @if ($more > 0)
                                     <li class="rounded-full bg-lavender px-2.5 py-1 text-xs font-bold leading-none text-brand-700">+{{ $more }}</li>

@@ -1,6 +1,6 @@
 # Kelola Konten Proses (A8 sampai A10)
 
-Admin mengelola alur **kategori proses → proses → langkah → produk** dari dashboard, dan landing membacanya dari database (menggantikan `config/landing.php` dan teks di `lang`). **Produk adalah master data sendiri** (brosur, video, tautan olshop, TDS, harga, penjelasan), dipakai ulang di banyak langkah. Alur di landing tidak berubah: daftar kategori (`/{locale}/processes`), proses dalam satu kategori (`/{locale}/processes/{kategori}`), detail proses (`/{locale}/process/{proses}`) dengan tombol **View diagram** dan bahan yang bisa diklik ([`../../../landing/pages/overview.md`](../../../landing/pages/overview.md)). Perluasan dari A3 ([`../process-categories/overview.md`](../process-categories/overview.md)). Status fase di [`../implementation-plan.md`](../implementation-plan.md).
+Admin mengelola alur **kategori proses → proses → langkah → produk** dari dashboard, dan landing membacanya dari database (data statis di `config/landing.php` dan `lang` tetap ada sebagai cadangan, lihat bagian Landing). **Produk adalah master data sendiri** (brosur, video, tautan olshop, TDS, harga, penjelasan), dipakai ulang di banyak langkah. Alur di landing tidak berubah: daftar kategori (`/{locale}/processes`), proses dalam satu kategori (`/{locale}/processes/{kategori}`), detail proses (`/{locale}/process/{proses}`) dengan tombol **View diagram** dan bahan yang bisa diklik ([`../../../landing/pages/overview.md`](../../../landing/pages/overview.md)). Perluasan dari A3 ([`../process-categories/overview.md`](../process-categories/overview.md)). Status fase di [`../implementation-plan.md`](../implementation-plan.md).
 
 Istilah: yang semula bernama "material" (bahan di tiap langkah) kini disebut **produk** di dashboard, kode, tabel, dan route. Label "Material" di dialog landing masih teks lama dan diganti "Product" saat A10. Produk di sini bukan kategori proses yang dulu juga bernama "produk" (A3).
 
@@ -12,7 +12,7 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 | --- | --- | --- |
 | A8 | Master data produk: `/app/products` (daftar, tambah, ubah) | `feat/product-master` |
 | A9 | Kategori proses diperluas (slug, urutan, aktif, deskripsi per bahasa), proses, dan langkah (alur diagram dengan produk dari A8). | `feat/processes` |
-| A10 | Landing membaca dari database dengan cache, menghapus data statis di config dan `lang` | `feat/landing-processes` |
+| A10 | Landing membaca dari database dengan cache. Data statis di config dan `lang` **tidak dihapus dulu**, dipakai sebagai cadangan | `feat/landing-processes` |
 
 ## Keputusan
 
@@ -25,7 +25,7 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 | 5 | Tanpa hapus untuk kategori, proses, dan produk: pakai **aktif/nonaktif** (`is_active`). Yang nonaktif tidak tampil di landing. Langkah boleh dihapus karena hanya bagian dari proses | Riwayat tautan aman. Hapus ditunda |
 | 6 | **Langkah dikelola di dalam form proses**: tambah, hapus, geser, lalu pilih produk tiap langkah lewat dropdown pencarian `Lookup` (sumber baru `produk`, banyak pilihan). Satu transaksi di `SaveProcess` | Admin tidak perlu halaman terpisah |
 | 7 | Satu produk boleh dipakai di banyak langkah (tabel pivot `process_step_product`, pasangan unik, ada `position`). Produk nonaktif disembunyikan dari langkah di landing tetapi tidak dilepas dari pivot | Mudah diaktifkan lagi |
-| 8 | **Tanpa impor data awal dan tanpa seeder.** Admin mengisi kategori, proses, langkah, dan produk lewat dashboard. Satu-satunya migrasi data: deskripsi kategori A3 yang sudah ada dipindah ke terjemahan bahasa Inggris. Saat A10 selesai, data statis di `config/landing.php` dan teks kategori di `lang/*/pages.php` dihapus, dan landing tidak menampilkan kategori atau proses (menu, bagian beranda, halaman) sampai ada data aktif | Aturan proyek: tanpa data contoh. Sama dengan layanan (A4) |
+| 8 | **Tanpa impor data awal dan tanpa seeder.** Admin mengisi kategori, proses, langkah, dan produk lewat dashboard. Satu-satunya migrasi data: deskripsi kategori A3 yang sudah ada dipindah ke terjemahan bahasa Inggris. **Data statis di `config/landing.php` dan teks kategori di `lang/*/pages.php` tidak dihapus dulu**: landing memakainya selama belum ada kategori aktif di database, dan berhenti memakainya begitu ada satu kategori aktif (semua atau tidak sama sekali, tidak dicampur). Penghapusannya menunggu dashboard dirapikan dan data diisi | Landing tidak kosong selama admin belum mengisi. Aturan proyek: tanpa data contoh |
 | 9 | Foto kategori tetap berkas statis `public/images/landing/photos/product-<slug>` dengan cadangan yang sudah ada. Unggah foto lewat dashboard ditunda | Cakupan |
 
 ## Data
@@ -50,11 +50,12 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 
 ## Landing (A10)
 
-- Satu service membaca kategori, proses, langkah, dan produk aktif dengan `with()` (tanpa N+1), diberi cache per locale dan dibersihkan tiap admin menyimpan atau menggeser data di fase ini.
-- Route kategori tidak lagi dibatasi daftar slug dari config: slug yang tidak ada atau nonaktif menjadi 404.
-- Dialog bahan menampilkan penjelasan (cadangan: kalimat umum seperti sekarang bila belum ada), brosur, video, tautan olshop (satu tombol per tautan, `rel="noopener noreferrer"`, `target="_blank"`), TDS, dan harga. TDS atau harga kosong tetap menautkan ke halaman kontak ("Request to admin") sampai L5.
-- Tanpa data aktif, menu Processes, bagian katalog beranda, dan halaman prosesnya disembunyikan (pola layanan A4).
-- Beranda menampilkan empat kategori pertama menurut `position`. Kategori tanpa proses aktif tetap muncul dengan jumlah 0.
+- `LandingProcesses` membaca kategori, proses, langkah, dan produk aktif dengan `with()` (jumlah query tetap, tidak naik bersama jumlah baris), di-cache per locale selamanya, dan dibersihkan tiap admin menyimpan produk, proses, atau kategori, atau menggeser kategori atau proses. `LandingContent` memakainya dan jatuh ke data statis (`config/landing.php`) bila tidak ada kategori aktif.
+- Teks tanpa terjemahan di bahasa itu memakai bahasa Inggris. Deskripsi proses yang kosong memakai kalimat umum ("`<nama>` process flow."), dan deskripsi kategori yang kosong tidak ditampilkan.
+- Route kategori menerima slug apa saja (huruf kecil, angka, tanda hubung). Slug yang tidak ada atau nonaktif menjadi 404. Kategori nonaktif menyembunyikan prosesnya (404 di halaman detail), proses nonaktif hilang dari daftar dan "proses lain", produk nonaktif hilang dari langkah.
+- Dialog produk di halaman detail: penjelasan (cadangan: kalimat umum seperti sebelumnya), brosur, video, tautan olshop (satu tautan per toko, `target="_blank"`, `rel="noopener noreferrer"`), TDS, dan harga ("Rp 125.000"). Brosur, video, dan olshop kosong tampil "–". TDS atau harga kosong tetap menautkan ke halaman kontak ("Request to admin") sampai L5. Data dikirim sebagai JSON di atribut tombol (di-escape Blade), dan JavaScript membuat elemen dengan `textContent`, hanya menerima tautan `https` atau berkas situs sendiri.
+- Label landing "Materials / Material detail" diganti "Products / Product detail" di lima bahasa (kunci `pages.process.materials` dan `material_detail` tetap), dan ada kunci baru `pages.process.open`.
+- Beranda menampilkan empat kategori pertama menurut `position`. Kategori tanpa proses aktif tetap muncul dengan jumlah 0. Nama berkas foto kategori tetap `product-<slug>` dengan cadangan yang sudah ada.
 
 ## Aturan keamanan dan kasus tepi
 
@@ -70,7 +71,7 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 
 - **A8:** akses per peran dan tamu, tambah/ubah, validasi (nama unik, URL `https`, ukuran dan jenis PDF), tautan olshop (tambah, hapus, urutan), bahasa Inggris wajib, jumlah query datar saat baris bertambah.
 - **A9:** kategori dengan terjemahan, proses dan langkah (tambah, hapus, geser, produk per langkah), pindah kategori, slug unik lintas tabel, migration deskripsi kategori lama ke terjemahan bahasa Inggris, jumlah query datar.
-- **A10:** halaman landing per locale dari database, cadangan `en`, nonaktif disembunyikan, 404 untuk slug tidak dikenal, dialog bahan memuat tautan, cache dibersihkan saat admin menyimpan, jumlah query datar.
+- **A10:** data statis dipakai bila belum ada kategori aktif dan tidak dicampur bila sudah ada, halaman landing per locale dari database, cadangan `en`, nonaktif disembunyikan, 404 untuk slug tidak dikenal, dialog produk memuat tautan dan harga, teks di-escape, cache dibersihkan saat admin menyimpan atau menggeser, jumlah query dingin dan hangat datar.
 
 ## Ditunda
 
