@@ -47,12 +47,12 @@ class ContactPageTest extends TestCase
         $this->assertStringContainsString('data-copy-link="hello@example.test"', $html);
     }
 
-    public function test_the_hero_buttons_open_a_picker_with_every_number(): void
+    public function test_the_hero_button_opens_a_picker_with_every_number(): void
     {
         $html = $this->page();
 
-        $this->assertSame(2, substr_count($html, 'data-number-picker='));
-        $this->assertSame(2, substr_count($html, 'data-number-dialog'));
+        $this->assertSame(1, substr_count($html, 'data-number-picker='));
+        $this->assertSame(1, substr_count($html, 'data-number-dialog'));
 
         foreach (['6281200000001', '6281200000002'] as $number) {
             $this->assertStringContainsString('href="https://wa.me/'.$number.'?text=', $html);
@@ -134,7 +134,7 @@ class ContactPageTest extends TestCase
         foreach (config('locales.landing') as $code) {
             $html = $this->page("/{$code}/contact");
 
-            foreach (['title', 'intro', 'call', 'copy', 'copied', 'open_map', 'find', 'form.title', 'form.intro', 'form.name', 'form.whatsapp', 'form.mail', 'form.required', 'form.invalid_email', 'form.done', 'compose.greeting', 'compose.subject'] as $key) {
+            foreach (['title', 'intro', 'copy', 'copied', 'open_map', 'find', 'form.title', 'form.intro', 'form.name', 'form.whatsapp', 'form.mail', 'form.required', 'form.invalid_email', 'form.done', 'compose.greeting', 'compose.subject'] as $key) {
                 $this->assertNotSame("pages.contact.{$key}", __("pages.contact.{$key}", [], $code));
             }
 

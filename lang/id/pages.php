@@ -156,7 +156,6 @@ return [
         'hours' => 'Jam Operasional',
         'whatsapp' => 'Chat via WhatsApp',
         'empty' => 'Detail kontak segera dipublikasikan.',
-        'call' => 'Telepon kami',
         'write' => 'Tulis kepada kami',
         'copy' => 'Salin',
         'copied' => 'Disalin',

@@ -18,9 +18,4 @@ return [
         'chat' => 'Chat',
         'message' => 'Halo PT Metindo Perkasa, saya ingin bertanya tentang layanan Anda.',
     ],
-    'call' => [
-        'title' => 'Hubungi kami',
-        'hint' => 'Pilih nomor untuk menelepon.',
-        'action' => 'Telepon',
-    ],
 ];

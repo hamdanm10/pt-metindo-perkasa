@@ -29,7 +29,7 @@ Menu "WhatsApp numbers" / "Nomor WhatsApp" (ikon `phone`) di grup Content.
 Nomor yang sama dipakai sebagai **nomor telepon** di landing. `LANDING_CONTACT_PHONE` dan `landing.contact.phone` dihapus.
 
 - **Telepon:** footer, kartu ajakan, dan halaman Contact menampilkan **semua** nomor aktif (tautan `tel:+<nomor>`, berlabel nama). Halaman Contact punya satu kartu per nomor, dengan tombol Copy.
-- **Pemilih nomor** (`<x-landing.number-picker>`, `resources/js/landing/number-picker.js`): tombol "Enquire on WhatsApp" di detail layanan, serta "Chat on WhatsApp" dan "Call us" di hero Contact. Satu nomor: tautan biasa. Dua nomor atau lebih: tombol membuka **dialog** berisi semua nomor (nama, nomor, tombol Chat atau Call). Tanpa JavaScript tombol membuka nomor pertama. Tombol "Send on WhatsApp" di formulir Contact sudah memilih nomor lewat pilihan penerima.
+- **Pemilih nomor** (`<x-landing.number-picker>`, `resources/js/landing/number-picker.js`): tombol "Enquire on WhatsApp" di detail layanan, serta "Chat on WhatsApp" di hero Contact. Satu nomor: tautan biasa. Dua nomor atau lebih: tombol membuka **dialog** berisi semua nomor (nama, nomor, tombol Chat). Tanpa JavaScript tombol membuka nomor pertama. Tombol "Send on WhatsApp" di formulir Contact sudah memilih nomor lewat pilihan penerima.
 - Teks dialog ada di `lang/<locale>/chat.php` (`whatsapp.*`, `call.*`) dalam lima bahasa.
 
 ## Di landing

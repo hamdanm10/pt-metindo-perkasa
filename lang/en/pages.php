@@ -156,7 +156,6 @@ return [
         'hours' => 'Hours',
         'whatsapp' => 'Chat on WhatsApp',
         'empty' => 'Contact details will be published soon.',
-        'call' => 'Call us',
         'write' => 'Write to us',
         'copy' => 'Copy',
         'copied' => 'Copied',

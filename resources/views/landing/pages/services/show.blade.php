@@ -28,7 +28,7 @@
                     <p data-anim="hero-item" class="mt-6 max-w-2xl text-lg text-white/85 sm:text-xl">{{ $service['summary'] }}</p>
                 @endif
                 <div data-anim="hero-item" class="mt-8 flex flex-wrap gap-4">
-                    <x-landing.number-picker :agents="$agents" mode="whatsapp">{{ __('pages.services.detail.whatsapp') }}</x-landing.number-picker>
+                    <x-landing.number-picker :agents="$agents">{{ __('pages.services.detail.whatsapp') }}</x-landing.number-picker>
                     <x-landing.button :href="route('landing.contact')" variant="outline">{{ __('pages.services.detail.contact') }}</x-landing.button>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                     <h2 class="mt-5 text-2xl font-black tracking-tight">{{ __('pages.services.detail.talk') }}</h2>
                     <p class="mt-3 text-ink/80">{{ __('pages.services.detail.talk_text') }}</p>
                     <div class="mt-6 flex flex-wrap gap-4">
-                        <x-landing.number-picker :agents="$agents" mode="whatsapp">{{ __('pages.services.detail.whatsapp') }}</x-landing.number-picker>
+                        <x-landing.number-picker :agents="$agents">{{ __('pages.services.detail.whatsapp') }}</x-landing.number-picker>
                         <x-landing.button :href="route('landing.contact')" variant="dark">{{ __('pages.services.detail.contact') }}</x-landing.button>
                     </div>
                 </div>

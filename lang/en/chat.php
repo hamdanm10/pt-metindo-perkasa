@@ -18,9 +18,4 @@ return [
         'chat' => 'Chat',
         'message' => 'Hello PT Metindo Perkasa, I would like to ask about your services.',
     ],
-    'call' => [
-        'title' => 'Call us',
-        'hint' => 'Choose a number to call.',
-        'action' => 'Call',
-    ],
 ];
