@@ -267,6 +267,52 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_about_figures_are_counted_from_the_catalog_and_locales(): void
+    {
+        $categories = config('landing.categories');
+        $processes = array_sum(array_map(fn (array $category): int => count($category['processes']), $categories));
+        $html = (string) $this->get('/en/about')->getContent();
+
+        $this->assertStringContainsString('data-stat="'.count($categories).'"', $html);
+        $this->assertStringContainsString('data-stat="'.$processes.'"', $html);
+        $this->assertStringContainsString('data-stat="'.count(config('locales.landing')).'"', $html);
+        $this->assertSame(3, substr_count($html, 'data-stat="'));
+    }
+
+    public function test_about_principles_and_figure_labels_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            $response = $this->get("/{$code}/about")->assertOk();
+            $keys = ['pages.about.principles.title', 'pages.about.figures.categories', 'pages.about.figures.processes', 'pages.about.figures.languages'];
+
+            foreach (['document', 'repeat', 'verify'] as $principle) {
+                $keys[] = "pages.about.principles.items.{$principle}.title";
+                $keys[] = "pages.about.principles.items.{$principle}.text";
+            }
+
+            foreach ($keys as $key) {
+                $text = __($key, [], $code);
+
+                $this->assertNotSame($key, $text);
+                $response->assertSee($text, false);
+            }
+        }
+    }
+
+    public function test_about_sections_are_named_by_their_headings(): void
+    {
+        $html = (string) $this->get('/en/about')->getContent();
+
+        foreach (['about-approach', 'about-facilities', 'about-subsidiaries'] as $id) {
+            $this->assertStringContainsString('aria-labelledby="'.$id.'"', $html);
+            $this->assertStringContainsString('id="'.$id.'"', $html);
+        }
+
+        $this->assertStringContainsString('id="about-principles"', $html);
+
+        $this->assertSame(1, substr_count($html, '<h1'));
+    }
+
     public function test_process_index_is_a_tab_list_with_a_panel_per_category_and_no_catalogue_label(): void
     {
         $categories = config('landing.categories');

@@ -23,6 +23,28 @@ return [
             'title' => 'Facilities',
             'text' => 'Production facilities equipped to support a range of plating processes under controlled conditions.',
         ],
+        'figures' => [
+            'categories' => 'Process categories',
+            'processes' => 'Processes',
+            'languages' => 'Languages',
+        ],
+        'principles' => [
+            'title' => 'How we work',
+            'items' => [
+                'document' => [
+                    'title' => 'Document',
+                    'text' => 'Every step of a process is written down, so nothing depends on memory.',
+                ],
+                'repeat' => [
+                    'title' => 'Repeat',
+                    'text' => 'The same process, run the same way, from the first batch to the last.',
+                ],
+                'verify' => [
+                    'title' => 'Verify',
+                    'text' => 'Results are checked against the process, not assumed.',
+                ],
+            ],
+        ],
         'subsidiaries' => [
             'title' => 'Our subsidiaries',
             'intro' => 'Our group operates from several cities across Indonesia. Select a pin or a company to open its location in Google Maps.',

@@ -134,10 +134,10 @@ Isi mengikuti halaman Products prototipe (`http://103.125.180.65/~wwwmetin/en/pr
 
 Isi mengikuti halaman About prototipe (`http://103.125.180.65/~wwwmetin/en/about`: profil perusahaan, pendekatan, visi dan misi, fasilitas, anak perusahaan, ajakan); sertifikasi tetap tidak ditampilkan (belum dikonfirmasi). Tampilannya dirancang ulang dengan gaya landing. Dari atas ke bawah:
 
-- **Pembuka** (`ink`): judul kapital besar (7,2vw, huruf tumbuh), pengantar, dan dua tombol ke Processes dan Services (seperti dua tautan di prototipe).
+- **Pembuka** (`ink`): judul kapital besar (7,2vw, huruf tumbuh), pengantar, dua tombol ke Processes dan Services (seperti dua tautan di prototipe), dan di dasarnya **tiga angka besar** (`brand-300`, label kapital kecil) dalam daftar definisi di bawah garis tipis: kategori proses, proses, dan bahasa, dihitung dari data situs. Tanpa angka karangan (tahun berdiri, jumlah klien, dan sejenisnya) sampai client memberi datanya.
 - **Pendekatan** (lavender): dua kolom 5:7. Judul besar di kiri **menempel** (`sticky`) sementara dua paragraf (1,5vw, yang kedua lebih redup) dan foto perusahaan di kanan dibaca.
-- **Visi dan misi:** dua kartu besar bernomor 01 dan 02 (krimson 3:2 dan `ink`), angka raksasa transparan yang menebal dan kartu naik sedikit saat hover.
-- **Fasilitas** (putih): foto di kiri dan judul serta teks di kanan.
+- **Visi dan misi:** dua kartu besar bernomor 01 dan 02 (krimson dan `ink`, lebar sama), angka raksasa transparan yang menebal dan kartu naik sedikit saat hover.
+- **Fasilitas** (putih): foto di kiri dan judul serta teks di kanan. Di bawahnya, di balik garis tipis, **"How we work"**: tiga kartu lavender bernomor (Document, Repeat, Verify), satu baris di layar sedang ke atas dan bertumpuk di ponsel.
 - **Anak perusahaan** (`ink`): **peta Indonesia** seperti prototipe, tetapi dirancang ulang. Gambar peta sama (SVG 1000 x 383, proyeksi equirectangular: sudut kiri atas 94,5 BT dan 6,5 LU, 21,276 satuan per derajat) dan **posisi pin dihitung dari lintang dan bujur** anak perusahaan (`LandingMap`), bukan ditulis tangan, sehingga cocok dengan prototipe (misalnya Medan 8,88% / 16,14%). Pin ikon lokasi krimson (6 di layar sempit hingga 10 di layar lebar); saat di-hover atau difokus pin **membesar, berubah putih, berdenyut, dan menampilkan nama kota**, dan **kartu yang bersesuaian di bawah peta menyala** (garis tepi krimson, naik 4 px), begitu pula sebaliknya. Di bawah peta kartu bernomor (tiga kolom di layar lebar) berisi nama perusahaan, kota dan bidangnya, dan tautan "Open in Google Maps" (tab baru). Seluruh bagian tampil dari data anak perusahaan di `config/landing.php` (masih dari prototipe, belum dikonfirmasi).
 - **Ajakan:** kartu ajakan seperti di halaman lain.
 
