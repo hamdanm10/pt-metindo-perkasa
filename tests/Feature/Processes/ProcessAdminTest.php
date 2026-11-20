@@ -160,6 +160,16 @@ class ProcessAdminTest extends TestCase
         $component->set('picker.0', (string) $product->id)->set('picker.0', (string) $product->id)->assertSet('form.steps.0.products', [$product->id]);
     }
 
+    public function test_changing_the_language_with_steps_present_does_not_break_the_product_dropdowns(): void
+    {
+        $component = Livewire::actingAs($this->admin())->test(Editor::class)
+            ->call('addStep')
+            ->call('addStep');
+
+        $component->call('selectLocale', 'id')->assertHasNoErrors()->assertSet('activeLocale', 'id');
+        $component->call('selectLocale', 'ja')->assertSet('activeLocale', 'ja');
+    }
+
     public function test_steps_can_be_removed_and_moved_and_products_removed(): void
     {
         $product = Product::factory()->create();

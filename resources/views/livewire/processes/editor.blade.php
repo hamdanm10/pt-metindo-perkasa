@@ -77,7 +77,7 @@
                                 <p class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
                             @enderror
                             <div class="mt-3 max-w-md">
-                                <livewire:lookup source="product" wire:model.live="picker.{{ $index }}" :input-id="'picker-'.$index" :placeholder="__('processes.add_product')" wire:key="picker-{{ $index }}-{{ count($step['products']) }}" />
+                                <livewire:lookup source="product" wire:model.live="picker.{{ $index }}" :input-id="'picker-'.$index" :placeholder="__('processes.add_product')" :invalid="false" wire:key="picker-{{ $index }}-{{ count($step['products']) }}" />
                             </div>
                         </div>
                     </li>
