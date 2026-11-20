@@ -21,8 +21,10 @@
                     @forelse ($rows as $row)
                         <tr wire:key="chat-{{ $row['entry']->id }}" class="align-middle">
                             <td>
-                                <div class="flex items-baseline gap-3" style="padding-inline-start: {{ min($row['depth'], 8) * 1.75 }}rem">
-                                    <span class="shrink-0 text-sm font-bold text-muted tabular-nums" aria-hidden="true">{{ $row['number'] }}</span>
+                                <div class="flex items-baseline gap-2" style="padding-inline-start: {{ min(max($row['depth'] - 1, 0), 7) * 1.75 }}rem">
+                                    @if ($row['depth'] > 0)
+                                        <span data-tree-elbow class="inline-block h-3 w-5 shrink-0 self-start rounded-es-md border-b-2 border-s-2 border-muted/50" aria-hidden="true"></span>
+                                    @endif
                                     <span class="cell-truncate font-semibold" title="{{ $row['label'] }}">
                                         <span class="sr-only">{{ __('chat_manager.level', ['number' => $row['number']]) }}: </span>{{ $row['label'] }}
                                     </span>
