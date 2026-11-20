@@ -175,6 +175,21 @@ class ProcessCategoryAdminTest extends TestCase
         $this->assertSame('process-categories/kept.webp', $with->refresh()->image_path);
     }
 
+    public function test_the_picture_label_is_marked_as_required_only_while_there_is_no_picture(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $with = ProcessCategory::factory()->create(['image_path' => 'process-categories/kept.webp']);
+
+        $marked = function (string $url) use ($admin): bool {
+            preg_match('/<label for="form-image".*?<\/label>/s', (string) $this->actingAs($admin)->get($url)->assertOk()->getContent(), $label);
+
+            return str_contains($label[0] ?? '', ' *</span>');
+        };
+
+        $this->assertTrue($marked('/app/process-categories/create'));
+        $this->assertFalse($marked("/app/process-categories/{$with->id}/edit"));
+    }
+
     public function test_the_picture_must_be_a_large_enough_picture(): void
     {
         Storage::fake('public');
