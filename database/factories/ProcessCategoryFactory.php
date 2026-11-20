@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Product;
+use App\Models\ProcessCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Product>
+ * @extends Factory<ProcessCategory>
  */
-class ProductFactory extends Factory
+class ProcessCategoryFactory extends Factory
 {
     /**
      * @return array<string, mixed>

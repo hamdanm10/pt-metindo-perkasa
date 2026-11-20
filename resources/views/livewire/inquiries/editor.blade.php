@@ -35,8 +35,8 @@
                 <x-dashboard.lookup-field name="form.serviceId" :label="__('inquiries.fields.service')">
                     <livewire:lookup source="service" wire:model="form.serviceId" input-id="form-serviceId" :placeholder="__('inquiries.none')" :empty-label="__('inquiries.none')" :invalid="$errors->has('form.serviceId')" />
                 </x-dashboard.lookup-field>
-                <x-dashboard.lookup-field name="form.productId" :label="__('inquiries.fields.product')">
-                    <livewire:lookup source="product" wire:model="form.productId" input-id="form-productId" :placeholder="__('inquiries.none')" :empty-label="__('inquiries.none')" :invalid="$errors->has('form.productId')" />
+                <x-dashboard.lookup-field name="form.processCategoryId" :label="__('inquiries.fields.process_category')">
+                    <livewire:lookup source="process_category" wire:model="form.processCategoryId" input-id="form-processCategoryId" :placeholder="__('inquiries.none')" :empty-label="__('inquiries.none')" :invalid="$errors->has('form.processCategoryId')" />
                 </x-dashboard.lookup-field>
             </div>
 

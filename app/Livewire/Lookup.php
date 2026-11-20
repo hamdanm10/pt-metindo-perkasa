@@ -13,7 +13,7 @@ use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 /**
- * A searchable dropdown for records that can be many (customers, distributors, services, products). The options are
+ * A searchable dropdown for records that can be many (customers, distributors, services, process categories). The options are
  * not loaded with the page: the first page of matches loads when the dropdown opens, and the search
  * box asks the server again (after a short pause in typing) as the user types.
  *
@@ -48,7 +48,7 @@ class Lookup extends Component
     public string $search = '';
 
     /**
-     * Customers' and distributors' names and emails are for the staff area only; services and products can be searched by anyone signed in.
+     * Customers' and distributors' names and emails are for the staff area only; services and process categories can be searched by anyone signed in.
      */
     public function hydrate(): void
     {

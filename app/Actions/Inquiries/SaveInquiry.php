@@ -18,7 +18,7 @@ class SaveInquiry
     /**
      * The answer arrives as the editor JSON and is stored as sanitized HTML.
      *
-     * @param  array{customer_id: int, question: string, answer: string, asked_at: string|null, service_id: int|null, product_id: int|null}  $data
+     * @param  array{customer_id: int, question: string, answer: string, asked_at: string|null, service_id: int|null, process_category_id: int|null}  $data
      * @param  list<UploadedFile>  $newImages
      * @param  list<int>  $removeImageIds  Ids of pictures to remove; ids that are not this record's are ignored.
      */

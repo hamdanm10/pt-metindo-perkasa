@@ -7,7 +7,7 @@ namespace Tests\Feature\Dashboard;
 use App\Models\Article;
 use App\Models\ArticleTranslation;
 use App\Models\Inquiry;
-use App\Models\Product;
+use App\Models\ProcessCategory;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -101,7 +101,7 @@ class ShellTest extends TestCase
 
     public function test_the_sidebar_gathers_related_items_into_icon_dropdowns_and_opens_the_active_one(): void
     {
-        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/products')->getContent();
+        $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/process-categories')->getContent();
 
         $this->assertSame(4, substr_count($html, 'data-nav-group'));
 
@@ -174,11 +174,11 @@ class ShellTest extends TestCase
 
     public function test_list_rows_are_centered_vertically(): void
     {
-        Product::factory()->create();
+        ProcessCategory::factory()->create();
         Service::factory()->create();
         ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id]);
 
-        foreach (['/app/products', '/app/services', '/app/articles'] as $url) {
+        foreach (['/app/process-categories', '/app/services', '/app/articles'] as $url) {
             $this->actingAs(User::factory()->admin()->create())->get($url)
                 ->assertOk()
                 ->assertSee('class="align-middle"', false)
@@ -193,13 +193,13 @@ class ShellTest extends TestCase
         $this->assertMatchesRegularExpression('/\.cell-truncate\s*\{[^}]*text-overflow: ellipsis;[^}]*white-space: nowrap;/', $css);
 
         $long = str_repeat('Very long text ', 15);
-        Product::factory()->create(['description' => $long]);
+        ProcessCategory::factory()->create(['description' => $long]);
         Service::factory()->create(['name' => $long]);
         Inquiry::factory()->create(['question' => $long]);
         ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id, 'title' => $long]);
         User::factory()->staff()->create(['name' => $long]);
 
-        foreach (['/app/products', '/app/services', '/app/customer-inquiries', '/app/articles', '/app/staff'] as $url) {
+        foreach (['/app/process-categories', '/app/services', '/app/customer-inquiries', '/app/articles', '/app/staff'] as $url) {
             $html = (string) $this->actingAs(User::factory()->admin()->create())->get($url)->assertOk()->getContent();
             $table = substr($html, (int) strpos($html, '<table'), (int) strpos($html, '</table>') - (int) strpos($html, '<table'));
 

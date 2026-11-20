@@ -4,14 +4,14 @@
     <x-dashboard.flash />
 
     <x-dashboard.card class="max-w-3xl">
-        @if ($inquiry->service || $inquiry->product)
+        @if ($inquiry->service || $inquiry->processCategory)
             <ul class="mb-5 flex flex-wrap items-center gap-2">
                 <li class="text-sm font-bold text-muted">{{ __('inquiries.related') }}</li>
                 @if ($inquiry->service)
                     <li><x-dashboard.badge tone="muted">{{ $inquiry->service->name }}</x-dashboard.badge></li>
                 @endif
-                @if ($inquiry->product)
-                    <li><x-dashboard.badge tone="muted">{{ $inquiry->product->name }}</x-dashboard.badge></li>
+                @if ($inquiry->processCategory)
+                    <li><x-dashboard.badge tone="muted">{{ $inquiry->processCategory->name }}</x-dashboard.badge></li>
                 @endif
             </ul>
         @endif

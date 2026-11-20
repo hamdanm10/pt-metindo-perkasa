@@ -102,7 +102,7 @@ class Editor extends Component
                 'answer' => $this->form->answer,
                 'asked_at' => $this->form->askedAt === '' ? null : $this->form->askedAt,
                 'service_id' => $this->form->serviceId === '' ? null : (int) $this->form->serviceId,
-                'product_id' => $this->form->productId === '' ? null : (int) $this->form->productId,
+                'process_category_id' => $this->form->processCategoryId === '' ? null : (int) $this->form->processCategoryId,
             ],
             $this->form->images,
             $this->form->removedImageIds,

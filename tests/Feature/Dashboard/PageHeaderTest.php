@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Dashboard;
 
-use App\Models\Product;
+use App\Models\ProcessCategory;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,8 +28,8 @@ class PageHeaderTest extends TestCase
             'customers create' => ['/app/customers/create', 'users.kinds.customer.create_description'],
             'articles list' => ['/app/articles', 'article_manager.description'],
             'articles create' => ['/app/articles/create', 'article_manager.create_description'],
-            'products list' => ['/app/products', 'products.description'],
-            'products create' => ['/app/products/create', 'products.create_description'],
+            'process categories list' => ['/app/process-categories', 'process_categories.description'],
+            'process categories create' => ['/app/process-categories/create', 'process_categories.create_description'],
             'services list' => ['/app/services', 'services.description'],
             'services create' => ['/app/services/create', 'services.create_description'],
         ];
@@ -61,10 +61,10 @@ class PageHeaderTest extends TestCase
             ->assertSee(__('users.kinds.staff.edit_description'))
             ->assertSee('rina@example.test');
 
-        $product = Product::query()->create(['name' => 'Zinc']);
+        $processCategory = ProcessCategory::query()->create(['name' => 'Zinc']);
         $service = Service::query()->create(['name' => 'Plating']);
 
-        $this->get("/app/products/{$product->id}/edit")->assertSee(__('products.edit_description'));
+        $this->get("/app/process-categories/{$processCategory->id}/edit")->assertSee(__('process_categories.edit_description'));
         $this->get("/app/services/{$service->id}/edit")->assertSee(__('services.edit_description'));
     }
 }

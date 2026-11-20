@@ -15,8 +15,8 @@
                 <x-dashboard.lookup-field name="service" :label="__('inquiries.fields.service')">
                     <livewire:lookup source="service" wire:model.live="service" input-id="service" :placeholder="__('inquiries.all_services')" :empty-label="__('inquiries.all_services')" :invalid="false" />
                 </x-dashboard.lookup-field>
-                <x-dashboard.lookup-field name="product" :label="__('inquiries.fields.product')">
-                    <livewire:lookup source="product" wire:model.live="product" input-id="product" :placeholder="__('inquiries.all_products')" :empty-label="__('inquiries.all_products')" :invalid="false" />
+                <x-dashboard.lookup-field name="processCategory" :label="__('inquiries.fields.process_category')">
+                    <livewire:lookup source="process_category" wire:model.live="processCategory" input-id="processCategory" :placeholder="__('inquiries.all_process_categories')" :empty-label="__('inquiries.all_process_categories')" :invalid="false" />
                 </x-dashboard.lookup-field>
             </div>
             @if ($canCreate)
@@ -57,10 +57,10 @@
                                     @if ($inquiry->service)
                                         <li><x-dashboard.badge tone="muted">{{ $inquiry->service->name }}</x-dashboard.badge></li>
                                     @endif
-                                    @if ($inquiry->product)
-                                        <li><x-dashboard.badge tone="muted">{{ $inquiry->product->name }}</x-dashboard.badge></li>
+                                    @if ($inquiry->processCategory)
+                                        <li><x-dashboard.badge tone="muted">{{ $inquiry->processCategory->name }}</x-dashboard.badge></li>
                                     @endif
-                                    @if (! $inquiry->service && ! $inquiry->product)
+                                    @if (! $inquiry->service && ! $inquiry->processCategory)
                                         <li class="text-muted" aria-label="{{ __('inquiries.none') }}">&mdash;</li>
                                     @endif
                                 </ul>
@@ -81,7 +81,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $area === 'app' ? 6 : 4 }}" class="py-12 text-center text-muted">{{ $search !== '' || $customer !== '' || $service !== '' || $product !== '' ? __('inquiries.empty_filtered') : __('inquiries.empty') }}</td>
+                            <td colspan="{{ $area === 'app' ? 6 : 4 }}" class="py-12 text-center text-muted">{{ $search !== '' || $customer !== '' || $service !== '' || $processCategory !== '' ? __('inquiries.empty_filtered') : __('inquiries.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

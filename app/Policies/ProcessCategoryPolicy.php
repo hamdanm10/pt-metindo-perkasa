@@ -7,7 +7,7 @@ namespace App\Policies;
 use App\Enums\Role;
 use App\Models\User;
 
-class ProductPolicy
+class ProcessCategoryPolicy
 {
     public function viewAny(User $actor): bool
     {

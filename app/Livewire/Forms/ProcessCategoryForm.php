@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
-use App\Models\Product;
+use App\Models\ProcessCategory;
 use Livewire\Form;
 
-class ProductForm extends Form
+class ProcessCategoryForm extends Form
 {
     public string $name = '';
 
     public string $description = '';
 
-    public function setProduct(Product $product): void
+    public function setProcessCategory(ProcessCategory $processCategory): void
     {
-        $this->name = $product->name;
-        $this->description = (string) $product->description;
+        $this->name = $processCategory->name;
+        $this->description = (string) $processCategory->description;
     }
 
     /**
@@ -36,8 +36,8 @@ class ProductForm extends Form
     public function validationAttributes(): array
     {
         return [
-            'name' => __('products.fields.name'),
-            'description' => __('products.fields.description'),
+            'name' => __('process_categories.fields.name'),
+            'description' => __('process_categories.fields.description'),
         ];
     }
 
