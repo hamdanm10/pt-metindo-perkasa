@@ -51,24 +51,19 @@ class LandingArticles
     }
 
     /**
-     * Number of published items of a language, in total and per type, cached until an article changes.
+     * Number of published items of a language, in total and per type. Without a search the numbers are cached until an
+     * article changes; a search is different every time, so its numbers are read fresh with one grouped query.
      *
      * @return Counts
      */
-    public function counts(string $locale): array
+    public function counts(string $locale, ?string $search = null): array
     {
-        /** @var Counts $counts */
-        $counts = Cache::rememberForever($this->key($locale, 'counts'), function () use ($locale): array {
-            $byType = ArticleTranslation::query()
-                ->published()
-                ->where('locale', $locale)
-                ->join('articles', 'articles.id', '=', 'article_translations.article_id')
-                ->selectRaw('articles.type as type, count(*) as total')
-                ->groupBy('articles.type')
-                ->pluck('total', 'type');
+        if ($search !== null) {
+            return $this->countByType($locale, $search);
+        }
 
-            return ['all' => (int) $byType->sum(), 'article' => (int) ($byType['article'] ?? 0), 'news' => (int) ($byType['news'] ?? 0)];
-        });
+        /** @var Counts $counts */
+        $counts = Cache::rememberForever($this->key($locale, 'counts'), fn (): array => $this->countByType($locale, null));
 
         return $counts;
     }
@@ -79,25 +74,26 @@ class LandingArticles
     }
 
     /**
-     * One page of the list, newest first. Page 1 reads one entry more than the others, because its newest entry is
-     * shown large above the grid; every later page holds exactly PER_PAGE entries.
+     * One page of the list, newest first, optionally only the items whose title or summary contain the search words.
+     * Page 1 reads one entry more than the others, because its newest entry is shown large above the grid; every later
+     * page holds exactly PER_PAGE entries.
      *
-     * @return array{items: list<Summary>, last: int, total: int}
+     * @return array{items: list<Summary>, last: int, total: int, counts: Counts}
      */
-    public function page(string $locale, ?string $type, int $page): array
+    public function page(string $locale, ?string $type, int $page, ?string $search = null): array
     {
         $page = max(1, $page);
-        $counts = $this->counts($locale);
+        $counts = $this->counts($locale, $search);
         $total = $type === null ? $counts['all'] : $counts[$type];
         $last = max(1, (int) ceil(max($total - 1, 0) / self::PER_PAGE));
         $offset = $page === 1 ? 0 : 1 + ($page - 1) * self::PER_PAGE;
         $limit = $page === 1 ? self::PER_PAGE + 1 : self::PER_PAGE;
 
-        $items = $this->published($locale, $type)->offset($offset)->limit($limit)->get()
+        $items = $this->published($locale, $type, $search)->offset($offset)->limit($limit)->get()
             ->map(fn (ArticleTranslation $translation): array => $this->summaryOf($translation))
             ->all();
 
-        return ['items' => $this->decorate(array_values($items)), 'last' => $last, 'total' => $total];
+        return ['items' => $this->decorate(array_values($items)), 'last' => $last, 'total' => $total, 'counts' => $counts];
     }
 
     /**
@@ -203,15 +199,57 @@ class LandingArticles
      *
      * @return Builder<ArticleTranslation>
      */
-    private function published(string $locale, ?string $type): Builder
+    private function published(string $locale, ?string $type, ?string $search = null): Builder
     {
         return ArticleTranslation::query()
             ->published()
             ->where('locale', $locale)
             ->when($type !== null, fn (Builder $query) => $query->whereHas('article', fn ($article) => $article->where('type', $type)))
+            ->tap(fn (Builder $query) => $this->matching($query, $search))
             ->with('article')
             ->orderByDesc('published_at')
             ->orderByDesc('id');
+    }
+
+    /**
+     * @return Counts
+     */
+    private function countByType(string $locale, ?string $search): array
+    {
+        $byType = ArticleTranslation::query()
+            ->published()
+            ->where('locale', $locale)
+            ->tap(fn (Builder $query) => $this->matching($query, $search))
+            ->join('articles', 'articles.id', '=', 'article_translations.article_id')
+            ->selectRaw('articles.type as type, count(*) as total')
+            ->groupBy('articles.type')
+            ->pluck('total', 'type');
+
+        return ['all' => (int) $byType->sum(), 'article' => (int) ($byType['article'] ?? 0), 'news' => (int) ($byType['news'] ?? 0)];
+    }
+
+    /**
+     * Keeps the translations whose title or summary contain every word of the search, in any case (no search keeps all). The characters that
+     * mean something to LIKE are escaped, so "50%" or "a_b" is looked up as typed.
+     *
+     * @param  Builder<ArticleTranslation>  $query
+     * @return Builder<ArticleTranslation>
+     */
+    private function matching(Builder $query, ?string $search): Builder
+    {
+        if ($search === null) {
+            return $query;
+        }
+
+        foreach (preg_split('/\s+/u', $search, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $word) {
+            $like = '%'.addcslashes($word, '\\%_').'%';
+
+            $query->where(fn (Builder $inner) => $inner
+                ->where('article_translations.title', 'ilike', $like)
+                ->orWhere('article_translations.excerpt', 'ilike', $like));
+        }
+
+        return $query;
     }
 
     /**

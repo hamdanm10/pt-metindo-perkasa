@@ -146,6 +146,15 @@ return [
         ],
         'related' => 'Related articles',
         'empty' => 'No articles yet.',
+        'search' => [
+            'title' => 'Search: :query',
+            'label' => 'Search articles and news',
+            'placeholder' => 'Search articles and news',
+            'submit' => 'Search',
+            'clear' => 'Clear search',
+            'results' => '{1} :count result for “:query”|[0,*] :count results for “:query”',
+            'empty' => 'Nothing matches your search. Try other words.',
+        ],
     ],
     'contact' => [
         'title' => 'Contact us',

@@ -146,6 +146,15 @@ return [
         ],
         'related' => 'Artikel terkait',
         'empty' => 'Belum ada artikel.',
+        'search' => [
+            'title' => 'Cari: :query',
+            'label' => 'Cari artikel dan berita',
+            'placeholder' => 'Cari artikel dan berita',
+            'submit' => 'Cari',
+            'clear' => 'Hapus pencarian',
+            'results' => '[0,*] :count hasil untuk “:query”',
+            'empty' => 'Tidak ada yang cocok dengan pencarian Anda. Coba kata lain.',
+        ],
     ],
     'contact' => [
         'title' => 'Kontak',

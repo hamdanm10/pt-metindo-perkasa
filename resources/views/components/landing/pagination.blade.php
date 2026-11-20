@@ -1,7 +1,7 @@
-@props(['page', 'last', 'type' => null])
+@props(['page', 'last', 'type' => null, 'search' => null])
 
 @php
-    $url = fn (int $number): string => route('landing.articles.index', array_filter(['type' => $type, 'page' => $number > 1 ? $number : null]));
+    $url = fn (int $number): string => route('landing.articles.index', array_filter(['q' => $search, 'type' => $type, 'page' => $number > 1 ? $number : null]));
     $window = collect([1, $last, $page - 1, $page, $page + 1])
         ->filter(fn (int $number): bool => $number >= 1 && $number <= $last)
         ->unique()
