@@ -32,7 +32,7 @@ Menu "Chat assistant" / "Asisten chat" (ikon `question`) di grup Content, hanya 
 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
-| Daftar | `/app/chat` | Semua pertanyaan dalam urutan pohon, **menjorok** sesuai kedalaman (batas indentasi tampilan 8 tingkat) dan bernomor `1`, `1.1`, `1.1.1`, `2`. Kolom bahasa yang terisi, dan aksi: Tambah lanjutan, Ubah, Naik, Turun, Hapus. Tombol "Tambah pertanyaan" untuk tingkat teratas |
+| Daftar | `/app/chat` | Semua pertanyaan dalam urutan pohon, **menjorok** sesuai kedalaman (batas indentasi tampilan 8 tingkat) dan tampil seperti direktori: pertanyaan lanjutan diawali garis siku (garis ke bawah lalu ke kanan, `└─`) dan tanpa nomor di depannya. Nomor `1`, `1.1`, `1.1.1`, `2` hanya dibaca pembaca layar ("Question 1.1"). Kolom bahasa yang terisi, dan aksi: Tambah lanjutan, Ubah, Naik, Turun, Hapus. Tombol "Tambah pertanyaan" untuk tingkat teratas |
 | Tambah | `/app/chat/create`, `/app/chat/create?parent={id}` | Bahasa berupa **tab** seperti form artikel (satu panel terbuka, tab bertanda titik bila sudah diisi dan tanda seru bila ada galat; isi tab yang tersembunyi tetap tersimpan di halaman): pertanyaan (maks 200 karakter), jawaban (maks 2000), teks tautan (maks 100), alamat tautan (maks 500). Dengan `?parent=` pertanyaan menjadi lanjutan dari induk itu (induk yang tidak ada: 404). Minimal satu bahasa harus diisi; bahasa yang diisi wajib punya pertanyaan dan jawaban |
 | Ubah | `/app/chat/{id}/edit` | Sama. Induk tidak berubah. Bahasa yang dikosongkan dihapus |
 
@@ -46,7 +46,7 @@ Menu "Chat assistant" / "Asisten chat" (ikon `question`) di grup Content, hanya 
 
 ## Pengujian
 
-`tests/Feature/Chat/ChatEntryTest.php`: akses (tamu, staf, customer, admin), menyimpan hanya bahasa yang diisi, validasi (minimal satu bahasa, pertanyaan dan jawaban wajib, tautan berpasangan dan aman), lanjutan sedalam apa pun dengan nomor outline, induk yang tidak ada, mengubah dan mengosongkan bahasa, naik dan turun hanya di antara saudara, hapus berantai, staf ditolak di komponen, pohon per bahasa (bahasa tanpa teks dan yatim disembunyikan), urutan dan cache ikut berubah, tombol chat tersembunyi bila kosong, jumlah query daftar tetap, dan teks tersedia di semua bahasa. `tests/Feature/Landing/ContactWidgetsTest.php` untuk tombol dan panel di landing.
+`tests/Feature/Chat/ChatEntryTest.php`: akses (tamu, staf, customer, admin), menyimpan hanya bahasa yang diisi, validasi (minimal satu bahasa, pertanyaan dan jawaban wajib, tautan berpasangan dan aman), lanjutan sedalam apa pun dengan garis siku pohon dan nomor untuk pembaca layar, induk yang tidak ada, mengubah dan mengosongkan bahasa, naik dan turun hanya di antara saudara, hapus berantai, staf ditolak di komponen, pohon per bahasa (bahasa tanpa teks dan yatim disembunyikan), urutan dan cache ikut berubah, tombol chat tersembunyi bila kosong, jumlah query daftar tetap, dan teks tersedia di semua bahasa. `tests/Feature/Landing/ContactWidgetsTest.php` untuk tombol dan panel di landing.
 
 ## Ditunda
 

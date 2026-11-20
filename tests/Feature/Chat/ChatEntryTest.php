@@ -116,7 +116,7 @@ class ChatEntryTest extends TestCase
         $this->assertSame('/en/contact', ChatEntry::query()->firstOrFail()->translations()->firstOrFail()->link_url);
     }
 
-    public function test_follow_up_questions_can_go_as_deep_as_wanted_and_are_listed_with_outline_numbers(): void
+    public function test_follow_up_questions_can_go_as_deep_as_wanted_and_are_listed_as_a_directory_tree(): void
     {
         $one = $this->entry(['en' => ['question' => 'Question one', 'answer' => 'A']]);
         $this->entry(['en' => ['question' => 'Question two', 'answer' => 'A']], null, 1);
@@ -139,9 +139,11 @@ class ChatEntryTest extends TestCase
 
         $html = (string) Livewire::actingAs($this->admin())->test(Index::class)->html();
 
-        foreach (['>1<', '>1.1<', '>1.1.1<', '>1.1.1.1.1.1<', '>1.2<', '>1.3<', '>2<'] as $number) {
-            $this->assertStringContainsString($number, $html);
+        foreach (['1', '1.1', '1.1.1', '1.1.1.1.1.1', '1.2', '1.3', '2'] as $number) {
+            $this->assertStringContainsString("Question {$number}: ", $html);
         }
+
+        $this->assertSame(8, substr_count($html, 'data-tree-elbow'));
 
         $this->assertLessThan(strpos($html, 'Question two'), (int) strpos($html, 'Added from the page'));
     }
