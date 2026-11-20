@@ -64,6 +64,183 @@ class ArticlePagesTest extends TestCase
         $this->assertMatchesRegularExpression('/'.preg_quote(__('pages.articles.filters.article'), '/').'\s*<span[^>]*>\s*4\s*</', $html);
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
+    private function publishFor(string $locale, array $attributes, bool $news = false): ArticleTranslation
+    {
+        $article = $news ? Article::factory()->news()->create() : Article::factory()->create();
+
+        return ArticleTranslation::factory()->published($locale)->create([
+            'article_id' => $article->id,
+            'published_at' => now()->subDays(30),
+            ...$attributes,
+        ]);
+    }
+
+    public function test_the_search_finds_items_by_title_or_summary_in_any_case_and_needs_every_word(): void
+    {
+        $this->publishFor('en', ['title' => 'Hard Chrome Plating Guide', 'excerpt' => 'How thick a layer should be']);
+        $this->publishFor('en', ['title' => 'Annual company update', 'excerpt' => 'We now offer CHROME services']);
+        $this->publishFor('en', ['title' => 'Nickel basics', 'excerpt' => 'Nothing relevant here']);
+        app(LandingArticles::class)->flush();
+
+        $this->get('/en/articles?q=chrome')->assertOk()
+            ->assertSee('Hard Chrome Plating Guide')
+            ->assertSee('Annual company update')
+            ->assertDontSee('Nickel basics');
+
+        $this->get('/en/articles?q=chrome+guide')->assertOk()
+            ->assertSee('Hard Chrome Plating Guide')
+            ->assertDontSee('Annual company update');
+    }
+
+    public function test_the_search_combines_with_the_type_filter_and_counts_the_filters_for_the_search(): void
+    {
+        $this->publishFor('en', ['title' => 'Zinc article']);
+        $this->publishFor('en', ['title' => 'Zinc news'], news: true);
+        $this->publishFor('en', ['title' => 'Copper article']);
+        app(LandingArticles::class)->flush();
+
+        $html = (string) $this->get('/en/articles?q=zinc&type=news')->assertOk()
+            ->assertSee('Zinc news')
+            ->assertDontSee('Zinc article')
+            ->assertDontSee('Copper article')
+            ->getContent();
+
+        $this->assertMatchesRegularExpression('/'.preg_quote(__('pages.articles.filters.all'), '/').'\s*<span[^>]*>\s*2\s*</', $html);
+        $this->assertStringContainsString('name="type" value="news"', $html);
+        $this->assertStringContainsString('data-search-summary', $html);
+    }
+
+    public function test_a_search_without_a_match_shows_a_message_and_not_a_404(): void
+    {
+        $this->publishFor('en', ['title' => 'Zinc article']);
+        app(LandingArticles::class)->flush();
+
+        $this->get('/en/articles?q=nothing-like-this')->assertOk()
+            ->assertSee(__('pages.articles.search.empty'))
+            ->assertDontSee('Zinc article');
+    }
+
+    public function test_the_search_looks_up_percent_and_underscore_as_typed(): void
+    {
+        $this->publishFor('en', ['title' => 'Save 50% on coating']);
+        $this->publishFor('en', ['title' => 'Save 500 on coating']);
+        $this->publishFor('en', ['title' => 'Coat_ing tips']);
+        $this->publishFor('en', ['title' => 'Coatxing tips']);
+        app(LandingArticles::class)->flush();
+
+        $this->get('/en/articles?q='.urlencode('50%'))->assertOk()
+            ->assertSee('Save 50% on coating')
+            ->assertDontSee('Save 500 on coating');
+
+        $this->get('/en/articles?q=coat_ing')->assertOk()
+            ->assertSee('Coat_ing tips')
+            ->assertDontSee('Coatxing tips');
+    }
+
+    public function test_the_search_stays_in_the_language_of_the_page(): void
+    {
+        $this->publishFor('en', ['title' => 'Plating in English']);
+        $this->publishFor('id', ['title' => 'Plating dalam bahasa Indonesia']);
+        app(LandingArticles::class)->flush();
+
+        $this->get('/id/articles?q=plating')->assertOk()
+            ->assertSee('Plating dalam bahasa Indonesia')
+            ->assertDontSee('Plating in English');
+    }
+
+    public function test_a_search_result_is_not_indexed_and_points_its_canonical_at_the_plain_list(): void
+    {
+        $this->publishFor('en', ['title' => 'Zinc article']);
+        app(LandingArticles::class)->flush();
+
+        $html = (string) $this->get('/en/articles?q=zinc')->assertOk()->getContent();
+        $this->assertStringContainsString('<meta name="robots" content="noindex, follow">', $html);
+        $this->assertStringContainsString('<link rel="canonical" href="'.route('landing.articles.index', ['locale' => 'en']).'">', $html);
+
+        $this->assertStringNotContainsString('name="robots"', (string) $this->get('/en/articles')->getContent());
+    }
+
+    public function test_the_pager_and_the_filters_keep_the_search(): void
+    {
+        foreach (range(1, 15) as $number) {
+            $this->publishFor('en', ['title' => "Zinc story {$number}", 'published_at' => now()->subDays(30 + $number)]);
+        }
+        app(LandingArticles::class)->flush();
+
+        $html = (string) $this->get('/en/articles?q=zinc')->assertOk()->getContent();
+        $this->assertStringContainsString('href="'.e(route('landing.articles.index', ['locale' => 'en', 'q' => 'zinc', 'page' => 2])).'"', $html);
+        $this->assertStringContainsString('href="'.e(route('landing.articles.index', ['locale' => 'en', 'q' => 'zinc', 'type' => 'news'])).'"', $html);
+
+        $this->get('/en/articles?q=zinc&page=2')->assertOk();
+        $this->get('/en/articles?q=zinc&page=3')->assertNotFound();
+    }
+
+    public function test_a_blank_or_malformed_search_is_ignored_and_a_long_one_is_cut(): void
+    {
+        $this->publishFor('en', ['title' => 'Zinc article']);
+        app(LandingArticles::class)->flush();
+
+        $this->get('/en/articles?q=%20%20')->assertOk()->assertSee('Zinc article')->assertDontSee('data-search-summary', false);
+        $this->get('/en/articles?q[]=zinc')->assertOk()->assertSee('Zinc article');
+
+        $html = (string) $this->get('/en/articles?q='.str_repeat('a', 300))->assertOk()->getContent();
+        $this->assertStringContainsString('value="'.str_repeat('a', 100).'"', $html);
+        $this->assertStringNotContainsString(str_repeat('a', 101), $html);
+    }
+
+    public function test_the_search_costs_the_same_number_of_queries_however_many_items_match(): void
+    {
+        foreach (range(1, 2) as $number) {
+            $this->publishFor('en', ['title' => "Zinc story {$number}"]);
+        }
+        app(LandingArticles::class)->flush();
+        $count = function (): int {
+            DB::flushQueryLog();
+            DB::enableQueryLog();
+            $this->get('/en/articles?q=zinc')->assertOk();
+
+            return count(DB::getQueryLog());
+        };
+        $count(); // The first request also fills the caches of the menu, the chat, and the footer.
+        app(LandingArticles::class)->flush();
+        $few = $count();
+
+        foreach (range(3, 10) as $number) {
+            $this->publishFor('en', ['title' => "Zinc story {$number}"]);
+        }
+        app(LandingArticles::class)->flush();
+
+        $this->assertSame($few, $count());
+    }
+
+    public function test_searches_are_limited_per_minute_but_the_plain_list_and_the_article_page_are_not(): void
+    {
+        $item = $this->publishFor('en', ['title' => 'Zinc article']);
+        app(LandingArticles::class)->flush();
+
+        foreach (range(1, 60) as $ignored) {
+            $this->get('/en/articles?q=zinc')->assertOk();
+        }
+
+        $this->get('/en/articles?q=zinc')->assertStatus(429);
+        $this->get('/en/articles?q=other')->assertStatus(429);
+        $this->get('/en/articles')->assertOk();
+        $this->get('/en/articles?type=news')->assertOk();
+        $this->get('/en/articles/'.$item->slug)->assertOk();
+    }
+
+    public function test_the_search_texts_exist_in_every_language(): void
+    {
+        foreach (config('locales.landing') as $code) {
+            foreach (['title', 'label', 'placeholder', 'submit', 'clear', 'results', 'empty'] as $key) {
+                $this->assertNotSame("pages.articles.search.{$key}", __("pages.articles.search.{$key}", ['count' => 2, 'query' => 'x'], $code));
+            }
+        }
+    }
+
     public function test_the_filter_keeps_only_that_type(): void
     {
         $this->publishSix();

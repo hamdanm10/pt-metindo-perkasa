@@ -146,6 +146,15 @@ return [
         ],
         'related' => '関連記事',
         'empty' => '記事はまだありません。',
+        'search' => [
+            'title' => '検索：:query',
+            'label' => '記事とニュースを検索',
+            'placeholder' => '記事とニュースを検索',
+            'submit' => '検索',
+            'clear' => '検索をクリア',
+            'results' => '[0,*] 「:query」の検索結果 :count 件',
+            'empty' => '検索に一致するものがありません。別のキーワードをお試しください。',
+        ],
     ],
     'contact' => [
         'title' => 'お問い合わせ',

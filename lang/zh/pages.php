@@ -146,6 +146,15 @@ return [
         ],
         'related' => '相关文章',
         'empty' => '暂无文章。',
+        'search' => [
+            'title' => '搜索：:query',
+            'label' => '搜索文章和新闻',
+            'placeholder' => '搜索文章和新闻',
+            'submit' => '搜索',
+            'clear' => '清除搜索',
+            'results' => '[0,*] “:query” 共 :count 条结果',
+            'empty' => '没有符合搜索的内容，请换个关键词试试。',
+        ],
     ],
     'contact' => [
         'title' => '联系我们',

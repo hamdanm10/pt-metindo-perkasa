@@ -19,7 +19,8 @@ class ArticleController extends Controller
 
         $type = in_array($request->query('type'), ['article', 'news'], true) ? $request->query('type') : null;
         $page = max(1, $request->integer('page', 1));
-        $paged = $articles->page($locale, $type, $page);
+        $search = $this->search($request);
+        $paged = $articles->page($locale, $type, $page, $search);
 
         // A page past the last one does not exist (page 1 always does, even when a filter matches nothing).
         abort_if($page > $paged['last'], 404);
@@ -29,10 +30,27 @@ class ArticleController extends Controller
             'page' => $page,
             'lastPage' => $paged['last'],
             'type' => $type,
-            'counts' => $articles->counts($locale),
-            // The canonical address of page 2 and later keeps its page; a filtered list points at the plain list.
-            'pageQuery' => $type === null && $page > 1 ? ['page' => $page] : [],
+            'search' => $search,
+            'counts' => $paged['counts'],
+            // The canonical address of page 2 and later keeps its page; a filtered or searched list points at the plain list.
+            'pageQuery' => $type === null && $search === null && $page > 1 ? ['page' => $page] : [],
         ]);
+    }
+
+    /**
+     * The search words from ?q=, trimmed and cut to 100 characters; null when empty or not plain text.
+     */
+    private function search(Request $request): ?string
+    {
+        $query = $request->query('q');
+
+        if (! is_string($query)) {
+            return null;
+        }
+
+        $query = mb_substr(trim((string) preg_replace('/\s+/u', ' ', $query)), 0, 100);
+
+        return $query === '' ? null : $query;
     }
 
     public function show(LandingArticles $articles, string $article): View
