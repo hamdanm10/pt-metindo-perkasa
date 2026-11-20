@@ -24,14 +24,14 @@ class LandingContent
     ) {}
 
     /**
-     * The catalog the landing shows: what the admin set in the dashboard, or the static list in the
-     * configuration while no category is active yet.
+     * The catalog the landing shows: the static list in the configuration, or, when `landing.catalog_source` is
+     * "database", what the admin set in the dashboard (the static list while no category is active yet).
      *
      * @return list<array{slug: string, name: string, description: string|null, processes: list<array{slug: string, name: string, description: string|null, steps: list<array{name: string, description: string|null, products: list<array{slug: string, name: string, description: string|null, brochure_url: string|null, video_url: string|null, price: string|null, tds_url: string|null, links: list<array{label: string, url: string}>}>}>}>}>
      */
     private function source(): array
     {
-        $catalog = $this->catalog->all(app()->getLocale());
+        $catalog = config('landing.catalog_source') === 'database' ? $this->catalog->all(app()->getLocale()) : [];
 
         return $catalog !== [] ? $catalog : $this->configured();
     }
