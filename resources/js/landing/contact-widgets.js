@@ -167,11 +167,15 @@ function initChat() {
         // The admin's link is checked on the server too; only this site's pages and web addresses become links.
         if (link && /^(https?:\/\/|\/(?!\/))/i.test(link.url)) {
             const anchor = document.createElement('a');
+            const arrow = document.createElement('span');
 
             anchor.href = link.url;
-            anchor.textContent = `${link.label} →`;
-            anchor.className = 'mt-1.5 inline-block text-xs font-bold text-brand-700 underline underline-offset-2';
-            column.append(anchor);
+            anchor.className = 'mt-2.5 flex w-fit max-w-full items-center gap-1.5 rounded-full bg-brand-600 px-3.5 py-1.5 text-xs font-bold text-white no-underline transition-colors hover:bg-brand-700 focus-visible:outline-offset-2';
+            arrow.textContent = '→';
+            arrow.className = 'inline-block shrink-0 rtl:-scale-x-100';
+            arrow.setAttribute('aria-hidden', 'true');
+            anchor.append(document.createTextNode(link.label), arrow);
+            body.append(anchor);
         }
 
         scroll();
