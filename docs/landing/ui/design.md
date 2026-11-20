@@ -114,10 +114,10 @@ Isi mengikuti halaman Products prototipe (`http://103.125.180.65/~wwwmetin/en/pr
 
 `/{locale}/services/{slug}`. Alurnya mengikuti prototipe (`.../en/services/electroplating-service`), tampilannya dirancang ulang. Dari atas ke bawah:
 
-- **Kepala** (`ink`): jejak remah "Services / Service detail", nama layanan, dan ringkasan satu kalimat.
-- **Isi** (lavender, dua kolom 7:5): di kiri paragraf layanan, daftar bernomor **What's included** (lima butir, garis tipis), dan **Good fit for**. Di kanan (menempel saat gulir) foto layanan 4:3 di atas warna krimson, indigo, atau biru, dan kartu `ink` **Talk to our team** dengan tombol **Enquire on WhatsApp** (nomor aktif pertama dari admin; tersembunyi bila tidak ada nomor) dan **Contact us**.
+- **Kepala** (`ink`, dua kolom 7:5): di kiri jejak remah "Services / Service detail", penanda urutan (mis. 01 / 03), nama layanan, ringkasan, dan dua tombol (WhatsApp dan Contact us). Di kanan foto layanan 4:3 di atas warna krimson, indigo, atau biru dalam bingkai miring bergaris tipis. Tanpa foto, teks memakai lebar penuh.
+- **Isi** (lavender, dua kolom 8:4): di kiri paragraf layanan dengan garis krimson di tepi, **What's included** sebagai kartu putih dua kolom dengan nomor bulat krimson, dan **Good fit for** dalam kartu `ink`. Di kanan (menempel saat gulir) kartu putih **Talk to our team** dengan tombol **Enquire on WhatsApp** (nomor aktif pertama dari admin; tersembunyi bila tidak ada nomor) dan **Contact us**.
 - **How we work**: bagian empat langkah yang sama dengan halaman Services (satu partial bersama).
-- **Other services**: dua kartu bergaris tipis (judul, ringkasan, "Learn more →"), lalu ajakan menghubungi.
+- **Other services**: dua kartu lavender dengan foto 16:9 (bila ada), judul, ringkasan, dan "Learn more →", lalu ajakan menghubungi.
 
 ## Halaman Detail Proses
 
