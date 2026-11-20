@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Materials;
+namespace App\Livewire\Products;
 
-use App\Actions\Materials\SaveMaterial;
-use App\Livewire\Forms\MaterialForm;
-use App\Models\Material;
-use App\Services\Materials\MaterialTdsStore;
+use App\Actions\Products\SaveProduct;
+use App\Livewire\Forms\ProductForm;
+use App\Models\Product;
+use App\Services\Products\ProductTdsStore;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -20,23 +20,23 @@ class Editor extends Component
     private const MAX_LINKS = 10;
 
     #[Locked]
-    public ?Material $material = null;
+    public ?Product $product = null;
 
-    public MaterialForm $form;
+    public ProductForm $form;
 
     public string $activeLocale = 'en';
 
-    public function mount(?Material $material = null): void
+    public function mount(?Product $product = null): void
     {
-        if ($material?->exists) {
-            $this->authorize('update', $material);
-            $material->load(['translations', 'links']);
-            $this->material = $material;
+        if ($product?->exists) {
+            $this->authorize('update', $product);
+            $product->load(['translations', 'links']);
+            $this->product = $product;
         } else {
-            $this->authorize('create', Material::class);
+            $this->authorize('create', Product::class);
         }
 
-        $this->form->initialize($this->material);
+        $this->form->initialize($this->product);
         $this->activeLocale = config()->string('locales.default');
     }
 
@@ -65,17 +65,17 @@ class Editor extends Component
         $this->form->links = array_values($this->form->links);
     }
 
-    public function save(SaveMaterial $saveMaterial): void
+    public function save(SaveProduct $saveProduct): void
     {
-        $this->material === null
-            ? $this->authorize('create', Material::class)
-            : $this->authorize('update', $this->material);
+        $this->product === null
+            ? $this->authorize('create', Product::class)
+            : $this->authorize('update', $this->product);
 
         $this->form->normalize();
         $this->form->validate();
 
-        $saveMaterial->execute(
-            $this->material,
+        $saveProduct->execute(
+            $this->product,
             $this->form->name,
             $this->form->slug(),
             $this->form->payload(),
@@ -83,19 +83,19 @@ class Editor extends Component
             $this->form->removeTds,
         );
 
-        session()->flash('status', __($this->material === null ? 'materials.messages.created' : 'materials.messages.updated'));
+        session()->flash('status', __($this->product === null ? 'products.messages.created' : 'products.messages.updated'));
 
-        $this->redirectRoute('app.materials.index');
+        $this->redirectRoute('app.products.index');
     }
 
-    public function render(MaterialTdsStore $tds): View
+    public function render(ProductTdsStore $tds): View
     {
-        $path = $this->material?->tds_path;
+        $path = $this->product?->tds_path;
 
-        return view('livewire.materials.editor', [
+        return view('livewire.products.editor', [
             'currentTds' => $path === null ? null : $tds->url($path),
         ])->layout('components.dashboard.layout', [
-            'title' => __($this->material === null ? 'materials.create_title' : 'materials.edit_title'),
+            'title' => __($this->product === null ? 'products.create_title' : 'products.edit_title'),
         ]);
     }
 }

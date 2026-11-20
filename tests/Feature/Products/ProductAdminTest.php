@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Materials;
+namespace Tests\Feature\Products;
 
-use App\Livewire\Materials\Editor;
-use App\Livewire\Materials\Index;
-use App\Models\Material;
+use App\Livewire\Products\Editor;
+use App\Livewire\Products\Index;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -15,22 +15,22 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class MaterialAdminTest extends TestCase
+class ProductAdminTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_only_admins_open_the_pages(): void
     {
-        $material = Material::factory()->create();
+        $product = Product::factory()->create();
 
-        foreach (['/app/materials', '/app/materials/create', "/app/materials/{$material->id}/edit"] as $url) {
+        foreach (['/app/products', '/app/products/create', "/app/products/{$product->id}/edit"] as $url) {
             $this->actingAs(User::factory()->admin()->create())->get($url)->assertOk();
             $this->actingAs(User::factory()->staff()->create())->get($url)->assertForbidden();
             $this->actingAs(User::factory()->customer()->create())->get($url)->assertForbidden();
         }
 
         auth()->logout();
-        $this->get('/app/materials')->assertRedirect(route('app.login'));
+        $this->get('/app/products')->assertRedirect(route('app.login'));
     }
 
     public function test_staff_cannot_use_the_livewire_components(): void
@@ -43,11 +43,11 @@ class MaterialAdminTest extends TestCase
 
     public function test_the_menu_item_is_for_admins_only(): void
     {
-        $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->assertSee(route('app.materials.index'), false);
-        $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->assertDontSee(route('app.materials.index'), false);
+        $this->actingAs(User::factory()->admin()->create())->get('/app/dashboard')->assertSee(route('app.products.index'), false);
+        $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->assertDontSee(route('app.products.index'), false);
     }
 
-    public function test_admin_adds_a_material_with_links_languages_and_a_tds_file(): void
+    public function test_admin_adds_a_product_with_links_languages_and_a_tds_file(): void
     {
         Storage::fake('public');
 
@@ -67,19 +67,19 @@ class MaterialAdminTest extends TestCase
             ->set('form.descriptions.id', 'Pembersih rendam.')
             ->call('save')
             ->assertHasNoErrors()
-            ->assertRedirect(route('app.materials.index'));
+            ->assertRedirect(route('app.products.index'));
 
-        $material = Material::query()->with(['translations', 'links'])->firstOrFail();
-        $this->assertSame('Epclen 62', $material->name);
-        $this->assertSame('epclen-62', $material->slug);
-        $this->assertSame(125000, $material->price);
-        $this->assertTrue($material->is_active);
-        $this->assertSame('https://example.com/brochure', $material->brochure_url);
-        $this->assertNotNull($material->tds_path);
-        Storage::disk('public')->assertExists((string) $material->tds_path);
-        $this->assertSame(['en', 'id'], $material->translations->pluck('locale')->sort()->values()->all());
-        $this->assertSame(['Tokopedia', 'Shopee'], $material->links->pluck('label')->all());
-        $this->assertSame([0, 1], $material->links->pluck('position')->all());
+        $product = Product::query()->with(['translations', 'links'])->firstOrFail();
+        $this->assertSame('Epclen 62', $product->name);
+        $this->assertSame('epclen-62', $product->slug);
+        $this->assertSame(125000, $product->price);
+        $this->assertTrue($product->is_active);
+        $this->assertSame('https://example.com/brochure', $product->brochure_url);
+        $this->assertNotNull($product->tds_path);
+        Storage::disk('public')->assertExists((string) $product->tds_path);
+        $this->assertSame(['en', 'id'], $product->translations->pluck('locale')->sort()->values()->all());
+        $this->assertSame(['Tokopedia', 'Shopee'], $product->links->pluck('label')->all());
+        $this->assertSame([0, 1], $product->links->pluck('position')->all());
     }
 
     public function test_optional_fields_are_saved_as_null_and_empty_link_rows_are_ignored(): void
@@ -91,12 +91,12 @@ class MaterialAdminTest extends TestCase
             ->call('save')
             ->assertHasNoErrors();
 
-        $material = Material::query()->with('links')->firstOrFail();
-        $this->assertNull($material->brochure_url);
-        $this->assertNull($material->video_url);
-        $this->assertNull($material->price);
-        $this->assertNull($material->tds_path);
-        $this->assertCount(0, $material->links);
+        $product = Product::query()->with('links')->firstOrFail();
+        $this->assertNull($product->brochure_url);
+        $this->assertNull($product->video_url);
+        $this->assertNull($product->price);
+        $this->assertNull($product->tds_path);
+        $this->assertCount(0, $product->links);
     }
 
     public function test_english_is_required_and_empty_languages_are_not_saved(): void
@@ -107,12 +107,12 @@ class MaterialAdminTest extends TestCase
             ->call('save');
 
         $component->assertHasErrors(['form.descriptions']);
-        $this->assertSame(0, Material::query()->count());
+        $this->assertSame(0, Product::query()->count());
     }
 
     public function test_the_name_is_validated_and_must_be_unique(): void
     {
-        Material::factory()->create(['name' => 'Taken', 'slug' => 'taken']);
+        Product::factory()->create(['name' => 'Taken', 'slug' => 'taken']);
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
             ->set('form.descriptions.en', 'x');
 
@@ -121,7 +121,7 @@ class MaterialAdminTest extends TestCase
         $component->set('form.name', 'Taken')->call('save')->assertHasErrors(['form.name']);
         $component->set('form.name', 'TAKEN!')->call('save')->assertHasErrors(['form.name']);
         $component->set('form.name', '!!!')->call('save')->assertHasErrors(['form.name']);
-        $this->assertSame(1, Material::query()->count());
+        $this->assertSame(1, Product::query()->count());
     }
 
     public function test_urls_must_be_https_and_links_are_validated(): void
@@ -136,7 +136,7 @@ class MaterialAdminTest extends TestCase
         $component->set('form.videoUrl', '')->call('addLink')->set('form.links.0.label', 'Shop')->call('save')->assertHasErrors(['form.links.0.url']);
         $component->set('form.links.0.label', '')->set('form.links.0.url', 'https://x.test')->call('save')->assertHasErrors(['form.links.0.label']);
         $component->set('form.links.0.label', 'Shop')->set('form.links.0.url', 'http://x.test')->call('save')->assertHasErrors(['form.links.0.url']);
-        $this->assertSame(0, Material::query()->count());
+        $this->assertSame(0, Product::query()->count());
     }
 
     public function test_the_number_of_links_and_the_text_lengths_are_limited(): void
@@ -167,14 +167,14 @@ class MaterialAdminTest extends TestCase
         $component->set('form.tds', UploadedFile::fake()->create('ok.pdf', 100, 'application/pdf'))->assertHasNoErrors(['form.tds']);
     }
 
-    public function test_admin_edits_a_material_replaces_links_and_removes_an_emptied_language(): void
+    public function test_admin_edits_a_product_replaces_links_and_removes_an_emptied_language(): void
     {
-        $material = Material::factory()->create(['name' => 'Old', 'slug' => 'old', 'price' => 5]);
-        $material->translations()->create(['locale' => 'en', 'description' => 'English']);
-        $material->translations()->create(['locale' => 'id', 'description' => 'Indonesia']);
-        $material->links()->create(['label' => 'Old shop', 'url' => 'https://old.test', 'position' => 0]);
+        $product = Product::factory()->create(['name' => 'Old', 'slug' => 'old', 'price' => 5]);
+        $product->translations()->create(['locale' => 'en', 'description' => 'English']);
+        $product->translations()->create(['locale' => 'id', 'description' => 'Indonesia']);
+        $product->links()->create(['label' => 'Old shop', 'url' => 'https://old.test', 'position' => 0]);
 
-        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['material' => $material])
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['product' => $product])
             ->assertSet('form.name', 'Old')
             ->assertSet('form.price', '5')
             ->assertSet('form.links.0.label', 'Old shop')
@@ -185,26 +185,26 @@ class MaterialAdminTest extends TestCase
             ->call('save')
             ->assertHasNoErrors();
 
-        $material->refresh()->load(['translations', 'links']);
-        $this->assertSame(['en'], $material->translations->pluck('locale')->all());
-        $this->assertSame(['New shop'], $material->links->pluck('label')->all());
-        $this->assertNull($material->price);
-        $this->assertFalse($material->is_active);
+        $product->refresh()->load(['translations', 'links']);
+        $this->assertSame(['en'], $product->translations->pluck('locale')->all());
+        $this->assertSame(['New shop'], $product->links->pluck('label')->all());
+        $this->assertNull($product->price);
+        $this->assertFalse($product->is_active);
     }
 
     public function test_editing_keeps_the_slug_and_the_own_name_is_not_a_duplicate(): void
     {
-        $material = Material::factory()->create(['name' => 'Alpha', 'slug' => 'custom-slug']);
-        $material->translations()->create(['locale' => 'en', 'description' => 'x']);
+        $product = Product::factory()->create(['name' => 'Alpha', 'slug' => 'custom-slug']);
+        $product->translations()->create(['locale' => 'en', 'description' => 'x']);
 
-        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['material' => $material])
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['product' => $product])
             ->set('form.name', 'Beta')
             ->call('save')->assertHasNoErrors();
 
-        $this->assertSame('custom-slug', $material->refresh()->slug);
-        $this->assertSame('Beta', $material->name);
+        $this->assertSame('custom-slug', $product->refresh()->slug);
+        $this->assertSame('Beta', $product->name);
 
-        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['material' => $material])
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['product' => $product])
             ->call('save')->assertHasNoErrors();
     }
 
@@ -212,31 +212,31 @@ class MaterialAdminTest extends TestCase
     {
         Storage::fake('public');
         $admin = User::factory()->admin()->create();
-        Storage::disk('public')->put('materials/tds/old.pdf', 'old');
-        $material = Material::factory()->create(['tds_path' => 'materials/tds/old.pdf']);
-        $material->translations()->create(['locale' => 'en', 'description' => 'x']);
+        Storage::disk('public')->put('products/tds/old.pdf', 'old');
+        $product = Product::factory()->create(['tds_path' => 'products/tds/old.pdf']);
+        $product->translations()->create(['locale' => 'en', 'description' => 'x']);
 
-        Livewire::actingAs($admin)->test(Editor::class, ['material' => $material])
+        Livewire::actingAs($admin)->test(Editor::class, ['product' => $product])
             ->set('form.tds', UploadedFile::fake()->create('new.pdf', 50, 'application/pdf'))
             ->call('save')->assertHasNoErrors();
 
-        $material->refresh();
-        Storage::disk('public')->assertMissing('materials/tds/old.pdf');
-        Storage::disk('public')->assertExists((string) $material->tds_path);
-        $newPath = (string) $material->tds_path;
+        $product->refresh();
+        Storage::disk('public')->assertMissing('products/tds/old.pdf');
+        Storage::disk('public')->assertExists((string) $product->tds_path);
+        $newPath = (string) $product->tds_path;
 
-        Livewire::actingAs($admin)->test(Editor::class, ['material' => $material])
+        Livewire::actingAs($admin)->test(Editor::class, ['product' => $product])
             ->set('form.removeTds', true)
             ->call('save')->assertHasNoErrors();
 
-        $this->assertNull($material->refresh()->tds_path);
+        $this->assertNull($product->refresh()->tds_path);
         Storage::disk('public')->assertMissing($newPath);
     }
 
     public function test_the_list_searches_by_name_without_regard_to_case(): void
     {
-        Material::factory()->create(['name' => 'Epclen 62', 'slug' => 'epclen-62']);
-        Material::factory()->create(['name' => 'Jasco CA', 'slug' => 'jasco-ca']);
+        Product::factory()->create(['name' => 'Epclen 62', 'slug' => 'epclen-62']);
+        Product::factory()->create(['name' => 'Jasco CA', 'slug' => 'jasco-ca']);
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Index::class)
             ->set('search', 'EPCLEN')->assertSee('Epclen 62')->assertDontSee('Jasco CA');
@@ -247,9 +247,9 @@ class MaterialAdminTest extends TestCase
         $admin = User::factory()->admin()->create();
 
         $count = function (int $rows) use ($admin): int {
-            Material::query()->delete();
-            Material::factory()->count($rows)->create()->each(
-                fn (Material $material) => $material->translations()->create(['locale' => 'en', 'description' => 'x'])
+            Product::query()->delete();
+            Product::factory()->count($rows)->create()->each(
+                fn (Product $product) => $product->translations()->create(['locale' => 'en', 'description' => 'x'])
             );
 
             DB::enableQueryLog();
@@ -258,7 +258,7 @@ class MaterialAdminTest extends TestCase
             $queries = count(DB::getQueryLog());
             DB::disableQueryLog();
 
-            $this->assertCount(min($rows, 15), $component->viewData('materials')->items());
+            $this->assertCount(min($rows, 15), $component->viewData('products')->items());
 
             return $queries;
         };
@@ -268,8 +268,8 @@ class MaterialAdminTest extends TestCase
 
     public function test_texts_exist_in_both_dashboard_languages(): void
     {
-        $en = require lang_path('en/materials.php');
-        $id = require lang_path('id/materials.php');
+        $en = require lang_path('en/products.php');
+        $id = require lang_path('id/products.php');
 
         $this->assertSame(array_keys($en), array_keys($id));
         $this->assertSame(array_keys($en['fields']), array_keys($id['fields']));

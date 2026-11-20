@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Materials;
+namespace App\Services\Products;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
- * Stores the TDS (technical data sheet) PDF of a material under a random name on the public disk,
+ * Stores the TDS (technical data sheet) PDF of a product under a random name on the public disk,
  * so the uploaded file's own name never reaches it.
  */
-class MaterialTdsStore
+class ProductTdsStore
 {
     public const DISK = 'public';
 
     public function store(UploadedFile $file): string
     {
-        $path = 'materials/tds/'.Str::random(40).'.pdf';
+        $path = 'products/tds/'.Str::random(40).'.pdf';
 
         Storage::disk(self::DISK)->put($path, (string) file_get_contents($file->getRealPath()));
 

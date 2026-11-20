@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Materials;
+namespace App\Actions\Products;
 
-use App\Models\Material;
+use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class ListMaterials
+class ListProducts
 {
     /**
-     * @return LengthAwarePaginator<int, Material>
+     * @return LengthAwarePaginator<int, Product>
      */
     public function execute(string $search): LengthAwarePaginator
     {
         $term = '%'.addcslashes(trim($search), '%_\\').'%';
 
-        return Material::query()
-            ->with('translations:id,material_id,locale')
+        return Product::query()
+            ->with('translations:id,product_id,locale')
             ->when(trim($search) !== '', fn ($query) => $query->where('name', 'ilike', $term))
             ->orderBy('name')
             ->paginate(15);

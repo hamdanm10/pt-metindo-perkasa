@@ -44,7 +44,7 @@ return [
         'articles' => 'Artikel',
         'process_categories' => 'Kategori proses',
         'services' => 'Layanan',
-        'materials' => 'Material',
+        'products' => 'Produk',
         'chat' => 'Asisten chat',
         'whatsapp' => 'Nomor WhatsApp',
         'inquiries' => 'Tanya Jawab',

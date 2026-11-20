@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\MaterialFactory;
+use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * in the translations. Brochure, video, price, and the TDS file are shared by all languages, and the shop links
  * (one per marketplace) are in `links`.
  */
-class Material extends Model
+class Product extends Model
 {
-    /** @use HasFactory<MaterialFactory> */
+    /** @use HasFactory<ProductFactory> */
     use HasFactory;
 
     protected $fillable = ['name', 'slug', 'brochure_url', 'video_url', 'price', 'tds_path', 'is_active'];
@@ -27,18 +27,18 @@ class Material extends Model
     }
 
     /**
-     * @return HasMany<MaterialTranslation, $this>
+     * @return HasMany<ProductTranslation, $this>
      */
     public function translations(): HasMany
     {
-        return $this->hasMany(MaterialTranslation::class);
+        return $this->hasMany(ProductTranslation::class);
     }
 
     /**
-     * @return HasMany<MaterialLink, $this>
+     * @return HasMany<ProductLink, $this>
      */
     public function links(): HasMany
     {
-        return $this->hasMany(MaterialLink::class)->orderBy('position');
+        return $this->hasMany(ProductLink::class)->orderBy('position');
     }
 }

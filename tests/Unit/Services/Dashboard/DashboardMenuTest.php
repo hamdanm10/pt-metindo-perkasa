@@ -14,7 +14,7 @@ class DashboardMenuTest extends TestCase
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->admin()->make());
 
-        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.process-categories.index', 'app.services.index', 'app.materials.index', 'app.chat.index', 'app.whatsapp.index', 'app.staff.index', 'app.customers.index', 'app.distributors.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.process-categories.index', 'app.services.index', 'app.products.index', 'app.chat.index', 'app.whatsapp.index', 'app.staff.index', 'app.customers.index', 'app.distributors.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($menu, 'route'));
     }
 
     public function test_staff_gets_the_home_the_articles_and_the_questions(): void
@@ -44,7 +44,7 @@ class DashboardMenuTest extends TestCase
 
         $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.content', 'dashboard.groups.users', 'dashboard.groups.support'], array_column($groups, 'label'));
         $this->assertSame(['app.dashboard'], array_column($groups[0]['items'], 'route'));
-        $this->assertSame(['app.articles.index', 'app.process-categories.index', 'app.services.index', 'app.materials.index', 'app.chat.index', 'app.whatsapp.index'], array_column($groups[1]['items'], 'route'));
+        $this->assertSame(['app.articles.index', 'app.process-categories.index', 'app.services.index', 'app.products.index', 'app.chat.index', 'app.whatsapp.index'], array_column($groups[1]['items'], 'route'));
         $this->assertSame(['app.staff.index', 'app.customers.index', 'app.distributors.index'], array_column($groups[2]['items'], 'route'));
         $this->assertSame(['app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($groups[3]['items'], 'route'));
         $this->assertSame(['home', 'document', 'cube', 'wrench', 'cube', 'question', 'phone', 'briefcase', 'users', 'truck', 'chat', 'chat'], array_column(array_merge(...array_column($groups, 'items')), 'icon'));

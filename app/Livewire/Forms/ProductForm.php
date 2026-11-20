@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
-use App\Models\Material;
+use App\Models\Product;
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -12,14 +12,14 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Form;
 
 /**
- * The material form: shared fields, the shop links, and one description per landing language. A language
+ * The product form: shared fields, the shop links, and one description per landing language. A language
  * is only saved when it has text, and English is required because it is the fallback for the others.
  */
-class MaterialForm extends Form
+class ProductForm extends Form
 {
     private const MAX_LINKS = 10;
 
-    public ?Material $material = null;
+    public ?Product $product = null;
 
     public string $name = '';
 
@@ -41,22 +41,22 @@ class MaterialForm extends Form
     /** @var array<string, string> */
     public array $descriptions = [];
 
-    public function initialize(?Material $material): void
+    public function initialize(?Product $product): void
     {
-        $this->material = $material;
-        $this->name = $material->name ?? '';
-        $this->isActive = $material->is_active ?? true;
-        $this->brochureUrl = $material->brochure_url ?? '';
-        $this->videoUrl = $material->video_url ?? '';
-        $this->price = $material?->price === null ? '' : (string) $material->price;
+        $this->product = $product;
+        $this->name = $product->name ?? '';
+        $this->isActive = $product->is_active ?? true;
+        $this->brochureUrl = $product->brochure_url ?? '';
+        $this->videoUrl = $product->video_url ?? '';
+        $this->price = $product?->price === null ? '' : (string) $product->price;
         $this->removeTds = false;
-        $this->links = $material === null
+        $this->links = $product === null
             ? []
-            : $material->links->map(fn ($link): array => ['label' => $link->label, 'url' => $link->url])->values()->all();
+            : $product->links->map(fn ($link): array => ['label' => $link->label, 'url' => $link->url])->values()->all();
         $this->descriptions = [];
 
         foreach (config()->array('locales.landing') as $locale) {
-            $this->descriptions[$locale] = $material?->translations->firstWhere('locale', $locale)->description ?? '';
+            $this->descriptions[$locale] = $product?->translations->firstWhere('locale', $locale)->description ?? '';
         }
     }
 
@@ -83,12 +83,12 @@ class MaterialForm extends Form
         $rules = [
             'name' => [
                 'required', 'string', 'max:255',
-                Rule::unique('materials', 'name')->ignore($this->material?->id),
+                Rule::unique('products', 'name')->ignore($this->product?->id),
                 function (string $attribute, mixed $value, Closure $fail): void {
                     $slug = $this->slug();
 
                     if ($slug === '' || $this->slugTaken($slug)) {
-                        $fail(__('materials.messages.name_unusable'));
+                        $fail(__('products.messages.name_unusable'));
                     }
                 },
             ],
@@ -103,7 +103,7 @@ class MaterialForm extends Form
             'links.*.url' => ['required', 'string', 'max:2048', 'url:https'],
             'descriptions' => [function (string $attribute, mixed $value, Closure $fail) use ($default): void {
                 if (! in_array($default, $this->activeLocales(), true)) {
-                    $fail(__('materials.messages.default_language_required', ['language' => config()->string("locales.locales.{$default}.name")]));
+                    $fail(__('products.messages.default_language_required', ['language' => config()->string("locales.locales.{$default}.name")]));
                 }
             }],
         ];
@@ -121,20 +121,20 @@ class MaterialForm extends Form
     public function validationAttributes(): array
     {
         $attributes = [
-            'name' => __('materials.fields.name'),
-            'isActive' => __('materials.fields.active'),
-            'brochureUrl' => __('materials.fields.brochure_url'),
-            'videoUrl' => __('materials.fields.video_url'),
-            'price' => __('materials.fields.price'),
-            'tds' => __('materials.fields.tds'),
-            'links' => __('materials.fields.links'),
-            'links.*.label' => __('materials.fields.link_label'),
-            'links.*.url' => __('materials.fields.link_url'),
-            'descriptions' => __('materials.fields.languages'),
+            'name' => __('products.fields.name'),
+            'isActive' => __('products.fields.active'),
+            'brochureUrl' => __('products.fields.brochure_url'),
+            'videoUrl' => __('products.fields.video_url'),
+            'price' => __('products.fields.price'),
+            'tds' => __('products.fields.tds'),
+            'links' => __('products.fields.links'),
+            'links.*.label' => __('products.fields.link_label'),
+            'links.*.url' => __('products.fields.link_url'),
+            'descriptions' => __('products.fields.languages'),
         ];
 
         foreach (array_keys($this->descriptions) as $locale) {
-            $attributes["descriptions.{$locale}"] = __('materials.fields.description').' ('.config()->string("locales.locales.{$locale}.name").')';
+            $attributes["descriptions.{$locale}"] = __('products.fields.description').' ('.config()->string("locales.locales.{$locale}.name").')';
         }
 
         return $attributes;
@@ -161,21 +161,21 @@ class MaterialForm extends Form
     }
 
     /**
-     * The address comes from the name when the material is created. An existing address is kept so
+     * The address comes from the name when the product is created. An existing address is kept so
      * links already shared keep working.
      */
     public function slug(): string
     {
-        $current = $this->material?->slug;
+        $current = $this->product?->slug;
 
         return $current !== null && $current !== '' ? $current : Str::slug($this->name);
     }
 
     private function slugTaken(string $slug): bool
     {
-        return Material::query()
+        return Product::query()
             ->where('slug', $slug)
-            ->when($this->material !== null, fn ($query) => $query->whereKeyNot($this->material?->id))
+            ->when($this->product !== null, fn ($query) => $query->whereKeyNot($this->product?->id))
             ->exists();
     }
 

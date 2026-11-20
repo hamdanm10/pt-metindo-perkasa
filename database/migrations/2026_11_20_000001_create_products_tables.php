@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('materials', function (Blueprint $table): void {
+        Schema::create('products', function (Blueprint $table): void {
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->unique();
@@ -22,33 +22,33 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('material_translations', function (Blueprint $table): void {
+        Schema::create('product_translations', function (Blueprint $table): void {
             $table->id();
-            $table->foreignId('material_id')->constrained('materials')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->string('locale', 5);
             $table->text('description')->nullable();
             $table->timestamps();
 
-            $table->unique(['material_id', 'locale']);
+            $table->unique(['product_id', 'locale']);
             $table->index('locale');
         });
 
-        Schema::create('material_links', function (Blueprint $table): void {
+        Schema::create('product_links', function (Blueprint $table): void {
             $table->id();
-            $table->foreignId('material_id')->constrained('materials')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->string('label', 100);
             $table->string('url', 2048);
             $table->unsignedInteger('position')->default(0);
             $table->timestamps();
 
-            $table->index(['material_id', 'position']);
+            $table->index(['product_id', 'position']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('material_links');
-        Schema::dropIfExists('material_translations');
-        Schema::dropIfExists('materials');
+        Schema::dropIfExists('product_links');
+        Schema::dropIfExists('product_translations');
+        Schema::dropIfExists('products');
     }
 };
