@@ -10,10 +10,19 @@ return [
     'unique' => ':Attribute sudah dipakai.',
     'max' => [
         'string' => ':Attribute tidak boleh lebih dari :max karakter.',
+        'numeric' => ':Attribute tidak boleh lebih dari :max.',
+        'file' => ':Attribute tidak boleh lebih dari :max kilobita.',
+        'array' => ':Attribute tidak boleh lebih dari :max butir.',
     ],
     'min' => [
         'string' => ':Attribute minimal :min karakter.',
+        'numeric' => ':Attribute minimal :min.',
     ],
+    'url' => ':Attribute harus berupa tautan yang valid.',
+    'integer' => ':Attribute harus berupa bilangan bulat.',
+    'file' => ':Attribute harus berupa berkas.',
+    'mimes' => ':Attribute harus berupa berkas bertipe :values.',
+    'array' => ':Attribute harus berupa daftar.',
     'password' => [
         'letters' => ':Attribute harus mengandung sedikitnya satu huruf.',
         'mixed' => ':Attribute harus mengandung sedikitnya satu huruf besar dan satu huruf kecil.',
