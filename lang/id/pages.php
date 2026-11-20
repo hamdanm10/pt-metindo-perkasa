@@ -23,6 +23,28 @@ return [
             'title' => 'Fasilitas',
             'text' => 'Fasilitas produksi yang mendukung beragam proses pelapisan dalam kondisi terkendali.',
         ],
+        'figures' => [
+            'categories' => 'Kategori proses',
+            'processes' => 'Proses',
+            'languages' => 'Bahasa',
+        ],
+        'principles' => [
+            'title' => 'Cara kami bekerja',
+            'items' => [
+                'document' => [
+                    'title' => 'Dokumentasikan',
+                    'text' => 'Setiap tahap proses dituliskan, sehingga tidak ada yang bergantung pada ingatan.',
+                ],
+                'repeat' => [
+                    'title' => 'Ulangi',
+                    'text' => 'Proses yang sama dijalankan dengan cara yang sama, dari batch pertama hingga terakhir.',
+                ],
+                'verify' => [
+                    'title' => 'Verifikasi',
+                    'text' => 'Hasil diperiksa terhadap proses, bukan diasumsikan.',
+                ],
+            ],
+        ],
         'subsidiaries' => [
             'title' => 'Anak perusahaan kami',
             'intro' => 'Grup kami beroperasi dari beberapa kota di Indonesia. Pilih pin atau nama perusahaan untuk membuka lokasinya di Google Maps.',

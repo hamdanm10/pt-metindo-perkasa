@@ -13,6 +13,9 @@ class AboutController extends Controller
 {
     public function __invoke(LandingContent $content, LandingMap $map): View
     {
-        return view('landing.pages.about', ['subsidiaries' => $map->pins($content->locations())]);
+        return view('landing.pages.about', [
+            'figures' => $content->figures(),
+            'subsidiaries' => $map->pins($content->locations()),
+        ]);
     }
 }

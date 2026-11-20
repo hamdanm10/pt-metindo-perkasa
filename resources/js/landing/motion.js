@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { about } from './motion/about.js';
+import { aboutStats } from './motion/about-stats.js';
 import { articles } from './motion/articles.js';
 import { catalog } from './motion/catalog.js';
 import { contactPage } from './motion/contact-page.js';
@@ -29,6 +30,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         smartHeader();
         video();
         about();
+        aboutStats();
         cta();
         subsidiaries();
         processes();

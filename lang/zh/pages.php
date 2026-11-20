@@ -23,6 +23,28 @@ return [
             'title' => '设施',
             'text' => '生产设施可在受控条件下支持多种电镀工艺。',
         ],
+        'figures' => [
+            'categories' => '工艺类别',
+            'processes' => '工艺',
+            'languages' => '语言',
+        ],
+        'principles' => [
+            'title' => '我们的工作方式',
+            'items' => [
+                'document' => [
+                    'title' => '记录',
+                    'text' => '工艺的每一步都有书面记录，不依赖记忆。',
+                ],
+                'repeat' => [
+                    'title' => '重复',
+                    'text' => '同一工艺以同样的方式运行，从第一批到最后一批。',
+                ],
+                'verify' => [
+                    'title' => '验证',
+                    'text' => '按工艺核对结果，而不是凭假设。',
+                ],
+            ],
+        ],
         'subsidiaries' => [
             'title' => '我们的子公司',
             'intro' => '我们的集团在印度尼西亚多个城市运营。点击地图标记或公司名称，即可在 Google 地图中查看位置。',

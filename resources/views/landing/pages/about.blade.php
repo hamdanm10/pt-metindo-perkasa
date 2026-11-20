@@ -14,14 +14,23 @@
                     <x-landing.button :href="route('landing.services.index')" variant="outline">{{ __('landing.nav.services') }}</x-landing.button>
                 </div>
             </div>
+
+            <dl data-about-stats class="mt-[5vw] grid grid-cols-3 gap-[2vw] border-t border-white/20 pt-[2.5vw] max-lg:mt-12 max-lg:gap-4 max-lg:pt-8">
+                @foreach (['categories', 'processes', 'languages'] as $figure)
+                    <div data-anim="hero-item" class="flex flex-col-reverse justify-end">
+                        <dt class="mt-[0.8vw] text-[clamp(0.7rem,0.78vw,1rem)] font-extrabold uppercase tracking-wide text-white/80 max-lg:mt-2">{{ __("pages.about.figures.{$figure}") }}</dt>
+                        <dd data-stat="{{ $figures[$figure] }}" class="text-[clamp(2.25rem,6vw,7.5rem)] font-black leading-[0.9] tabular-nums text-brand-300">{{ $figures[$figure] }}</dd>
+                    </div>
+                @endforeach
+            </dl>
         </div>
     </section>
 
     {{-- Approach: the heading stays beside the text while it is read. --}}
-    <section class="bg-lavender text-ink">
+    <section class="bg-lavender text-ink" aria-labelledby="about-approach">
         <div class="container-site section-y grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-[5vw]">
             <div class="lg:sticky lg:top-[calc(var(--header-h)+2rem)] lg:self-start">
-                <h2 data-anim="grow" class="text-balance text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.about.approach.title') }}</h2>
+                <h2 id="about-approach" data-anim="grow" class="text-balance text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.about.approach.title') }}</h2>
             </div>
             <div>
                 <div class="space-y-[1.6vw] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.45] max-lg:space-y-5">
@@ -34,8 +43,8 @@
     </section>
 
     {{-- Vision and mission: two large numbered cards. --}}
-    <section class="bg-lavender pb-[clamp(3rem,6.67vw,8rem)] text-white">
-        <div class="container-site grid gap-[1.5vw] max-lg:gap-5 lg:grid-cols-[3fr_2fr]">
+    <section class="bg-lavender pb-[clamp(3rem,6.67vw,8rem)] text-white" aria-label="{{ __('pages.about.vision.title') }} / {{ __('pages.about.mission.title') }}">
+        <div class="container-site grid gap-[1.5vw] max-lg:gap-5 lg:grid-cols-2">
             <article data-anim="card" class="group flex min-h-[clamp(18rem,26vw,34rem)] flex-col justify-between rounded-lg bg-brand-600 p-[clamp(1.5rem,3.33vw,4rem)] transition-transform duration-700 [transition-timing-function:var(--header-ease)] hover:-translate-y-1" style="--focus-ring: #ffffff">
                 <span class="text-[clamp(3rem,7vw,9rem)] font-black leading-none text-white/25 transition-colors duration-500 group-hover:text-white/45" aria-hidden="true">01</span>
                 <div>
@@ -54,22 +63,38 @@
     </section>
 
     {{-- Facilities --}}
-    <section class="bg-white text-ink">
-        <div class="container-site section-y grid items-center gap-10 lg:grid-cols-[7fr_5fr] lg:gap-[5vw]">
+    <section class="bg-white text-ink" aria-labelledby="about-facilities">
+        <div class="container-site section-y">
+        <div class="grid items-center gap-10 lg:grid-cols-[7fr_5fr] lg:gap-[5vw]">
             <x-landing.photo name="about-facilities" fallback="service-electroplating" ratio="aspect-video" class="rounded-lg max-lg:order-2" />
             <div>
-                <h2 data-anim="grow" class="text-balance text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.about.facilities.title') }}</h2>
+                <h2 id="about-facilities" data-anim="grow" class="text-balance text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.about.facilities.title') }}</h2>
                 <p data-anim="heading" class="mt-[2vw] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.45] text-ink/75 max-lg:mt-6">{{ __('pages.about.facilities.text') }}</p>
             </div>
+        </div>
+
+        {{-- Principles: three habits behind the approach, written from the approach text above. --}}
+        <div class="mt-[6vw] border-t border-ink/15 pt-[4vw] max-lg:mt-14 max-lg:pt-10">
+            <h2 id="about-principles" data-anim="heading" class="text-[clamp(1.5rem,2.6vw,3.25rem)] font-black uppercase tracking-tight">{{ __('pages.about.principles.title') }}</h2>
+            <ol data-anim="rows" class="mt-[2.5vw] grid gap-[1.5vw] max-lg:mt-6 max-lg:gap-4 md:grid-cols-3">
+                @foreach (['document', 'repeat', 'verify'] as $principle)
+                    <li class="rounded-lg bg-lavender p-[clamp(1.25rem,2.2vw,2.75rem)]">
+                        <span class="text-[clamp(0.75rem,0.833vw,1.05rem)] font-extrabold text-brand-600" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                        <h3 class="mt-[0.8vw] text-[clamp(1.1rem,1.5vw,1.9rem)] font-black max-lg:mt-3">{{ __("pages.about.principles.items.{$principle}.title") }}</h3>
+                        <p class="mt-[0.5vw] text-[clamp(0.95rem,1.1vw,1.4rem)] leading-[1.5] text-ink/75 max-lg:mt-2">{{ __("pages.about.principles.items.{$principle}.text") }}</p>
+                    </li>
+                @endforeach
+            </ol>
+        </div>
         </div>
     </section>
 
     {{-- Subsidiaries: the pins on the map and the cards below answer each other when one is hovered or focused. --}}
     @if ($subsidiaries)
-        <section class="bg-ink text-white" style="--focus-ring: #ffffff">
+        <section class="bg-ink text-white" style="--focus-ring: #ffffff" aria-labelledby="about-subsidiaries">
             <div class="container-site section-y">
                 <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
-                    <h2 data-anim="grow" class="text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.about.subsidiaries.title') }}</h2>
+                    <h2 id="about-subsidiaries" data-anim="grow" class="text-[clamp(2rem,4.6vw,5.75rem)] font-black uppercase leading-[0.95] tracking-tight">{{ __('pages.about.subsidiaries.title') }}</h2>
                     <p data-anim="heading" class="max-w-[30em] text-[clamp(1rem,1.22vw,1.5rem)] leading-[1.45] text-white/80">{{ __('pages.about.subsidiaries.intro') }}</p>
                 </div>
 

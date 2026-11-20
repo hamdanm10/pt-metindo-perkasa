@@ -208,6 +208,22 @@ class LandingContent
     }
 
     /**
+     * The figures the About page shows, all counted from what the site itself holds.
+     *
+     * @return array{categories: int, processes: int, languages: int}
+     */
+    public function figures(): array
+    {
+        $categories = $this->categories();
+
+        return [
+            'categories' => count($categories),
+            'processes' => array_sum(array_map(fn (array $category): int => count($category['processes']), $categories)),
+            'languages' => count(config('locales.landing')),
+        ];
+    }
+
+    /**
      * The group locations from the configuration.
      *
      * @return list<array{key: string, name: string, lat: float, lng: float, timezone: string}>
