@@ -13,7 +13,7 @@ Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan
 | A5 | Kelola konten landing lainnya (klien, mitra, video, kalimat beranda, dan tampilan produk dan layanan di landing) | belum ditulis (fase L4 di [`../../landing/implementation-plan.md`](../../landing/implementation-plan.md)) | `feat/landing-content` | Ditunda, isi landing belum final |
 | A6 | Kelola chat berbasis aturan di landing: pertanyaan, jawaban, dan pertanyaan lanjutan bersarang per bahasa | [`../../landing/chat/overview.md`](../../landing/chat/overview.md) | `feat/dynamic-chat` | Selesai di kode, menunggu tinjauan |
 | A7 | Kelola nomor WhatsApp customer service di landing: nama, nomor, urutan, aktif atau nonaktif | [`../../landing/whatsapp/overview.md`](../../landing/whatsapp/overview.md) | `feat/dynamic-whatsapp` | Selesai di kode, menunggu tinjauan |
-| A8 | Master data material: nama, deskripsi per bahasa, brosur, video, tautan olshop, TDS, harga | [`process-content/overview.md`](process-content/overview.md) | `feat/materials` | Rancangan, belum ada kode |
+| A8 | Master data material: nama, deskripsi per bahasa, brosur, video, tautan olshop, TDS, harga | [`process-content/overview.md`](process-content/overview.md) | `feat/materials` | Selesai di kode, menunggu tinjauan |
 | A9 | Kategori proses diperluas, proses, dan langkah dengan material | [`process-content/overview.md`](process-content/overview.md) | `feat/processes` | Rancangan, belum ada kode |
 | A10 | Landing membaca kategori, proses, langkah, dan material dari database | [`process-content/overview.md`](process-content/overview.md) | `feat/landing-processes` | Rancangan, belum ada kode |
 

@@ -39,7 +39,7 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
-| Material | `/app/materials`, `/create`, `/{material}/edit` | Daftar (nama, jumlah langkah yang memakai, status, pencarian nama, 15 per halaman). Form: data bersama, tautan olshop (tambah/hapus baris), unggah TDS, tab bahasa |
+| Material | `/app/materials`, `/create`, `/{material}/edit` | Daftar (nama, slug, lima badge bahasa, status, pencarian nama, 15 per halaman; kolom jumlah langkah yang memakai ditambah di A9). Form: data bersama, tautan olshop (tambah/hapus baris, maks 10, baris kosong diabaikan), unggah TDS (bisa dihapus), tab bahasa. Slug dibuat dari nama saat ditambahkan dan tidak berubah |
 | Kategori proses | `/app/process-categories` (sudah ada) | Ditambah urutan, status, dan tab bahasa untuk deskripsi |
 | Proses | `/app/processes`, `/create`, `/{process}/edit` | Daftar dengan saringan kategori dan pencarian. Form: nama, kategori, status, tab bahasa, dan editor langkah |
 

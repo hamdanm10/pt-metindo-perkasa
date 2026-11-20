@@ -44,6 +44,7 @@ return [
         'articles' => 'Articles',
         'process_categories' => 'Process categories',
         'services' => 'Services',
+        'materials' => 'Materials',
         'chat' => 'Chat assistant',
         'whatsapp' => 'WhatsApp numbers',
         'inquiries' => 'Questions & Answers',
