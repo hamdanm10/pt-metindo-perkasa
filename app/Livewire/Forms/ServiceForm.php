@@ -85,7 +85,7 @@ class ServiceForm extends Form
                 },
             ],
             'isActive' => ['boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=800,min_height=600'],
+            'image' => [$this->service?->image_path === null ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=800,min_height=600'],
             'translations' => [function (string $attribute, mixed $value, Closure $fail) use ($default): void {
                 if (! in_array($default, $this->activeLocales(), true)) {
                     $fail(__('services.messages.default_language_required', ['language' => config()->string("locales.locales.{$default}.name")]));

@@ -79,7 +79,9 @@ class ServiceAdminTest extends TestCase
 
     public function test_english_is_required_and_empty_languages_are_not_saved(): void
     {
+        Storage::fake('public');
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+            ->set('form.image', UploadedFile::fake()->image('cover.jpg', 1000, 800))
             ->set('form.name', 'X');
 
         $component->call('save')->assertHasErrors(['form.translations']);
@@ -119,8 +121,10 @@ class ServiceAdminTest extends TestCase
 
     public function test_the_slug_is_made_from_the_name_and_new_services_go_last(): void
     {
+        Storage::fake('public');
         Service::factory()->create(['position' => 4]);
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+            ->set('form.image', UploadedFile::fake()->image('cover.jpg', 1000, 800))
             ->set('form.translations.en.title', 'English')
             ->set('form.name', 'Zinc Plating & Co')->call('save')->assertHasNoErrors();
 
@@ -155,7 +159,7 @@ class ServiceAdminTest extends TestCase
 
     public function test_admin_edits_a_service_and_removes_an_emptied_language(): void
     {
-        $service = Service::factory()->create(['name' => 'Old', 'slug' => 'old']);
+        $service = Service::factory()->create(['name' => 'Old', 'slug' => 'old', 'image_path' => 'services/old.webp']);
         $service->translations()->create(['locale' => 'en', 'title' => 'Old title', 'included' => ['A', 'B']]);
         $service->translations()->create(['locale' => 'id', 'title' => 'Judul lama']);
 
@@ -178,7 +182,7 @@ class ServiceAdminTest extends TestCase
 
     public function test_editing_keeps_the_slug_and_the_own_name_is_not_a_duplicate(): void
     {
-        $service = Service::factory()->create(['name' => 'Same', 'slug' => 'custom-slug', 'position' => 3]);
+        $service = Service::factory()->create(['name' => 'Same', 'slug' => 'custom-slug', 'position' => 3, 'image_path' => 'services/same.webp']);
         $service->translations()->create(['locale' => 'en', 'title' => 'T']);
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['service' => $service])
@@ -193,13 +197,52 @@ class ServiceAdminTest extends TestCase
 
     public function test_a_service_without_a_slug_gets_one_from_its_name_on_edit(): void
     {
-        $service = Service::factory()->create(['name' => 'Old Service', 'slug' => null]);
+        $service = Service::factory()->create(['name' => 'Old Service', 'slug' => null, 'image_path' => 'services/old.webp']);
         $service->translations()->create(['locale' => 'en', 'title' => 'T']);
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['service' => $service])
             ->call('save')->assertHasNoErrors();
 
         $this->assertSame('old-service', $service->refresh()->slug);
+    }
+
+    public function test_the_picture_is_required_until_the_service_has_one(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->admin()->create();
+
+        Livewire::actingAs($admin)->test(Editor::class)
+            ->set('form.name', 'No Picture')->set('form.translations.en.title', 'T')
+            ->call('save')->assertHasErrors(['form.image' => 'required']);
+        $this->assertSame(0, Service::query()->count());
+
+        $without = Service::factory()->create(['image_path' => null]);
+        $without->translations()->create(['locale' => 'en', 'title' => 'T']);
+
+        Livewire::actingAs($admin)->test(Editor::class, ['service' => $without])
+            ->call('save')->assertHasErrors(['form.image' => 'required']);
+
+        $with = Service::factory()->create(['image_path' => 'services/kept.webp']);
+        $with->translations()->create(['locale' => 'en', 'title' => 'T']);
+
+        Livewire::actingAs($admin)->test(Editor::class, ['service' => $with])
+            ->call('save')->assertHasNoErrors();
+        $this->assertSame('services/kept.webp', $with->refresh()->image_path);
+    }
+
+    public function test_the_picture_label_is_marked_as_required_only_while_there_is_no_picture(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $with = Service::factory()->create(['image_path' => 'services/kept.webp']);
+
+        $marked = function (string $url) use ($admin): bool {
+            preg_match('/<label for="form-image".*?<\/label>/s', (string) $this->actingAs($admin)->get($url)->assertOk()->getContent(), $label);
+
+            return str_contains($label[0] ?? '', ' *</span>');
+        };
+
+        $this->assertTrue($marked('/app/services/create'));
+        $this->assertFalse($marked("/app/services/{$with->id}/edit"));
     }
 
     public function test_a_new_image_replaces_the_old_file(): void
