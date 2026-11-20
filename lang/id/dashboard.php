@@ -42,7 +42,7 @@ return [
         'customers' => 'Customer',
         'distributors' => 'Distributor',
         'articles' => 'Artikel',
-        'products' => 'Produk',
+        'process_categories' => 'Kategori proses',
         'services' => 'Layanan',
         'chat' => 'Asisten chat',
         'whatsapp' => 'Nomor WhatsApp',

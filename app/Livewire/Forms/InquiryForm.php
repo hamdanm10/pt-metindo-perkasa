@@ -27,7 +27,7 @@ class InquiryForm extends Form
 
     public string $serviceId = '';
 
-    public string $productId = '';
+    public string $processCategoryId = '';
 
     /** @var list<TemporaryUploadedFile> */
     public array $images = [];
@@ -48,7 +48,7 @@ class InquiryForm extends Form
         $this->question = $inquiry->question;
         $this->answer = (string) json_encode(app(ArticleBody::class)->fromHtml($inquiry->answer));
         $this->serviceId = (string) $inquiry->service_id;
-        $this->productId = (string) $inquiry->product_id;
+        $this->processCategoryId = (string) $inquiry->process_category_id;
         $this->keptImages = $inquiry->images->count();
     }
 
@@ -67,7 +67,7 @@ class InquiryForm extends Form
             }],
             'askedAt' => ['nullable', 'date_format:Y-m-d', 'before_or_equal:today'],
             'serviceId' => ['nullable', 'integer', Rule::exists('services', 'id')],
-            'productId' => ['nullable', 'integer', Rule::exists('products', 'id')],
+            'processCategoryId' => ['nullable', 'integer', Rule::exists('process_categories', 'id')],
             'images' => ['array', function (string $attribute, mixed $value, \Closure $fail): void {
                 if ($this->remainingImages() + count($this->images) > Inquiry::MAX_IMAGES) {
                     $fail(__('inquiries.messages.too_many_images', ['max' => Inquiry::MAX_IMAGES]));
@@ -104,7 +104,7 @@ class InquiryForm extends Form
             'answer' => __('inquiries.fields.answer'),
             'askedAt' => __('inquiries.fields.asked_at'),
             'serviceId' => __('inquiries.fields.service'),
-            'productId' => __('inquiries.fields.product'),
+            'processCategoryId' => __('inquiries.fields.process_category'),
             'images' => __('inquiries.fields.images'),
             'images.*' => __('inquiries.fields.image'),
         ];

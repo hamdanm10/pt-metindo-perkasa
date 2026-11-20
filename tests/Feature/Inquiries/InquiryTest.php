@@ -8,7 +8,7 @@ use App\Livewire\Inquiries\Editor;
 use App\Livewire\Inquiries\Index;
 use App\Models\Inquiry;
 use App\Models\InquiryImage;
-use App\Models\Product;
+use App\Models\ProcessCategory;
 use App\Models\Service;
 use App\Models\User;
 use App\Services\Dashboard\DashboardMenu;
@@ -172,7 +172,7 @@ class InquiryTest extends TestCase
     {
         $staff = User::factory()->staff()->create();
         $service = Service::factory()->create();
-        $product = Product::factory()->create();
+        $processCategory = ProcessCategory::factory()->create();
         $customer = User::factory()->customer()->create();
 
         Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
@@ -181,7 +181,7 @@ class InquiryTest extends TestCase
             ->set('form.answer', $this->doc('Three working days.'))
             ->set('form.askedAt', '2026-10-01')
             ->set('form.serviceId', (string) $service->id)
-            ->set('form.productId', (string) $product->id)
+            ->set('form.processCategoryId', (string) $processCategory->id)
             ->call('save')
             ->assertHasNoErrors()
             ->assertRedirect(route('app.customer-inquiries.index'));
@@ -193,7 +193,7 @@ class InquiryTest extends TestCase
         $this->assertSame($staff->id, $inquiry->created_by);
         $this->assertSame($customer->id, $inquiry->customer_id);
         $this->assertSame($service->id, $inquiry->service_id);
-        $this->assertSame($product->id, $inquiry->product_id);
+        $this->assertSame($processCategory->id, $inquiry->process_category_id);
 
         Livewire::actingAs($staff)->test(Editor::class, ['kind' => 'customer'])
             ->set('form.customerId', $this->customerId())
@@ -203,7 +203,7 @@ class InquiryTest extends TestCase
 
         $plain = Inquiry::query()->where('question', 'Plain question')->firstOrFail();
         $this->assertNull($plain->service_id);
-        $this->assertNull($plain->product_id);
+        $this->assertNull($plain->process_category_id);
         $this->assertNull($plain->asked_at);
     }
 
@@ -260,10 +260,10 @@ class InquiryTest extends TestCase
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['kind' => 'customer'])
             ->set('form.askedAt', now()->addDay()->toDateString())
             ->set('form.serviceId', '999999')
-            ->set('form.productId', '999999')
+            ->set('form.processCategoryId', '999999')
             ->call('save');
 
-        $component->assertHasErrors(['form.customerId', 'form.question', 'form.answer', 'form.askedAt', 'form.serviceId', 'form.productId']);
+        $component->assertHasErrors(['form.customerId', 'form.question', 'form.answer', 'form.askedAt', 'form.serviceId', 'form.processCategoryId']);
         $this->assertSame(0, Inquiry::query()->count());
     }
 
@@ -489,10 +489,10 @@ class InquiryTest extends TestCase
     public function test_search_filters_and_order(): void
     {
         $service = Service::factory()->create();
-        $product = Product::factory()->create();
+        $processCategory = ProcessCategory::factory()->create();
         Inquiry::factory()->create(['question' => 'Alpha question', 'answer' => 'about paint', 'asked_at' => '2026-01-01']);
         Inquiry::factory()->create(['question' => 'Beta question', 'answer' => 'about zinc', 'asked_at' => '2026-03-01', 'service_id' => $service->id]);
-        Inquiry::factory()->create(['question' => 'Gamma question', 'answer' => 'x', 'asked_at' => '2026-02-01', 'product_id' => $product->id]);
+        Inquiry::factory()->create(['question' => 'Gamma question', 'answer' => 'x', 'asked_at' => '2026-02-01', 'process_category_id' => $processCategory->id]);
 
         $staff = User::factory()->staff()->create();
 
@@ -501,7 +501,7 @@ class InquiryTest extends TestCase
         $component->set('search', 'zinc')->assertSee('Beta question')->assertDontSee('Alpha question')
             ->set('search', '100%')->assertDontSee('Beta question')->assertSee(__('inquiries.empty_filtered'))
             ->set('search', '')->set('service', (string) $service->id)->assertSee('Beta question')->assertDontSee('Gamma question')
-            ->set('service', '')->set('product', (string) $product->id)->assertSee('Gamma question')->assertDontSee('Beta question');
+            ->set('service', '')->set('processCategory', (string) $processCategory->id)->assertSee('Gamma question')->assertDontSee('Beta question');
     }
 
     public function test_deleting_a_service_or_product_keeps_the_record(): void
@@ -518,7 +518,7 @@ class InquiryTest extends TestCase
     {
         $staff = User::factory()->staff()->create();
         $make = function (int $count) use ($staff): void {
-            Inquiry::factory()->count($count)->create(['created_by' => $staff->id, 'service_id' => Service::factory()->create()->id, 'product_id' => Product::factory()->create()->id])
+            Inquiry::factory()->count($count)->create(['created_by' => $staff->id, 'service_id' => Service::factory()->create()->id, 'process_category_id' => ProcessCategory::factory()->create()->id])
                 ->each(fn (Inquiry $inquiry) => $this->withImage($inquiry));
         };
 

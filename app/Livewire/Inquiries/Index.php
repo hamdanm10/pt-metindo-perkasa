@@ -32,7 +32,7 @@ class Index extends Component
     public string $service = '';
 
     #[Url(except: '')]
-    public string $product = '';
+    public string $processCategory = '';
 
     public function mount(string $kind = ''): void
     {
@@ -55,7 +55,7 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function updatedProduct(): void
+    public function updatedProcessCategory(): void
     {
         $this->resetPage();
     }
@@ -84,7 +84,7 @@ class Index extends Component
                 $this->search,
                 ctype_digit($this->customer) ? (int) $this->customer : null,
                 ctype_digit($this->service) ? (int) $this->service : null,
-                ctype_digit($this->product) ? (int) $this->product : null,
+                ctype_digit($this->processCategory) ? (int) $this->processCategory : null,
             ),
             'area' => $actor->role->area(),
             'kind' => $this->kind,

@@ -20,7 +20,7 @@ class Inquiry extends Model
 
     public const MAX_IMAGES = 10;
 
-    protected $fillable = ['customer_id', 'question', 'answer', 'asked_at', 'service_id', 'product_id', 'created_by'];
+    protected $fillable = ['customer_id', 'question', 'answer', 'asked_at', 'service_id', 'process_category_id', 'created_by'];
 
     /** @var array<string, string> */
     protected $casts = ['asked_at' => 'date'];
@@ -42,11 +42,11 @@ class Inquiry extends Model
     }
 
     /**
-     * @return BelongsTo<Product, $this>
+     * @return BelongsTo<ProcessCategory, $this>
      */
-    public function product(): BelongsTo
+    public function processCategory(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProcessCategory::class);
     }
 
     /**

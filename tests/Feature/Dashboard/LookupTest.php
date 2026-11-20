@@ -8,7 +8,7 @@ use App\Livewire\Inquiries\Editor;
 use App\Livewire\Inquiries\Index;
 use App\Livewire\Lookup;
 use App\Models\Inquiry;
-use App\Models\Product;
+use App\Models\ProcessCategory;
 use App\Models\Service;
 use App\Models\User;
 use App\Services\Lookup\LookupSearch;
@@ -70,12 +70,12 @@ class LookupTest extends TestCase
 
     public function test_choosing_an_option_sets_the_value_and_the_label_and_clearing_empties_it(): void
     {
-        $product = Product::factory()->create(['name' => 'Zinc Plate']);
+        $processCategory = ProcessCategory::factory()->create(['name' => 'Zinc Plate']);
 
-        Livewire::actingAs(User::factory()->staff()->create())->test(Lookup::class, ['source' => 'product', 'emptyLabel' => 'None', 'placeholder' => 'None'])
+        Livewire::actingAs(User::factory()->staff()->create())->test(Lookup::class, ['source' => 'process_category', 'emptyLabel' => 'None', 'placeholder' => 'None'])
             ->call('openPanel')
-            ->call('select', (string) $product->id)
-            ->assertSet('value', (string) $product->id)
+            ->call('select', (string) $processCategory->id)
+            ->assertSet('value', (string) $processCategory->id)
             ->assertSet('opened', false)
             ->assertSee('Zinc Plate')
             ->call('openPanel')

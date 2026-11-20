@@ -12,13 +12,13 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 | 3a | **Halaman customer dan distributor dipisah** (keputusan client). Staf dan admin mengelola catatan customer di `/app/customer-inquiries` dan catatan distributor di `/app/distributor-inquiries`, masing-masing dengan menu, judul, daftar, dan pilihan pemilik sendiri. Membuka catatan lewat halaman kind lain memberi 404, dan pemilik (`customer_id`) di formulir harus berperan sesuai halaman. Di area customer dan di area distributor tetap satu halaman `/customer/inquiries` dan `/distributor/inquiries` karena tiap pengguna hanya melihat miliknya | Customer dan distributor adalah dua kelompok yang ditangani terpisah |
 | 4 | Isi satu bahasa, tidak dibuat lima bahasa seperti artikel | Arsip internal untuk pengguna dashboard, bukan konten landing |
 | 5 | Tidak tampil di landing dan tidak menyimpan identitas penanya (nama, perusahaan, kontak) | Keputusan client: data kontak sensitif |
-| 6 | Tautan ke layanan dan produk **opsional**. Bila layanan atau produknya dihapus, tautan jadi kosong dan catatan tetap ada | Tidak kehilangan riwayat |
+| 6 | Tautan ke layanan dan kategori proses **opsional**. Bila layanan atau kategori prosesnya dihapus, tautan jadi kosong dan catatan tetap ada | Tidak kehilangan riwayat |
 | 7 | Gambar: maksimal **10 per catatan**, JPG/PNG/WebP, **2 MB per gambar** (sama dengan thumbnail artikel) | Keputusan client |
 | 8 | Gambar disimpan di disk **privat** (`local`, `storage/app/private/inquiries`), dikodekan ulang ke WebP dengan nama acak, diperkecil (sisi terpanjang 1600 px, tidak dipotong), lalu dilayani lewat route yang memeriksa login dan peran | Gambar bisa memuat hal yang tidak untuk umum, jadi tidak boleh lewat URL publik |
 
 ## Data
 
-- `inquiries`: `customer_id` (wajib, relasi ke `users` berperan customer, tanpa hapus berantai; index gabungan `customer_id, asked_at`), `question` (teks), `answer` (teks berisi HTML hasil rich text yang sudah disanitasi), `asked_at` (tanggal pertanyaan masuk, **opsional**, tanpa nilai awal; bila diisi tidak boleh di masa depan; catatan tanpa tanggal tampil "—" dan diurutkan paling akhir), `service_id` dan `product_id` (opsional, `nullOnDelete`), `created_by` (`nullOnDelete`), cap waktu. Index: `asked_at`, `service_id`, `product_id`, `created_by`.
+- `inquiries`: `customer_id` (wajib, relasi ke `users` berperan customer, tanpa hapus berantai; index gabungan `customer_id, asked_at`), `question` (teks), `answer` (teks berisi HTML hasil rich text yang sudah disanitasi), `asked_at` (tanggal pertanyaan masuk, **opsional**, tanpa nilai awal; bila diisi tidak boleh di masa depan; catatan tanpa tanggal tampil "—" dan diurutkan paling akhir), `service_id` dan `process_category_id` (opsional, `nullOnDelete`), `created_by` (`nullOnDelete`), cap waktu. Index: `asked_at`, `service_id`, `process_category_id`, `created_by`.
 - `inquiry_images`: `inquiry_id` (`cascadeOnDelete`, index), `path`, cap waktu. Urutan gambar mengikuti id.
 - `question` maks 5000 karakter dan dipangkas spasi. `answer` adalah rich text dengan editor Tiptap yang sama seperti artikel (tebal, miring, judul H2/H3, daftar, kutipan, tautan): formulir mengirim dokumen JSON editor (maks 50000 karakter, wajib berisi teks), lalu `SaveInquiry` mengubahnya lewat `ArticleBody` menjadi HTML yang hanya memuat node dan mark yang diizinkan (skrip dan tautan berbahaya dibuang). Migrasi `convert_inquiry_answers_to_html` mengubah jawaban teks biasa lama menjadi paragraf ber-escape. Pencarian `answer` masih memakai `ilike` pada HTML.
 
@@ -26,9 +26,9 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
-| Daftar | `/app/customer-inquiries`, `/app/distributor-inquiries`, `/customer/inquiries` dan `/distributor/inquiries` | Pertanyaan (cuplikan), layanan atau produk terkait, tanggal, jumlah gambar. Pencarian di pertanyaan dan jawaban (tanpa membedakan huruf), saringan layanan dan produk, urutan terbaru dulu, 15 per halaman. Customer hanya mendapat catatan miliknya. Staf mendapat kolom "Customer" dan "Added by", serta saringan per customer (customer tidak melihat keduanya). Tombol Edit dan Delete muncul sesuai Policy |
-| Baca | `/app/customer-inquiries/{id}`, `/app/distributor-inquiries/{id}`, `/customer/inquiries/{id}` dan `/distributor/inquiries/{id}` | Pertanyaan, jawaban (rich text, ditampilkan sebagai HTML), tautan layanan dan produk, galeri gambar (klik membuka gambar penuh di tab baru). Nama customer dan nama penulis hanya untuk staf. Catatan customer lain: 404 |
-| Tambah | `/app/customer-inquiries/create`, `/app/distributor-inquiries/create` | Customer atau Distributor\* (pilihan akun sesuai halaman), pertanyaan\*, jawaban\*, tanggal ditanyakan (opsional), layanan, produk, unggah banyak gambar |
+| Daftar | `/app/customer-inquiries`, `/app/distributor-inquiries`, `/customer/inquiries` dan `/distributor/inquiries` | Pertanyaan (cuplikan), layanan atau kategori proses terkait, tanggal, jumlah gambar. Pencarian di pertanyaan dan jawaban (tanpa membedakan huruf), saringan layanan dan kategori proses, urutan terbaru dulu, 15 per halaman. Customer hanya mendapat catatan miliknya. Staf mendapat kolom "Customer" dan "Added by", serta saringan per customer (customer tidak melihat keduanya). Tombol Edit dan Delete muncul sesuai Policy |
+| Baca | `/app/customer-inquiries/{id}`, `/app/distributor-inquiries/{id}`, `/customer/inquiries/{id}` dan `/distributor/inquiries/{id}` | Pertanyaan, jawaban (rich text, ditampilkan sebagai HTML), tautan layanan dan kategori proses, galeri gambar (klik membuka gambar penuh di tab baru). Nama customer dan nama penulis hanya untuk staf. Catatan customer lain: 404 |
+| Tambah | `/app/customer-inquiries/create`, `/app/distributor-inquiries/create` | Customer atau Distributor\* (pilihan akun sesuai halaman), pertanyaan\*, jawaban\*, tanggal ditanyakan (opsional), layanan, kategori proses, unggah banyak gambar |
 | Ubah | `/app/customer-inquiries/{id}/edit`, `/app/distributor-inquiries/{id}/edit` | Sama dengan Tambah. Gambar tersimpan bisa ditandai untuk dihapus (bisa dibatalkan sebelum simpan), gambar baru bisa ditarik sebelum simpan |
 | Gambar | `/app/inquiry-images/{id}`, `/customer/inquiry-images/{id}`, `/distributor/inquiry-images/{id}` | Mengirim gambar dari disk privat. Guest diarahkan ke login, peran yang salah mendapat 403, gambar milik customer lain 404 |
 
@@ -40,10 +40,10 @@ Arsip pertanyaan yang pernah diajukan customer beserta jawabannya. **Admin dan s
 
 - Model `Inquiry`, `InquiryImage`. `InquiryPolicy`. `Role::area()` (`app`, `customer`, atau `distributor`) dipakai komponen yang dibagi dua area.
 - Action di `app/Actions/Inquiries/`: `ListInquiries`, `SaveInquiry` (menyimpan catatan, menambah dan menghapus gambar dalam satu transaksi; berkas baru dibersihkan bila gagal, berkas lama dihapus setelah berhasil), `DeleteInquiry`. Service `InquiryImageStore`.
-- Pilihan customer, layanan, dan produk (di form dan saringan daftar) memakai dropdown pencarian `Lookup` (lihat [`../dashboard/overview.md`](../dashboard/overview.md)), jadi daftar penuh tidak ikut dimuat.
+- Pilihan customer, layanan, dan kategori proses (di form dan saringan daftar) memakai dropdown pencarian `Lookup` (lihat [`../dashboard/overview.md`](../dashboard/overview.md)), jadi daftar penuh tidak ikut dimuat.
 - Livewire di `app/Livewire/Inquiries/`: `Index` dan `Show` dipakai kedua area, `Editor` hanya area staf. Form `app/Livewire/Forms/InquiryForm.php`.
 - `InquiryImageController` (satu, dipakai ketiga area; di luar folder per area karena dibagi). Route: `routes/app/inquiries.php` (`role:admin,staff`; satu set komponen `Index`, `Show`, `Editor` didaftarkan dua kali dengan default `kind` `customer` atau `distributor`, seperti halaman akun; trait `ScopesInquiryKind`) dan `routes/client/inquiries.php` (dimuat untuk area `customer` dan `distributor`, dijaga `role:customer` atau `role:distributor`).
-- Daftar memuat relasi (`service`, `product`, `creator`) dan `withCount('images')` di Action, jadi jumlah query tidak naik bersama jumlah baris.
+- Daftar memuat relasi (`service`, `processCategory`, `creator`) dan `withCount('images')` di Action, jadi jumlah query tidak naik bersama jumlah baris.
 
 ## Aturan keamanan dan kasus tepi
 

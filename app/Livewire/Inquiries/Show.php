@@ -23,7 +23,7 @@ class Show extends Component
 
         abort_unless($this->actor()->can('view', $inquiry), 404);
 
-        $this->inquiry = $inquiry->load(['customer:id,name,role', 'service:id,name', 'product:id,name', 'creator:id,name', 'images']);
+        $this->inquiry = $inquiry->load(['customer:id,name,role', 'service:id,name', 'processCategory:id,name', 'creator:id,name', 'images']);
 
         abort_unless($this->ownerRole() === null || $this->inquiry->customer?->role === $this->ownerRole(), 404);
     }

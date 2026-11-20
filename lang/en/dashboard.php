@@ -42,7 +42,7 @@ return [
         'customers' => 'Customers',
         'distributors' => 'Distributors',
         'articles' => 'Articles',
-        'products' => 'Products',
+        'process_categories' => 'Process categories',
         'services' => 'Services',
         'chat' => 'Chat assistant',
         'whatsapp' => 'WhatsApp numbers',
