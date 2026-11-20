@@ -566,13 +566,54 @@ span.btn,
     transition: color 0.3s ease-out;
 }
 
+/*
+ * The language rows of the mobile menu: the list opens by growing its row track from 0fr to 1fr
+ * (a height animation without measuring), the rows follow one after another, and the chevron turns.
+ */
+.menu-accordion {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+        grid-template-rows 0.55s var(--header-ease),
+        visibility 0s linear 0.55s;
+}
+
+[aria-expanded='true'] + .menu-accordion {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.menu-lang {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+        opacity 0.25s ease-out,
+        transform 0.25s ease-out;
+}
+
+[aria-expanded='true'] + .menu-accordion .menu-lang {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.5s var(--header-ease) calc(var(--i, 0) * 0.05s + 0.12s),
+        transform 0.5s var(--header-ease) calc(var(--i, 0) * 0.05s + 0.12s);
+}
+
+[aria-expanded='true'].lang-summary svg {
+    rotate: 180deg;
+}
+
 html.menu-open {
     overflow: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
     .menu-toggle__bars > span,
-    .menu-link {
+    .menu-link,
+    .menu-accordion,
+    .menu-lang {
         transition: none;
     }
 }
