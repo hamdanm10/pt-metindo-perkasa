@@ -40,7 +40,7 @@ return [
     'hints' => [
         'name' => 'Nama yang dilihat staf di daftar dan pilihan. Tidak tampil di situs. Alamat halaman dibuat dari nama ini saat layanan ditambahkan.',
         'active' => 'Matikan untuk menyembunyikan layanan tanpa menghapusnya.',
-        'image' => 'JPG, PNG, atau WebP maksimal 2 MB, minimal 800x600. Dipotong menjadi 4:3.',
+        'image' => 'Wajib sampai layanan punya gambar. JPG, PNG, atau WebP maksimal 2 MB, minimal 800x600. Dipotong menjadi 4:3.',
         'languages' => 'Bahasa tanpa teks tidak disimpan. Bahasa tanpa terjemahan menampilkan teks Inggris.',
         'summary' => 'Satu atau dua kalimat untuk kartu dan bagian atas halaman layanan.',
         'included' => 'Satu butir per baris.',

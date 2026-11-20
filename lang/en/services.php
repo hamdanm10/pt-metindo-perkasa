@@ -40,7 +40,7 @@ return [
     'hints' => [
         'name' => 'The name staff see in lists and pickers. It is not shown on the website. The page address is made from it when the service is added.',
         'active' => 'Turn off to hide the service without deleting it.',
-        'image' => 'JPG, PNG or WebP up to 2 MB, at least 800x600. It is cropped to 4:3.',
+        'image' => 'Required until the service has a picture. JPG, PNG or WebP up to 2 MB, at least 800x600. It is cropped to 4:3.',
         'languages' => 'A language without any text is not saved. A language without a translation shows the English text.',
         'summary' => 'One or two sentences for cards and the top of the service page.',
         'included' => 'One item per line.',
