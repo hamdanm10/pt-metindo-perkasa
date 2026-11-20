@@ -18,8 +18,6 @@
         <x-dashboard.card class="max-w-2xl">
             <div class="space-y-6">
                 <x-dashboard.field name="form.name" :label="__('services.fields.name')" :hint="__('services.hints.name')" wire:model="form.name" autocomplete="off" required />
-                <x-dashboard.field name="form.slug" :label="__('services.fields.slug')" :hint="__('services.hints.slug')" wire:model="form.slug" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false" required />
-                <x-dashboard.field name="form.position" type="number" min="0" :label="__('services.fields.position')" :hint="__('services.hints.position')" wire:model="form.position" required />
 
                 <div>
                     <label class="inline-flex min-h-11 items-center gap-3 font-semibold">
