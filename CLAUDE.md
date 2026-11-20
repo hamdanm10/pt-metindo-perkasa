@@ -216,4 +216,5 @@ Dokumen rancangan ada di `docs/`, per area dan per fitur, dengan satu `implement
 | [`docs/landing/whatsapp/overview.md`](docs/landing/whatsapp/overview.md) | Rancangan nomor WhatsApp yang dinamis: dikelola admin, tombol di landing (L8) |
 | [`docs/roles/admin/implementation-plan.md`](docs/roles/admin/implementation-plan.md) | Indeks admin |
 | [`docs/roles/admin/user-management/overview.md`](docs/roles/admin/user-management/overview.md) | Rancangan kelola akun oleh admin (A1) |
+| [`docs/roles/admin/process-content/overview.md`](docs/roles/admin/process-content/overview.md) | Rancangan kelola kategori proses, proses, langkah, dan material, dibaca landing (A8 sampai A10) |
 | `docs/roles/<peran>/implementation-plan.md` | Indeks staff, customer, dan distributor (dibuat saat fitur pertama) |
