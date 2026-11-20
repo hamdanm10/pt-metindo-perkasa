@@ -32,7 +32,7 @@
                         <article data-deck-card class="absolute aspect-[4/3] w-[74%]" style="inset-inline-start: {{ $loop->index * 8.67 }}%; top: {{ $loop->index * 8.67 }}%; z-index: {{ $count - $loop->index }}">
                             <div data-deck-media class="{{ $tones[$loop->index] }} relative size-full overflow-hidden rounded-lg shadow-[0_18px_40px_-18px_rgba(27,31,59,0.55)]">
                                 <div class="{{ $zoom }} absolute inset-0">
-                                    <x-landing.photo :name="'product-'.$category['slug']" :fallback="$photo" ratio="aspect-[4/3]" bare class="size-full bg-transparent! text-white!" />
+                                    <x-landing.photo :name="'product-'.$category['slug']" :src="$category['image']" :fallback="$photo" ratio="aspect-[4/3]" bare class="size-full bg-transparent! text-white!" />
                                 </div>
                                 <span class="absolute start-3 top-3 grid h-8 min-w-8 place-items-center rounded-md bg-white px-2 text-xs font-extrabold tabular-nums text-ink">{{ sprintf('%02d', $loop->iteration) }}</span>
                             </div>
@@ -55,7 +55,7 @@
                     <a href="{{ route('landing.processes.show', ['category' => $category['slug']]) }}" class="group block focus-visible:outline-offset-4">
                         <div data-catalog-tile class="{{ $tones[$loop->index] }} relative z-10 aspect-[4/3] overflow-hidden rounded-lg">
                             <div class="{{ $zoom }} absolute inset-0">
-                                <x-landing.photo :name="'product-'.$category['slug']" :fallback="$photo" ratio="aspect-[4/3]" bare class="size-full bg-transparent! text-white! transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none" />
+                                <x-landing.photo :name="'product-'.$category['slug']" :src="$category['image']" :fallback="$photo" ratio="aspect-[4/3]" bare class="size-full bg-transparent! text-white! transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none" />
                             </div>
                             <span class="absolute start-3 top-3 grid h-8 min-w-8 place-items-center rounded-md bg-white px-2 text-xs font-extrabold tabular-nums text-ink">{{ sprintf('%02d', $loop->iteration) }}</span>
                         </div>

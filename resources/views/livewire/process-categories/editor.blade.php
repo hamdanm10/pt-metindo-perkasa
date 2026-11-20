@@ -20,6 +20,27 @@
                     </label>
                     <p class="text-sm text-muted">{{ __('process_categories.hints.active') }}</p>
                 </div>
+
+                <div>
+                    <label for="form-image" class="field-label">{{ __('process_categories.fields.image') }}</label>
+                    <input id="form-image" type="file" wire:model="form.image" accept="image/jpeg,image/png,image/webp"
+                           @error('form.image') aria-invalid="true" aria-describedby="form-image-error" @else aria-describedby="form-image-hint" @enderror
+                           class="mt-3 block w-full rounded-lg border-2 border-dashed border-ink/25 bg-white p-3 text-base file:me-4 file:min-h-10 file:cursor-pointer file:rounded-md file:border-0 file:bg-brand-600 file:px-4 file:font-bold file:text-white hover:file:bg-brand-700">
+                    <p id="form-image-hint" class="mt-2 text-sm text-muted">{{ __('process_categories.hints.image') }}</p>
+                    @error('form.image')
+                        <p id="form-image-error" class="mt-2 text-sm font-bold text-brand-700" role="alert">{{ $message }}</p>
+                    @enderror
+                    <div wire:loading wire:target="form.image" class="mt-2 text-sm text-muted">…</div>
+
+                    @if ($form->image && $form->image->isPreviewable() && ! $errors->has('form.image'))
+                        <img src="{{ $form->image->temporaryUrl() }}" alt="" class="mt-4 aspect-[4/3] w-full max-w-sm rounded-lg object-cover">
+                    @elseif ($currentImage)
+                        <figure class="mt-4">
+                            <img src="{{ $currentImage }}" alt="" class="aspect-[4/3] w-full max-w-sm rounded-lg object-cover">
+                            <figcaption class="mt-1 text-sm text-muted">{{ __('process_categories.image_current') }}</figcaption>
+                        </figure>
+                    @endif
+                </div>
             </div>
         </x-dashboard.card>
 
@@ -65,7 +86,7 @@
         </x-dashboard.card>
 
         <div class="flex flex-wrap gap-3">
-            <x-dashboard.button type="submit">{{ __('process_categories.save') }}</x-dashboard.button>
+            <x-dashboard.button type="submit" wire:loading.attr="disabled" wire:target="save,form.image">{{ __('process_categories.save') }}</x-dashboard.button>
             <x-dashboard.button variant="secondary" :href="route('app.process-categories.index')">{{ __('process_categories.cancel') }}</x-dashboard.button>
         </div>
     </form>

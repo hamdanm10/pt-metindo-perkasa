@@ -27,20 +27,36 @@ class LandingContent
      * The catalog the landing shows: the static list in the configuration, or, when `landing.catalog_source` is
      * "database", what the admin set in the dashboard (the static list while no category is active yet).
      *
-     * @return list<array{slug: string, name: string, description: string|null, processes: list<array{slug: string, name: string, description: string|null, steps: list<array{name: string, description: string|null, products: list<array{slug: string, name: string, description: string|null, brochure_url: string|null, video_url: string|null, price: string|null, tds_url: string|null, links: list<array{label: string, url: string}>}>}>}>}>
+     * @return list<Category>
      */
     private function source(): array
     {
         $catalog = config('landing.catalog_source') === 'database' ? $this->catalog->all(app()->getLocale()) : [];
 
-        return $catalog !== [] ? $catalog : $this->configured();
+        return $catalog !== [] ? $catalog : $this->withImages($this->configured());
+    }
+
+    /**
+     * The static categories show the picture the admin uploaded for the category with the same address or name.
+     *
+     * @param  list<Category>  $categories
+     * @return list<Category>
+     */
+    private function withImages(array $categories): array
+    {
+        $images = $this->catalog->images();
+
+        return array_map(fn (array $category): array => [
+            ...$category,
+            'image' => $images[$category['slug']] ?? $images[Str::slug($category['name'])] ?? null,
+        ], $categories);
     }
 
     /**
      * The static catalog: categories from `landing.categories`, and steps and materials from
      * `landing.process_details`. Only the name of a material is known.
      *
-     * @return list<array{slug: string, name: string, description: string|null, processes: list<array{slug: string, name: string, description: string|null, steps: list<array{name: string, description: string|null, products: list<array{slug: string, name: string, description: string|null, brochure_url: string|null, video_url: string|null, price: string|null, tds_url: string|null, links: list<array{label: string, url: string}>}>}>}>}>
+     * @return list<Category>
      */
     private function configured(): array
     {
@@ -59,6 +75,7 @@ class LandingContent
             'slug' => $category['slug'],
             'name' => $category['name'],
             'description' => is_string($description) && $description !== "pages.processes.categories.{$category['slug']}" ? $description : null,
+            'image' => null,
             'processes' => array_map($this->configuredProcess(...), $category['processes']),
         ];
     }
@@ -101,7 +118,7 @@ class LandingContent
     }
 
     /**
-     * @return list<array{slug: string, name: string, description: string, processes: list<array{slug: string, name: string}>}>
+     * @return list<array{slug: string, name: string, description: string, image: string|null, processes: list<array{slug: string, name: string}>}>
      */
     public function categories(): array
     {
@@ -109,12 +126,13 @@ class LandingContent
             'slug' => $category['slug'],
             'name' => $category['name'],
             'description' => $category['description'] ?? '',
+            'image' => $category['image'],
             'processes' => array_map(fn (array $process): array => ['slug' => $process['slug'], 'name' => $process['name']], $category['processes']),
         ], $this->source());
     }
 
     /**
-     * @return array{slug: string, name: string, description: string, processes: list<array{slug: string, name: string}>}|null
+     * @return array{slug: string, name: string, description: string, image: string|null, processes: list<array{slug: string, name: string}>}|null
      */
     public function category(string $slug): ?array
     {
@@ -130,7 +148,7 @@ class LandingContent
     /**
      * The processes of a category with their slug and short description.
      *
-     * @param  array{slug: string, name: string, description: string, processes: list<array{slug: string, name: string}>}  $category
+     * @param  array{slug: string, name: string, description: string, image: string|null, processes: list<array{slug: string, name: string}>}  $category
      * @return list<array{slug: string, name: string, description: string}>
      */
     public function processes(array $category): array

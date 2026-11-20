@@ -6,28 +6,40 @@ namespace App\Actions\ProcessCategories;
 
 use App\Models\ProcessCategory;
 use App\Services\Landing\LandingProcesses;
+use App\Services\ProcessCategories\ProcessCategoryImageStore;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Saves a process category with its language tabs. A new category goes to the end of the list. A language
- * missing from `$descriptions` is removed.
+ * missing from `$descriptions` is removed. A new picture replaces the old file.
  */
 class SaveProcessCategory
 {
-    public function __construct(private readonly LandingProcesses $landing) {}
+    public function __construct(
+        private readonly LandingProcesses $landing,
+        private readonly ProcessCategoryImageStore $images,
+    ) {}
 
     /**
      * @param  array<string, string>  $descriptions  keyed by locale
      */
-    public function execute(?ProcessCategory $processCategory, string $name, string $slug, bool $active, array $descriptions): ProcessCategory
+    public function execute(?ProcessCategory $processCategory, string $name, string $slug, bool $active, array $descriptions, ?UploadedFile $image = null): ProcessCategory
     {
-        $saved = DB::transaction(function () use ($processCategory, $name, $slug, $active, $descriptions): ProcessCategory {
+        $newPath = $image === null ? null : $this->images->store($image);
+        $oldPath = $processCategory?->image_path;
+
+        $saved = DB::transaction(function () use ($processCategory, $name, $slug, $active, $descriptions, $newPath): ProcessCategory {
             $processCategory ??= new ProcessCategory;
 
             $processCategory->fill(['name' => $name, 'slug' => $slug, 'is_active' => $active]);
 
             if (! $processCategory->exists) {
                 $processCategory->fill(['position' => ProcessCategory::query()->exists() ? (int) ProcessCategory::query()->max('position') + 1 : 0]);
+            }
+
+            if ($newPath !== null) {
+                $processCategory->image_path = $newPath;
             }
 
             $processCategory->save();
@@ -40,6 +52,10 @@ class SaveProcessCategory
 
             return $processCategory;
         });
+
+        if ($newPath !== null) {
+            $this->images->delete($oldPath);
+        }
 
         $this->landing->flush();
 

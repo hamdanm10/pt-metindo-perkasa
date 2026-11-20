@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * A group of processes. `name` is one language. The description is per language in the translations,
- * while the address (`slug`), the order, and the on or off switch are shared by all languages.
+ * while the address (`slug`), the picture, the order, and the on or off switch are shared by all languages.
  */
 class ProcessCategory extends Model
 {
     /** @use HasFactory<ProcessCategoryFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'position', 'is_active'];
+    protected $fillable = ['name', 'slug', 'image_path', 'position', 'is_active'];
 
     protected function casts(): array
     {

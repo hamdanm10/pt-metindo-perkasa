@@ -8,6 +8,7 @@ use App\Models\ProcessCategory;
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Form;
 
 /**
@@ -21,6 +22,8 @@ class ProcessCategoryForm extends Form
     public string $name = '';
 
     public bool $isActive = true;
+
+    public ?TemporaryUploadedFile $image = null;
 
     /** @var array<string, string> */
     public array $descriptions = [];
@@ -70,6 +73,7 @@ class ProcessCategoryForm extends Form
                 },
             ],
             'isActive' => ['boolean'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=800,min_height=600'],
             'descriptions' => [function (string $attribute, mixed $value, Closure $fail) use ($default): void {
                 if (! in_array($default, $this->activeLocales(), true)) {
                     $fail(__('process_categories.messages.default_language_required', ['language' => config()->string("locales.locales.{$default}.name")]));
@@ -92,6 +96,7 @@ class ProcessCategoryForm extends Form
         $attributes = [
             'name' => __('process_categories.fields.name'),
             'isActive' => __('process_categories.fields.active'),
+            'image' => __('process_categories.fields.image'),
             'descriptions' => __('process_categories.fields.languages'),
         ];
 
