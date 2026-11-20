@@ -24,8 +24,7 @@
                 <p data-anim="hero-item" class="max-w-[34em] text-[clamp(1.05rem,1.5vw,1.9rem)] leading-[1.4] text-white/85">{{ __('pages.contact.intro') }}</p>
                 @if ($agents)
                     <div data-anim="hero-item" class="flex flex-wrap gap-4">
-                        <x-landing.number-picker :agents="$agents" mode="whatsapp">{{ __('pages.contact.whatsapp') }}</x-landing.number-picker>
-                        <x-landing.number-picker :agents="$agents" mode="call" variant="outline" :arrow="false">{{ __('pages.contact.call') }}</x-landing.number-picker>
+                        <x-landing.number-picker :agents="$agents">{{ __('pages.contact.whatsapp') }}</x-landing.number-picker>
                     </div>
                 @endif
             </div>

@@ -99,11 +99,11 @@ class NumberPickerTest extends TestCase
         foreach (config('locales.landing') as $code) {
             $html = $this->html("/{$code}/contact");
 
-            foreach (['whatsapp.title', 'whatsapp.hint', 'call.title', 'call.hint', 'call.action'] as $key) {
+            foreach (['whatsapp.title', 'whatsapp.hint'] as $key) {
                 $this->assertNotSame("chat.{$key}", __("chat.{$key}", [], $code));
             }
 
-            $this->assertStringContainsString(__('chat.call.title', [], $code), $html);
+            $this->assertStringContainsString(__('chat.whatsapp.title', [], $code), $html);
         }
     }
 

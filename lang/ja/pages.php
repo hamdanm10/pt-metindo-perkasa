@@ -156,7 +156,6 @@ return [
         'hours' => '営業時間',
         'whatsapp' => 'WhatsApp でチャット',
         'empty' => '連絡先は近日公開予定です。',
-        'call' => 'お電話',
         'write' => 'メールを書く',
         'copy' => 'コピー',
         'copied' => 'コピーしました',

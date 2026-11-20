@@ -156,7 +156,6 @@ return [
         'hours' => '营业时间',
         'whatsapp' => '通过 WhatsApp 聊天',
         'empty' => '联系方式即将发布。',
-        'call' => '致电我们',
         'write' => '写信给我们',
         'copy' => '复制',
         'copied' => '已复制',
