@@ -40,8 +40,9 @@ class Lookup extends Component
     #[Locked]
     public string $inputId = '';
 
+    /** A reactive property is refreshed from the parent's tag on every render, and a tag without `invalid` gives null. */
     #[Reactive]
-    public bool $invalid = false;
+    public ?bool $invalid = false;
 
     public bool $opened = false;
 

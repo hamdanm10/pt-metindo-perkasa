@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Services\Lookup\LookupSearch;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -196,5 +197,21 @@ class LookupTest extends TestCase
         $this->assertNotFalse($searching);
         $this->assertLessThan($list, $searching);
         $this->assertMatchesRegularExpression('/<ul[^>]*role="listbox"[^>]*wire:loading\.remove[^>]*wire:target="search"|<ul[^>]*wire:loading\.remove[^>]*role="listbox"/', $html);
+    }
+
+    public function test_every_lookup_tag_passes_invalid_so_a_reactive_refresh_never_sends_null(): void
+    {
+        $tags = 0;
+
+        foreach (File::allFiles(resource_path('views')) as $file) {
+            preg_match_all('/<livewire:lookup\b[^>]*>/s', $file->getContents(), $matches);
+
+            foreach ($matches[0] as $tag) {
+                $tags++;
+                $this->assertStringContainsString(':invalid=', $tag, $file->getRelativePathname());
+            }
+        }
+
+        $this->assertGreaterThan(0, $tags);
     }
 }
