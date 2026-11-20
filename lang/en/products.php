@@ -18,6 +18,7 @@ return [
     'empty' => 'No products yet.',
     'save' => 'Save',
     'cancel' => 'Cancel',
+    'used_in_steps' => 'Used in steps',
     'status' => 'Status',
     'active' => 'Active',
     'inactive' => 'Hidden',

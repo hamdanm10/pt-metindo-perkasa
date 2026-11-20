@@ -18,6 +18,7 @@ class ListProducts
 
         return Product::query()
             ->with('translations:id,product_id,locale')
+            ->withCount('steps')
             ->when(trim($search) !== '', fn ($query) => $query->where('name', 'ilike', $term))
             ->orderBy('name')
             ->paginate(15);

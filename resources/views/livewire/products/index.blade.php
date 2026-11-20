@@ -18,6 +18,7 @@
                         <th scope="col">{{ __('products.fields.name') }}</th>
                         <th scope="col">{{ __('products.fields.slug') }}</th>
                         <th scope="col">{{ __('products.fields.languages') }}</th>
+                        <th scope="col">{{ __('products.used_in_steps') }}</th>
                         <th scope="col">{{ __('products.status') }}</th>
                         <th scope="col"><span class="sr-only">{{ __('products.actions') }}</span></th>
                     </tr>
@@ -41,6 +42,7 @@
                                     @endforeach
                                 </ul>
                             </td>
+                            <td class="text-muted">{{ $product->steps_count }}</td>
                             <td>{{ $product->is_active ? __('products.active') : __('products.inactive') }}</td>
                             <td class="text-end whitespace-nowrap">
                                 <a href="{{ route('app.products.edit', $product) }}" class="row-action">{{ __('products.edit') }}<span class="sr-only"> {{ $product->name }}</span></a>
@@ -48,7 +50,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-12 text-center text-muted">{{ __('products.empty') }}</td>
+                            <td colspan="6" class="py-12 text-center text-muted">{{ __('products.empty') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -19,7 +19,7 @@ class ProcessCategoryFactory extends Factory
     {
         return [
             'name' => fake()->unique()->words(3, true),
-            'description' => fake()->paragraph(),
+            'slug' => fake()->unique()->slug(3),
         ];
     }
 }

@@ -7,6 +7,7 @@ namespace App\Models;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -40,5 +41,15 @@ class Product extends Model
     public function links(): HasMany
     {
         return $this->hasMany(ProductLink::class)->orderBy('position');
+    }
+
+    /**
+     * The process steps this product is used in.
+     *
+     * @return BelongsToMany<ProcessStep, $this>
+     */
+    public function steps(): BelongsToMany
+    {
+        return $this->belongsToMany(ProcessStep::class, 'process_step_product');
     }
 }

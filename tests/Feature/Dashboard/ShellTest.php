@@ -7,6 +7,7 @@ namespace Tests\Feature\Dashboard;
 use App\Models\Article;
 use App\Models\ArticleTranslation;
 use App\Models\Inquiry;
+use App\Models\Process;
 use App\Models\ProcessCategory;
 use App\Models\Service;
 use App\Models\User;
@@ -193,13 +194,14 @@ class ShellTest extends TestCase
         $this->assertMatchesRegularExpression('/\.cell-truncate\s*\{[^}]*text-overflow: ellipsis;[^}]*white-space: nowrap;/', $css);
 
         $long = str_repeat('Very long text ', 15);
-        ProcessCategory::factory()->create(['description' => $long]);
+        ProcessCategory::factory()->create(['name' => $long]);
+        Process::factory()->create(['name' => $long.'p']);
         Service::factory()->create(['name' => $long]);
         Inquiry::factory()->create(['question' => $long]);
         ArticleTranslation::factory()->create(['article_id' => Article::factory()->create()->id, 'title' => $long]);
         User::factory()->staff()->create(['name' => $long]);
 
-        foreach (['/app/process-categories', '/app/services', '/app/customer-inquiries', '/app/articles', '/app/staff'] as $url) {
+        foreach (['/app/process-categories', '/app/processes', '/app/services', '/app/customer-inquiries', '/app/articles', '/app/staff'] as $url) {
             $html = (string) $this->actingAs(User::factory()->admin()->create())->get($url)->assertOk()->getContent();
             $table = substr($html, (int) strpos($html, '<table'), (int) strpos($html, '</table>') - (int) strpos($html, '<table'));
 

@@ -6,6 +6,7 @@ namespace App\Services\Lookup;
 
 use App\Enums\Role;
 use App\Models\ProcessCategory;
+use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,7 +21,10 @@ class LookupSearch
 {
     public const LIMIT = 20;
 
-    public const SOURCES = ['customer', 'distributor', 'service', 'process_category'];
+    public const SOURCES = ['customer', 'distributor', 'service', 'process_category', 'product'];
+
+    /** Sources only the staff area may search: the accounts, and the product master data. */
+    public const STAFF_SOURCES = ['customer', 'distributor', 'product'];
 
     /** Sources that list accounts: their names and emails are for the staff area only. */
     public const ACCOUNT_SOURCES = ['customer', 'distributor'];
@@ -60,7 +64,7 @@ class LookupSearch
     }
 
     /**
-     * @return Builder<User>|Builder<Service>|Builder<ProcessCategory>
+     * @return Builder<User>|Builder<Service>|Builder<ProcessCategory>|Builder<Product>
      */
     private function query(string $source): Builder
     {
@@ -69,6 +73,7 @@ class LookupSearch
             'distributor' => User::query()->select(['id', 'name', 'email'])->where('role', Role::Distributor),
             'service' => Service::query()->select(['id', 'name']),
             'process_category' => ProcessCategory::query()->select(['id', 'name']),
+            'product' => Product::query()->select(['id', 'name']),
             default => throw new \InvalidArgumentException("Unknown lookup source [{$source}]."),
         };
     }
@@ -76,7 +81,7 @@ class LookupSearch
     /**
      * @return Item
      */
-    private function item(string $source, User|Service|ProcessCategory $row): array
+    private function item(string $source, User|Service|ProcessCategory|Product $row): array
     {
         return [
             'id' => $row->id,

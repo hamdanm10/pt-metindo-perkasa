@@ -43,6 +43,7 @@ return [
         'distributors' => 'Distributors',
         'articles' => 'Articles',
         'process_categories' => 'Process categories',
+        'processes' => 'Processes',
         'services' => 'Services',
         'products' => 'Products',
         'chat' => 'Chat assistant',

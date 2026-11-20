@@ -18,14 +18,26 @@ class Editor extends Component
 
     public ProcessCategoryForm $form;
 
+    public string $activeLocale = 'en';
+
     public function mount(?ProcessCategory $processCategory = null): void
     {
         if ($processCategory?->exists) {
             $this->authorize('update', $processCategory);
+            $processCategory->load('translations');
             $this->processCategory = $processCategory;
-            $this->form->setProcessCategory($processCategory);
         } else {
             $this->authorize('create', ProcessCategory::class);
+        }
+
+        $this->form->initialize($this->processCategory);
+        $this->activeLocale = config()->string('locales.default');
+    }
+
+    public function selectLocale(string $locale): void
+    {
+        if (in_array($locale, config()->array('locales.landing'), true)) {
+            $this->activeLocale = $locale;
         }
     }
 
@@ -38,7 +50,7 @@ class Editor extends Component
         $this->form->normalize();
         $this->form->validate();
 
-        $saveProcessCategory->execute($this->processCategory, $this->form->name, $this->form->description);
+        $saveProcessCategory->execute($this->processCategory, $this->form->name, $this->form->slug(), $this->form->isActive, $this->form->payload());
 
         session()->flash('status', __($this->processCategory === null ? 'process_categories.messages.created' : 'process_categories.messages.updated'));
 
