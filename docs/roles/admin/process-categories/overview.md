@@ -37,3 +37,5 @@ Akses per peran dan tamu (halaman dan aksi Livewire), menu hanya untuk admin, ta
 ## Perubahan nama
 
 Fitur ini semula bernama "Produk" (tabel `products`). Sejak 2026-11-20 namanya **kategori proses**: tabel `process_categories`, model `ProcessCategory`, URL `/app/process-categories`, kolom `inquiries.process_category_id`. Migration `rename_products_to_process_categories` mengganti nama tabel dan kolom tanpa menghapus data.
+
+Perluasan (slug, urutan, status, deskripsi per bahasa, proses, langkah, material) dirancang di [`../process-content/overview.md`](../process-content/overview.md).
