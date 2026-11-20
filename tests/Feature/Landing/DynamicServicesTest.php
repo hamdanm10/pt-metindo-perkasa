@@ -157,4 +157,19 @@ class DynamicServicesTest extends TestCase
 
         $this->assertSame($few, count(DB::getQueryLog()));
     }
+
+    public function test_the_services_list_shows_only_the_first_four_included_items_and_hides_the_list_when_empty(): void
+    {
+        $this->service('many', ['en' => ['title' => 'Many', 'included' => ['Alpha item', 'Bravo item', 'Charlie item', 'Delta item', 'Echo item', 'Foxtrot item']]], 0);
+        $this->service('none', ['en' => ['title' => 'None']], 1);
+
+        $this->get('/en/services')
+            ->assertOk()
+            ->assertSeeText(['Alpha item', 'Bravo item', 'Charlie item', 'Delta item'])
+            ->assertDontSeeText('Echo item')
+            ->assertDontSeeText('Foxtrot item');
+
+        $this->assertSame(1, substr_count((string) $this->get('/en/services')->getContent(), 'aria-label="'.e(__('pages.services.detail.included', [], 'en')).'"'));
+        $this->get('/en/services/many')->assertOk()->assertSeeText(['Echo item', 'Foxtrot item']);
+    }
 }

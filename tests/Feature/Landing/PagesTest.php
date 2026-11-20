@@ -342,6 +342,9 @@ class PagesTest extends TestCase
         }
 
         $this->assertSame(3, substr_count($html, 'data-svc-art '));
+        // Each picture sits on its own plate, and each block lists what the service includes.
+        $this->assertSame(3, substr_count($html, 'data-svc-plate'));
+        $this->assertStringContainsString('Electroplating Service first item', $html);
         // The pictures are the ones the admin uploaded.
         $this->assertSame(3, substr_count($html, '/storage/services/'));
         $this->assertSame(4, substr_count($html, 'data-svc-step '));
