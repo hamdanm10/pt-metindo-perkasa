@@ -9,7 +9,7 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 | Fase | Isi | Branch |
 | --- | --- | --- |
 | A8 | Master data material: `/app/materials` (daftar, tambah, ubah) | `feat/materials` |
-| A9 | Kategori proses diperluas (slug, urutan, aktif, deskripsi per bahasa), proses, dan langkah (alur diagram dengan material dari A8). Impor data awal dari `config/landing.php` | `feat/processes` |
+| A9 | Kategori proses diperluas (slug, urutan, aktif, deskripsi per bahasa), proses, dan langkah (alur diagram dengan material dari A8). | `feat/processes` |
 | A10 | Landing membaca dari database dengan cache, menghapus data statis di config dan `lang` | `feat/landing-processes` |
 
 ## Keputusan
@@ -17,13 +17,13 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 | # | Keputusan | Alasan |
 | --- | --- | --- |
 | 1 | Hanya admin yang mengelola (middleware dan Policy per model). Staf dan customer mendapat 403 | Keputusan client untuk konten landing |
-| 2 | **Nama** kategori, proses, langkah, dan material satu bahasa saja (Inggris, tampil `lang="en"` di landing seperti sekarang). **Deskripsi** per bahasa di tabel terjemahan (`<tabel>_translations`: kunci asing + `locale` unik), lima bahasa landing dalam tab, **Inggris wajib** sebagai cadangan, bahasa kosong tidak disimpan | Mengikuti pola layanan dan chat. `spatie/laravel-translatable` tetap tidak dipasang |
+| 2 | **Nama** kategori, proses, langkah, dan material satu bahasa saja (Inggris, tampil `lang="en"` di landing seperti sekarang). **Deskripsi** per bahasa di tabel terjemahan (`<tabel>_translations`: kunci asing + `locale` unik), lima bahasa landing dalam tab, **Inggris wajib** sebagai cadangan, bahasa kosong tidak disimpan | Mengikuti pola layanan dan chat. **Tanpa `spatie/laravel-translatable` dan tanpa terjemahan otomatis**: tiap bahasa ditulis admin sendiri supaya kalimatnya natural |
 | 3 | `slug` dibuat otomatis dari nama saat ditambahkan dan tidak berubah sesudahnya. Slug kategori dan proses **unik di seluruh tabel** karena URL-nya (`/process/{slug}`) tidak memuat kategori | Alamat landing stabil |
 | 4 | Urutan lewat kolom `position` dan tombol Naik/Turun (pola `MoveService`). Nilai kecil lebih dulu. Berlaku untuk kategori, proses dalam satu kategori, dan langkah dalam satu proses | Sama dengan layanan |
 | 5 | Tanpa hapus untuk kategori, proses, dan material: pakai **aktif/nonaktif** (`is_active`). Yang nonaktif tidak tampil di landing. Langkah boleh dihapus karena hanya bagian dari proses | Riwayat tautan aman. Hapus ditunda |
 | 6 | **Langkah dikelola di dalam form proses**: tambah, hapus, geser, lalu pilih material tiap langkah lewat dropdown pencarian `Lookup` (sumber baru `material`, banyak pilihan). Satu transaksi di `SaveProcess` | Admin tidak perlu halaman terpisah |
 | 7 | Satu material boleh dipakai di banyak langkah (tabel pivot `process_step_material`, pasangan unik, ada `position`). Material nonaktif disembunyikan dari langkah di landing tetapi tidak dilepas dari pivot | Mudah diaktifkan lagi |
-| 8 | **Data awal diimpor sekali oleh migration** dari `config/landing.php` (14 kategori, nama proses, langkah dan bahan Alkaline Zinc) dan teks kategori di `lang/*/pages.php` (lima bahasa). Bukan seeder. Kategori yang sudah dibuat admin di A3 dipertahankan: dicocokkan dengan slug dari nama, sisanya ditambah di akhir | Tidak kehilangan data. Berbeda dari layanan karena data ini sudah final dan banyak |
+| 8 | **Tanpa impor data awal dan tanpa seeder.** Admin mengisi kategori, proses, langkah, dan material lewat dashboard. Satu-satunya migrasi data: deskripsi kategori A3 yang sudah ada dipindah ke terjemahan bahasa Inggris. Saat A10 selesai, data statis di `config/landing.php` dan teks kategori di `lang/*/pages.php` dihapus, dan landing tidak menampilkan kategori atau proses (menu, bagian beranda, halaman) sampai ada data aktif | Aturan proyek: tanpa data contoh. Sama dengan layanan (A4) |
 | 9 | Foto kategori tetap berkas statis `public/images/landing/photos/product-<slug>` dengan cadangan yang sudah ada. Unggah foto lewat dashboard ditunda | Cakupan |
 
 ## Data
@@ -50,6 +50,7 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 - Satu service membaca kategori, proses, langkah, dan material aktif dengan `with()` (tanpa N+1), diberi cache per locale dan dibersihkan tiap admin menyimpan atau menggeser data di fase ini.
 - Route kategori tidak lagi dibatasi daftar slug dari config: slug yang tidak ada atau nonaktif menjadi 404.
 - Dialog bahan menampilkan penjelasan (cadangan: kalimat umum seperti sekarang bila belum ada), brosur, video, tautan olshop (satu tombol per tautan, `rel="noopener noreferrer"`, `target="_blank"`), TDS, dan harga. TDS atau harga kosong tetap menautkan ke halaman kontak ("Request to admin") sampai L5.
+- Tanpa data aktif, menu Processes, bagian katalog beranda, dan halaman prosesnya disembunyikan (pola layanan A4).
 - Beranda menampilkan empat kategori pertama menurut `position`. Kategori tanpa proses aktif tetap muncul dengan jumlah 0.
 
 ## Aturan keamanan dan kasus tepi
@@ -65,7 +66,7 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 ## Test
 
 - **A8:** akses per peran dan tamu, tambah/ubah, validasi (nama unik, URL `https`, ukuran dan jenis PDF), tautan olshop (tambah, hapus, urutan), bahasa Inggris wajib, jumlah query datar saat baris bertambah.
-- **A9:** kategori dengan terjemahan, proses dan langkah (tambah, hapus, geser, material per langkah), pindah kategori, slug unik lintas tabel, migration impor (jumlah baris, tanpa duplikat saat kategori A3 sudah ada), jumlah query datar.
+- **A9:** kategori dengan terjemahan, proses dan langkah (tambah, hapus, geser, material per langkah), pindah kategori, slug unik lintas tabel, migration deskripsi kategori lama ke terjemahan bahasa Inggris, jumlah query datar.
 - **A10:** halaman landing per locale dari database, cadangan `en`, nonaktif disembunyikan, 404 untuk slug tidak dikenal, dialog bahan memuat tautan, cache dibersihkan saat admin menyimpan, jumlah query datar.
 
 ## Ditunda
