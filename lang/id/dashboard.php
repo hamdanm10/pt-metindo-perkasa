@@ -43,6 +43,7 @@ return [
         'distributors' => 'Distributor',
         'articles' => 'Artikel',
         'process_categories' => 'Kategori proses',
+        'processes' => 'Proses',
         'services' => 'Layanan',
         'products' => 'Produk',
         'chat' => 'Asisten chat',

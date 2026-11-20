@@ -14,7 +14,7 @@ Admin mengelola sistem lewat dashboard di `/app`, bersama staf. Fondasi akun dan
 | A6 | Kelola chat berbasis aturan di landing: pertanyaan, jawaban, dan pertanyaan lanjutan bersarang per bahasa | [`../../landing/chat/overview.md`](../../landing/chat/overview.md) | `feat/dynamic-chat` | Selesai di kode, menunggu tinjauan |
 | A7 | Kelola nomor WhatsApp customer service di landing: nama, nomor, urutan, aktif atau nonaktif | [`../../landing/whatsapp/overview.md`](../../landing/whatsapp/overview.md) | `feat/dynamic-whatsapp` | Selesai di kode, menunggu tinjauan |
 | A8 | Master data produk: nama, deskripsi per bahasa, brosur, video, tautan olshop, TDS, harga | [`process-content/overview.md`](process-content/overview.md) | `feat/product-master` | Selesai di kode, menunggu tinjauan |
-| A9 | Kategori proses diperluas, proses, dan langkah dengan produk | [`process-content/overview.md`](process-content/overview.md) | `feat/processes` | Rancangan, belum ada kode |
+| A9 | Kategori proses diperluas, proses, dan langkah dengan produk | [`process-content/overview.md`](process-content/overview.md) | `feat/processes` | Selesai di kode, menunggu tinjauan |
 | A10 | Landing membaca kategori, proses, langkah, dan produk dari database | [`process-content/overview.md`](process-content/overview.md) | `feat/landing-processes` | Rancangan, belum ada kode |
 
 ## Keputusan

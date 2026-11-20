@@ -6,6 +6,7 @@ namespace Tests\Feature\Products;
 
 use App\Livewire\Products\Editor;
 use App\Livewire\Products\Index;
+use App\Models\Process;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -264,6 +265,20 @@ class ProductAdminTest extends TestCase
         };
 
         $this->assertSame($count(2), $count(20));
+    }
+
+    public function test_the_list_shows_how_many_steps_use_each_product(): void
+    {
+        $product = Product::factory()->create(['name' => 'Used Product']);
+        $process = Process::factory()->create();
+
+        foreach ([0, 1] as $position) {
+            $process->steps()->create(['name' => 'Step '.$position, 'position' => $position])->products()->attach($product->id, ['position' => 0]);
+        }
+
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Index::class);
+
+        $this->assertSame(2, (int) $component->viewData('products')->items()[0]->steps_count);
     }
 
     public function test_texts_exist_in_both_dashboard_languages(): void

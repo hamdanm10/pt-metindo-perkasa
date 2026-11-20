@@ -32,18 +32,19 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 
 - `products`: `name` (unik, maks 255), `slug` (unik), `brochure_url`, `video_url` (maks 2048, harus `https`), `price` (rupiah bulat, boleh kosong), `tds_path` (PDF maks 5 MB di disk `public`, nama acak), `is_active`. Terjemahan: `description` (penjelasan penggunaan, maks 2000).
 - `product_links`: `product_id`, `label` (nama olshop, contoh Tokopedia), `url` (`https`), `position`. Tautan e-commerce bisa lebih dari satu.
-- `process_categories` (sudah ada): tambah `slug`, `position`, `is_active`. `description` dipindah ke terjemahan bahasa Inggris oleh migration lalu kolomnya dihapus.
-- `processes`: `process_category_id` (index, `restrictOnDelete`), `name`, `slug` (unik), `position`, `is_active`. Terjemahan: `description`.
-- `process_steps`: `process_id` (`cascadeOnDelete`), `name`, `position`. Terjemahan: `description`.
+- `process_categories` (sudah ada): tambah `slug` (unik), `position`, `is_active`. `description` dipindah ke `process_category_translations` bahasa Inggris oleh migration lalu kolomnya dihapus, dan `slug` diisi dari nama.
+- `processes`: `process_category_id` (index, `restrictOnDelete`), `name` (unik), `slug` (unik), `position`, `is_active`. Terjemahan di `process_translations`: `description`.
+- `process_steps`: `process_id` (`cascadeOnDelete`), `name`, `position`. Terjemahan di `process_step_translations`: `description` (opsional, maks 1000, tidak disimpan bila kosong).
+- `process_step_product`: `process_step_id`, `product_id`, `position`, pasangan unik.
 - Index pada kolom yang dicari atau diurutkan: `name`, `slug`, `position`, `locale`, dan kunci asing.
 
 ## Halaman
 
 | Halaman | Alamat | Isi |
 | --- | --- | --- |
-| Produk | `/app/products`, `/create`, `/{product}/edit` | Daftar (nama, slug, lima badge bahasa, status, pencarian nama, 15 per halaman; kolom jumlah langkah yang memakai ditambah di A9). Form: data bersama, tautan olshop (tambah/hapus baris, maks 10, baris kosong diabaikan), unggah TDS (bisa dihapus), tab bahasa. Slug dibuat dari nama saat ditambahkan dan tidak berubah |
+| Produk | `/app/products`, `/create`, `/{product}/edit` | Daftar (nama, slug, lima badge bahasa, status, pencarian nama, 15 per halaman; kolom jumlah langkah yang memakai). Form: data bersama, tautan olshop (tambah/hapus baris, maks 10, baris kosong diabaikan), unggah TDS (bisa dihapus), tab bahasa. Slug dibuat dari nama saat ditambahkan dan tidak berubah |
 | Kategori proses | `/app/process-categories` (sudah ada) | Ditambah urutan, status, dan tab bahasa untuk deskripsi |
-| Proses | `/app/processes`, `/create`, `/{process}/edit` | Daftar dengan saringan kategori dan pencarian. Form: nama, kategori, status, tab bahasa, dan editor langkah |
+| Proses | `/app/processes`, `/create`, `/{process}/edit` | Daftar dengan saringan kategori dan pencarian. Form: nama, kategori (dropdown pencarian), status, editor langkah (nama, geser naik/turun, hapus, produk lewat dropdown pencarian yang menambah ke daftar chip), dan tab bahasa. Tiap tab memuat deskripsi proses dan deskripsi tiap langkah dalam bahasa itu. Tombol Naik/Turun di daftar menggeser proses di dalam kategorinya |
 
 Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 
@@ -74,3 +75,9 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 ## Ditunda
 
 - Hapus kategori, proses, dan produk. Unggah foto kategori. Nama yang diterjemahkan. Seret dan lepas. `<title>` dan meta per proses. Permintaan harga dan unduhan TDS lewat formulir (L5). Gambar atau diagram unggahan per langkah.
+
+## Catatan A9
+
+- Dropdown pencarian `Lookup` punya sumber baru `product`, dan sumber ini (seperti akun) hanya untuk area staf.
+- Langkah disimpan dengan cara diganti seluruhnya tiap proses disimpan (hapus lalu buat ulang), jadi id langkah tidak stabil. Tidak ada yang menautkan ke id langkah.
+- Deskripsi langkah boleh kosong di semua bahasa (tidak ada cadangan Inggris yang diwajibkan), berbeda dari deskripsi proses.

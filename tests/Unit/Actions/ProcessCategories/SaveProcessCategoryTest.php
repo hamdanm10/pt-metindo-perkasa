@@ -13,27 +13,28 @@ class SaveProcessCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_creates_a_process_category(): void
+    public function test_it_creates_a_process_category_with_translations_at_the_end(): void
     {
-        $processCategory = (new SaveProcessCategory)->execute(null, 'Name', 'Text');
+        ProcessCategory::factory()->create(['position' => 3]);
 
-        $this->assertTrue($processCategory->exists);
-        $this->assertSame('Text', $processCategory->description);
+        $category = (new SaveProcessCategory)->execute(null, 'Name', 'name', true, ['en' => 'Text']);
+
+        $this->assertTrue($category->exists);
+        $this->assertSame(4, $category->position);
+        $this->assertSame(['en' => 'Text'], $category->translations()->pluck('description', 'locale')->all());
     }
 
-    public function test_it_stores_an_empty_description_as_null(): void
+    public function test_it_updates_in_place_and_replaces_the_languages(): void
     {
-        $this->assertNull((new SaveProcessCategory)->execute(null, 'Name', '')->description);
-        $this->assertNull((new SaveProcessCategory)->execute(null, 'Name', null)->description);
-    }
+        $action = new SaveProcessCategory;
+        $category = $action->execute(null, 'Name', 'name', true, ['en' => 'Text', 'id' => 'Teks']);
 
-    public function test_it_updates_the_given_process_category_in_place(): void
-    {
-        $processCategory = ProcessCategory::factory()->create();
-
-        (new SaveProcessCategory)->execute($processCategory, 'Changed', 'New text');
+        $action->execute($category, 'Changed', 'name', false, ['en' => 'New text']);
 
         $this->assertSame(1, ProcessCategory::query()->count());
-        $this->assertSame('Changed', $processCategory->fresh()?->name);
+        $category->refresh();
+        $this->assertSame('Changed', $category->name);
+        $this->assertFalse($category->is_active);
+        $this->assertSame(['en' => 'New text'], $category->translations()->pluck('description', 'locale')->all());
     }
 }

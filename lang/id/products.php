@@ -18,6 +18,7 @@ return [
     'empty' => 'Belum ada product.',
     'save' => 'Simpan',
     'cancel' => 'Batal',
+    'used_in_steps' => 'Dipakai di langkah',
     'status' => 'Status',
     'active' => 'Aktif',
     'inactive' => 'Disembunyikan',
