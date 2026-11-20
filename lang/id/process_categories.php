@@ -34,7 +34,7 @@ return [
         'description' => 'Deskripsi',
     ],
     'hints' => [
-        'image' => 'JPG, PNG, atau WebP maksimal 2 MB, minimal 800x600. Gambar dipotong 4:3 dan tampil di halaman proses dan beranda.',
+        'image' => 'Wajib sampai kategori punya gambar. JPG, PNG, atau WebP maksimal 2 MB, minimal 800x600. Gambar dipotong 4:3 dan tampil di halaman proses dan beranda.',
         'name' => 'Nama yang tampil di situs. Alamat halaman dibuat dari nama ini saat kategori ditambahkan.',
         'active' => 'Matikan untuk menyembunyikan kategori dan prosesnya tanpa menghapusnya.',
         'languages' => 'Bahasa tanpa teks tidak disimpan. Bahasa yang belum diterjemahkan menampilkan teks bahasa Inggris.',

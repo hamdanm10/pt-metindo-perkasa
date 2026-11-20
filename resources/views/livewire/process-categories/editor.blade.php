@@ -22,8 +22,8 @@
                 </div>
 
                 <div>
-                    <label for="form-image" class="field-label">{{ __('process_categories.fields.image') }}</label>
-                    <input id="form-image" type="file" wire:model="form.image" accept="image/jpeg,image/png,image/webp"
+                    <label for="form-image" class="field-label">{{ __('process_categories.fields.image') }}@unless ($currentImage)<span class="text-brand-600" aria-hidden="true"> *</span>@endunless</label>
+                    <input id="form-image" type="file" wire:model="form.image" accept="image/jpeg,image/png,image/webp" aria-required="{{ $currentImage ? 'false' : 'true' }}"
                            @error('form.image') aria-invalid="true" aria-describedby="form-image-error" @else aria-describedby="form-image-hint" @enderror
                            class="mt-3 block w-full rounded-lg border-2 border-dashed border-ink/25 bg-white p-3 text-base file:me-4 file:min-h-10 file:cursor-pointer file:rounded-md file:border-0 file:bg-brand-600 file:px-4 file:font-bold file:text-white hover:file:bg-brand-700">
                     <p id="form-image-hint" class="mt-2 text-sm text-muted">{{ __('process_categories.hints.image') }}</p>
