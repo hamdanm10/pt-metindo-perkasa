@@ -53,8 +53,6 @@ class ServiceAdminTest extends TestCase
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
             ->set('form.name', '  Zinc Plating Line  ')
-            ->set('form.slug', 'Zinc-Plating')
-            ->set('form.position', 2)
             ->set('form.image', UploadedFile::fake()->image('cover.jpg', 1000, 800))
             ->set('form.translations.en.title', 'Zinc plating')
             ->set('form.translations.en.summary', 'Short.')
@@ -66,8 +64,8 @@ class ServiceAdminTest extends TestCase
 
         $service = Service::query()->with('translations')->firstOrFail();
         $this->assertSame('Zinc Plating Line', $service->name);
-        $this->assertSame('zinc-plating', $service->slug);
-        $this->assertSame(2, $service->position);
+        $this->assertSame('zinc-plating-line', $service->slug);
+        $this->assertSame(0, $service->position);
         $this->assertTrue($service->is_active);
         $this->assertNotNull($service->image_path);
         Storage::disk('public')->assertExists((string) $service->image_path);
@@ -82,7 +80,7 @@ class ServiceAdminTest extends TestCase
     public function test_english_is_required_and_empty_languages_are_not_saved(): void
     {
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
-            ->set('form.name', 'X')->set('form.slug', 'x');
+            ->set('form.name', 'X');
 
         $component->call('save')->assertHasErrors(['form.translations']);
 
@@ -96,35 +94,45 @@ class ServiceAdminTest extends TestCase
     public function test_a_filled_language_needs_a_title(): void
     {
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
-            ->set('form.name', 'X')->set('form.slug', 'x')
+            ->set('form.name', 'X')
             ->set('form.translations.en.title', 'English')
             ->set('form.translations.ja.summary', 'Only a summary')
             ->call('save')
             ->assertHasErrors(['form.translations.ja.title' => 'required']);
     }
 
-    public function test_shared_fields_are_validated(): void
+    public function test_the_name_is_validated_and_must_be_unique(): void
     {
-        Service::factory()->create(['slug' => 'taken']);
+        Service::factory()->create(['name' => 'Taken', 'slug' => 'taken']);
+        Service::factory()->create(['name' => 'Legacy', 'slug' => 'a-b']);
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
             ->set('form.translations.en.title', 'English');
 
-        $component->set('form.name', '   ')->set('form.slug', '')->call('save')
-            ->assertHasErrors(['form.name' => 'required', 'form.slug' => 'required']);
-        $component->set('form.name', str_repeat('a', 256))->set('form.slug', 'Not A Slug')->call('save')
-            ->assertHasErrors(['form.name' => 'max', 'form.slug' => 'regex']);
-        $component->set('form.name', 'Ok')->set('form.slug', 'taken')->call('save')
-            ->assertHasErrors(['form.slug' => 'unique']);
-        $component->set('form.slug', 'free')->set('form.position', -1)->call('save')
-            ->assertHasErrors(['form.position' => 'min']);
+        $component->set('form.name', '   ')->call('save')->assertHasErrors(['form.name' => 'required']);
+        $component->set('form.name', str_repeat('a', 256))->call('save')->assertHasErrors(['form.name' => 'max']);
+        $component->set('form.name', 'Taken')->call('save')->assertHasErrors(['form.name' => 'unique']);
+        $component->set('form.name', 'A B')->call('save')->assertHasErrors(['form.name']);
+        $component->set('form.name', '!!!')->call('save')->assertHasErrors(['form.name']);
 
-        $this->assertSame(1, Service::query()->count());
+        $this->assertSame(2, Service::query()->count());
+    }
+
+    public function test_the_slug_is_made_from_the_name_and_new_services_go_last(): void
+    {
+        Service::factory()->create(['position' => 4]);
+        $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
+            ->set('form.translations.en.title', 'English')
+            ->set('form.name', 'Zinc Plating & Co')->call('save')->assertHasNoErrors();
+
+        $service = Service::query()->where('name', 'Zinc Plating & Co')->firstOrFail();
+        $this->assertSame('zinc-plating-co', $service->slug);
+        $this->assertSame(5, $service->position);
     }
 
     public function test_text_lengths_are_limited(): void
     {
         $component = Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class)
-            ->set('form.name', 'Ok')->set('form.slug', 'ok')
+            ->set('form.name', 'Ok')
             ->set('form.translations.en.title', 'English');
 
         $component->set('form.translations.en.summary', str_repeat('a', 501))->call('save')
@@ -153,7 +161,6 @@ class ServiceAdminTest extends TestCase
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['service' => $service])
             ->assertSet('form.name', 'Old')
-            ->assertSet('form.slug', 'old')
             ->assertSet('form.translations.en.included', "A\nB")
             ->set('form.name', 'New')
             ->set('form.isActive', false)
@@ -169,13 +176,30 @@ class ServiceAdminTest extends TestCase
         $this->assertSame(1, Service::query()->count());
     }
 
-    public function test_keeping_the_own_slug_is_not_a_duplicate(): void
+    public function test_editing_keeps_the_slug_and_the_own_name_is_not_a_duplicate(): void
     {
-        $service = Service::factory()->create(['slug' => 'same']);
+        $service = Service::factory()->create(['name' => 'Same', 'slug' => 'custom-slug', 'position' => 3]);
+        $service->translations()->create(['locale' => 'en', 'title' => 'T']);
+
+        Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['service' => $service])
+            ->call('save')->assertHasNoErrors()
+            ->set('form.name', 'Renamed')->call('save')->assertHasNoErrors();
+
+        $service->refresh();
+        $this->assertSame('custom-slug', $service->slug);
+        $this->assertSame(3, $service->position);
+        $this->assertSame('Renamed', $service->name);
+    }
+
+    public function test_a_service_without_a_slug_gets_one_from_its_name_on_edit(): void
+    {
+        $service = Service::factory()->create(['name' => 'Old Service', 'slug' => null]);
         $service->translations()->create(['locale' => 'en', 'title' => 'T']);
 
         Livewire::actingAs(User::factory()->admin()->create())->test(Editor::class, ['service' => $service])
             ->call('save')->assertHasNoErrors();
+
+        $this->assertSame('old-service', $service->refresh()->slug);
     }
 
     public function test_a_new_image_replaces_the_old_file(): void

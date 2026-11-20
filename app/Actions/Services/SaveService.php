@@ -11,7 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Saves a service with all its language tabs. A language missing from `$translations` is removed.
+ * Saves a service with all its language tabs. A null `$position` keeps the current one, and puts a new service at the end of the list. A language missing from `$translations` is removed.
  *
  * @phpstan-type TranslationInput array{title: string, summary: string, description: string, included: list<string>, fit: string}
  */
@@ -29,7 +29,7 @@ class SaveService
         ?Service $service,
         string $name,
         string $slug,
-        int $position,
+        ?int $position,
         bool $active,
         array $translations,
         ?UploadedFile $image = null,
@@ -40,7 +40,11 @@ class SaveService
         $saved = DB::transaction(function () use ($service, $name, $slug, $position, $active, $translations, $newPath): Service {
             $service ??= new Service;
 
-            $service->fill(['name' => $name, 'slug' => $slug, 'position' => $position, 'is_active' => $active]);
+            $service->fill(['name' => $name, 'slug' => $slug, 'is_active' => $active]);
+
+            if ($position !== null || ! $service->exists) {
+                $service->fill(['position' => $position ?? $this->nextPosition()]);
+            }
 
             if ($newPath !== null) {
                 $service->image_path = $newPath;
@@ -70,5 +74,13 @@ class SaveService
         $this->landing->flush();
 
         return $saved;
+    }
+
+    /**
+     * New services go to the end of the list.
+     */
+    private function nextPosition(): int
+    {
+        return Service::query()->exists() ? (int) Service::query()->max('position') + 1 : 0;
     }
 }

@@ -6,6 +6,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\Service;
 use Closure;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Form;
@@ -24,10 +25,6 @@ class ServiceForm extends Form
 
     public string $name = '';
 
-    public string $slug = '';
-
-    public int $position = 0;
-
     public bool $isActive = true;
 
     public ?TemporaryUploadedFile $image = null;
@@ -39,8 +36,6 @@ class ServiceForm extends Form
     {
         $this->service = $service;
         $this->name = $service->name ?? '';
-        $this->slug = $service->slug ?? '';
-        $this->position = $service->position ?? 0;
         $this->isActive = $service->is_active ?? true;
         $this->translations = [];
 
@@ -78,12 +73,17 @@ class ServiceForm extends Form
         $default = config()->string('locales.default');
 
         $rules = [
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => [
-                'required', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
-                Rule::unique('services', 'slug')->ignore($this->service?->id),
+            'name' => [
+                'required', 'string', 'max:255',
+                Rule::unique('services', 'name')->ignore($this->service?->id),
+                function (string $attribute, mixed $value, Closure $fail): void {
+                    $slug = $this->slug();
+
+                    if ($slug === '' || $this->slugTaken($slug)) {
+                        $fail(__('services.messages.name_unusable'));
+                    }
+                },
             ],
-            'position' => ['required', 'integer', 'min:0', 'max:65535'],
             'isActive' => ['boolean'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=800,min_height=600'],
             'translations' => [function (string $attribute, mixed $value, Closure $fail) use ($default): void {
@@ -121,8 +121,6 @@ class ServiceForm extends Form
     {
         $attributes = [
             'name' => __('services.fields.name'),
-            'slug' => __('services.fields.slug'),
-            'position' => __('services.fields.position'),
             'isActive' => __('services.fields.active'),
             'image' => __('services.fields.image'),
             'translations' => __('services.fields.languages'),
@@ -142,13 +140,31 @@ class ServiceForm extends Form
     public function normalize(): void
     {
         $this->name = trim($this->name);
-        $this->slug = mb_strtolower(trim($this->slug));
 
         foreach ($this->translations as $locale => $fields) {
             foreach (self::TEXT_FIELDS as $field) {
                 $this->translations[$locale][$field] = trim($fields[$field]);
             }
         }
+    }
+
+    /**
+     * The address comes from the name when the service is created. An existing address is kept so
+     * links already shared keep working, unless it is still empty (services from before slugs).
+     */
+    public function slug(): string
+    {
+        $current = $this->service?->slug;
+
+        return $current !== null && $current !== '' ? $current : Str::slug($this->name);
+    }
+
+    private function slugTaken(string $slug): bool
+    {
+        return Service::query()
+            ->where('slug', $slug)
+            ->when($this->service !== null, fn ($query) => $query->whereKeyNot($this->service?->id))
+            ->exists();
     }
 
     /**

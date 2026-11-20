@@ -62,8 +62,8 @@ class Editor extends Component
         $saveService->execute(
             $this->service,
             $this->form->name,
-            $this->form->slug,
-            $this->form->position,
+            $this->form->slug(),
+            null,
             $this->form->isActive,
             $this->form->payload(),
             $this->form->image,

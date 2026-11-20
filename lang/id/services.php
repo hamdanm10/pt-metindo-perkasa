@@ -34,9 +34,7 @@ return [
         'fit' => 'Cocok untuk',
     ],
     'hints' => [
-        'name' => 'Nama yang dilihat staf di daftar dan pilihan. Tidak tampil di situs.',
-        'slug' => 'Huruf kecil, angka, dan tanda hubung, sama di semua bahasa. Dipakai di alamat halaman.',
-        'position' => 'Angka yang lebih kecil tampil lebih dulu.',
+        'name' => 'Nama yang dilihat staf di daftar dan pilihan. Tidak tampil di situs. Alamat halaman dibuat dari nama ini saat layanan ditambahkan.',
         'active' => 'Matikan untuk menyembunyikan layanan tanpa menghapusnya.',
         'image' => 'JPG, PNG, atau WebP maksimal 2 MB, minimal 800x600. Dipotong menjadi 4:3.',
         'languages' => 'Bahasa tanpa teks tidak disimpan. Bahasa tanpa terjemahan menampilkan teks Inggris.',
@@ -48,5 +46,6 @@ return [
         'updated' => 'Perubahan disimpan.',
         'default_language_required' => 'Tulis teks :language: teks itu tampil di bahasa yang belum diterjemahkan.',
         'included_item_too_long' => 'Setiap butir daftar maksimal 255 karakter.',
+        'name_unusable' => 'Nama ini menghasilkan alamat yang sudah dipakai layanan lain atau tidak bisa dijadikan alamat. Pakai nama lain.',
     ],
 ];
