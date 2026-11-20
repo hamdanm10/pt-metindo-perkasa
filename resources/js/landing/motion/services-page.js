@@ -4,7 +4,8 @@ import { all, root } from './shared.js';
 
 /**
  * The services page. Each illustration opens with a wipe (1.2 seconds, `expo.out`) from the side
- * its text is not on while its picture drifts a little against the scroll. The four steps are joined by a line that is drawn as the page
+ * its text is not on while its picture drifts a little against the scroll, and the plate behind it
+ * grows in a beat later. The four steps are joined by a line that is drawn as the page
  * scrolls, each step appearing when the line reaches it.
  */
 export const servicesPage = () => {
@@ -13,6 +14,18 @@ export const servicesPage = () => {
     all('[data-svc-art]').forEach((art, index) => {
         const fromEnd = index % 2 === 0 ? sign : -sign;
         const inner = art.querySelector('[data-svc-art-inner]');
+        const plate = art.parentElement?.querySelector('[data-svc-plate]');
+
+        if (plate) {
+            gsap.from(plate, {
+                autoAlpha: 0,
+                scale: 0.9,
+                duration: 1.3,
+                delay: 0.25,
+                ease: 'expo.out',
+                scrollTrigger: { trigger: art, start: 'top 85%', once: true },
+            });
+        }
 
         gsap.fromTo(art, { clipPath: fromEnd > 0 ? 'inset(0 0 0 100% round 8px)' : 'inset(0 100% 0 0 round 8px)' }, {
             clipPath: 'inset(0 0% 0 0% round 8px)',
