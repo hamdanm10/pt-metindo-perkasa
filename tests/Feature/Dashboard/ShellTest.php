@@ -108,7 +108,7 @@ class ShellTest extends TestCase
 
         $opens = fn (string $label): bool => preg_match('/<details[^>]*data-nav-group[^>]* open\s*>\s*<summary[^>]*>\s*<svg[^>]*>(?:(?!<\/svg>).)*<\/svg>\s*<span[^>]*>'.preg_quote($label, '/').'<\/span>/s', $html) === 1;
 
-        $this->assertTrue($opens(__('dashboard.nav.parents.catalog')));
+        $this->assertTrue($opens(__('dashboard.nav.parents.processes')));
         $this->assertFalse($opens(__('dashboard.nav.parents.clients')));
         $this->assertFalse($opens(__('dashboard.nav.parents.qa')));
     }
@@ -125,7 +125,7 @@ class ShellTest extends TestCase
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
         $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
-        $this->assertSame(7, substr_count($html, 'size-5 shrink-0'));
+        $this->assertSame(8, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.users'), '/').'\s*(<\/p>|<svg)/', $staff);
