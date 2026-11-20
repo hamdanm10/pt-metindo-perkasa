@@ -32,7 +32,7 @@ return [
     ],
     'nav' => [
         'parents' => [
-            'catalog' => 'Katalog',
+            'processes' => 'Proses',
             'contact' => 'Alat kontak',
             'clients' => 'Klien',
             'qa' => 'Tanya Jawab',

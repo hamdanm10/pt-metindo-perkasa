@@ -18,7 +18,7 @@ class DashboardMenu
      * Dropdown buttons that gather related items inside a group, with their icon. Items point to one with `parent`.
      */
     private const PARENTS = [
-        'catalog' => ['label' => 'dashboard.nav.parents.catalog', 'icon' => 'cube'],
+        'processes' => ['label' => 'dashboard.nav.parents.processes', 'icon' => 'cube'],
         'contact' => ['label' => 'dashboard.nav.parents.contact', 'icon' => 'phone'],
         'clients' => ['label' => 'dashboard.nav.parents.clients', 'icon' => 'users'],
         'qa' => ['label' => 'dashboard.nav.parents.qa', 'icon' => 'chat'],
@@ -32,10 +32,10 @@ class DashboardMenu
         return [
             ['route' => 'app.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'app.dashboard', 'icon' => 'home', 'group' => 'menu', 'parent' => null, 'roles' => Role::staffArea()],
             ['route' => 'app.articles.index', 'label' => 'dashboard.nav.articles', 'active' => 'app.articles.*', 'icon' => 'document', 'group' => 'content', 'parent' => null, 'roles' => Role::staffArea()],
-            ['route' => 'app.process-categories.index', 'label' => 'dashboard.nav.process_categories', 'active' => 'app.process-categories.*', 'icon' => 'cube', 'group' => 'content', 'parent' => 'catalog', 'roles' => [Role::Admin]],
-            ['route' => 'app.processes.index', 'label' => 'dashboard.nav.processes', 'active' => 'app.processes.*', 'icon' => 'cube', 'group' => 'content', 'parent' => 'catalog', 'roles' => [Role::Admin]],
-            ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'content', 'parent' => 'catalog', 'roles' => [Role::Admin]],
-            ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'icon' => 'cube', 'group' => 'content', 'parent' => 'catalog', 'roles' => [Role::Admin]],
+            ['route' => 'app.services.index', 'label' => 'dashboard.nav.services', 'active' => 'app.services.*', 'icon' => 'wrench', 'group' => 'content', 'parent' => null, 'roles' => [Role::Admin]],
+            ['route' => 'app.process-categories.index', 'label' => 'dashboard.nav.process_categories', 'active' => 'app.process-categories.*', 'icon' => 'cube', 'group' => 'content', 'parent' => 'processes', 'roles' => [Role::Admin]],
+            ['route' => 'app.processes.index', 'label' => 'dashboard.nav.processes', 'active' => 'app.processes.*', 'icon' => 'cube', 'group' => 'content', 'parent' => 'processes', 'roles' => [Role::Admin]],
+            ['route' => 'app.products.index', 'label' => 'dashboard.nav.products', 'active' => 'app.products.*', 'icon' => 'cube', 'group' => 'content', 'parent' => 'processes', 'roles' => [Role::Admin]],
             ['route' => 'app.chat.index', 'label' => 'dashboard.nav.chat', 'active' => 'app.chat.*', 'icon' => 'question', 'group' => 'content', 'parent' => 'contact', 'roles' => [Role::Admin]],
             ['route' => 'app.whatsapp.index', 'label' => 'dashboard.nav.whatsapp', 'active' => 'app.whatsapp.*', 'icon' => 'phone', 'group' => 'content', 'parent' => 'contact', 'roles' => [Role::Admin]],
             ['route' => 'app.staff.index', 'label' => 'dashboard.nav.staff', 'active' => 'app.staff.*', 'icon' => 'briefcase', 'group' => 'users', 'parent' => null, 'roles' => [Role::Admin]],
