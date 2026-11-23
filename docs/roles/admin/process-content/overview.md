@@ -22,7 +22,7 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 | 2 | **Nama** kategori, proses, langkah, dan produk satu bahasa saja (Inggris, tampil `lang="en"` di landing seperti sekarang). **Deskripsi** per bahasa di tabel terjemahan (`<tabel>_translations`: kunci asing + `locale` unik), lima bahasa landing dalam tab, **Inggris wajib** sebagai cadangan, bahasa kosong tidak disimpan | Mengikuti pola layanan dan chat. **Tanpa `spatie/laravel-translatable` dan tanpa terjemahan otomatis**: tiap bahasa ditulis admin sendiri supaya kalimatnya natural |
 | 3 | `slug` dibuat otomatis dari nama saat ditambahkan dan tidak berubah sesudahnya. Slug kategori dan proses **unik di seluruh tabel** karena URL-nya (`/process/{slug}`) tidak memuat kategori | Alamat landing stabil |
 | 4 | Urutan lewat kolom `position` dan tombol Naik/Turun (pola `MoveService`). Nilai kecil lebih dulu. Berlaku untuk kategori, proses dalam satu kategori, dan langkah dalam satu proses | Sama dengan layanan |
-| 5 | Tanpa hapus untuk kategori, proses, dan produk: pakai **aktif/nonaktif** (`is_active`). Yang nonaktif tidak tampil di landing. Langkah boleh dihapus karena hanya bagian dari proses | Riwayat tautan aman. Hapus ditunda |
+| 5 | **Hapus tersedia** untuk kategori, proses, dan produk (tombol Hapus di daftar, hanya admin, dengan konfirmasi; `DeleteProcessCategory`, `DeleteProcess`, `DeleteProduct`). Kategori yang masih punya proses ditolak. Menghapus proses ikut menghapus langkahnya, menghapus produk melepasnya dari semua langkah dan menghapus berkas TDS. Untuk menyembunyikan tanpa menghapus, pakai **aktif/nonaktif** (`is_active`, yang nonaktif tidak tampil di landing). Langkah dihapus lewat form proses | Tidak bisa dibatalkan, jadi ada konfirmasi |
 | 6 | **Langkah dikelola di dalam form proses**: tambah, hapus, geser, lalu pilih produk tiap langkah lewat dropdown pencarian `Lookup` (sumber baru `produk`, banyak pilihan). Satu transaksi di `SaveProcess` | Admin tidak perlu halaman terpisah |
 | 7 | Satu produk boleh dipakai di banyak langkah (tabel pivot `process_step_product`, pasangan unik, ada `position`). Produk nonaktif disembunyikan dari langkah di landing tetapi tidak dilepas dari pivot | Mudah diaktifkan lagi |
 | 8 | **Tanpa impor data awal dan tanpa seeder.** Admin mengisi kategori, proses, langkah, dan produk lewat dashboard. Satu-satunya migrasi data: deskripsi kategori A3 yang sudah ada dipindah ke terjemahan bahasa Inggris. **Data statis di `config/landing.php` dan teks kategori di `lang/*/pages.php` tidak dihapus dulu, dan untuk saat ini landing memakai data statis**: sumbernya diatur `landing.catalog_source` (env `LANDING_CATALOG_SOURCE`, bawaan `static`). Dengan `database`, landing memakai database begitu ada satu kategori aktif dan data statis selama belum ada (semua atau tidak sama sekali, tidak dicampur). Penghapusannya menunggu dashboard dirapikan dan data diisi | Landing tidak kosong selama admin belum mengisi. Aturan proyek: tanpa data contoh |
@@ -75,7 +75,7 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 
 ## Ditunda
 
-- Hapus kategori, proses, dan produk. Nama yang diterjemahkan. Seret dan lepas. `<title>` dan meta per proses. Permintaan harga dan unduhan TDS lewat formulir (L5). Gambar atau diagram unggahan per langkah.
+- Nama yang diterjemahkan. Seret dan lepas. `<title>` dan meta per proses. Permintaan harga dan unduhan TDS lewat formulir (L5). Gambar atau diagram unggahan per langkah.
 
 ## Catatan A9
 

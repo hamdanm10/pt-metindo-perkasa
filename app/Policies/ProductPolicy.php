@@ -24,6 +24,11 @@ class ProductPolicy
         return $this->isAdmin($actor);
     }
 
+    public function delete(User $actor): bool
+    {
+        return $this->isAdmin($actor);
+    }
+
     private function isAdmin(User $actor): bool
     {
         return $actor->role === Role::Admin;

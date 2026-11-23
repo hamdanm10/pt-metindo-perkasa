@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Processes;
 
+use App\Actions\Processes\DeleteProcess;
 use App\Actions\Processes\ListProcesses;
 use App\Actions\Processes\MoveProcess;
 use App\Models\Process;
@@ -44,6 +45,17 @@ class Index extends Component
         $this->authorize('update', $process);
 
         $moveProcess->execute($process, $direction === 'up');
+    }
+
+    public function delete(DeleteProcess $deleteAction, int $id): void
+    {
+        $process = Process::query()->findOrFail($id);
+
+        $this->authorize('delete', $process);
+
+        $deleteAction->execute($process);
+
+        session()->now('status', __('processes.messages.deleted'));
     }
 
     public function render(ListProcesses $listProcesses): View

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\ProcessCategories;
 
+use App\Actions\ProcessCategories\DeleteProcessCategory;
 use App\Actions\ProcessCategories\ListProcessCategories;
 use App\Actions\ProcessCategories\MoveProcessCategory;
 use App\Models\ProcessCategory;
@@ -36,6 +37,21 @@ class Index extends Component
         $this->authorize('update', $processCategory);
 
         $moveProcessCategory->execute($processCategory, $direction === 'up');
+    }
+
+    public function delete(DeleteProcessCategory $deleteAction, int $id): void
+    {
+        $processCategory = ProcessCategory::query()->findOrFail($id);
+
+        $this->authorize('delete', $processCategory);
+
+        if (! $deleteAction->execute($processCategory)) {
+            $this->addError('active', __('process_categories.messages.has_processes'));
+
+            return;
+        }
+
+        session()->now('status', __('process_categories.messages.deleted'));
     }
 
     public function render(ListProcessCategories $listProcessCategories): View

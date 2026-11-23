@@ -46,6 +46,7 @@
                             <td>{{ $product->is_active ? __('products.active') : __('products.inactive') }}</td>
                             <td class="text-end whitespace-nowrap">
                                 <a href="{{ route('app.products.edit', $product) }}" class="row-action">{{ __('products.edit') }}<span class="sr-only"> {{ $product->name }}</span></a>
+                                <button type="button" wire:click="delete({{ $product->id }})" data-confirm="{{ __('products.confirm_delete') }}" data-confirm-label="{{ __('products.delete') }}" class="row-action row-action--danger">{{ __('products.delete') }}<span class="sr-only"> {{ $product->name }}</span></button>
                             </td>
                         </tr>
                     @empty

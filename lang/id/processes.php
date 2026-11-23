@@ -17,6 +17,8 @@ return [
     'language_filled' => 'Sudah ditulis',
     'language_empty' => 'Belum ditulis',
     'edit' => 'Ubah',
+    'delete' => 'Hapus',
+    'confirm_delete' => 'Hapus proses ini beserta semua langkahnya? Halamannya tidak akan berfungsi lagi. Tindakan ini tidak bisa dibatalkan.',
     'search' => 'Cari nama',
     'actions' => 'Aksi',
     'empty' => 'Belum ada proses.',
@@ -49,6 +51,7 @@ return [
         'languages' => 'Bahasa tanpa teks tidak disimpan. Bahasa yang belum diterjemahkan menampilkan teks bahasa Inggris.',
     ],
     'messages' => [
+        'deleted' => 'Proses dihapus.',
         'name_unusable' => 'Nama ini menghasilkan alamat yang sudah dipakai proses lain atau tidak bisa dijadikan alamat. Pakai nama lain.',
         'created' => 'Proses ditambahkan.',
         'updated' => 'Perubahan disimpan.',

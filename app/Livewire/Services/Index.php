@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Services;
 
+use App\Actions\Services\DeleteService;
 use App\Actions\Services\ListServices;
 use App\Actions\Services\MoveService;
 use App\Models\Service;
@@ -36,6 +37,17 @@ class Index extends Component
         $this->authorize('update', $service);
 
         $moveService->execute($service, $direction === 'up');
+    }
+
+    public function delete(DeleteService $deleteAction, int $id): void
+    {
+        $service = Service::query()->findOrFail($id);
+
+        $this->authorize('delete', $service);
+
+        $deleteAction->execute($service);
+
+        session()->now('status', __('services.messages.deleted'));
     }
 
     public function render(ListServices $listServices): View
