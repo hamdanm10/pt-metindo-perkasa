@@ -48,6 +48,7 @@
                                 <a href="{{ route('app.process-categories.edit', $processCategory) }}" class="row-action">{{ __('process_categories.edit') }}<span class="sr-only"> {{ $processCategory->name }}</span></a>
                                 <button type="button" wire:click="move({{ $processCategory->id }}, 'up')" @disabled($processCategory->id === $ends['first']) class="row-action disabled:cursor-not-allowed disabled:opacity-40">{{ __('process_categories.move_up') }}<span class="sr-only"> {{ $processCategory->name }}</span></button>
                                 <button type="button" wire:click="move({{ $processCategory->id }}, 'down')" @disabled($processCategory->id === $ends['last']) class="row-action disabled:cursor-not-allowed disabled:opacity-40">{{ __('process_categories.move_down') }}<span class="sr-only"> {{ $processCategory->name }}</span></button>
+                                <button type="button" wire:click="delete({{ $processCategory->id }})" data-confirm="{{ __('process_categories.confirm_delete') }}" data-confirm-label="{{ __('process_categories.delete') }}" class="row-action row-action--danger">{{ __('process_categories.delete') }}<span class="sr-only"> {{ $processCategory->name }}</span></button>
                             </td>
                         </tr>
                     @empty

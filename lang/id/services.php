@@ -15,6 +15,8 @@ return [
     'language_filled' => 'Terisi',
     'language_empty' => 'Belum ditulis',
     'edit' => 'Ubah',
+    'delete' => 'Hapus',
+    'confirm_delete' => 'Hapus layanan ini di semua bahasa? Gambarnya ikut terhapus dan halamannya tidak akan berfungsi lagi. Tindakan ini tidak bisa dibatalkan.',
     'search' => 'Cari nama',
     'actions' => 'Aksi',
     'empty' => 'Belum ada layanan.',
@@ -46,6 +48,7 @@ return [
         'included' => 'Satu butir per baris.',
     ],
     'messages' => [
+        'deleted' => 'Layanan dihapus.',
         'name_unusable' => 'Nama ini menghasilkan alamat yang sudah dipakai layanan lain atau tidak bisa dijadikan alamat. Pakai nama lain.',
         'created' => 'Layanan ditambahkan.',
         'updated' => 'Perubahan disimpan.',

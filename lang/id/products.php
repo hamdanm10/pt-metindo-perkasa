@@ -13,6 +13,8 @@ return [
     'language_filled' => 'Sudah ditulis',
     'language_empty' => 'Belum ditulis',
     'edit' => 'Ubah',
+    'delete' => 'Hapus',
+    'confirm_delete' => 'Hapus product ini? Product juga dilepas dari semua langkah proses yang memakainya, dan berkas TDS-nya ikut terhapus. Tindakan ini tidak bisa dibatalkan.',
     'search' => 'Cari nama',
     'actions' => 'Aksi',
     'empty' => 'Belum ada product.',
@@ -50,6 +52,7 @@ return [
         'languages' => 'Bahasa tanpa teks tidak disimpan. Bahasa yang belum diterjemahkan menampilkan teks bahasa Inggris.',
     ],
     'messages' => [
+        'deleted' => 'Product dihapus.',
         'name_unusable' => 'Nama ini menghasilkan alamat yang sudah dipakai product lain atau tidak bisa dijadikan alamat. Pakai nama lain.',
         'created' => 'Product ditambahkan.',
         'updated' => 'Perubahan disimpan.',

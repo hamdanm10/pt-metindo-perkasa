@@ -51,6 +51,7 @@
                                 <a href="{{ route('app.processes.edit', $process) }}" class="row-action">{{ __('processes.edit') }}<span class="sr-only"> {{ $process->name }}</span></a>
                                 <button type="button" wire:click="move({{ $process->id }}, 'up')" class="row-action">{{ __('processes.move_up') }}<span class="sr-only"> {{ $process->name }}</span></button>
                                 <button type="button" wire:click="move({{ $process->id }}, 'down')" class="row-action">{{ __('processes.move_down') }}<span class="sr-only"> {{ $process->name }}</span></button>
+                                <button type="button" wire:click="delete({{ $process->id }})" data-confirm="{{ __('processes.confirm_delete') }}" data-confirm-label="{{ __('processes.delete') }}" class="row-action row-action--danger">{{ __('processes.delete') }}<span class="sr-only"> {{ $process->name }}</span></button>
                             </td>
                         </tr>
                     @empty

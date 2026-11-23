@@ -15,6 +15,8 @@ return [
     'language_filled' => 'Written',
     'language_empty' => 'Not written',
     'edit' => 'Edit',
+    'delete' => 'Delete',
+    'confirm_delete' => 'Delete this process category in every language? Its image is removed and its page stops working. This cannot be undone.',
     'search' => 'Search name',
     'actions' => 'Actions',
     'empty' => 'No process categories yet.',
@@ -40,6 +42,8 @@ return [
         'languages' => 'A language without any text is not saved. A language without a translation shows the English text.',
     ],
     'messages' => [
+        'deleted' => 'Process category deleted.',
+        'has_processes' => 'This category still has processes. Move or delete them first.',
         'name_unusable' => 'This name gives an address that another process category already uses or cannot be made into an address. Use a different name.',
         'created' => 'Process category added.',
         'updated' => 'Changes saved.',

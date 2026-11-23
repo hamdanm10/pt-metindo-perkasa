@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Products;
 
+use App\Actions\Products\DeleteProduct;
 use App\Actions\Products\ListProducts;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
@@ -26,6 +27,17 @@ class Index extends Component
     public function updatedSearch(): void
     {
         $this->resetPage();
+    }
+
+    public function delete(DeleteProduct $deleteAction, int $id): void
+    {
+        $product = Product::query()->findOrFail($id);
+
+        $this->authorize('delete', $product);
+
+        $deleteAction->execute($product);
+
+        session()->now('status', __('products.messages.deleted'));
     }
 
     public function render(ListProducts $listProducts): View

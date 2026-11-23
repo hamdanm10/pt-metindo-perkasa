@@ -46,6 +46,7 @@
                                 <a href="{{ route('app.services.edit', $service) }}" class="row-action">{{ __('services.edit') }}<span class="sr-only"> {{ $service->name }}</span></a>
                                 <button type="button" wire:click="move({{ $service->id }}, 'up')" @disabled($service->id === $ends['first']) class="row-action disabled:cursor-not-allowed disabled:opacity-40">{{ __('services.move_up') }}<span class="sr-only"> {{ $service->name }}</span></button>
                                 <button type="button" wire:click="move({{ $service->id }}, 'down')" @disabled($service->id === $ends['last']) class="row-action disabled:cursor-not-allowed disabled:opacity-40">{{ __('services.move_down') }}<span class="sr-only"> {{ $service->name }}</span></button>
+                                <button type="button" wire:click="delete({{ $service->id }})" data-confirm="{{ __('services.confirm_delete') }}" data-confirm-label="{{ __('services.delete') }}" class="row-action row-action--danger">{{ __('services.delete') }}<span class="sr-only"> {{ $service->name }}</span></button>
                             </td>
                         </tr>
                     @empty

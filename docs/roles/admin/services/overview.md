@@ -12,6 +12,7 @@ Admin menambah dan mengubah layanan perusahaan dari dashboard. Layanan punya **d
 | 4 | Lima bahasa landing (`en`, `id`, `zh`, `ar`, `ja`) dalam tab. Bahasa tanpa teks tidak disimpan, dan bahasa yang dikosongkan saat ubah dihapus. **Bahasa Inggris wajib** karena jadi cadangan bahasa lain (aturan teks dinamis landing di `CLAUDE.md`) | Berbeda dari artikel: layanan tidak diterbitkan per bahasa |
 | 5 | Satu gambar bersama, **wajib** (wajib sampai layanan punya gambar, lalu boleh dibiarkan saat ubah; layanan lama tanpa gambar harus mengunggah saat diubah berikutnya), unggahan JPG, PNG, atau WebP maks 2 MB, minimal 800x600, dipotong 4:3 dan disimpan WebP di disk `public` dengan nama acak (`ServiceImageStore`). Gambar lama dihapus saat diganti | Rasio 4:3 sama dengan kotak gambar layanan di landing |
 | 6 | Layanan lama dipindah otomatis oleh migration: `name` menjadi `title` bahasa Inggris, `description` menjadi `description` bahasa Inggris, lalu kolom `description` dihapus. `slug` kosong sampai layanan disimpan ulang dari form (dibuat dari nama) | Tidak kehilangan data |
+| 8 | **Hapus layanan** lewat tombol Hapus di daftar (`DeleteService`, dijaga `ServicePolicy::delete`, hanya admin), dengan konfirmasi. Terjemahan ikut terhapus (cascade), berkas gambar dihapus, dan cache landing dibersihkan. Untuk menyembunyikan tanpa menghapus, matikan status aktif | Tidak bisa dibatalkan |
 | 7 | Tanpa seeder dan tanpa perintah impor: teks tetap lama di `lang` (`home.services.items`, `pages.services.detail.items`) dihapus dan admin mengisi layanan lewat dashboard. Landing tidak menampilkan layanan (menu, bagian beranda, halaman) sampai ada layanan aktif | Aturan proyek: tanpa data contoh dan tanpa seeder |
 | 8 | Livewire `Services\Index` dan `Services\Editor`, logic di `SaveService` (satu transaksi), `ListServices`, dan `MoveService` (geser satu tempat di seluruh daftar: posisi dinomori ulang dulu sesuai urutan tampil, lalu dua layanan bertukar, cache landing dibersihkan; tombol dinonaktifkan pada layanan pertama dan terakhir) | Pola yang sama dengan produk dan artikel |
 
@@ -38,4 +39,4 @@ Admin menambah dan mengubah layanan perusahaan dari dashboard. Layanan punya **d
 
 ## Ditunda
 
-- Hapus layanan, urutan lewat seret dan lepas, judul `<title>` dan deskripsi meta per layanan, alt gambar per bahasa.
+- Urutan lewat seret dan lepas, judul `<title>` dan deskripsi meta per layanan, alt gambar per bahasa.

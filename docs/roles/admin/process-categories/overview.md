@@ -9,7 +9,7 @@ Admin menambah dan mengubah kategori proses dari dashboard. Kategori punya **nam
 | 1 | Hanya admin yang mengelola, di `/app/process-categories`. Staf dan customer mendapat 403, dijaga middleware dan `ProcessCategoryPolicy` | Keputusan client untuk pengelolaan konten |
 | 2 | Kolom `name` (wajib, unik, maks 255), `slug` (otomatis dari nama saat ditambah, tidak berubah), `position`, `is_active`. Deskripsi (maks 5000) per bahasa di `process_category_translations`, bahasa Inggris wajib | Mengikuti pola layanan |
 | 3 | Lima bahasa landing dalam tab, tiap bahasa ditulis admin sendiri. Bahasa tanpa teks tidak disimpan | Aturan teks dinamis landing |
-| 4 | Belum ada hapus. Satu gambar per kategori, wajib (4:3, maks 2 MB, lihat [`../process-content/overview.md`](../process-content/overview.md) keputusan 9). Urutan lewat tombol Naik/Turun (`MoveProcessCategory`) | Ditunda sampai kebutuhannya jelas |
+| 4 | Hapus lewat tombol Hapus di daftar (`DeleteProcessCategory`, hanya admin, dengan konfirmasi): terjemahan dan berkas gambar ikut terhapus. **Kategori yang masih punya proses ditolak** dengan pesan, karena `processes.process_category_id` memakai `restrictOnDelete`: pindahkan atau hapus prosesnya dulu. Satu gambar per kategori, wajib (4:3, maks 2 MB, lihat [`../process-content/overview.md`](../process-content/overview.md) keputusan 9). Urutan lewat tombol Naik/Turun (`MoveProcessCategory`) | Riwayat tautan aman bila memakai aktif/nonaktif |
 | 5 | Livewire: `ProcessCategories\Index` dan `ProcessCategories\Editor` (tambah dan ubah satu komponen), logic di `SaveProcessCategory`, `ListProcessCategories`, dan `MoveProcessCategory` | Mengikuti pola A1 dan artikel |
 
 ## Halaman
@@ -32,7 +32,6 @@ Akses per peran dan tamu (halaman dan aksi Livewire), menu hanya untuk admin, ta
 
 ## Ditunda
 
-- Hapus kategori.
 
 ## Perubahan nama
 

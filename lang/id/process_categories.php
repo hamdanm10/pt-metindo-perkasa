@@ -15,6 +15,8 @@ return [
     'language_filled' => 'Sudah ditulis',
     'language_empty' => 'Belum ditulis',
     'edit' => 'Ubah',
+    'delete' => 'Hapus',
+    'confirm_delete' => 'Hapus kategori proses ini di semua bahasa? Gambarnya ikut terhapus dan halamannya tidak akan berfungsi lagi. Tindakan ini tidak bisa dibatalkan.',
     'search' => 'Cari nama',
     'actions' => 'Aksi',
     'empty' => 'Belum ada kategori proses.',
@@ -40,6 +42,8 @@ return [
         'languages' => 'Bahasa tanpa teks tidak disimpan. Bahasa yang belum diterjemahkan menampilkan teks bahasa Inggris.',
     ],
     'messages' => [
+        'deleted' => 'Kategori proses dihapus.',
+        'has_processes' => 'Kategori ini masih memiliki proses. Pindahkan atau hapus prosesnya dulu.',
         'name_unusable' => 'Nama ini menghasilkan alamat yang sudah dipakai kategori proses lain atau tidak bisa dijadikan alamat. Pakai nama lain.',
         'created' => 'Kategori proses ditambahkan.',
         'updated' => 'Perubahan disimpan.',

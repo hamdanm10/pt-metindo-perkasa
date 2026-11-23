@@ -17,6 +17,8 @@ return [
     'language_filled' => 'Written',
     'language_empty' => 'Not written',
     'edit' => 'Edit',
+    'delete' => 'Delete',
+    'confirm_delete' => 'Delete this process with all its steps? Its page stops working. This cannot be undone.',
     'search' => 'Search name',
     'actions' => 'Actions',
     'empty' => 'No processes yet.',
@@ -49,6 +51,7 @@ return [
         'languages' => 'A language without any text is not saved. A language without a translation shows the English text.',
     ],
     'messages' => [
+        'deleted' => 'Process deleted.',
         'name_unusable' => 'This name gives an address that another process already uses or cannot be made into an address. Use a different name.',
         'created' => 'Process added.',
         'updated' => 'Changes saved.',

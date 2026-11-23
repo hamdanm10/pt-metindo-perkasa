@@ -15,6 +15,8 @@ return [
     'language_filled' => 'Written',
     'language_empty' => 'Not written',
     'edit' => 'Edit',
+    'delete' => 'Delete',
+    'confirm_delete' => 'Delete this service in every language? Its image is removed and its page stops working. This cannot be undone.',
     'search' => 'Search name',
     'actions' => 'Actions',
     'empty' => 'No services yet.',
@@ -46,6 +48,7 @@ return [
         'included' => 'One item per line.',
     ],
     'messages' => [
+        'deleted' => 'Service deleted.',
         'name_unusable' => 'This name gives an address that another service already uses or cannot be made into an address. Use a different name.',
         'created' => 'Service added.',
         'updated' => 'Changes saved.',
