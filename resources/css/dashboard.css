@@ -323,6 +323,18 @@ html[dir='rtl'] .field-select {
     line-height: 1.5;
 }
 
+.confirm__ok,
+.confirm__ok:hover {
+    border-color: var(--color-brand-600);
+    background-color: var(--color-brand-600);
+    color: #fff;
+}
+
+.confirm__ok:hover {
+    border-color: var(--color-brand-700);
+    background-color: var(--color-brand-700);
+}
+
 .confirm__actions {
     display: flex;
     justify-content: flex-end;
