@@ -19,13 +19,6 @@ class ProcessCatalogTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        config(['landing.catalog_source' => 'database']);
-    }
-
     /**
      * An active category with one active process, one step, and one product that has links.
      *
@@ -51,17 +44,6 @@ class ProcessCatalogTest extends TestCase
         return ['category' => $category, 'process' => $process, 'product' => $product];
     }
 
-    public function test_the_static_catalog_is_the_default_even_when_the_database_has_categories(): void
-    {
-        config(['landing.catalog_source' => 'static']);
-        $this->catalog();
-
-        $this->assertSame('static', (require config_path('landing.php'))['catalog_source']);
-        $this->get('/en/processes')->assertOk()->assertSee('Zinc Plating Chemicals')->assertDontSee('Custom Category');
-        $this->get('/en/process/alkaline-zinc')->assertOk();
-        $this->get('/en/process/custom-flow')->assertNotFound();
-    }
-
     public function test_the_category_picture_shows_on_the_pages_and_the_home_page(): void
     {
         $data = $this->catalog();
@@ -80,33 +62,18 @@ class ProcessCatalogTest extends TestCase
         $this->get('/en/processes')->assertOk()->assertDontSee('/storage/process-categories/', false);
     }
 
-    public function test_the_static_catalog_shows_the_picture_of_the_category_with_the_same_name_or_address(): void
+    public function test_without_an_active_category_the_pages_are_empty_and_do_not_fail(): void
     {
-        config(['landing.catalog_source' => 'static']);
-        $byName = ProcessCategory::factory()->create(['name' => 'Zinc Plating Chemicals', 'slug' => 'zinc-plating-chemicals', 'image_path' => 'process-categories/by-name.webp']);
-        ProcessCategory::factory()->create(['name' => 'Anything', 'slug' => 'nickel-plating', 'image_path' => 'process-categories/by-slug.webp']);
-        ProcessCategory::factory()->create(['name' => 'Hidden Copper', 'slug' => 'copper-plating', 'image_path' => 'process-categories/hidden.webp', 'is_active' => false]);
-        app(LandingProcesses::class)->flush();
-
-        $html = (string) $this->get('/en/processes')->assertOk()->getContent();
-
-        $this->assertStringContainsString('/storage/process-categories/by-name.webp', $html);
-        $this->assertStringContainsString('/storage/process-categories/by-slug.webp', $html);
-        $this->assertStringNotContainsString('hidden.webp', $html);
-        $this->assertSame('Zinc Plating Chemicals', $byName->name);
-    }
-
-    public function test_without_an_active_category_the_static_catalog_is_shown(): void
-    {
-        $this->get('/en/processes')->assertOk()->assertSee('Zinc Plating Chemicals');
-
         $category = ProcessCategory::factory()->create(['is_active' => false, 'name' => 'Hidden One', 'slug' => 'hidden-one']);
         $category->translations()->create(['locale' => 'en', 'description' => 'x']);
 
-        $this->get('/en/processes')->assertOk()->assertSee('Zinc Plating Chemicals')->assertDontSee('Hidden One');
+        $this->get('/en/processes')->assertOk()->assertDontSee('Hidden One');
+        $this->get('/en')->assertOk()->assertDontSee('Hidden One');
+        $this->get('/en/about')->assertOk();
+        $this->get('/en/processes/hidden-one')->assertNotFound();
     }
 
-    public function test_the_database_catalog_replaces_the_static_one(): void
+    public function test_the_pages_show_the_catalog_from_the_database(): void
     {
         $this->catalog();
 
@@ -117,7 +84,6 @@ class ProcessCatalogTest extends TestCase
 
         $this->get('/en/processes/custom-category')->assertOk()->assertSee('Custom Flow')->assertSee('English flow text.');
         $this->get('/en/processes/zinc-plating')->assertNotFound();
-        $this->get('/en/process/alkaline-zinc')->assertNotFound();
         $this->get('/en/processes/not-a-category')->assertNotFound();
     }
 
@@ -125,7 +91,7 @@ class ProcessCatalogTest extends TestCase
     {
         $this->catalog();
 
-        $this->get('/en')->assertOk()->assertSee('Custom Category')->assertDontSee('Zinc Plating Chemicals');
+        $this->get('/en')->assertOk()->assertSee('Custom Category');
     }
 
     public function test_a_language_without_text_shows_the_english_text(): void

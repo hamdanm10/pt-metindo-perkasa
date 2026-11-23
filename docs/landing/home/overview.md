@@ -10,9 +10,9 @@ Beranda landing page dalam lima bahasa, dengan semua bagian dari prototipe `home
 | --- | --- | --- |
 | 1 | Dial desain: ENERGY 2 / RHYTHM 3 / MOTION mengikuti referensi ([`../ui/motion.md`](../ui/motion.md)). Bagian berganti komposisi, tidak semuanya grid kartu yang sama | Permintaan client agar tidak kaku. Gerak (layar intro dan animasi GSAP) dijelaskan di [`../ui/motion.md`](../ui/motion.md) |
 | 2 | Teks di `lang/<locale>/home.php` untuk kelima bahasa. Kunci tetap bahasa Inggris. Terjemahan `id`, `zh`, `ar`, `ja` memakai teks prototipe client bila ada, sisanya ditulis sendiri dan perlu ditinjau penutur asli | Aturan teks pengguna. Dipindah ke database di L4 |
-| 3 | Katalog di beranda menampilkan **empat dari 14 kategori** (nama, jumlah proses, tiga proses pertama dengan penanda "+N", dan tautan ke kategorinya), tetap dalam bahasa Inggris di semua bahasa seperti di prototipe. Semua kategori ada di halaman Products. Produk, proses, TDS, dan harga tidak tampil | Datanya besar dan akan hidup di database (L4). Harga dan TDS belum diputuskan (L5) |
+| 3 | Katalog di beranda menampilkan **empat kategori pertama** (nama, jumlah proses, tiga proses pertama dengan penanda "+N", dan tautan ke kategorinya), tetap dalam bahasa Inggris di semua bahasa seperti di prototipe. Semua kategori ada di halaman Products. Produk, proses, TDS, dan harga tidak tampil | Datanya besar dan akan hidup di database (L4). Harga dan TDS belum diputuskan (L5) |
 | 4 | Tanpa tautan ke halaman yang belum ada. Kategori, layanan, dan artikel belum bisa diklik sampai L3 | Aturan navigasi: tidak ada tautan mati |
-| 5 | Daftar kategori (slug dan nama) dan nama mitra ada di `config/landing.php`. Slug dipakai untuk nama berkas ikon. Diganti database di L4 | Satu sumber untuk 14 kategori |
+| 5 | Daftar kategori dibaca dari database (dashboard admin, A10). Nama mitra ada di `config/landing.php` | Satu sumber untuk kategori |
 | 6 | Logo klien dan mitra dibaca dari `public/images/landing/clients/` dan `partners/` (folder dasar di `config('landing.logo_directory')`). Tanpa berkas, slide klien tidak tampil dan mitra tampil sebagai nama. **Enam logo klien dan enam logo mitra yang terpasang sekarang adalah logo contoh milik perusahaan lain, dari client untuk menilai tampilan, bukan klien dan mitra PT Metindo Perkasa**; ganti dengan logo asli sebelum rilis | Logo yang dipasang tidak boleh dikarang atau disebut sebagai klien tanpa konfirmasi |
 | 7 | Bagian artikel menampilkan **empat** artikel terbaru yang terbit di bahasa itu (dari database, A2) dan hilang bila belum ada | Artikel contoh sudah dihapus |
 | 8 | Video: tidak ada permintaan ke YouTube sebelum diklik. Tampil poster lokal dan tombol putar, lalu iframe `youtube-nocookie.com` dibuat saat diklik. ID video di `config/landing.php` (env `LANDING_INTRO_VIDEO_ID`), bagian disembunyikan bila kosong | Kecepatan, privasi, dan SEO. ID di prototipe belum dipastikan video asli |
@@ -61,7 +61,7 @@ Aturan dari [`../ui/design.md`](../ui/design.md), diwujudkan begini:
 
 ## Struktur kode
 
-- `config/landing.php`: daftar slug kategori, `intro_video_id`, `contact.email`. Nomor telepon tidak ada di config.
+- `config/landing.php`: `intro_video_id`, `contact.email`. Nomor telepon tidak ada di config.
 - `lang/{en,id,zh,ar,ja}/home.php`: teks beranda.
 - `resources/views/landing/home.blade.php` menyusun bagian dari `resources/views/landing/home/*.blade.php` (satu berkas per bagian).
 - `resources/views/components/landing/art.blade.php`: memuat aset dari `public/images/landing/` bila ada.
@@ -76,7 +76,7 @@ Test (feature) yang harus ada:
 
 - Beranda di tiap locale memuat judul hero dalam bahasanya dan `lang`/`dir` yang benar.
 - Kunci `lang/*/home.php` identik di kelima bahasa (test kunci yang sudah ada diperluas ke semua berkas landing).
-- 13 nama kategori muncul, dan jumlahnya sama dengan `config('landing.categories')`.
+- Nama kategori dari database muncul (empat pertama menurut urutan).
 - Tanpa `intro_video_id`: bagian video tidak ada. Dengan nilai: poster dan tombol ada, dan tidak ada `iframe` atau URL YouTube di HTML awal.
 - Tanpa kontak: tidak ada tautan `mailto:`. Dengan kontak: ada.
 - Intro: elemen `role="dialog"` ada dengan tombol tutup berlabel dalam bahasa aktif.

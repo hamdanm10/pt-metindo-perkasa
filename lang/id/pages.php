@@ -104,22 +104,6 @@ return [
         ],
         'list' => 'Proses',
         'others' => 'Kategori lain',
-        'categories' => [
-            'chemical-alkaline-type' => 'Proses kimia elektroplating berbasis alkali.',
-            'zinc-plating' => 'Proses pelapisan seng',
-            'nickel-plating' => 'Proses pelapisan nikel',
-            'copper-plating' => 'Proses pelapisan tembaga',
-            'hard-chrome' => 'Proses krom keras',
-            'tin-plating' => 'Proses pelapisan timah',
-            'electroless-nickel' => 'Pelapisan nikel tanpa listrik',
-            'anodizing' => 'Proses anodisasi',
-            'phosphating' => 'Proses fosfat',
-            'plating-on-plastic' => 'Pelapisan pada plastik',
-            'metal-polishing' => 'Poles logam',
-            'sustainable-steel' => 'Proses baja berkelanjutan',
-            'wastewater-treatment' => 'Pengolahan air limbah',
-            'chemical-laboratory' => 'Laboratorium kimia',
-        ],
     ],
     'services' => [
         'detail' => [

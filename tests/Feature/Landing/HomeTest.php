@@ -11,13 +11,18 @@ use App\Services\Landing\LandingContact;
 use App\Services\Landing\LandingGallery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Blade;
+use Tests\Concerns\CreatesCatalog;
 use Tests\Concerns\CreatesServices;
 use Tests\TestCase;
 
 class HomeTest extends TestCase
 {
+    use CreatesCatalog;
     use CreatesServices;
     use RefreshDatabase;
+
+    /** @var list<array{slug: string, name: string, processes: list<string>}> */
+    private array $categories = [];
 
     protected function setUp(): void
     {
@@ -31,6 +36,7 @@ class HomeTest extends TestCase
         ]);
 
         $this->createServices();
+        $this->categories = $this->createCatalog();
         WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000000', 'position' => 0]);
         WhatsappAgent::factory()->create(['name' => 'Support', 'number' => '6281200000009', 'position' => 1]);
     }
@@ -47,9 +53,9 @@ class HomeTest extends TestCase
     public function test_home_features_four_categories_and_links_to_all_processes(): void
     {
         $response = $this->get('/en')->assertOk();
-        $categories = config('landing.categories');
+        $categories = $this->categories;
 
-        $this->assertCount(14, $categories);
+        $this->assertCount(5, $categories);
 
         foreach (array_slice($categories, 0, 4) as $category) {
             $response->assertSee($category['name'])
@@ -109,7 +115,7 @@ class HomeTest extends TestCase
     {
         $catalog = $this->catalogHtml();
 
-        foreach (array_slice(config('landing.categories'), 0, 4) as $index => $category) {
+        foreach (array_slice($this->categories, 0, 4) as $index => $category) {
             $processes = $category['processes'];
 
             $this->assertStringContainsString(e($category['name']), $catalog);

@@ -104,22 +104,6 @@ return [
         ],
         'list' => '工程',
         'others' => 'その他のカテゴリー',
-        'categories' => [
-            'chemical-alkaline-type' => 'Alkaline-based electroplating chemical processes.',
-            'zinc-plating' => 'Zinc plating process',
-            'nickel-plating' => 'Nickel plating process',
-            'copper-plating' => 'Copper plating process',
-            'hard-chrome' => 'Hard chrome process',
-            'tin-plating' => 'Tin plating process',
-            'electroless-nickel' => 'Electroless nickel plating',
-            'anodizing' => 'Anodizing process',
-            'phosphating' => 'Phosphating process',
-            'plating-on-plastic' => 'Plating on plastic',
-            'metal-polishing' => 'Metal polishing',
-            'sustainable-steel' => 'Sustainable steel process',
-            'wastewater-treatment' => 'Wastewater treatment',
-            'chemical-laboratory' => 'Chemical laboratory',
-        ],
     ],
     'services' => [
         'detail' => [

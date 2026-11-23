@@ -1,6 +1,6 @@
 # Kelola Kategori Proses (A3)
 
-Admin menambah dan mengubah kategori proses dari dashboard. Kategori punya **nama** (satu bahasa), **slug**, **urutan**, **status aktif**, dan **deskripsi per bahasa** (A9, [`../process-content/overview.md`](../process-content/overview.md)). Belum tampil di landing: katalog landing masih memakai kategori di `config/landing.php` sampai A10. Status fase di [`../implementation-plan.md`](../implementation-plan.md).
+Admin menambah dan mengubah kategori proses dari dashboard. Kategori punya **nama** (satu bahasa), **slug**, **urutan**, **status aktif**, dan **deskripsi per bahasa** (A9, [`../process-content/overview.md`](../process-content/overview.md)). Kategori aktif tampil di landing (A10). Status fase di [`../implementation-plan.md`](../implementation-plan.md).
 
 ## Keputusan
 
