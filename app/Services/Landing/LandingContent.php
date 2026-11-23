@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace App\Services\Landing;
 
 use App\Services\Articles\LandingArticles;
-use Illuminate\Support\Str;
 
 /**
  * @phpstan-import-type Category from LandingProcesses
  * @phpstan-import-type Process from LandingProcesses
  * @phpstan-import-type Product from LandingProcesses
  *
- * The landing content: the process catalog from the dashboard (the static list in the configuration is the
- * fallback until a category is active), the group locations, and the menu.
+ * The landing content: the process catalog from the dashboard, the group locations, and the menu.
  */
 class LandingContent
 {
@@ -24,97 +22,13 @@ class LandingContent
     ) {}
 
     /**
-     * The catalog the landing shows: the static list in the configuration, or, when `landing.catalog_source` is
-     * "database", what the admin set in the dashboard (the static list while no category is active yet).
+     * The catalog the admin set in the dashboard.
      *
      * @return list<Category>
      */
     private function source(): array
     {
-        $catalog = config('landing.catalog_source') === 'database' ? $this->catalog->all(app()->getLocale()) : [];
-
-        return $catalog !== [] ? $catalog : $this->withImages($this->configured());
-    }
-
-    /**
-     * The static categories show the picture the admin uploaded for the category with the same address or name.
-     *
-     * @param  list<Category>  $categories
-     * @return list<Category>
-     */
-    private function withImages(array $categories): array
-    {
-        $images = $this->catalog->images();
-
-        return array_map(fn (array $category): array => [
-            ...$category,
-            'image' => $images[$category['slug']] ?? $images[Str::slug($category['name'])] ?? null,
-        ], $categories);
-    }
-
-    /**
-     * The static catalog: categories from `landing.categories`, and steps and materials from
-     * `landing.process_details`. Only the name of a material is known.
-     *
-     * @return list<Category>
-     */
-    private function configured(): array
-    {
-        return array_values(array_map($this->configuredCategory(...), config('landing.categories')));
-    }
-
-    /**
-     * @param  array{slug: string, name: string, processes: list<string>}  $category
-     * @return Category
-     */
-    private function configuredCategory(array $category): array
-    {
-        $description = __("pages.processes.categories.{$category['slug']}");
-
-        return [
-            'slug' => $category['slug'],
-            'name' => $category['name'],
-            'description' => is_string($description) && $description !== "pages.processes.categories.{$category['slug']}" ? $description : null,
-            'image' => null,
-            'processes' => array_map($this->configuredProcess(...), $category['processes']),
-        ];
-    }
-
-    /**
-     * @return Process
-     */
-    private function configuredProcess(string $name): array
-    {
-        $slug = Str::slug($name);
-        $description = config("landing.process_details.{$slug}.description");
-
-        return [
-            'slug' => $slug,
-            'name' => $name,
-            'description' => is_string($description) ? $description : null,
-            'steps' => array_map(fn (array $step): array => [
-                'name' => $step['name'],
-                'description' => $step['description'],
-                'products' => array_map(fn (string $material): array => [
-                    'slug' => Str::slug($material),
-                    'name' => $material,
-                    'description' => null,
-                    'brochure_url' => null,
-                    'video_url' => null,
-                    'price' => null,
-                    'tds_url' => null,
-                    'links' => [],
-                ], $step['materials']),
-            ], $this->configuredSteps($slug)),
-        ];
-    }
-
-    /**
-     * @return list<array{name: string, description: string, materials: list<string>}>
-     */
-    private function configuredSteps(string $slug): array
-    {
-        return config("landing.process_details.{$slug}.steps", []);
+        return $this->catalog->all(app()->getLocale());
     }
 
     /**

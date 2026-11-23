@@ -8,13 +8,18 @@ use App\Models\ArticleTranslation;
 use App\Models\WhatsappAgent;
 use App\Services\Landing\LandingContact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Concerns\CreatesCatalog;
 use Tests\Concerns\CreatesServices;
 use Tests\TestCase;
 
 class PagesTest extends TestCase
 {
+    use CreatesCatalog;
     use CreatesServices;
     use RefreshDatabase;
+
+    /** @var list<array{slug: string, name: string, processes: list<string>}> */
+    private array $categories = [];
 
     protected function setUp(): void
     {
@@ -30,6 +35,7 @@ class PagesTest extends TestCase
         WhatsappAgent::factory()->create(['name' => 'Sales', 'number' => '6281200000000']);
 
         $this->createServices();
+        $this->categories = $this->createCatalog();
     }
 
     public function test_every_inner_page_renders_in_every_locale(): void
@@ -174,7 +180,7 @@ class PagesTest extends TestCase
 
     public function test_every_category_page_lists_its_processes(): void
     {
-        foreach (config('landing.categories') as $category) {
+        foreach ($this->categories as $category) {
             $response = $this->get('/en/processes/'.$category['slug'])->assertOk()->assertSee($category['name']);
 
             foreach ($category['processes'] as $process) {
@@ -185,7 +191,7 @@ class PagesTest extends TestCase
 
     public function test_category_page_shows_its_position_and_process_count(): void
     {
-        $categories = config('landing.categories');
+        $categories = $this->categories;
         $category = $categories[1];
 
         $this->get('/en/processes/'.$category['slug'])->assertOk()
@@ -269,7 +275,7 @@ class PagesTest extends TestCase
 
     public function test_about_figures_are_counted_from_the_catalog_and_locales(): void
     {
-        $categories = config('landing.categories');
+        $categories = $this->categories;
         $processes = array_sum(array_map(fn (array $category): int => count($category['processes']), $categories));
         $html = (string) $this->get('/en/about')->getContent();
 
@@ -315,7 +321,7 @@ class PagesTest extends TestCase
 
     public function test_process_index_is_a_tab_list_with_a_panel_per_category_and_no_catalogue_label(): void
     {
-        $categories = config('landing.categories');
+        $categories = $this->categories;
         $html = (string) $this->get('/en/processes')->getContent();
 
         $this->assertSame(count($categories), preg_match_all('/data-ptab\s/', $html));
@@ -331,7 +337,7 @@ class PagesTest extends TestCase
             $this->assertStringContainsString('id="tab-'.$slug.'" aria-controls="panel-'.$slug.'"', $html);
             $this->assertStringContainsString('id="panel-'.$slug.'" aria-labelledby="tab-'.$slug.'"', $html);
             $this->assertStringContainsString('href="'.route('landing.processes.show', ['locale' => 'en', 'category' => $slug]).'"', $html);
-            $this->assertStringContainsString(__("pages.processes.categories.{$slug}", [], 'en'), $html);
+            $this->assertStringContainsString($category['name'].' description.', $html);
 
             foreach ($category['processes'] as $process) {
                 $this->assertStringContainsString(e($process), $html);
@@ -370,9 +376,9 @@ class PagesTest extends TestCase
             }
 
             // These two carry a number, so check them filled in.
-            $count = count(config('landing.categories.0.processes'));
+            $count = count($this->categories[0]['processes']);
             $response->assertSeeText(__('pages.processes.view_all', ['count' => $count], $code), false)
-                ->assertSee(__('pages.processes.position', ['number' => '01', 'total' => count(config('landing.categories'))], $code), false);
+                ->assertSee(__('pages.processes.position', ['number' => '01', 'total' => count($this->categories)], $code), false);
         }
     }
 

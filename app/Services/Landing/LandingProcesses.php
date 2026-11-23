@@ -8,7 +8,6 @@ use App\Models\ProcessCategory;
 use App\Services\ProcessCategories\ProcessCategoryImageStore;
 use App\Services\Products\ProductTdsStore;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 /**
  * The process catalog of the landing as the admin set it in the dashboard: active categories, their active
@@ -39,36 +38,8 @@ class LandingProcesses
         return $categories;
     }
 
-    /**
-     * The picture URL of every active category that has one, by its address and by the address its name
-     * gives, so the static catalog can show the pictures the admin uploaded for categories of the same name.
-     *
-     * @return array<string, string>
-     */
-    public function images(): array
-    {
-        /** @var array<string, string> $images */
-        $images = Cache::rememberForever('landing.process_images', function (): array {
-            $images = [];
-
-            foreach (ProcessCategory::query()->where('is_active', true)->whereNotNull('image_path')->orderBy('position')->get(['name', 'slug', 'image_path']) as $category) {
-                $url = $this->images->url((string) $category->image_path);
-
-                foreach ([(string) $category->slug, Str::slug($category->name)] as $key) {
-                    $images[$key] ??= $url;
-                }
-            }
-
-            return $images;
-        });
-
-        return $images;
-    }
-
     public function flush(): void
     {
-        Cache::forget('landing.process_images');
-
         foreach (config()->array('locales.landing') as $locale) {
             Cache::forget($this->key($locale));
         }

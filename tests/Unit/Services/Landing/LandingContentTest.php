@@ -8,10 +8,12 @@ use App\Models\ArticleTranslation;
 use App\Services\Articles\LandingArticles;
 use App\Services\Landing\LandingContent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Concerns\CreatesCatalog;
 use Tests\TestCase;
 
 class LandingContentTest extends TestCase
 {
+    use CreatesCatalog;
     use RefreshDatabase;
 
     private function content(): LandingContent
@@ -21,6 +23,8 @@ class LandingContentTest extends TestCase
 
     public function test_it_finds_a_category_by_slug(): void
     {
+        $this->createCatalog();
+
         $this->assertSame('Zinc Plating Chemicals', $this->content()->category('zinc-plating')['name'] ?? null);
         $this->assertNull($this->content()->category('unknown'));
     }
