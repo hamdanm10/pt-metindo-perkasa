@@ -55,7 +55,27 @@ class ProcessCatalogTest extends TestCase
         $response = $this->get('/en/process/custom-flow')->assertOk();
 
         $response->assertSee('data-step-animation="degreasing"', false);
+        // Only the diagram dialog has the cartoons, and none for the step without an animation.
         $this->assertSame(1, substr_count((string) $response->getContent(), 'data-step-animation='));
+    }
+
+    public function test_the_step_list_has_scroll_hooks_and_no_cartoon(): void
+    {
+        $this->withoutVite();
+        $data = $this->catalog();
+        $data['process']->steps()->firstOrFail()->update(['animation' => 'degreasing']);
+        app(LandingProcesses::class)->flush();
+
+        $html = (string) $this->get('/en/process/custom-flow')->assertOk()->getContent();
+
+        $this->assertSame(1, substr_count($html, 'data-flow-step'));
+        $this->assertSame(1, substr_count($html, 'data-flow-badge'));
+        $this->assertSame(1, substr_count($html, 'data-flow-card'));
+        $this->assertStringContainsString('data-flow-line', $html);
+        $this->assertStringContainsString('data-flow-dot', $html);
+        $this->assertStringContainsString('data-flow-title', $html);
+        $this->assertStringContainsString('data-flow-chips', $html);
+        $this->assertDoesNotMatchRegularExpression('/data-flow-card(?:(?!<\/li>).)*data-step-animation/s', $html);
     }
 
     public function test_the_category_picture_shows_on_the_pages_and_the_home_page(): void
