@@ -46,18 +46,20 @@
             @if ($process['steps'] === [])
                 <p class="mt-10 rounded-lg border-2 border-dashed border-ink/30 p-8 text-lg font-semibold text-ink/70">{{ __('pages.process.empty') }}</p>
             @else
-                <ol class="mt-10 space-y-6" data-process-steps>
+                <div class="relative mt-10">
+                <span class="absolute start-[21px] top-5 bottom-5 w-0.5 -translate-x-1/2 bg-ink/15 rtl:translate-x-1/2" aria-hidden="true"><span data-flow-line class="relative block w-full bg-brand-600"><span data-flow-dot class="absolute start-1/2 bottom-0 size-3.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-brand-600 ring-4 ring-brand-600/25 rtl:translate-x-1/2"></span></span></span>
+                <ol class="relative space-y-6" data-process-steps>
                     @foreach ($process['steps'] as $step)
-                        <li class="relative ps-16">
-                            <span class="absolute start-0 top-0 inline-flex size-11 items-center justify-center rounded-full bg-brand-600 text-sm font-extrabold text-white" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                            <div class="rounded-lg bg-white p-6">
-                                <h3 class="text-xl font-black text-ink" lang="en" dir="ltr">{{ $step['name'] }}</h3>
+                        <li class="relative ps-16" data-flow-step>
+                            <span data-flow-badge class="absolute start-0 top-0 z-10 inline-flex size-11 items-center justify-center rounded-full bg-brand-600 text-sm font-extrabold text-white ring-2 ring-brand-600 transition-colors duration-300 data-[pending]:bg-white data-[pending]:text-brand-700" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                            <div data-flow-card class="rounded-lg bg-white p-6 ring-2 ring-transparent transition-shadow duration-300 data-[active]:shadow-xl data-[active]:ring-brand-600/60">
+                                <div class="overflow-hidden"><h3 data-flow-title class="text-xl font-black text-ink" lang="en" dir="ltr">{{ $step['name'] }}</h3></div>
                                 @if ($step['description'] !== '')
-                                    <p class="mt-1 text-ink/75" lang="en" dir="ltr">{{ $step['description'] }}</p>
+                                    <p data-flow-text class="mt-1 text-ink/75" lang="en" dir="ltr">{{ $step['description'] }}</p>
                                 @endif
                                 @if ($step['products'] !== [])
                                     <p class="mt-5 text-xs font-extrabold uppercase text-ink/60">{{ __('pages.process.materials') }}</p>
-                                    <ul class="mt-3 flex flex-wrap gap-2" lang="en" dir="ltr">
+                                    <ul data-flow-chips class="mt-3 flex flex-wrap gap-2" lang="en" dir="ltr">
                                         @foreach ($step['products'] as $product)
                                             <li>
                                                 @php
@@ -83,6 +85,7 @@
                         </li>
                     @endforeach
                 </ol>
+                </div>
             @endif
         </div>
     </section>

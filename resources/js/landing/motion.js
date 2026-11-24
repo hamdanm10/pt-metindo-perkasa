@@ -10,6 +10,7 @@ import { cta } from './motion/cta.js';
 import { gallery } from './motion/gallery.js';
 import { smartHeader } from './motion/header.js';
 import { hero } from './motion/hero.js';
+import { processFlow } from './motion/process-flow.js';
 import { processes } from './motion/processes.js';
 import { scrollReveals } from './motion/reveals.js';
 import { servicesPage } from './motion/services-page.js';
@@ -34,6 +35,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         cta();
         subsidiaries();
         processes();
+        processFlow();
         servicesPage();
         articles();
         contactPage();
