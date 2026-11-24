@@ -61,8 +61,10 @@ return [
         'title' => 'Home',
         'greeting' => 'Hello, :name',
         'description' => 'Welcome to the PT Metindo Perkasa dashboard.',
-        'empty_title' => 'Nothing here yet',
-        'empty_text' => 'Features will appear here as they are added.',
+        'empty_text' => 'Nothing to show yet.',
+        'recent_inquiries' => 'Latest questions',
+        'recent_purchases' => 'Latest purchases',
+        'view_all' => 'View all',
     ],
     'roles' => [
         'admin' => 'Admin',

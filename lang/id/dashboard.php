@@ -61,8 +61,10 @@ return [
         'title' => 'Beranda',
         'description' => 'Selamat datang di dashboard PT Metindo Perkasa.',
         'greeting' => 'Halo, :name',
-        'empty_title' => 'Belum ada isi',
-        'empty_text' => 'Fitur akan muncul di sini seiring ditambahkan.',
+        'empty_text' => 'Belum ada yang ditampilkan.',
+        'recent_inquiries' => 'Pertanyaan terbaru',
+        'recent_purchases' => 'Pembelian terbaru',
+        'view_all' => 'Lihat semua',
     ],
     'roles' => [
         'admin' => 'Admin',

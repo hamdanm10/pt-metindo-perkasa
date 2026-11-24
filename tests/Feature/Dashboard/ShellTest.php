@@ -18,7 +18,7 @@ class ShellTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_home_greets_each_role_by_name_and_shows_the_role_and_an_empty_state(): void
+    public function test_home_greets_each_role_by_name_and_shows_the_role_and_empty_lists(): void
     {
         foreach (['admin' => '/app/dashboard', 'staff' => '/app/dashboard', 'customer' => '/customer/dashboard', 'distributor' => '/distributor/dashboard'] as $role => $url) {
             $user = User::factory()->{$role}()->create(['name' => "Tester {$role}"]);
@@ -126,7 +126,7 @@ class ShellTest extends TestCase
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
         $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
-        $this->assertSame(9, substr_count($html, 'size-5 shrink-0'));
+        $this->assertSame(9, substr_count((string) strstr($html, '</aside>', true), 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.users'), '/').'\s*(<\/p>|<svg)/', $staff);
