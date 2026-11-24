@@ -22,6 +22,7 @@ class DashboardMenu
         'contact' => ['label' => 'dashboard.nav.parents.contact', 'icon' => 'phone'],
         'clients' => ['label' => 'dashboard.nav.parents.clients', 'icon' => 'users'],
         'qa' => ['label' => 'dashboard.nav.parents.qa', 'icon' => 'chat'],
+        'purchases' => ['label' => 'dashboard.nav.parents.purchases', 'icon' => 'document'],
     ];
 
     /**
@@ -43,8 +44,8 @@ class DashboardMenu
             ['route' => 'app.distributors.index', 'label' => 'dashboard.nav.distributors', 'active' => 'app.distributors.*', 'icon' => 'truck', 'group' => 'users', 'parent' => 'clients', 'roles' => [Role::Admin]],
             ['route' => 'app.customer-inquiries.index', 'label' => 'dashboard.nav.customer_inquiries', 'active' => 'app.customer-inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => 'qa', 'roles' => Role::staffArea()],
             ['route' => 'app.distributor-inquiries.index', 'label' => 'dashboard.nav.distributor_inquiries', 'active' => 'app.distributor-inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => 'qa', 'roles' => Role::staffArea()],
-            ['route' => 'app.customer-purchases.index', 'label' => 'dashboard.nav.customer_purchases', 'active' => 'app.customer-purchases.*', 'icon' => 'document', 'group' => 'sales', 'parent' => null, 'roles' => Role::staffArea()],
-            ['route' => 'app.distributor-purchases.index', 'label' => 'dashboard.nav.distributor_purchases', 'active' => 'app.distributor-purchases.*', 'icon' => 'document', 'group' => 'sales', 'parent' => null, 'roles' => Role::staffArea()],
+            ['route' => 'app.customer-purchases.index', 'label' => 'dashboard.nav.customer_purchases', 'active' => 'app.customer-purchases.*', 'icon' => 'document', 'group' => 'sales', 'parent' => 'purchases', 'roles' => Role::staffArea()],
+            ['route' => 'app.distributor-purchases.index', 'label' => 'dashboard.nav.distributor_purchases', 'active' => 'app.distributor-purchases.*', 'icon' => 'document', 'group' => 'sales', 'parent' => 'purchases', 'roles' => Role::staffArea()],
             ['route' => 'customer.dashboard', 'label' => 'dashboard.nav.home', 'active' => 'customer.dashboard', 'icon' => 'home', 'group' => 'menu', 'parent' => null, 'roles' => [Role::Customer]],
             ['route' => 'customer.inquiries.index', 'label' => 'dashboard.nav.inquiries', 'active' => 'customer.inquiries.*', 'icon' => 'chat', 'group' => 'support', 'parent' => null, 'roles' => [Role::Customer]],
             ['route' => 'customer.purchases.index', 'label' => 'dashboard.nav.purchases', 'active' => 'customer.purchases.*', 'icon' => 'document', 'group' => 'sales', 'parent' => null, 'roles' => [Role::Customer]],

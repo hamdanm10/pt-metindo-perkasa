@@ -35,7 +35,7 @@ Rancangan awal karena detail dari client belum lengkap. Harga dan total sengaja 
 | Berkas | `/app/purchase-files/{id}`, `/customer/purchase-files/{id}`, `/distributor/purchase-files/{id}` | Mengirim berkas sebagai unduhan. Guest diarahkan ke login, peran yang salah mendapat 403, berkas milik pembeli lain 404 |
 
 - Hapus lewat dialog konfirmasi situs. Menghapus catatan ikut menghapus berkasnya dari disk.
-- Menu staf: grup "Sales" / "Penjualan", item "Customer purchases" / "Pembelian Customer" dan "Distributor purchases" / "Pembelian Distributor" (ikon `document`) untuk admin dan staf. Customer dan distributor mendapat satu item "Purchases" / "Pembelian" di grup yang sama.
+- Menu staf: grup "Sales" / "Penjualan", dropdown "Purchases" / "Pembelian" berisi "Customer purchases" / "Pembelian Customer" dan "Distributor purchases" / "Pembelian Distributor" (ikon `document`) untuk admin dan staf, seperti dropdown Q&A. Customer dan distributor mendapat satu item "Purchases" / "Pembelian" di grup yang sama.
 - Teks di `lang/{en,id}/purchases.php` (judul dan label per kind di `kinds`), `dashboard.nav.purchases` (area pembeli), `dashboard.nav.customer_purchases`, `dashboard.nav.distributor_purchases`, dan `dashboard.groups.sales`.
 
 ## Struktur kode

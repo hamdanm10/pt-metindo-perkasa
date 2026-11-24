@@ -104,13 +104,14 @@ class ShellTest extends TestCase
     {
         $html = (string) $this->actingAs(User::factory()->admin()->create())->get('/app/process-categories')->getContent();
 
-        $this->assertSame(4, substr_count($html, 'data-nav-group'));
+        $this->assertSame(5, substr_count($html, 'data-nav-group'));
 
         $opens = fn (string $label): bool => preg_match('/<details[^>]*data-nav-group[^>]* open\s*>\s*<summary[^>]*>\s*<svg[^>]*>(?:(?!<\/svg>).)*<\/svg>\s*<span[^>]*>'.preg_quote($label, '/').'<\/span>/s', $html) === 1;
 
         $this->assertTrue($opens(__('dashboard.nav.parents.processes')));
         $this->assertFalse($opens(__('dashboard.nav.parents.clients')));
         $this->assertFalse($opens(__('dashboard.nav.parents.qa')));
+        $this->assertFalse($opens(__('dashboard.nav.parents.purchases')));
     }
 
     public function test_the_sidebar_groups_the_menu_under_labels_with_an_icon_on_each_item(): void
@@ -125,7 +126,7 @@ class ShellTest extends TestCase
         $this->assertLessThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.home')));
         $this->assertGreaterThan($position(__('dashboard.groups.content')), (int) strpos($html, __('dashboard.nav.articles')));
         $this->assertGreaterThan($position(__('dashboard.groups.users')), (int) strpos($html, __('dashboard.nav.staff')));
-        $this->assertSame(10, substr_count($html, 'size-5 shrink-0'));
+        $this->assertSame(9, substr_count($html, 'size-5 shrink-0'));
 
         $staff = (string) $this->actingAs(User::factory()->staff()->create())->get('/app/dashboard')->getContent();
         $this->assertDoesNotMatchRegularExpression('/>\s*'.preg_quote(__('dashboard.groups.users'), '/').'\s*(<\/p>|<svg)/', $staff);

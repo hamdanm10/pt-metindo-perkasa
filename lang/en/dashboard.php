@@ -37,6 +37,7 @@ return [
             'contact' => 'Contact tools',
             'clients' => 'Clients',
             'qa' => 'Q&A',
+            'purchases' => 'Purchases',
         ],
         'home' => 'Dashboard',
         'staff' => 'Staff',

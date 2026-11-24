@@ -58,9 +58,12 @@ class DashboardMenuTest extends TestCase
         $this->assertSame(['app.articles.index', 'app.services.index', 'dashboard.nav.parents.processes', 'dashboard.nav.parents.contact'], array_map(fn (array $entry): string => $entry['route'] ?? $entry['label'], $groups[1]['entries']));
         $this->assertSame(['app.staff.index', 'dashboard.nav.parents.clients'], array_map(fn (array $entry): string => $entry['route'] ?? $entry['label'], $groups[2]['entries']));
         $this->assertSame(['dashboard.nav.parents.qa'], array_column($groups[3]['entries'], 'label'));
+        $this->assertSame(['dashboard.nav.parents.purchases'], array_column($groups[4]['entries'], 'label'));
 
         $staff = (new DashboardMenu)->groupsForUser(User::factory()->staff()->make());
         $this->assertSame('dashboard.nav.parents.qa', $staff[2]['entries'][0]['label']);
+        $this->assertSame(['dashboard.nav.parents.purchases'], array_column($staff[3]['entries'], 'label'));
+        $this->assertSame(['app.customer-purchases.index', 'app.distributor-purchases.index'], array_column($staff[3]['entries'][0]['items'] ?? [], 'route'));
 
         $portal = (new DashboardMenu)->groupsForUser(User::factory()->customer()->make());
         $this->assertSame(['customer.inquiries.index'], array_column($portal[1]['entries'], 'route'));
