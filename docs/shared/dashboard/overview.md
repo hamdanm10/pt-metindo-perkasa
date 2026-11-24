@@ -11,7 +11,7 @@ Tata letak dashboard untuk admin, staf, customer, dan distributor: sidebar dan b
 | 3 | Pemilih bahasa memakai formulir `POST` biasa ke `/{area}/locale`, bukan komponen Livewire. Di dashboard tampil sebagai **dropdown bahasa**, di halaman login sebagai tombol berdampingan | Berfungsi juga di halaman login (tamu), tanpa JavaScript, dan mudah diuji |
 | 4 | Pilihan bahasa disimpan di `users.locale` bila sudah masuk, dan di sesi bila tamu. Bahasa yang dipilih di halaman login (sesi) menjadi bahasa akun saat pengguna masuk | Mengikuti aturan locale di `CLAUDE.md`. Pilihan terbaru yang eksplisit tidak boleh dikalahkan oleh nilai tersimpan |
 | 5 | Menu awal hanya "Dashboard" (di bahasa Indonesia "Dasbor"). Tombol keluar ada di dropdown pengguna pada navbar | Tidak ada tautan ke halaman yang belum ada |
-| 6 | Beranda berisi sapaan, nama, dan peran, plus keadaan kosong yang menjelaskan bahwa fitur akan muncul di sini | Tidak ada angka atau ringkasan karangan |
+| 6 | Beranda berisi sapaan, nama, dan peran, kartu angka yang menautkan ke daftarnya, dan dua daftar "terbaru" (pertanyaan dan pembelian, lima baris, tiap baris menaut ke detailnya). Admin melihat jumlah customer dan distributor, staf tidak; admin dan staf melihat angka seluruh sistem (Tanya Jawab dan pembelian per jenis, artikel). Customer dan distributor hanya melihat angka dan baris milik sendiri. Daftar kosong menampilkan "Belum ada yang ditampilkan". Datanya dihitung `App\Actions\Dashboard\BuildHomeSummary` dengan jumlah query tetap berapa pun jumlah barisnya | Beranda berguna sebagai ringkasan dan jalan pintas, tanpa angka karangan |
 | 7 | Dial desain dashboard: ENERGY 1 / RHYTHM 1 / MOTION 1. Tenang, padat, dan jelas. Karakter merek hanya lewat warna aksen dan penanda miring pada menu aktif | Dashboard dipakai kerja, bukan dipamerkan |
 | 8 | Di bawah lebar `lg`, sidebar menjadi **laci** yang meluncur masuk dari kiri ke kanan (transisi CSS 0,3 detik) saat tombol tiga garis di **sisi kiri** bilah atas ditekan, dengan tampilan yang sama seperti sidebar desktop dan latar gelap di belakangnya. Ditutup dengan tombol tutup, klik latar, atau Escape | Tampilan menu di ponsel sama dengan desktop, dan gerak sederhana tanpa pustaka |
 | 9 | Isi halaman berada dalam **kontainer** berlebar maksimal `max-w-6xl` dan di tengah, supaya tetap terbaca di layar lebar | Isi tidak melebar tanpa batas di monitor besar |
@@ -61,7 +61,7 @@ Langkah: teks dan daftar menu, komponen tata letak, pemilih bahasa dan route, ha
 
 Test (feature) yang harus ada:
 
-- Beranda tiap peran menampilkan sapaan dengan nama, peran dalam bahasa aktif, dan keadaan kosong.
+- Beranda tiap peran menampilkan sapaan dengan nama, peran dalam bahasa aktif, dan daftar kosong. Admin melihat angka akun, staf tidak, customer dan distributor hanya data sendiri dengan tautan ke areanya, teks mengikuti locale, dan jumlah query tidak bertambah saat baris bertambah (`HomeSummaryTest`).
 - Bilah atas memuat dropdown pengguna (inisial, email, peran, dan formulir Keluar), dropdown bahasa dengan kedua bahasa dan penanda aktif, dan isi berada dalam kontainer.
 - Menu admin, staf, customer, dan distributor memuat hanya item yang diizinkan dan route yang ada. Item aktif bertanda `aria-current="page"`.
 - Pemilih bahasa: mengganti ke `id` menyimpan `users.locale` dan sesi untuk pengguna masuk, hanya sesi untuk tamu, menolak `zh` dan nilai tak dikenal, dan mengarahkan kembali.
@@ -80,4 +80,4 @@ Galat di `/app/*`, `/portal/*`, `/customer/*`, dan `/distributor/*` memakai hala
 
 - Livewire (A1) dan komponen formulir dan tabel.
 - Mode gelap, notifikasi, jejak halaman (breadcrumb), pencarian, profil pengguna, dan ganti kata sandi sendiri.
-- Isi beranda yang bermakna, menyusul bersama fitur pertama peran masing-masing.
+- Grafik dan angka periodik di beranda (misalnya pembelian per bulan).
