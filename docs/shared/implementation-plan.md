@@ -10,6 +10,7 @@ Fondasi yang dipakai admin, staf, customer, dan distributor: infrastruktur pemer
 | D1 | Fondasi akun: peran, login `/app/login` dan `/portal/login` (login customer dan distributor disatukan), middleware per peran, perintah admin pertama | [`auth/overview.md`](auth/overview.md) | `feat/auth-foundation` | Selesai, ter-merge ke `development` |
 | D2 | Kerangka dashboard: tata letak, menu per peran, pemilih bahasa (`en` dan `id`), halaman beranda, dan desain dasar | [`dashboard/overview.md`](dashboard/overview.md) | `feat/dashboard-shell` | Selesai, ter-merge ke `development` |
 | D3 | Tanya Jawab: arsip pertanyaan customer dan jawabannya. Admin dan staf mencatat (staf hanya mengubah dan menghapus miliknya), customer hanya membaca; layanan atau kategori proses terkait opsional, hingga 10 gambar | [`inquiries/overview.md`](inquiries/overview.md) | `feat/inquiries` | Selesai di kode, menunggu tinjauan |
+| D4 | Catatan Pembelian: arsip pembelian customer dan distributor di dua halaman terpisah (pembeli, produk dan jumlah, berkas unggahan). Admin dan staf mencatat dan melihat semua (staf hanya mengubah dan menghapus miliknya). Customer dan distributor hanya membaca dan mengunduh berkas miliknya sendiri | [`purchases/overview.md`](purchases/overview.md) | `feat/purchase-records` | Selesai di kode, menunggu tinjauan |
 
 ## Keputusan
 

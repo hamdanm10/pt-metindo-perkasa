@@ -14,40 +14,41 @@ class DashboardMenuTest extends TestCase
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->admin()->make());
 
-        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.services.index', 'app.process-categories.index', 'app.processes.index', 'app.products.index', 'app.chat.index', 'app.whatsapp.index', 'app.staff.index', 'app.customers.index', 'app.distributors.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.services.index', 'app.process-categories.index', 'app.processes.index', 'app.products.index', 'app.chat.index', 'app.whatsapp.index', 'app.staff.index', 'app.customers.index', 'app.distributors.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index', 'app.customer-purchases.index', 'app.distributor-purchases.index'], array_column($menu, 'route'));
     }
 
     public function test_staff_gets_the_home_the_articles_and_the_questions(): void
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->staff()->make());
 
-        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['app.dashboard', 'app.articles.index', 'app.customer-inquiries.index', 'app.distributor-inquiries.index', 'app.customer-purchases.index', 'app.distributor-purchases.index'], array_column($menu, 'route'));
     }
 
     public function test_customers_get_the_customer_home_and_the_questions(): void
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->customer()->make());
 
-        $this->assertSame(['customer.dashboard', 'customer.inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['customer.dashboard', 'customer.inquiries.index', 'customer.purchases.index'], array_column($menu, 'route'));
     }
 
     public function test_distributors_get_their_own_home_and_questions(): void
     {
         $menu = (new DashboardMenu)->forUser(User::factory()->distributor()->make());
 
-        $this->assertSame(['distributor.dashboard', 'distributor.inquiries.index'], array_column($menu, 'route'));
+        $this->assertSame(['distributor.dashboard', 'distributor.inquiries.index', 'distributor.purchases.index'], array_column($menu, 'route'));
     }
 
     public function test_admin_items_are_grouped_under_menu_content_and_user_management_with_icons(): void
     {
         $groups = (new DashboardMenu)->groupsForUser(User::factory()->admin()->make());
 
-        $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.content', 'dashboard.groups.users', 'dashboard.groups.support'], array_column($groups, 'label'));
+        $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.content', 'dashboard.groups.users', 'dashboard.groups.support', 'dashboard.groups.sales'], array_column($groups, 'label'));
         $this->assertSame(['app.dashboard'], array_column($groups[0]['items'], 'route'));
         $this->assertSame(['app.articles.index', 'app.services.index', 'app.process-categories.index', 'app.processes.index', 'app.products.index', 'app.chat.index', 'app.whatsapp.index'], array_column($groups[1]['items'], 'route'));
         $this->assertSame(['app.staff.index', 'app.customers.index', 'app.distributors.index'], array_column($groups[2]['items'], 'route'));
         $this->assertSame(['app.customer-inquiries.index', 'app.distributor-inquiries.index'], array_column($groups[3]['items'], 'route'));
-        $this->assertSame(['home', 'document', 'wrench', 'cube', 'cube', 'cube', 'question', 'phone', 'briefcase', 'users', 'truck', 'chat', 'chat'], array_column(array_merge(...array_column($groups, 'items')), 'icon'));
+        $this->assertSame(['app.customer-purchases.index', 'app.distributor-purchases.index'], array_column($groups[4]['items'], 'route'));
+        $this->assertSame(['home', 'document', 'wrench', 'cube', 'cube', 'cube', 'question', 'phone', 'briefcase', 'users', 'truck', 'chat', 'chat', 'document', 'document'], array_column(array_merge(...array_column($groups, 'items')), 'icon'));
     }
 
     public function test_related_items_are_gathered_into_dropdown_entries_and_a_lone_item_stays_a_plain_item(): void
@@ -69,6 +70,6 @@ class DashboardMenuTest extends TestCase
     {
         $groups = (new DashboardMenu)->groupsForUser(User::factory()->staff()->make());
 
-        $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.content', 'dashboard.groups.support'], array_column($groups, 'label'));
+        $this->assertSame(['dashboard.groups.menu', 'dashboard.groups.content', 'dashboard.groups.support', 'dashboard.groups.sales'], array_column($groups, 'label'));
     }
 }
