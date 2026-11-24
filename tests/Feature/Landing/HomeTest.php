@@ -314,6 +314,18 @@ class HomeTest extends TestCase
             ->assertSeeText(__('home.intro.begin', [], 'id'));
     }
 
+    public function test_intro_shows_the_chat_professor_without_a_background_beside_the_headline(): void
+    {
+        $this->get('/en')->assertSeeInOrder([
+            'data-intro-word',
+            'images/landing/professor-head.svg',
+            'data-intro-close',
+        ], false);
+
+        $svg = (string) file_get_contents(public_path('images/landing/professor-head.svg'));
+        $this->assertStringNotContainsString('fill="#A9C2F5"', $svg);
+    }
+
     public function test_intro_shows_the_hero_headline_word_by_word_and_a_plain_language_list(): void
     {
         $html = (string) $this->get('/en')->getContent();

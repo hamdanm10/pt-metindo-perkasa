@@ -110,8 +110,8 @@ class ContactWidgetsTest extends TestCase
         $this->assertStringContainsString('<img src="'.$avatar.'" alt=""', $html);
 
         // The image sits in the chat header, before the title.
-        $this->assertLessThan((int) strpos($html, 'id="chat-title"'), (int) strpos($html, $avatar));
-        $this->assertGreaterThan((int) strpos($html, 'data-panel="chat"'), (int) strpos($html, $avatar));
+        $panel = (int) strpos($html, 'data-panel="chat"');
+        $this->assertLessThan((int) strpos($html, 'id="chat-title"'), (int) strpos($html, $avatar, $panel));
 
         // The script builds the replies' avatars from the same file, passed in the rules.
         $this->assertSame(1, preg_match('/data-chat-rules="([^"]*)"/', $html, $found));
