@@ -54,6 +54,25 @@
                             </div>
                         </div>
 
+                        <div class="mt-4 flex flex-wrap items-center gap-4">
+                            <div class="min-w-0 flex-1 sm:max-w-md">
+                                <x-dashboard.select :name="'form.steps.'.$index.'.animation'" :label="__('processes.fields.step_animation')" wire:model.live="form.steps.{{ $index }}.animation">
+                                    <option value="">{{ __('processes.animations.none') }}</option>
+                                    @foreach (\App\Enums\StepAnimation::cases() as $animation)
+                                        <option value="{{ $animation->value }}">{{ __('processes.animations.'.$animation->value) }}</option>
+                                    @endforeach
+                                </x-dashboard.select>
+                            </div>
+                            <div class="flex h-24 w-32 shrink-0 items-center justify-center rounded-lg bg-lavender" wire:key="step-{{ $index }}-preview-{{ $step['animation'] }}">
+                                @if ($step['animation'] !== '')
+                                    <x-process.step-animation :name="$step['animation']" class="size-full" />
+                                    <span class="sr-only">{{ __('processes.animations.preview') }}</span>
+                                @else
+                                    <span class="px-2 text-center text-xs text-muted">{{ __('processes.animations.none_preview') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="mt-4">
                             <p class="field-label">{{ __('processes.fields.step_products') }}</p>
                             @if ($step['products'] !== [])

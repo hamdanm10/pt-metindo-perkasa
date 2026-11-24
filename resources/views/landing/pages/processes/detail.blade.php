@@ -122,6 +122,9 @@
                     <li data-diagram-node class="relative">
                         <span data-diagram-link class="diagram-link absolute start-11 top-5 h-[3px] w-[calc(100%-2.75rem)] bg-brand-600 {{ $loop->last ? 'hidden' : '' }}" aria-hidden="true"></span>
                         <span data-diagram-badge class="relative z-10 inline-flex size-11 items-center justify-center rounded-full bg-white text-sm font-extrabold text-brand-700 ring-2 ring-brand-600 transition-colors duration-300 data-[reached]:bg-brand-600 data-[reached]:text-white">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                        @if ($step['animation'] !== null)
+                            <x-process.step-animation :name="$step['animation']" class="mt-4 h-24 w-32 rounded-lg bg-white" />
+                        @endif
                         <h3 class="mt-3 pe-4 text-lg font-black">{{ $step['name'] }}</h3>
                         @if ($step['description'] !== '')
                             <p class="mt-1 pe-4 text-sm text-ink/75">{{ $step['description'] }}</p>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
+use App\Enums\StepAnimation;
 use App\Models\Process;
 use Closure;
 use Illuminate\Support\Str;
@@ -35,7 +36,7 @@ class ProcessForm extends Form
     /** @var array<string, string> */
     public array $descriptions = [];
 
-    /** @var array<int, array{name: string, descriptions: array<string, string>, products: array<int, int>}> */
+    /** @var array<int, array{name: string, descriptions: array<string, string>, products: array<int, int>, animation: string}> */
     public array $steps = [];
 
     public function initialize(?Process $process): void
@@ -62,6 +63,7 @@ class ProcessForm extends Form
             $this->steps[] = [
                 'name' => $step->name,
                 'descriptions' => $texts,
+                'animation' => $step->animation === null ? '' : $step->animation->value,
                 'products' => $step->products->pluck('id')->map(fn ($id): int => (int) $id)->values()->all(),
             ];
         }
@@ -70,13 +72,14 @@ class ProcessForm extends Form
     /**
      * An empty step, with a blank description for every landing language.
      *
-     * @return array{name: string, descriptions: array<string, string>, products: array<int, int>}
+     * @return array{name: string, descriptions: array<string, string>, products: array<int, int>, animation: string}
      */
     public function blankStep(): array
     {
         return [
             'name' => '',
             'descriptions' => array_fill_keys(config()->array('locales.landing'), ''),
+            'animation' => '',
             'products' => [],
         ];
     }
@@ -122,6 +125,7 @@ class ProcessForm extends Form
             }],
             'steps' => ['array', 'max:'.self::MAX_STEPS],
             'steps.*.name' => ['required', 'string', 'max:255'],
+            'steps.*.animation' => ['nullable', Rule::enum(StepAnimation::class)],
             'steps.*.descriptions.*' => ['nullable', 'string', 'max:1000'],
             'steps.*.products' => ['array', 'max:'.self::MAX_PRODUCTS],
             'steps.*.products.*' => ['integer', 'distinct', Rule::exists('products', 'id')],
@@ -146,6 +150,7 @@ class ProcessForm extends Form
             'descriptions' => __('processes.fields.languages'),
             'steps' => __('processes.fields.steps'),
             'steps.*.name' => __('processes.fields.step_name'),
+            'steps.*.animation' => __('processes.fields.step_animation'),
             'steps.*.descriptions.*' => __('processes.fields.step_description'),
             'steps.*.products' => __('processes.fields.step_products'),
             'steps.*.products.*' => __('processes.fields.step_products'),
@@ -217,6 +222,7 @@ class ProcessForm extends Form
         return array_values(array_map(fn (array $step): array => [
             'name' => $step['name'],
             'descriptions' => $step['descriptions'],
+            'animation' => $step['animation'] === '' ? null : $step['animation'],
             'products' => array_values($step['products']),
         ], $this->steps));
     }

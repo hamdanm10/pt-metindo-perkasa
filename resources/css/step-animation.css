@@ -1,0 +1,106 @@
+/* Cartoon animations of the process steps (components/process/step-animation.blade.php). Shared by the landing diagram and the dashboard preview. */
+.step-anim * {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.sa-drop {
+    animation: sa-fall 1.1s ease-in infinite;
+}
+
+.sa-drop:nth-of-type(2n) {
+    animation-delay: 0.35s;
+}
+
+.sa-drop:nth-of-type(3n) {
+    animation-delay: 0.7s;
+}
+
+.sa-bubble {
+    animation: sa-rise 1.6s ease-in infinite;
+}
+
+.sa-bubble:nth-of-type(2n) {
+    animation-delay: 0.5s;
+}
+
+.sa-bubble:nth-of-type(3n) {
+    animation-delay: 1s;
+}
+
+.sa-dip {
+    animation: sa-dip 2.4s ease-in-out infinite;
+}
+
+.sa-wave {
+    animation: sa-wave 1.4s ease-in-out infinite;
+}
+
+.sa-wave:nth-of-type(2n) {
+    animation-delay: 0.4s;
+}
+
+.sa-spark {
+    animation: sa-spark 0.7s steps(2, end) infinite;
+}
+
+.sa-glow {
+    animation: sa-glow 1.8s ease-in-out infinite;
+}
+
+.sa-scan {
+    animation: sa-scan 2.2s ease-in-out infinite;
+}
+
+.sa-shine {
+    animation: sa-shine 2.2s ease-in-out infinite;
+}
+
+@keyframes sa-fall {
+    0% { transform: translateY(-14px); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(18px); opacity: 0; }
+}
+
+@keyframes sa-rise {
+    0% { transform: translateY(8px) scale(0.6); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(-22px) scale(1); opacity: 0; }
+}
+
+@keyframes sa-dip {
+    0%, 100% { transform: translateY(-16px); }
+    50% { transform: translateY(8px); }
+}
+
+@keyframes sa-wave {
+    0% { transform: translateY(6px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-10px); opacity: 0; }
+}
+
+@keyframes sa-spark {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0.2; transform: scale(0.6); }
+}
+
+@keyframes sa-glow {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
+}
+
+@keyframes sa-scan {
+    0%, 100% { transform: translateX(-26px); }
+    50% { transform: translateX(26px); }
+}
+
+@keyframes sa-shine {
+    0%, 60%, 100% { opacity: 0; }
+    75% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .step-anim * {
+        animation: none !important;
+    }
+}

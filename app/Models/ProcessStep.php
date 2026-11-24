@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\StepAnimation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property StepAnimation|null $animation
+ */
 class ProcessStep extends Model
 {
-    protected $fillable = ['process_id', 'name', 'position'];
+    protected $fillable = ['process_id', 'name', 'animation', 'position'];
+
+    protected function casts(): array
+    {
+        return ['animation' => StepAnimation::class];
+    }
 
     /**
      * @return BelongsTo<Process, $this>
