@@ -28,6 +28,7 @@ return [
         'menu' => 'Menu',
         'content' => 'Content',
         'support' => 'Support',
+        'sales' => 'Sales',
         'users' => 'User Management',
     ],
     'nav' => [
@@ -51,6 +52,9 @@ return [
         'inquiries' => 'Questions & Answers',
         'customer_inquiries' => 'Customer Q&A',
         'distributor_inquiries' => 'Distributor Q&A',
+        'purchases' => 'Purchases',
+        'customer_purchases' => 'Customer purchases',
+        'distributor_purchases' => 'Distributor purchases',
     ],
     'home' => [
         'title' => 'Home',

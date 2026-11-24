@@ -28,6 +28,7 @@ return [
         'menu' => 'Menu',
         'content' => 'Konten',
         'support' => 'Bantuan',
+        'sales' => 'Penjualan',
         'users' => 'Manajemen Pengguna',
     ],
     'nav' => [
@@ -51,6 +52,9 @@ return [
         'inquiries' => 'Tanya Jawab',
         'customer_inquiries' => 'Tanya Jawab Customer',
         'distributor_inquiries' => 'Tanya Jawab Distributor',
+        'purchases' => 'Pembelian',
+        'customer_purchases' => 'Pembelian Customer',
+        'distributor_purchases' => 'Pembelian Distributor',
     ],
     'home' => [
         'title' => 'Beranda',
