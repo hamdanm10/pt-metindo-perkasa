@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Cache;
  * whenever the admin saves or moves a category, process, or product.
  *
  * @phpstan-type Product array{slug: string, name: string, description: string|null, brochure_url: string|null, video_url: string|null, price: string|null, tds_url: string|null, links: list<array{label: string, url: string}>}
- * @phpstan-type Step array{name: string, description: string|null, products: list<Product>}
+ * @phpstan-type Step array{name: string, animation: string|null, description: string|null, products: list<Product>}
  * @phpstan-type Process array{slug: string, name: string, description: string|null, steps: list<Step>}
  * @phpstan-type Category array{slug: string, name: string, description: string|null, image: string|null, processes: list<Process>}
  */
@@ -107,6 +107,7 @@ class LandingProcesses
 
                     $steps[] = [
                         'name' => $step->name,
+                        'animation' => $step->animation?->value,
                         'description' => $this->text($step->translations->pluck('description', 'locale')->all(), $locale, $default),
                         'products' => $products,
                     ];

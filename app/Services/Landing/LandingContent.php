@@ -83,7 +83,7 @@ class LandingContent
     /**
      * One process with its category, steps, products, and the other processes of that category.
      *
-     * @return array{slug: string, name: string, description: string, category: array{slug: string, name: string}, steps: list<array{name: string, description: string, products: list<array{slug: string, name: string, description: string|null, brochure_url: string|null, video_url: string|null, price: string|null, tds_url: string|null, links: list<array{label: string, url: string}>}>}>, products: int, others: list<array{slug: string, name: string, description: string}>}|null
+     * @return array{slug: string, name: string, description: string, category: array{slug: string, name: string}, steps: list<array{name: string, animation: string|null, description: string, products: list<array{slug: string, name: string, description: string|null, brochure_url: string|null, video_url: string|null, price: string|null, tds_url: string|null, links: list<array{label: string, url: string}>}>}>, products: int, others: list<array{slug: string, name: string, description: string}>}|null
      */
     public function process(string $slug): ?array
     {
@@ -95,6 +95,7 @@ class LandingContent
 
                 $steps = array_map(fn (array $step): array => [
                     'name' => $step['name'],
+                    'animation' => $step['animation'],
                     'description' => $step['description'] ?? '',
                     'products' => $step['products'],
                 ], $process['steps']);

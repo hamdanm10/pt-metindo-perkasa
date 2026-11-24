@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
  * one moved to another category. The steps are replaced by the given list, in order. A language missing from
  * `$descriptions` is removed from the process, and an empty step description is not stored.
  *
- * @phpstan-type StepInput array{name: string, descriptions: array<string, string>, products: list<int>}
+ * @phpstan-type StepInput array{name: string, descriptions: array<string, string>, products: list<int>, animation?: string|null}
  */
 class SaveProcess
 {
@@ -48,7 +48,7 @@ class SaveProcess
             $process->steps()->delete();
 
             foreach ($steps as $position => $input) {
-                $step = $process->steps()->create(['name' => $input['name'], 'position' => $position]);
+                $step = $process->steps()->create(['name' => $input['name'], 'animation' => $input['animation'] ?? null, 'position' => $position]);
 
                 foreach ($input['descriptions'] as $locale => $description) {
                     if ($description !== '') {

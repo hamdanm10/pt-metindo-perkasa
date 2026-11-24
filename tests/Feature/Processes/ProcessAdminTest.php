@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Processes;
 
+use App\Enums\StepAnimation;
 use App\Livewire\Lookup;
 use App\Livewire\Processes\Editor;
 use App\Livewire\Processes\Index;
@@ -12,6 +13,7 @@ use App\Models\ProcessCategory;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -93,6 +95,58 @@ class ProcessAdminTest extends TestCase
         $this->assertCount(0, $two->translations);
         $this->assertSame([$first->id, $second->id], $one->products->pluck('id')->all());
         $this->assertCount(0, $two->products);
+    }
+
+    public function test_admin_picks_an_animation_per_step_and_sees_a_preview(): void
+    {
+        $category = ProcessCategory::factory()->create();
+
+        $component = Livewire::actingAs($this->admin())->test(Editor::class)
+            ->set('form.name', 'Flow')
+            ->set('form.processCategoryId', (string) $category->id)
+            ->set('form.descriptions.en', 'x')
+            ->call('addStep')
+            ->set('form.steps.0.name', 'Degreasing')
+            ->call('addStep')
+            ->set('form.steps.1.name', 'Rinsing')
+            ->assertDontSeeHtml('data-step-animation')
+            ->set('form.steps.0.animation', 'degreasing')
+            ->assertSeeHtml('data-step-animation="degreasing"');
+
+        $component->call('save')->assertHasNoErrors();
+
+        $steps = Process::query()->firstOrFail()->steps;
+        $this->assertSame(StepAnimation::Degreasing, $steps->firstOrFail()->animation);
+        $this->assertNull($steps->sole(fn ($step): bool => $step->name === 'Rinsing')->animation);
+    }
+
+    public function test_an_unknown_animation_is_rejected(): void
+    {
+        $category = ProcessCategory::factory()->create();
+
+        Livewire::actingAs($this->admin())->test(Editor::class)
+            ->set('form.name', 'Flow')
+            ->set('form.processCategoryId', (string) $category->id)
+            ->set('form.descriptions.en', 'x')
+            ->call('addStep')
+            ->set('form.steps.0.name', 'Degreasing')
+            ->set('form.steps.0.animation', 'explosion')
+            ->call('save')
+            ->assertHasErrors(['form.steps.0.animation']);
+
+        $this->assertSame(0, Process::query()->count());
+    }
+
+    public function test_every_animation_has_a_drawing_and_a_label_in_both_dashboard_languages(): void
+    {
+        foreach (StepAnimation::cases() as $animation) {
+            $this->assertStringContainsString('data-step-animation="'.$animation->value.'"', Blade::render('<x-process.step-animation :name="$name" />', ['name' => $animation->value]));
+
+            foreach (['en', 'id'] as $locale) {
+                $key = 'processes.animations.'.$animation->value;
+                $this->assertNotSame($key, __($key, [], $locale));
+            }
+        }
     }
 
     public function test_english_is_required_and_the_category_must_exist(): void

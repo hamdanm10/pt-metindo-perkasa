@@ -26,6 +26,7 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 | 6 | **Langkah dikelola di dalam form proses**: tambah, hapus, geser, lalu pilih produk tiap langkah lewat dropdown pencarian `Lookup` (sumber baru `produk`, banyak pilihan). Satu transaksi di `SaveProcess` | Admin tidak perlu halaman terpisah |
 | 7 | Satu produk boleh dipakai di banyak langkah (tabel pivot `process_step_product`, pasangan unik, ada `position`). Produk nonaktif disembunyikan dari langkah di landing tetapi tidak dilepas dari pivot | Mudah diaktifkan lagi |
 | 8 | **Tanpa impor data awal dan tanpa seeder.** Admin mengisi kategori, proses, langkah, dan produk lewat dashboard. Satu-satunya migrasi data: deskripsi kategori A3 yang sudah ada dipindah ke terjemahan bahasa Inggris. **Data statis di `config/landing.php` (`categories`, `process_details`, `catalog_source`) dan teks kategori di `lang/*/pages.php` dihapus**: landing hanya membaca database, jadi daftar kosong sampai admin mengisi dashboard (daftar proses dan beranda tampil tanpa kategori, slug apa pun menjadi 404). Gambar kategori hanya dari unggahan admin, dengan berkas `public/images/landing/photos/product-<slug>` sebagai cadangan | Satu sumber data. Aturan proyek: tanpa data contoh |
+| 10 | **Animasi kartun per langkah**: tiap langkah punya satu animasi yang dipilih admin di form proses dari daftar bawaan kode (`App\Enums\StepAnimation`: degreasing, rinsing, pickling, plating, passivation, drying, baking, inspection), kolom `process_steps.animation` (nullable). Pilihannya dropdown dengan **pratinjau langsung** di samping, dan gambarnya komponen Blade `process.step-animation` (SVG inline + CSS di `resources/css/step-animation.css`, dimatikan oleh `prefers-reduced-motion`). Langkah tanpa animasi tampil seperti sebelumnya (tanpa gambar), jadi data lama tidak berubah. Tidak ada unggahan animasi | Admin memilih tanpa menunggu developer, dan animasi baru cukup ditambahkan ke enum dan komponen |
 | 9 | **Gambar kategori wajib, diunggah admin** (wajib sampai kategori punya gambar, lalu boleh dibiarkan saat ubah; kategori lama tanpa gambar harus mengunggah saat diubah berikutnya. JPG, PNG, atau WebP, maks 2 MB, minimal 800x600, dipotong 4:3 dan disimpan WebP di disk `public` dengan nama acak lewat `ProcessCategoryImageStore`, file lama dihapus saat diganti). Dipakai di daftar proses (panel 16:8), halaman kategori, dan kartu katalog beranda. Tanpa gambar unggahan, landing memakai berkas statis `public/images/landing/photos/product-<slug>` dan cadangan yang sudah ada. | Kotak gambar di landing yang tadinya kosong terisi dari dashboard |
 
 ## Data
@@ -34,7 +35,7 @@ Tiga branch berurutan dari `development`, masing-masing dengan test dan dokumen 
 - `product_links`: `product_id`, `label` (nama olshop, contoh Tokopedia), `url` (`https`), `position`. Tautan e-commerce bisa lebih dari satu.
 - `process_categories` (sudah ada): tambah `slug` (unik), `position`, `is_active`, `image_path`. `description` dipindah ke `process_category_translations` bahasa Inggris oleh migration lalu kolomnya dihapus, dan `slug` diisi dari nama.
 - `processes`: `process_category_id` (index, `restrictOnDelete`), `name` (unik), `slug` (unik), `position`, `is_active`. Terjemahan di `process_translations`: `description`.
-- `process_steps`: `process_id` (`cascadeOnDelete`), `name`, `position`. Terjemahan di `process_step_translations`: `description` (opsional, maks 1000, tidak disimpan bila kosong).
+- `process_steps`: `process_id` (`cascadeOnDelete`), `name`, `animation` (nilai `StepAnimation`, boleh kosong), `position`. Terjemahan di `process_step_translations`: `description` (opsional, maks 1000, tidak disimpan bila kosong).
 - `process_step_product`: `process_step_id`, `product_id`, `position`, pasangan unik.
 - Index pada kolom yang dicari atau diurutkan: `name`, `slug`, `position`, `locale`, dan kunci asing.
 
@@ -75,7 +76,7 @@ Menu ketiganya di grup konten, induk `catalog`, hanya untuk admin.
 
 ## Ditunda
 
-- Nama yang diterjemahkan. Seret dan lepas. `<title>` dan meta per proses. Permintaan harga dan unduhan TDS lewat formulir (L5). Gambar atau diagram unggahan per langkah.
+- Nama yang diterjemahkan. Seret dan lepas. `<title>` dan meta per proses. Permintaan harga dan unduhan TDS lewat formulir (L5). Gambar atau animasi unggahan per langkah (animasi hanya dari daftar bawaan, keputusan 10).
 
 ## Catatan A9
 

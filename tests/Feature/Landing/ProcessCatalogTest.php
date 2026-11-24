@@ -44,6 +44,20 @@ class ProcessCatalogTest extends TestCase
         return ['category' => $category, 'process' => $process, 'product' => $product];
     }
 
+    public function test_the_diagram_shows_the_animation_chosen_for_each_step(): void
+    {
+        $this->withoutVite();
+        $data = $this->catalog();
+        $data['process']->steps()->firstOrFail()->update(['animation' => 'degreasing']);
+        $data['process']->steps()->create(['name' => 'Plain', 'position' => 1]);
+        app(LandingProcesses::class)->flush();
+
+        $response = $this->get('/en/process/custom-flow')->assertOk();
+
+        $response->assertSee('data-step-animation="degreasing"', false);
+        $this->assertSame(1, substr_count((string) $response->getContent(), 'data-step-animation='));
+    }
+
     public function test_the_category_picture_shows_on_the_pages_and_the_home_page(): void
     {
         $data = $this->catalog();
