@@ -37,6 +37,7 @@ return [
             'contact' => 'Alat kontak',
             'clients' => 'Klien',
             'qa' => 'Tanya Jawab',
+            'purchases' => 'Pembelian',
         ],
         'home' => 'Dasbor',
         'staff' => 'Staf',
