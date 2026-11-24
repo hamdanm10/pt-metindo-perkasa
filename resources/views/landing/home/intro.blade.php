@@ -19,11 +19,18 @@
         </div>
 
         {{-- The headline of the home page, very large, each line rising out of its own mask. --}}
-        <p class="flex flex-1 flex-col justify-end pb-[clamp(1.25rem,2.5vw,3rem)] text-[clamp(3.25rem,11.5vw,14rem)] font-black uppercase leading-[0.88] tracking-tight" aria-hidden="true">
-            @foreach (explode(' ', __('home.hero.title')) as $word)
-                <span class="block overflow-hidden"><span data-intro-word class="block">{{ $word }}</span></span>
-            @endforeach
-        </p>
+        <div class="flex flex-1 items-end pb-[clamp(1.25rem,2.5vw,3rem)]">
+            <div class="flex w-full items-center">
+                <p class="shrink-0 text-[clamp(2.75rem,10.5vw,13rem)] font-black uppercase leading-[0.88] tracking-tight" aria-hidden="true">
+                    @foreach (explode(' ', __('home.hero.title')) as $word)
+                        <span class="block overflow-hidden"><span data-intro-word class="block">{{ $word }}</span></span>
+                    @endforeach
+                </p>
+                <div class="flex flex-1 justify-center">
+                    <img data-intro-item src="{{ asset('images/landing/professor-head.svg') }}" alt="" width="280" height="300" class="w-[clamp(5.5rem,30vw,32rem)] max-w-full shrink-0">
+                </div>
+            </div>
+        </div>
 
         {{-- The way in: one wide bar. --}}
         <button type="button" data-intro-close data-intro-item
